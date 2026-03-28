@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="野球の個人打撃成績を記録・分析するWebツール">
+  <meta name="keywords" content="野球,打率,OPS,成績記録,baseball,batting average,stats tracker">
+  <meta name="theme-color" content="#1a472a">
+  <meta property="og:type"        content="website">
+  <meta property="og:title"       content="My Batting Stats - 野球打撃成績トラッカー">
+  <meta property="og:description" content="野球の個人打撃成績を記録・分析するWebツール">
+  <meta property="og:image"       content="/icons/og-image.png">
+  <meta name="twitter:card"       content="summary_large_image">
+  <title>打撃成績</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="app-header">
+    <h1 class="app-title" data-i18n="app.title">打撃成績</h1>
+    <button class="btn-lang" id="lang-toggle" aria-label="言語切替">EN</button>
+  </header>
+
+  <!-- AdSense: header-ad -->
+
+  <!-- ── Tab Bar ── -->
+  <nav class="tab-bar" aria-label="メインナビゲーション">
+    <button class="tab-btn active" data-tab="record"  data-i18n="tab.record">記録</button>
+    <button class="tab-btn"        data-tab="stats"   data-i18n="tab.stats">成績</button>
+    <button class="tab-btn"        data-tab="history" data-i18n="tab.history">履歴</button>
+  </nav>
+
+  <!-- ── Content ── -->
+  <main class="main-content">
+
+    <!-- ── 記録タブ ── -->
+    <section id="tab-record" class="tab-panel active" aria-label="記録">
+      <form id="atbat-form" autocomplete="off" novalidate>
+
+        <!-- 日付 / 相手 -->
+        <div class="form-row">
+          <div class="field-group">
+            <label for="input-date" data-i18n="form.date">日付</label>
+            <input type="date" id="input-date" aria-label="日付">
+          </div>
+          <div class="field-group">
+            <label for="input-opponent" data-i18n="form.opponent">相手チーム</label>
+            <input type="text" id="input-opponent" data-i18n-ph="form.opponentPh" placeholder="（任意）" maxlength="30" aria-label="相手チーム">
+          </div>
+        </div>
+
+        <!-- 投手の左右 -->
+        <div class="field-group">
+          <label data-i18n="form.pitcher">投手</label>
+          <div class="hand-row" id="pitcher-hand-buttons">
+            <button type="button" class="hand-btn selected" data-hand="R" data-i18n="form.pitcherR" aria-pressed="true">右</button>
+            <button type="button" class="hand-btn" data-hand="L" data-i18n="form.pitcherL" aria-pressed="false">左</button>
+          </div>
+        </div>
+
+        <!-- 結果 -->
+        <div class="field-group">
+          <label data-i18n="form.result">結果</label>
+          <div class="result-grid" id="result-buttons">
+            <button type="button" class="result-btn" data-result="single"  data-cat="hit"     data-i18n="result.single">単打</button>
+            <button type="button" class="result-btn" data-result="double"  data-cat="hit"     data-i18n="result.double">二塁打</button>
+            <button type="button" class="result-btn" data-result="triple"  data-cat="hit"     data-i18n="result.triple">三塁打</button>
+            <button type="button" class="result-btn" data-result="hr"      data-cat="hit"     data-i18n="result.hr">本塁打</button>
+            <button type="button" class="result-btn" data-result="bb"      data-cat="walk"    data-i18n="result.bb">四球</button>
+            <button type="button" class="result-btn" data-result="hbp"     data-cat="walk"    data-i18n="result.hbp">死球</button>
+            <button type="button" class="result-btn" data-result="k"       data-cat="out"     data-i18n="result.k">三振</button>
+            <button type="button" class="result-btn" data-result="go"      data-cat="out"     data-i18n="result.go">ゴロ</button>
+            <button type="button" class="result-btn" data-result="fo"      data-cat="out"     data-i18n="result.fo">フライ</button>
+            <button type="button" class="result-btn" data-result="lo"      data-cat="out"     data-i18n="result.lo">ライナー</button>
+            <button type="button" class="result-btn" data-result="sb"      data-cat="special" data-i18n="result.sb">犠打</button>
+            <button type="button" class="result-btn" data-result="sf"      data-cat="special" data-i18n="result.sf">犠飛</button>
+            <button type="button" class="result-btn" data-result="e"       data-cat="special" data-i18n="result.e">失策</button>
+            <button type="button" class="result-btn" data-result="dp"      data-cat="out"     data-i18n="result.dp">併殺打</button>
+          </div>
+        </div>
+
+        <!-- 三振種別 -->
+        <div class="sub-section" id="k-type-group" style="display:none">
+          <div class="choice-row">
+            <button type="button" class="choice-btn" data-ktype="called" data-i18n="form.ktypeCalled">見逃し</button>
+            <button type="button" class="choice-btn" data-ktype="swing"  data-i18n="form.ktypeSwing">空振り</button>
+          </div>
+        </div>
+
+        <!-- 内野安打トグル -->
+        <div class="sub-section" id="infield-hit-group" style="display:none">
+          <button type="button" class="toggle-btn" id="infield-hit-btn" data-i18n="form.infieldHit">内野安打</button>
+        </div>
+
+        <!-- ポジション選択 -->
+        <div class="sub-section" id="fielder-pos-group" style="display:none">
+          <span class="sub-label" data-i18n="form.fielderQ">どのポジションへ？</span>
+          <div class="pos-grid" id="fielder-pos-buttons"></div>
+        </div>
+
+        <!-- 打球方向 -->
+        <div class="sub-section" id="direction-group" style="display:none">
+          <span class="sub-label" data-i18n="form.result">打球方向</span>
+          <div class="field-wrapper">
+            <div id="field-diagram" role="img" aria-label="打球方向選択フィールド図"></div>
+          </div>
+          <p class="direction-label" id="direction-label"></p>
+        </div>
+
+        <!-- 打点 -->
+        <div class="field-group">
+          <label data-i18n="form.rbi">打点</label>
+          <div class="rbi-row">
+            <button type="button" class="rbi-btn" id="rbi-minus" aria-label="打点を減らす">−</button>
+            <span class="rbi-value" id="rbi-display">0</span>
+            <button type="button" class="rbi-btn" id="rbi-plus" aria-label="打点を増やす">＋</button>
+          </div>
+        </div>
+
+        <!-- メモ -->
+        <div class="field-group">
+          <label for="input-memo" data-i18n="form.memo">メモ</label>
+          <textarea id="input-memo" data-i18n-ph="form.memoPh" placeholder="（任意）" rows="2" maxlength="100"></textarea>
+        </div>
+
+        <!-- 送信 -->
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" id="form-submit" data-i18n="form.submit">記録する</button>
+          <button type="button" class="btn-ghost"   id="form-clear"  data-i18n="form.clear">クリア</button>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- ── 成績タブ ── -->
+    <section id="tab-stats" class="tab-panel" aria-label="成績">
+      <div class="section-inner">
+
+        <!-- フィルター -->
+        <div class="stats-filter">
+          <label for="stats-filter" class="sr-only" data-i18n="filter.all">フィルター</label>
+          <select id="stats-filter" aria-label="成績フィルター">
+            <option value="all" data-i18n="filter.all">通算</option>
+          </select>
+        </div>
+
+        <!-- 1. 主要指標カード -->
+        <div class="stat-cards" id="stats-cards">
+          <div class="stat-card">
+            <span class="stat-value" id="stat-avg">---</span>
+            <span class="stat-label" data-i18n="stat.avg">打率</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value" id="stat-obp">---</span>
+            <span class="stat-label" data-i18n="stat.obp">出塁率</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value" id="stat-slg">---</span>
+            <span class="stat-label" data-i18n="stat.slg">長打率</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value" id="stat-ops">---</span>
+            <span class="stat-label" data-i18n="stat.ops">OPS</span>
+          </div>
+        </div>
+
+        <!-- シェアボタン -->
+        <div class="share-btn-wrap">
+          <button class="btn-share" id="btn-share" data-i18n="share.btn" aria-label="成績をシェアする">成績をシェアする</button>
+        </div>
+
+        <!-- AdSense: in-content-ad -->
+
+        <!-- 2. 打席結果の内訳バー -->
+        <div class="stats-section" id="result-bar-section">
+          <h3 class="stats-section-title" data-i18n="stats.sectionResultBar">打席内訳</h3>
+          <div class="chart-wrap chart-wrap-bar">
+            <canvas id="chart-result-bar"></canvas>
+          </div>
+          <div id="result-bar-nodata" style="display:none">
+            <p class="empty-state-sm" data-i18n="stats.noData">データなし</p>
+          </div>
+        </div>
+
+        <!-- 3. 打球方向（ヒートマップ / アニメーション切替） -->
+        <div class="stats-section" id="spray-section">
+          <div class="spray-section-header">
+            <h3 class="stats-section-title" data-i18n="stats.sectionSpray">打球方向</h3>
+            <div class="spray-tab-row" role="tablist" aria-label="打球方向表示切替">
+              <button class="spray-tab-btn active" data-spray-tab="heatmap" data-i18n="spray.tabHeatmap" role="tab" aria-selected="true">ヒートマップ</button>
+              <button class="spray-tab-btn"        data-spray-tab="anim"    data-i18n="spray.tabAnim"    role="tab" aria-selected="false">アニメーション</button>
+            </div>
+          </div>
+
+          <!-- ヒートマップパネル -->
+          <div id="spray-heatmap-panel" role="tabpanel">
+            <div id="spray-chart" role="img" aria-label="打球方向スプレーチャート"></div>
+            <div id="spray-legend" class="spray-legend"></div>
+          </div>
+
+          <!-- アニメーションパネル -->
+          <div id="spray-anim-panel" style="display:none" role="tabpanel">
+            <div class="anim-filter-row" role="group" aria-label="表示フィルター">
+              <button class="anim-filter-btn active" data-anim-filter="all" data-i18n="spray.filterAll">すべて</button>
+              <button class="anim-filter-btn"        data-anim-filter="hit" data-i18n="spray.filterHit">ヒット</button>
+              <button class="anim-filter-btn"        data-anim-filter="out" data-i18n="spray.filterOut">アウト</button>
+              <button class="anim-filter-btn"        data-anim-filter="hr"  data-i18n="spray.filterHr">HR</button>
+            </div>
+            <div id="spray-anim-field" class="spray-anim-field" role="img" aria-label="スプレーアニメーション"></div>
+            <div class="anim-controls">
+              <button class="btn-anim" id="anim-play"  data-i18n="spray.play"  aria-label="再生">▶ 再生</button>
+              <button class="btn-anim" id="anim-pause" data-i18n="spray.pause" aria-label="停止">⏸ 停止</button>
+              <button class="btn-anim" id="anim-reset" data-i18n="spray.reset" aria-label="リセット">↺ リセット</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. ホームラン方向チャート -->
+        <div class="stats-section" id="hr-chart-section">
+          <h3 class="stats-section-title" data-i18n="stats.sectionHr">本塁打方向</h3>
+          <div id="hr-chart" role="img" aria-label="本塁打方向チャート"></div>
+          <div id="hr-chart-nodata" style="display:none">
+            <p class="empty-state-sm" data-i18n="hr.noData">まだホームランデータがありません</p>
+          </div>
+        </div>
+
+        <!-- 5. 打率推移グラフ -->
+        <div class="stats-section" id="trend-section">
+          <h3 class="stats-section-title" data-i18n="stats.sectionTrend">打率推移</h3>
+          <div class="trend-controls">
+            <label><input type="checkbox" id="trend-show-ops" checked> <span data-i18n="trend.showOps">OPS</span></label>
+            <label><input type="checkbox" id="trend-show-250" checked> <span data-i18n="trend.show250">.250基準線</span></label>
+          </div>
+          <div class="chart-wrap chart-wrap-trend">
+            <canvas id="chart-batting-trend"></canvas>
+          </div>
+          <div id="trend-nodata" style="display:none">
+            <p class="empty-state-sm" data-i18n="trend.noData">2試合以上のデータが必要です</p>
+          </div>
+        </div>
+
+        <!-- 6. 対左右投手別成績 -->
+        <div class="stats-section" id="vs-hand-section">
+          <h3 class="stats-section-title" data-i18n="stats.sectionVsHand">対左右投手別</h3>
+          <div class="vs-hand-grid">
+
+            <!-- vs 右投手 -->
+            <div class="vs-hand-col">
+              <div class="vs-hand-header badge-hand-r" data-i18n="vs.vsR">vs 右投手</div>
+              <div class="vs-avg-main" id="vs-r-avg">---</div>
+              <div class="vs-avg-bar-track">
+                <div class="vs-avg-bar-fill vs-avg-bar-r" id="vs-r-bar" style="width:0%"></div>
+              </div>
+              <div class="vs-stat-rows">
+                <div class="vs-stat-row"><span class="vs-stat-label" data-i18n="stat.obp">出塁率</span><span class="vs-stat-val" id="vs-r-obp">---</span></div>
+                <div class="vs-stat-row"><span class="vs-stat-label" data-i18n="stat.slg">長打率</span><span class="vs-stat-val" id="vs-r-slg">---</span></div>
+                <div class="vs-stat-row"><span class="vs-stat-label" data-i18n="stat.ops">OPS</span><span class="vs-stat-val" id="vs-r-ops">---</span></div>
+                <div class="vs-stat-row"><span class="vs-stat-label" data-i18n="stat.pa">打席</span><span class="vs-stat-val" id="vs-r-pa">0</span></div>
+                <div class="vs-stat-row"><span class="vs-stat-label" data-i18n="stat.ab">打数</span><span class="vs-stat-val" id="vs-r-ab">0</span></div>
+                <div class="vs-stat-row"><span class="vs-stat-label" data-i18n="stat.h">安打</span><span class="vs-stat-val" id="vs-r-h">0</span></div>
+              </div>
+              <div class="vs-spray-mini" id="spray-vs-r" role="img" aria-label="対右投手打球方向"></div>
+            </div>
+
+            <!-- vs 左投手 -->
+            <div class="vs-hand-col">
+              <div class="vs-hand-header badge-hand-l" data-i18n="vs.vsL">vs 左投手</div>
+              <div id="vs-l-nodata" style="display:none">
+                <p class="empty-state-sm" data-i18n="vs.noDataL">対左投手のデータはまだありません</p>
+              </div>
+              <div id="vs-l-content">
+                <div class="vs-avg-main" id="vs-l-avg">---</div>
+                <div class="vs-avg-bar-track">
+                  <div class="vs-avg-bar-fill vs-avg-bar-l" id="vs-l-bar" style="width:0%"></div>
+                </div>
+                <div class="vs-stat-rows">
+                  <div class="vs-stat-row"><span class="vs-stat-label" data-i18n="stat.obp">出塁率</span><span class="vs-stat-val" id="vs-l-obp">---</span></div>
+                  <div class="vs-stat-row"><span class="vs-stat-label" data-i18n="stat.slg">長打率</span><span class="vs-stat-val" id="vs-l-slg">---</span></div>
+                  <div class="vs-stat-row"><span class="vs-stat-label" data-i18n="stat.ops">OPS</span><span class="vs-stat-val" id="vs-l-ops">---</span></div>
+                  <div class="vs-stat-row"><span class="vs-stat-label" data-i18n="stat.pa">打席</span><span class="vs-stat-val" id="vs-l-pa">0</span></div>
+                  <div class="vs-stat-row"><span class="vs-stat-label" data-i18n="stat.ab">打数</span><span class="vs-stat-val" id="vs-l-ab">0</span></div>
+                  <div class="vs-stat-row"><span class="vs-stat-label" data-i18n="stat.h">安打</span><span class="vs-stat-val" id="vs-l-h">0</span></div>
+                </div>
+                <div class="vs-spray-mini" id="spray-vs-l" role="img" aria-label="対左投手打球方向"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 7. 打者タイプ診断 -->
+        <div class="stats-section" id="diag-section">
+          <h3 class="stats-section-title" data-i18n="diag.sectionTitle">あなたの打者タイプ</h3>
+          <div id="diag-not-enough" class="empty-state-sm" style="display:none"></div>
+          <div id="diag-result" style="display:none">
+            <div class="diag-type-name" id="diag-type-name"></div>
+            <p class="diag-desc" id="diag-desc"></p>
+            <div class="chart-wrap chart-wrap-radar">
+              <canvas id="chart-diagnosis-radar"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8. 詳細成績リスト -->
+        <div class="stats-section">
+          <h3 class="stats-section-title" data-i18n="stats.sectionDetail">詳細成績</h3>
+          <div class="stats-table-wrap" id="stats-table-container">
+            <p class="empty-state" data-i18n="stats.noData">データなし</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── 履歴タブ ── -->
+    <section id="tab-history" class="tab-panel" aria-label="履歴">
+      <div class="section-inner">
+        <div class="history-toolbar">
+          <button class="btn-ghost btn-sm" id="btn-export-csv" data-i18n="history.exportCsv" aria-label="CSVエクスポート">CSVエクスポート</button>
+        </div>
+        <div id="history-list">
+          <p class="empty-state" data-i18n="history.noData">打席データがありません</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── フッター ── -->
+  <!-- AdSense: footer-ad -->
+  <footer class="app-footer">
+    <a href="privacy.html" data-i18n="footer.privacy" class="footer-link">プライバシーポリシー</a>
+    <span class="footer-copy" data-i18n="footer.copyright">© 2026 My Batting Stats</span>
+    <button class="btn-lang footer-lang" id="footer-lang-toggle" aria-label="言語切替"></button>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- ── シェアモーダル ── -->
+  <div class="modal-overlay" id="share-modal-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="share-modal-title">
+    <div class="modal">
+      <h2 class="modal-title" id="share-modal-title" data-i18n="share.modalTitle">シェアカード作成</h2>
+      <div class="modal-body">
+        <div class="field-group">
+          <label for="share-player-name" data-i18n="share.playerLabel">プレイヤー名（任意）</label>
+          <input type="text" id="share-player-name" data-i18n-ph="share.playerPh" placeholder="例：田中太郎" maxlength="20">
+        </div>
+        <div class="field-group">
+          <label for="share-scope" data-i18n="share.scopeLabel">範囲</label>
+          <select id="share-scope" aria-label="シェア範囲">
+            <option value="all" data-i18n="share.scopeAll">通算成績</option>
+          </select>
+        </div>
+        <button class="btn-primary" id="share-generate" data-i18n="share.generate">画像を作成</button>
+        <div id="share-preview" class="share-preview"></div>
+        <div class="modal-actions" id="share-actions" style="display:none">
+          <button class="btn-primary" id="share-native"   data-i18n="share.shareNative">シェアする</button>
+          <button class="btn-ghost"   id="share-download" data-i18n="share.download">ダウンロード</button>
+        </div>
+      </div>
+      <button class="btn-ghost modal-close-btn" id="share-close" data-i18n="share.close">閉じる</button>
+    </div>
+  </div>
+
+  <!-- ── PWAインストールバナー ── -->
+  <div class="pwa-banner" id="pwa-banner" style="display:none" role="banner" aria-label="アプリインストール案内">
+    <span class="pwa-banner-msg" data-i18n="pwa.bannerMsg">ホーム画面に追加するとアプリのように使えます</span>
+    <div class="pwa-banner-actions">
+      <button class="pwa-btn-add"   id="pwa-banner-add"   data-i18n="pwa.bannerAdd">追加する</button>
+      <button class="pwa-btn-close" id="pwa-banner-close" data-i18n="pwa.bannerClose" aria-label="閉じる">✕</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.7/chart.umd.min.js" defer></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/stats.js"></script>
+  <script src="js/field.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/share.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+  </script>
+
+</body>
+</html>

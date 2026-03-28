@@ -1,0 +1,1124 @@
+/* ============================================
+   style.css — 打撃成績 / Mobile-first flat UI
+   ============================================ */
+
+/* ── Reset & Tokens ───────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #ffffff;
+  --surface:     #f4f4f5;
+  --border:      #e4e4e7;
+  --text:        #18181b;
+  --muted:       #71717a;
+  --accent:      #2563eb;
+  --accent-bg:   #eff6ff;
+
+  --c-hit:       #16a34a;
+  --c-out:       #dc2626;
+  --c-walk:      #2563eb;
+  --c-special:   #d97706;
+  --c-purple:    #7c3aed;
+
+  --header-h:    48px;
+  --tabbar-h:    48px;
+  --radius:      8px;
+  --radius-sm:   6px;
+}
+
+html, body {
+  height: 100%;
+  font-family: system-ui, -apple-system, 'Hiragino Sans', sans-serif;
+  font-size: 15px;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Header ───────────────────────────────── */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  height: var(--header-h);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.app-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.btn-lang {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  min-height: 32px;
+  font-family: inherit;
+  transition: background 0.1s;
+}
+.btn-lang:active { background: var(--surface); }
+
+/* ── Tab Bar ──────────────────────────────── */
+.tab-bar {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 10;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  height: var(--tabbar-h);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+}
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+.tab-btn:not(.active):active { color: var(--text); }
+
+/* ── Panels ───────────────────────────────── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.main-content { padding-bottom: 40px; }
+.section-inner { padding: 16px; }
+
+/* ── Form ─────────────────────────────────── */
+#tab-record form {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-group > label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+input[type="date"],
+input[type="text"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-family: inherit;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-appearance: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+textarea { resize: vertical; min-height: 64px; }
+
+/* ── Result Buttons ───────────────────────── */
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.result-btn {
+  padding: 10px 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 44px;
+  transition: all 0.12s;
+}
+.result-btn:active { transform: scale(0.95); }
+
+/* Category text color (unselected) */
+.result-btn[data-cat="hit"]     { color: var(--c-hit); }
+.result-btn[data-cat="out"]     { color: var(--c-out); }
+.result-btn[data-cat="walk"]    { color: var(--c-walk); }
+.result-btn[data-cat="special"] { color: var(--c-special); }
+
+/* Selected state */
+.result-btn.selected[data-cat="hit"]     { background: var(--c-hit);     border-color: var(--c-hit);     color: #fff; }
+.result-btn.selected[data-cat="out"]     { background: var(--c-out);     border-color: var(--c-out);     color: #fff; }
+.result-btn.selected[data-cat="walk"]    { background: var(--c-walk);    border-color: var(--c-walk);    color: #fff; }
+.result-btn.selected[data-cat="special"] { background: var(--c-special); border-color: var(--c-special); color: #fff; }
+
+/* ── Sub-sections ─────────────────────────── */
+.sub-section {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sub-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Pitcher handedness */
+.hand-row { display: flex; gap: 8px; }
+.hand-btn {
+  flex: 1;
+  padding: 10px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 44px;
+  color: var(--text);
+  transition: all 0.12s;
+}
+.hand-btn:active { transform: scale(0.97); }
+.hand-btn.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Choice row (strikeout type) */
+.choice-row { display: flex; gap: 8px; }
+
+.choice-btn {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 44px;
+  color: var(--text);
+  transition: all 0.12s;
+}
+.choice-btn:active { transform: scale(0.97); }
+.choice-btn.selected[data-ktype="called"] { background: var(--c-purple); border-color: var(--c-purple); color: #fff; }
+.choice-btn.selected[data-ktype="swing"]  { background: var(--c-out);    border-color: var(--c-out);    color: #fff; }
+
+/* Toggle button (infield hit) */
+.toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border: 1.5px solid var(--c-hit);
+  border-radius: 20px;
+  background: var(--bg);
+  color: var(--c-hit);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.toggle-btn::before { content: '○'; font-size: 13px; }
+.toggle-btn.active { background: var(--c-hit); color: #fff; }
+.toggle-btn.active::before { content: '✓'; }
+
+/* ── Fielder Position Grid ────────────────── */
+.pos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.pos-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 52px;
+  transition: all 0.12s;
+  color: var(--text);
+}
+.pos-btn:active { transform: scale(0.95); }
+.pos-btn.selected { background: var(--c-out); border-color: var(--c-out); color: #fff; }
+.pos-num  { font-size: 18px; font-weight: 800; line-height: 1; }
+.pos-name { font-size: 11px; font-weight: 600; }
+
+/* ── Field Diagram ────────────────────────── */
+.field-wrapper {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+.field-svg {
+  width: 100%;
+  max-width: 320px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Zone styles */
+.zone-infield  { fill: #dcfce7; stroke: #fff; stroke-width: 1.5; transition: fill 0.1s; cursor: pointer; }
+.zone-outfield { fill: #bbf7d0; stroke: #fff; stroke-width: 1.5; transition: fill 0.1s; cursor: pointer; }
+.zone-infield:hover  { fill: #86efac; }
+.zone-outfield:hover { fill: #4ade80; }
+.zone-infield.zone-selected  { fill: #16a34a !important; }
+.zone-outfield.zone-selected { fill: #15803d !important; }
+.zone-outfield.zone-disabled { fill: #e4e4e7 !important; opacity: 0.5; cursor: not-allowed; }
+.zone-backstroke { fill: #fef3c7; stroke: #f59e0b; stroke-width: 1.5; transition: fill 0.1s; cursor: pointer; }
+.zone-backstroke:hover { fill: #fde68a; }
+.zone-backstroke.zone-selected { fill: #f59e0b !important; }
+
+/* Field decoration */
+.field-foul    { stroke: rgba(255,255,255,0.5); stroke-width: 1; fill: none; stroke-dasharray: 4,3; }
+.field-diamond { fill: #fef9c3; stroke: #ca8a04; stroke-width: 1.5; }
+.field-mound   { fill: #fde68a; stroke: #ca8a04; stroke-width: 1; }
+.field-base    { fill: #fff; stroke: #9ca3af; stroke-width: 1.5; }
+.field-home    { fill: #fff; stroke: #9ca3af; stroke-width: 1.5; }
+
+/* Spray chart */
+.spray-dot   { fill: var(--accent); stroke: #1e40af; stroke-width: 1.5; }
+.spray-count { fill: #fff; font-size: 11px; font-weight: 700; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+
+.direction-label {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  min-height: 20px;
+  padding-top: 6px;
+}
+
+/* ── RBI Counter ──────────────────────────── */
+.rbi-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.rbi-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s;
+}
+.rbi-btn:active { background: var(--surface); }
+
+.rbi-value {
+  font-size: 26px;
+  font-weight: 700;
+  min-width: 32px;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+/* ── Form Actions ─────────────────────────── */
+.form-actions { display: flex; gap: 10px; }
+
+.btn-primary {
+  flex: 2;
+  padding: 14px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 50px;
+  transition: background 0.15s;
+}
+.btn-primary:active { background: #1d4ed8; }
+.btn-primary.editing { background: #0891b2; }
+
+.btn-ghost {
+  flex: 1;
+  padding: 14px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--muted);
+  cursor: pointer;
+  min-height: 50px;
+  transition: background 0.1s;
+}
+.btn-ghost:active { background: var(--surface); }
+
+/* ── Toast ────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: var(--text);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 100;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── Stats Tab ────────────────────────────── */
+.stats-filter { margin-bottom: 16px; }
+.stats-filter select { width: auto; min-width: 100px; }
+
+/* ── 主要指標カード ──────────────────────── */
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 8px;
+  text-align: center;
+}
+.stat-value {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 4px;
+}
+.stat-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── セクション共通 ──────────────────────── */
+.stats-section {
+  margin-bottom: 20px;
+}
+.stats-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 10px;
+}
+
+/* ── 打席結果内訳バー ──────────────────── */
+.chart-wrap-bar {
+  position: relative;
+  height: 64px;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.empty-state-sm {
+  text-align: center;
+  padding: 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ── 打率推移グラフ ───────────────────── */
+.chart-wrap-trend {
+  position: relative;
+  height: 200px;
+}
+.trend-controls {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--text);
+}
+.trend-controls label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+/* ── スプレーチャート ─────────────────── */
+.spray-dot-hit { fill: #16a34a; }
+.spray-dot-out { fill: #9ca3af; }
+
+/* ── 対左右投手別 ─────────────────────── */
+.vs-hand-grid {
+  display: flex;
+  gap: 12px;
+}
+.vs-hand-col {
+  flex: 1;
+  min-width: 0;
+}
+.vs-hand-header {
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+}
+.vs-avg-main {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.02em;
+  margin-bottom: 6px;
+}
+.vs-avg-bar-track {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.vs-avg-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+.vs-avg-bar-r { background: #2563eb; }
+.vs-avg-bar-l { background: #7e22ce; }
+.vs-stat-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+.vs-stat-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.vs-stat-label { color: var(--muted); }
+.vs-stat-val   { font-weight: 600; }
+.vs-spray-mini {
+  max-width: 140px;
+  margin: 0 auto;
+}
+
+/* ── ホームラン方向チャート ──────────── */
+.hr-dot { fill: #EF9F27; }
+.spray-legend {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  padding: 8px 0 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.spray-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.spray-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.spray-legend-dot.hit { background: #16a34a; }
+.spray-legend-dot.out { background: #9ca3af; }
+
+.stats-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 260px;
+}
+.stats-table th,
+.stats-table td {
+  padding: 9px 14px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.stats-table tr:last-child th,
+.stats-table tr:last-child td { border-bottom: none; }
+.stats-table-divider td { padding: 0; height: 6px; background: var(--surface); border: none; }
+.stats-table th {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  background: var(--surface);
+  text-align: left;
+}
+.stats-table td:first-child {
+  text-align: left;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* ── History Tab ──────────────────────────── */
+.history-list { display: flex; flex-direction: column; gap: 8px; }
+
+.history-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+.result-badge {
+  flex-shrink: 0;
+  min-width: 50px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+}
+.badge-hit     { background: var(--c-hit); }
+.badge-out     { background: var(--c-out); }
+.badge-walk    { background: var(--c-walk); }
+.badge-special { background: var(--c-special); }
+
+.history-body { flex: 1; min-width: 0; }
+.history-meta {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.history-detail {
+  font-size: 13px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.history-memo { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* Detail badges */
+.detail-badge {
+  border-radius: 10px;
+  padding: 1px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid;
+}
+.badge-hand-r  { background: #eff6ff; color: #1d4ed8;          border-color: #93c5fd; }
+.badge-hand-l  { background: #fdf4ff; color: #7e22ce;          border-color: #d8b4fe; }
+.badge-infield { background: #f0fdf4; color: var(--c-hit);     border-color: var(--c-hit); }
+.badge-fielder { background: #fef2f2; color: var(--c-out);     border-color: var(--c-out); }
+.badge-rbi     { background: #fffbeb; color: var(--c-special); border-color: var(--c-special); }
+.badge-kcalled { background: #f5f3ff; color: var(--c-purple);  border-color: var(--c-purple); }
+.badge-kswing  { background: #fef2f2; color: var(--c-out);     border-color: var(--c-out); }
+
+.history-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.btn-edit,
+.btn-delete {
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 4px;
+  min-width: 36px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  border-radius: var(--radius-sm);
+  transition: background 0.1s;
+}
+.btn-edit   { color: var(--muted); }
+.btn-delete { color: var(--c-out); }
+.btn-edit:active   { background: var(--surface); }
+.btn-delete:active { background: #fef2f2; }
+
+/* ── Game Cards (History) ─────────────────── */
+.game-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  overflow: hidden;
+}
+.game-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.game-card-header:active { background: var(--surface); }
+.game-card-info   { flex: 1; min-width: 0; }
+.game-card-meta   { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 3px; }
+.game-date        { font-size: 13px; font-weight: 600; }
+.game-opponent    { font-size: 13px; color: var(--muted); }
+.game-season-tag  {
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--surface);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+.game-summary     { font-size: 12px; color: var(--muted); }
+.game-card-right  { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
+.btn-game-menu {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 6px;
+  color: var(--muted);
+  border-radius: var(--radius-sm);
+  line-height: 1;
+}
+.btn-game-menu:active { background: var(--surface); }
+.expand-icon {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 4px;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+.expand-icon.open { transform: rotate(180deg); }
+
+.game-detail {
+  border-top: 1px solid var(--border);
+  padding: 4px 0;
+}
+.atbat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.atbat-item:last-child { border-bottom: none; }
+.atbat-num  {
+  font-size: 11px;
+  color: var(--muted);
+  flex-shrink: 0;
+  min-width: 18px;
+}
+.atbat-desc {
+  flex: 1;
+  font-size: 12px;
+  min-width: 0;
+}
+.atbat-actions { display: flex; gap: 4px; flex-shrink: 0; }
+.btn-edit-sm,
+.btn-delete-sm {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  padding: 3px 8px;
+  cursor: pointer;
+  font-family: inherit;
+  min-height: 28px;
+}
+.btn-edit-sm   { color: var(--accent); }
+.btn-delete-sm { color: var(--c-out); }
+.btn-edit-sm:active   { background: var(--accent-bg); }
+.btn-delete-sm:active { background: #fef2f2; }
+
+/* ── Empty State ──────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 56px 16px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ── シェアボタン ─────────────────────────── */
+.share-btn-wrap {
+  margin-bottom: 20px;
+  text-align: center;
+}
+.btn-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #1a472a, #0a2540);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 44px;
+  transition: opacity 0.15s;
+}
+.btn-share:active { opacity: 0.8; }
+
+/* ── スプレー切替タブ ─────────────────────── */
+.spray-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.spray-section-header .stats-section-title { margin: 0; }
+
+.spray-tab-row {
+  display: flex;
+  gap: 2px;
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 3px;
+}
+.spray-tab-btn {
+  padding: 5px 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--muted);
+  cursor: pointer;
+  min-height: 32px;
+  transition: background 0.15s, color 0.15s;
+}
+.spray-tab-btn.active {
+  background: #fff;
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* ── スプレーアニメーション ───────────────── */
+.spray-anim-field {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+  margin-bottom: 10px;
+}
+.anim-filter-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.anim-filter-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--muted);
+  cursor: pointer;
+  min-height: 34px;
+  transition: all 0.12s;
+}
+.anim-filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.anim-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.btn-anim {
+  padding: 8px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--text);
+  cursor: pointer;
+  min-height: 40px;
+  transition: background 0.1s;
+}
+.btn-anim:active { background: var(--surface); }
+
+/* アニメーション用ドット */
+.spray-anim-dot-hit { fill: #16a34a; }
+.spray-anim-dot-out { fill: #9ca3af; }
+.spray-anim-dot-hr  { fill: #EF9F27; }
+
+.spray-flying {
+  animation: spray-fly 0.35s ease-out forwards;
+}
+@keyframes spray-fly {
+  from { transform: translate(var(--from-dx), var(--from-dy)); opacity: 0; }
+  to   { transform: translate(0, 0); opacity: 0.9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spray-flying { animation: none; }
+}
+
+/* ── 打者タイプ診断 ───────────────────────── */
+.diag-type-name {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--accent);
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+.diag-desc {
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+  margin-bottom: 12px;
+}
+.chart-wrap-radar {
+  position: relative;
+  height: 200px;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+/* ── モーダル ─────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+}
+.modal {
+  background: var(--bg);
+  border-radius: 16px 16px 0 0;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 20px 16px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.modal-title {
+  font-size: 17px;
+  font-weight: 700;
+  text-align: center;
+}
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+.modal-close-btn {
+  width: 100%;
+}
+.share-preview {
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+  min-height: 0;
+}
+.share-preview canvas,
+.share-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── PWAバナー ────────────────────────────── */
+.pwa-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 150;
+  background: #1a472a;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 16px;
+  font-size: 13px;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
+}
+.pwa-banner-msg { flex: 1; line-height: 1.4; }
+.pwa-banner-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.pwa-btn-add {
+  background: #fff;
+  color: #1a472a;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 36px;
+}
+.pwa-btn-close {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  padding: 7px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 36px;
+}
+
+/* ── フッター ─────────────────────────────── */
+.app-footer {
+  border-top: 1px solid var(--border);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+}
+.footer-link {
+  color: var(--muted);
+  text-decoration: none;
+}
+.footer-link:hover { text-decoration: underline; }
+.footer-copy { color: var(--muted); }
+.footer-lang { min-height: 30px; padding: 4px 10px; font-size: 11px; }
+
+/* ── 履歴ツールバー ───────────────────────── */
+.history-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+.btn-sm {
+  padding: 7px 14px;
+  font-size: 13px;
+  min-height: 36px;
+}
+
+/* ── スクリーンリーダー専用 ───────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+/* ── Responsive ───────────────────────────── */
+@media (min-width: 480px) {
+  .stat-cards { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (min-width: 600px) {
+  .app-header,
+  .tab-bar,
+  .main-content,
+  .app-footer {
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .modal-overlay { align-items: center; padding: 16px; }
+  .modal { border-radius: 16px; max-height: 80vh; }
+  .pwa-banner { left: 50%; right: auto; transform: translateX(-50%); width: 560px; border-radius: var(--radius) var(--radius) 0 0; }
+}
