@@ -184,35 +184,19 @@
           </div>
         </div>
 
-        <!-- 3. 打球方向（ヒートマップ / アニメーション切替） -->
+        <!-- 3. 打球方向 -->
         <div class="stats-section" id="spray-section">
-          <div class="spray-section-header">
-            <h3 class="stats-section-title" data-i18n="stats.sectionSpray">打球方向</h3>
-            <div class="spray-tab-row" role="tablist" aria-label="打球方向表示切替">
-              <button class="spray-tab-btn active" data-spray-tab="heatmap" data-i18n="spray.tabHeatmap" role="tab" aria-selected="true">ヒートマップ</button>
-              <button class="spray-tab-btn"        data-spray-tab="anim"    data-i18n="spray.tabAnim"    role="tab" aria-selected="false">アニメーション</button>
-            </div>
-          </div>
-
-          <!-- ヒートマップパネル -->
-          <div id="spray-heatmap-panel" role="tabpanel">
+          <h3 class="stats-section-title" data-i18n="stats.sectionSpray">打球方向</h3>
+          <div id="spray-heatmap-panel">
             <div id="spray-chart" role="img" aria-label="打球方向スプレーチャート"></div>
             <div id="spray-legend" class="spray-legend"></div>
-          </div>
-
-          <!-- アニメーションパネル -->
-          <div id="spray-anim-panel" style="display:none" role="tabpanel">
-            <div class="anim-filter-row" role="group" aria-label="表示フィルター">
-              <button class="anim-filter-btn active" data-anim-filter="all" data-i18n="spray.filterAll">すべて</button>
-              <button class="anim-filter-btn"        data-anim-filter="hit" data-i18n="spray.filterHit">ヒット</button>
-              <button class="anim-filter-btn"        data-anim-filter="out" data-i18n="spray.filterOut">アウト</button>
-              <button class="anim-filter-btn"        data-anim-filter="hr"  data-i18n="spray.filterHr">HR</button>
-            </div>
-            <div id="spray-anim-field" class="spray-anim-field" role="img" aria-label="スプレーアニメーション"></div>
-            <div class="anim-controls">
-              <button class="btn-anim" id="anim-play"  data-i18n="spray.play"  aria-label="再生">▶ 再生</button>
-              <button class="btn-anim" id="anim-pause" data-i18n="spray.pause" aria-label="停止">⏸ 停止</button>
-              <button class="btn-anim" id="anim-reset" data-i18n="spray.reset" aria-label="リセット">↺ リセット</button>
+            <!-- 打球方向集計 -->
+            <div class="dir-summary-wrap" id="dir-summary-wrap">
+              <div class="dir-mode-row" role="group" aria-label="集計方向数">
+                <button class="dir-mode-btn active" data-dir-mode="3" data-i18n="spray.mode3">3方向</button>
+                <button class="dir-mode-btn"        data-dir-mode="6" data-i18n="spray.mode6">6方向</button>
+              </div>
+              <div id="dir-summary-table"></div>
             </div>
           </div>
         </div>

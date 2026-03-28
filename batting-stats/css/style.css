@@ -877,74 +877,6 @@ textarea { resize: vertical; min-height: 64px; }
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-/* ── スプレーアニメーション ───────────────── */
-.spray-anim-field {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: var(--surface);
-  margin-bottom: 10px;
-}
-.anim-filter-row {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-}
-.anim-filter-btn {
-  padding: 6px 14px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--bg);
-  font-size: 12px;
-  font-weight: 600;
-  font-family: inherit;
-  color: var(--muted);
-  cursor: pointer;
-  min-height: 34px;
-  transition: all 0.12s;
-}
-.anim-filter-btn.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-.anim-controls {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-}
-.btn-anim {
-  padding: 8px 18px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--bg);
-  font-size: 13px;
-  font-weight: 600;
-  font-family: inherit;
-  color: var(--text);
-  cursor: pointer;
-  min-height: 40px;
-  transition: background 0.1s;
-}
-.btn-anim:active { background: var(--surface); }
-
-/* アニメーション用ドット */
-.spray-anim-dot-hit { fill: #16a34a; }
-.spray-anim-dot-out { fill: #9ca3af; }
-.spray-anim-dot-hr  { fill: #EF9F27; }
-
-.spray-flying {
-  animation: spray-fly 0.35s ease-out forwards;
-}
-@keyframes spray-fly {
-  from { transform: translate(var(--from-dx), var(--from-dy)); opacity: 0; }
-  to   { transform: translate(0, 0); opacity: 0.9; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .spray-flying { animation: none; }
-}
-
 /* ── 打者タイプ診断 ───────────────────────── */
 .diag-type-name {
   font-size: 20px;
@@ -1102,6 +1034,62 @@ textarea { resize: vertical; min-height: 64px; }
   overflow: hidden;
   clip: rect(0,0,0,0);
   border: 0;
+}
+
+/* ── 打球方向集計 ──────────────────────────── */
+.dir-summary-wrap { margin-top: 14px; }
+
+.dir-mode-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.dir-mode-btn {
+  padding: 3px 12px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--muted);
+  cursor: pointer;
+}
+.dir-mode-btn.active {
+  background: #1a472a;
+  color: #fff;
+  border-color: #1a472a;
+}
+
+.dir-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.dir-summary-table thead th {
+  padding: 2px 4px 4px;
+  color: var(--muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+}
+.dir-summary-table thead th.dir-col-name { text-align: left; }
+.dir-summary-table tbody td {
+  padding: 5px 4px;
+  border-bottom: 1px solid #f4f4f5;
+}
+.dir-col-name { font-weight: 600; color: var(--text); }
+.dir-col-num  { text-align: right; color: #3f3f46; }
+.dir-col-avg  { text-align: right; font-family: ui-monospace, monospace; font-weight: 700; color: var(--text); }
+.dir-col-bar  { width: 72px; padding-left: 8px; }
+.dir-bar-track {
+  background: var(--border);
+  height: 7px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.dir-bar-hit {
+  background: var(--c-hit);
+  height: 7px;
+  border-radius: 4px;
 }
 
 /* ── Responsive ───────────────────────────── */

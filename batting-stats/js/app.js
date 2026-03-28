@@ -43,6 +43,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const POS_INFIELD = [1, 2, 3, 4, 5, 6];
   const POS_ALL     = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
+  // i18n が未ロードの場合のポジション名フォールバック
+  const POS_FALLBACK = { 1:'投手', 2:'捕手', 3:'一塁', 4:'二塁', 5:'三塁', 6:'遊撃', 7:'左翼', 8:'中堅', 9:'右翼' };
+
   const FIELDER_POS_MAP = {
     single: POS_ALL,
     go:     POS_INFIELD,
@@ -173,9 +176,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function buildFielderPosButtons(positions) {
-    fielderPosButtons.innerHTML = positions.map(p =>
-      `<button type="button" class="pos-btn${selectedPos === p ? ' selected' : ''}" data-pos="${p}">${I18n.t('pos.' + p)}</button>`
-    ).join('');
+    fielderPosButtons.innerHTML = positions.map(p => {
+      const t = I18n.t('pos.' + p);
+      const label = t.startsWith('pos.') ? (POS_FALLBACK[p] ?? t) : t;
+      return `<button type="button" class="pos-btn${selectedPos === p ? ' selected' : ''}" data-pos="${p}">${label}</button>`;
+    }).join('');
     fielderPosButtons.querySelectorAll('.pos-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const pos = parseInt(btn.dataset.pos);
@@ -329,9 +334,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     statOps.textContent = Stats.fmtOps(s.ops);
 
     Charts.renderAll(filtered);
+    Charts.renderSprayDirSummary(filtered, _dirSummaryMode);
     renderVsHandSection(filtered);
     renderDiagnosis(filtered);
-    _initAnimData(filtered);
 
     if (filtered.length === 0) {
       statsTableContainer.innerHTML = `<p class="empty-state">${I18n.t('stats.noData')}</p>`;
@@ -424,68 +429,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     Charts.renderDiagnosisRadar(diag);
   }
 
-  // ── スプレーアニメーション制御 ─────────────────────────────────
-  let _animInterval  = null;
-  let _animIndex     = 0;
-  let _animSeq       = [];
-  let _animFilter    = 'all';
-  let _animAtBats    = [];
+  // ── 打球方向集計モード ─────────────────────────────────────────
+  let _dirSummaryMode = 3;
 
-  function _initAnimData(atBats) {
-    _animAtBats = atBats;
-    _resetAnim();
-  }
-
-  function _resetAnim() {
-    clearInterval(_animInterval);
-    _animInterval = null;
-    _animIndex    = 0;
-    _animSeq      = Charts.buildAnimField(_animAtBats, _animFilter);
-  }
-
-  function _playAnim() {
-    if (_animIndex >= _animSeq.length) _resetAnim();
-    _animInterval = setInterval(() => {
-      if (_animIndex >= _animSeq.length) {
-        clearInterval(_animInterval);
-        _animInterval = null;
-        return;
-      }
-      Charts.addAnimDot(_animSeq[_animIndex]);
-      _animIndex++;
-    }, 300);
-  }
-
-  // spray tab switching
-  document.querySelectorAll('.spray-tab-btn').forEach(btn => {
+  document.querySelectorAll('.dir-mode-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.spray-tab-btn').forEach(b => {
-        b.classList.toggle('active', b === btn);
-        b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
-      });
-      const isAnim = btn.dataset.sprayTab === 'anim';
-      document.getElementById('spray-heatmap-panel').style.display = isAnim ? 'none' : '';
-      document.getElementById('spray-anim-panel').style.display    = isAnim ? ''     : 'none';
-      if (isAnim) _resetAnim();
-      else {
-        clearInterval(_animInterval);
-        _animInterval = null;
-      }
+      document.querySelectorAll('.dir-mode-btn').forEach(b =>
+        b.classList.toggle('active', b === btn)
+      );
+      _dirSummaryMode = +btn.dataset.dirMode;
+      Charts.renderSprayDirSummary(getFilteredAtBats(), _dirSummaryMode);
     });
   });
 
-  // anim filter buttons
-  document.querySelectorAll('.anim-filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.anim-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
-      _animFilter = btn.dataset.animFilter;
-      _resetAnim();
-    });
-  });
 
-  document.getElementById('anim-play') ?.addEventListener('click', _playAnim);
-  document.getElementById('anim-pause')?.addEventListener('click', () => { clearInterval(_animInterval); _animInterval = null; });
-  document.getElementById('anim-reset')?.addEventListener('click', _resetAnim);
 
   // ── CSV エクスポート ───────────────────────────────────────────
   document.getElementById('btn-export-csv')?.addEventListener('click', () => {

@@ -120,7 +120,7 @@ const Charts = (() => {
     if (!hrEl) return;
 
     const hrs           = atBats.filter(ab => ab.result === 'hr');
-    const outfieldZones = ['lf', 'cf', 'rf'];
+    const outfieldZones = ['lfl', 'lf', 'lc', 'cf', 'rc', 'rf', 'rfl'];
     const counts        = {};
     let total           = 0;
 
@@ -152,9 +152,13 @@ const Charts = (() => {
 
     // フェンスを少し超えた位置（ホームから r≈238）にドットを配置
     const HR_FENCE = {
-      lf: { cx: 30,  cy: 62 },
-      cf: { cx: 150, cy: 28 },
-      rf: { cx: 270, cy: 62 },
+      lfl: { cx: 18,  cy: 80  },
+      lf:  { cx: 42,  cy: 60  },
+      lc:  { cx: 100, cy: 38  },
+      cf:  { cx: 150, cy: 24  },
+      rc:  { cx: 200, cy: 38  },
+      rf:  { cx: 258, cy: 60  },
+      rfl: { cx: 282, cy: 80  },
     };
 
     const dots = Field.ZONES
@@ -331,53 +335,75 @@ const Charts = (() => {
   }
 
   // ── スプレーアニメーション（SVG + CSS @keyframes）──────────────
-  // fieldContainerId: SVGを描画するコンテナのID
-  // atBats: フィルター済みの打席データ
-  // Returns the dot sequence for play control
-  function buildAnimField(atBats, animFilter) {
-    const containerId = 'spray-anim-field';
-    const container = document.getElementById(containerId);
-    if (!container) return [];
+  // ── 打球方向集計（3方向 / 6方向） ────────────────────────────
+  const _DIR_GROUPS = {
+    3: [
+      { labelKey: 'spray.dir3Left',   zones: ['lfl', 'lf', 'lc', 'if3', 'ifss'] },
+      { labelKey: 'spray.dir3Center', zones: ['cf', 'if2'] },
+      { labelKey: 'spray.dir3Right',  zones: ['rc', 'rf', 'rfl', 'if2b', 'if1'] },
+    ],
+    6: [
+      { labelKey: 'spray.dir6Lf',   zones: ['lfl', 'lf', 'lc'] },
+      { labelKey: 'spray.dir63bss', zones: ['if3', 'ifss'] },
+      { labelKey: 'spray.dir6Cf',   zones: ['cf'] },
+      { labelKey: 'spray.dir62b',   zones: ['if2'] },
+      { labelKey: 'spray.dir61b',   zones: ['if2b', 'if1'] },
+      { labelKey: 'spray.dir6Rf',   zones: ['rc', 'rf', 'rfl'] },
+    ],
+  };
 
-    let seq = atBats.filter(ab => ab.direction);
-    if      (animFilter === 'hit') seq = seq.filter(ab => RESULT_TYPES[ab.result]?.hit);
-    else if (animFilter === 'out') seq = seq.filter(ab => { const rt = RESULT_TYPES[ab.result]; return rt && rt.atBat && !rt.hit; });
-    else if (animFilter === 'hr')  seq = seq.filter(ab => ab.result === 'hr');
+  function renderSprayDirSummary(atBats, mode) {
+    const el = document.getElementById('dir-summary-table');
+    if (!el) return;
 
-    const hasBS = seq.some(ab => ab.direction === 'bs');
-    container.innerHTML = Field.buildSVG(false, null, false, hasBS);
-    return seq;
-  }
+    const dirData = Stats.directionsByResult(atBats);
+    const groups  = _DIR_GROUPS[+mode] || _DIR_GROUPS[3];
 
-  function addAnimDot(ab) {
-    const container = document.getElementById('spray-anim-field');
-    const svg = container?.querySelector('svg');
-    if (!svg) return;
+    const rows = groups.map(g => {
+      let hit = 0, out = 0;
+      for (const z of g.zones) {
+        hit += dirData.hit[z] || 0;
+        out += dirData.out[z] || 0;
+      }
+      return { label: I18n.t(g.labelKey), hit, total: hit + out };
+    });
 
-    const zone = Field.ZONES.find(z => z.id === ab.direction);
-    if (!zone) return;
+    if (!rows.some(r => r.total > 0)) { el.innerHTML = ''; return; }
 
-    const rt    = RESULT_TYPES[ab.result];
-    const isHr  = ab.result === 'hr';
-    const isHit = rt?.hit;
+    const maxTotal = Math.max(...rows.map(r => r.total), 1);
 
-    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    dot.setAttribute('cx', zone.cx);
-    dot.setAttribute('cy', zone.cy);
-    dot.setAttribute('r', isHr ? 14 : 9);
-
-    const cls = isHr ? 'spray-anim-dot-hr' : (isHit ? 'spray-anim-dot-hit' : 'spray-anim-dot-out');
-    dot.classList.add(cls, 'spray-flying');
-    dot.style.setProperty('--from-dx', `${150 - zone.cx}px`);
-    dot.style.setProperty('--from-dy', `${255 - zone.cy}px`);
-    svg.appendChild(dot);
+    el.innerHTML = `<table class="dir-summary-table">
+      <thead><tr>
+        <th class="dir-col-name">${I18n.t('spray.summaryDir')}</th>
+        <th class="dir-col-num">${I18n.t('spray.summaryTotal')}</th>
+        <th class="dir-col-num">${I18n.t('spray.summaryHit')}</th>
+        <th class="dir-col-avg">${I18n.t('spray.summaryAvg')}</th>
+        <th class="dir-col-bar"></th>
+      </tr></thead>
+      <tbody>${rows.filter(r => r.total > 0).map(r => {
+        const avg  = Stats.fmtAvg(r.hit / r.total);
+        const barW = (r.total / maxTotal * 100).toFixed(1);
+        const hitW = (r.hit   / r.total * 100).toFixed(1);
+        return `<tr>
+          <td class="dir-col-name">${r.label}</td>
+          <td class="dir-col-num">${r.total}</td>
+          <td class="dir-col-num">${r.hit}</td>
+          <td class="dir-col-avg">${avg}</td>
+          <td class="dir-col-bar">
+            <div class="dir-bar-track" style="width:${barW}%">
+              <div class="dir-bar-hit" style="width:${hitW}%"></div>
+            </div>
+          </td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>`;
   }
 
   // ── 一括描画 ──────────────────────────────────────────────────
   function renderAll(atBats) {
     try { renderResultBar(atBats);        } catch (e) { console.warn('renderResultBar:', e); }
-    renderSprayHeatmap(atBats);
-    renderHrChart(atBats);
+    try { renderSprayHeatmap(atBats);     } catch (e) { console.warn('renderSprayHeatmap:', e); }
+    try { renderHrChart(atBats);          } catch (e) { console.warn('renderHrChart:', e); }
     try { renderBattingTrendChart(atBats); } catch (e) { console.warn('renderBattingTrendChart:', e); }
   }
 
@@ -385,6 +411,6 @@ const Charts = (() => {
     renderAll, renderResultBar, renderSprayHeatmap, renderHrChart,
     renderBattingTrendChart, destroyCharts,
     renderDiagnosisRadar, destroyDiagnosisChart,
-    buildAnimField, addAnimDot,
+    renderSprayDirSummary,
   };
 })();
