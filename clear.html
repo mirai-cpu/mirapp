@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>クリーンアップ中...</title>
+  <style>
+    body { font-family: sans-serif; display: flex; flex-direction: column;
+           align-items: center; justify-content: center; height: 100vh;
+           margin: 0; background: #0f172a; color: #e2e8f0; }
+    p { font-size: 18px; }
+    .dot { animation: blink 1s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  </style>
+</head>
+<body>
+  <p>🔄 キャッシュをクリア中<span class="dot">...</span></p>
+  <script>
+    (async () => {
+      // 全SW登録解除
+      if ('serviceWorker' in navigator) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(r => r.unregister()));
+      }
+      // 全キャッシュ削除
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
+      // トップページへ
+      window.location.replace('/');
+    })();
+  </script>
+</body>
+</html>
