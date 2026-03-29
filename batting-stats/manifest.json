@@ -2,7 +2,7 @@
   "name": "My Batting Stats",
   "short_name": "BatStats",
   "description": "Personal baseball batting statistics tracker",
-  "start_url": "/",
+  "start_url": "/batting-stats/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1a472a",

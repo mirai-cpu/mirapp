@@ -1,21 +1,21 @@
 // sw.js - Service Worker (Cache-First Strategy)
 
-const CACHE_NAME = 'batting-stats-v2';
+const CACHE_NAME = 'batting-stats-v3';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/css/style.css',
-  '/js/i18n.js',
-  '/js/storage.js',
-  '/js/stats.js',
-  '/js/field.js',
-  '/js/charts.js',
-  '/js/share.js',
-  '/js/app.js',
-  '/locales/ja.json',
-  '/locales/en.json',
-  '/manifest.json',
-  '/icons/icon.svg',
+  '/batting-stats/',
+  '/batting-stats/index.html',
+  '/batting-stats/css/style.css',
+  '/batting-stats/js/i18n.js',
+  '/batting-stats/js/storage.js',
+  '/batting-stats/js/stats.js',
+  '/batting-stats/js/field.js',
+  '/batting-stats/js/charts.js',
+  '/batting-stats/js/share.js',
+  '/batting-stats/js/app.js',
+  '/batting-stats/locales/ja.json',
+  '/batting-stats/locales/en.json',
+  '/batting-stats/manifest.json',
+  '/batting-stats/icons/icon.svg',
   'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.7/chart.umd.min.js',
 ];
 
