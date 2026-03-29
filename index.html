@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Somira Lab — 日常をもっと便利にするWebツール集">
+  <title>Somira Lab</title>
+  <style>
+    /* ── リセット & 変数 ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #080f1a;
+      --surface:  #0d1b2e;
+      --card:     #111e33;
+      --border:   #1e3a5f;
+      --accent:   #0ea5e9;
+      --accent2:  #6366f1;
+      --green:    #10b981;
+      --text:     #e2e8f0;
+      --muted:    #64748b;
+      --radius:   14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── グリッド背景 ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(14,165,233,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(14,165,233,.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── ナビ ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,15,26,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .nav-logo-text {
+      font-size: 18px;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── ヒーロー ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 100px 24px 80px;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(14,165,233,.12);
+      border: 1px solid rgba(14,165,233,.3);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 7vw, 72px);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 22px);
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 13px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: opacity .2s, transform .2s;
+      box-shadow: 0 0 24px rgba(14,165,233,.35);
+    }
+    .hero-cta:hover { opacity: .88; transform: translateY(-2px); }
+
+    /* ── 統計バー ── */
+    .stats-bar {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      max-width: 640px;
+      margin: 0 auto 80px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .stat-item {
+      flex: 1;
+      text-align: center;
+      padding: 20px 16px;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      display: block;
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* ── セクション共通 ── */
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+    .section-header { text-align: center; margin-bottom: 48px; }
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+    .section-desc { color: var(--muted); margin-top: 10px; font-size: 15px; }
+
+    /* ── ツールカード ── */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .tool-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(14,165,233,.06), transparent);
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .tool-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(14,165,233,.15);
+    }
+    .tool-card:hover::before { opacity: 1; }
+
+    .tool-card-icon {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+    .tool-card-header { display: flex; align-items: center; gap: 14px; }
+    .tool-card-name { font-size: 18px; font-weight: 700; }
+    .tool-card-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .badge-live  { background: rgba(16,185,129,.15); color: var(--green); border: 1px solid rgba(16,185,129,.3); }
+    .badge-soon  { background: rgba(99,102,241,.15); color: #818cf8; border: 1px solid rgba(99,102,241,.3); }
+    .tool-card-desc { font-size: 14px; color: var(--muted); line-height: 1.6; flex: 1; }
+    .tool-card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(14,165,233,.08);
+      border: 1px solid rgba(14,165,233,.15);
+      color: var(--accent);
+    }
+    .tool-card-arrow {
+      align-self: flex-end;
+      color: var(--muted);
+      font-size: 18px;
+      transition: color .2s, transform .2s;
+    }
+    .tool-card:hover .tool-card-arrow {
+      color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    /* ── Coming Soon カード ── */
+    .tool-card.coming-soon {
+      opacity: .6;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* ── 特徴セクション ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .feature-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+    .feature-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .feature-desc { font-size: 13px; color: var(--muted); }
+
+    /* ── フッター ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 32px 24px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; }
+
+    /* ── 光るドット装飾 ── */
+    .glow-dot {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-dot-1 {
+      width: 400px; height: 400px;
+      background: rgba(14,165,233,.08);
+      top: -100px; left: -100px;
+    }
+    .glow-dot-2 {
+      width: 300px; height: 300px;
+      background: rgba(99,102,241,.08);
+      bottom: 100px; right: -80px;
+    }
+
+    /* ── レスポンシブ ── */
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .hero { padding: 70px 20px 60px; }
+      .stats-bar { flex-direction: column; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-item:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 光る装飾 -->
+  <div class="glow-dot glow-dot-1"></div>
+  <div class="glow-dot glow-dot-2"></div>
+
+  <!-- ナビゲーション -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-icon">⚡</div>
+      <span class="nav-logo-text">Somira Lab</span>
+    </a>
+    <div class="nav-links">
+      <a href="#tools">ツール</a>
+      <a href="#about">About</a>
+      <a href="batting-stats/privacy.html">プライバシーポリシー</a>
+    </div>
+  </nav>
+
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="hero-badge">⚡ Somira Lab</div>
+    <h1>日常をもっと<br>スマートに。</h1>
+    <p class="hero-sub">使いやすいWebツールを、ここに。</p>
+    <a href="#tools" class="hero-cta">
+      ツールを見る
+      <span>↓</span>
+    </a>
+  </div>
+
+  <!-- 統計バー -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-num" id="tool-count">1</span>
+      <div class="stat-label">公開中のツール</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">0円</span>
+      <div class="stat-label">すべて無料</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">PWA</span>
+      <div class="stat-label">スマホ対応</div>
+    </div>
+  </div>
+
+  <!-- ツール一覧 -->
+  <section id="tools">
+    <div class="section-header">
+      <div class="section-label">Tools</div>
+      <h2 class="section-title">公開中のツール</h2>
+      <p class="section-desc">すべてのツールは無料でお使いいただけます。</p>
+    </div>
+
+    <div class="tools-grid">
+
+      <!-- 打撃成績トラッカー -->
+      <a href="batting-stats/" class="tool-card">
+        <div class="tool-card-header">
+          <div class="tool-card-icon" style="background:linear-gradient(135deg,#0ea5e9,#6366f1)">⚾</div>
+          <div>
+            <div class="tool-card-name">
+              打撃成績トラッカー
+              <span class="tool-card-badge badge-live">LIVE</span>
+            </div>
+          </div>
+        </div>
+        <p class="tool-card-desc">
+          野球の打席結果をその場で記録。スプレーチャート・打率・OPS・本塁打方向など、データをビジュアルで確認できる本格派ツール。
+        </p>
+        <div class="tool-card-tags">
+          <span class="tag">野球</span>
+          <span class="tag">統計</span>
+          <span class="tag">スプレーチャート</span>
+          <span class="tag">PWA</span>
+        </div>
+        <div class="tool-card-arrow">→</div>
+      </a>
+
+      <!-- Coming Soon 1 -->
+      <div class="tool-card coming-soon">
+        <div class="tool-card-header">
+          <div class="tool-card-icon" style="background:linear-gradient(135deg,#6366f1,#a855f7)">📊</div>
+          <div>
+            <div class="tool-card-name">
+              Coming Soon
+              <span class="tool-card-badge badge-soon">準備中</span>
+            </div>
+          </div>
+        </div>
+        <p class="tool-card-desc">新しいツールを準備中です。お楽しみに。</p>
+        <div class="tool-card-tags">
+          <span class="tag">近日公開</span>
+        </div>
+        <div class="tool-card-arrow">→</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 特徴 -->
+  <section id="about">
+    <div class="section-header">
+      <div class="section-label">About</div>
+      <h2 class="section-title">Somira Lab について</h2>
+      <p class="section-desc">シンプル・高速・使いやすいをコンセプトに。</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <div class="feature-title">スマホ対応（PWA）</div>
+        <p class="feature-desc">すべてのツールはスマートフォンに最適化。ホーム画面に追加してアプリのように使えます。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">データはあなたのもの</div>
+        <p class="feature-desc">入力したデータはあなたのブラウザにのみ保存。サーバーへの送信は行いません。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">高速・軽量</div>
+        <p class="feature-desc">余計なフレームワークを使わず、純粋なHTML・CSS・JSで構築。どんな環境でも快適に動作します。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <div class="feature-title">日本語・英語対応</div>
+        <p class="feature-desc">主要ツールは日本語・英語の切替に対応。より多くの方に使っていただけます。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- フッター -->
+  <footer>
+    <div class="footer-links">
+      <a href="batting-stats/privacy.html">プライバシーポリシー</a>
+      <a href="#tools">ツール一覧</a>
+      <a href="#about">About</a>
+    </div>
+    <p>© 2026 Somira Lab. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

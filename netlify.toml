@@ -1,0 +1,7 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/batting-stats"
+  to   = "/batting-stats/"
+  status = 301
