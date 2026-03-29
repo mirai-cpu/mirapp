@@ -371,8 +371,12 @@
   <!-- Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
-      // 旧スコープ(/)のSWが残っていれば削除してリロード
       navigator.serviceWorker.getRegistrations().then(async regs => {
+        // すでにクリーンアップ済みならスキップ
+        if (sessionStorage.getItem('sw_cleaned')) {
+          navigator.serviceWorker.register('/batting-stats/sw.js', { scope: '/batting-stats/' }).catch(() => {});
+          return;
+        }
         let removed = false;
         for (const reg of regs) {
           if (!reg.scope.includes('/batting-stats/')) {
@@ -383,10 +387,11 @@
         if (removed) {
           const keys = await caches.keys();
           await Promise.all(keys.map(k => caches.delete(k)));
-          window.location.reload(true);
+          sessionStorage.setItem('sw_cleaned', '1');
+          // キャッシュ未登録のURLへ遷移してSWをバイパス
+          window.location.replace('/batting-stats/?r=' + Date.now());
           return;
         }
-        // 正常登録
         navigator.serviceWorker.register('/batting-stats/sw.js', { scope: '/batting-stats/' }).catch(() => {});
       });
     }
