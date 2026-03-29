@@ -1,17 +1,6 @@
 [build]
   publish = "."
 
-# ルートアクセス時にブラウザの旧キャッシュ・SW を強制クリア
-[[headers]]
-  for = "/"
-  [headers.values]
-    Clear-Site-Data = '"cache", "storage", "executionContexts"'
-
-[[headers]]
-  for = "/index.html"
-  [headers.values]
-    Clear-Site-Data = '"cache", "storage", "executionContexts"'
-
 [[redirects]]
   from = "/batting-stats"
   to   = "/batting-stats/"

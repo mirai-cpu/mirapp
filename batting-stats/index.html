@@ -371,7 +371,22 @@
   <!-- Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
+      // 旧スコープ(/)のSWが残っていれば削除してリロード
+      navigator.serviceWorker.getRegistrations().then(async regs => {
+        let removed = false;
+        for (const reg of regs) {
+          if (!reg.scope.includes('/batting-stats/')) {
+            await reg.unregister();
+            removed = true;
+          }
+        }
+        if (removed) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map(k => caches.delete(k)));
+          window.location.reload(true);
+          return;
+        }
+        // 正常登録
         navigator.serviceWorker.register('/batting-stats/sw.js', { scope: '/batting-stats/' }).catch(() => {});
       });
     }
