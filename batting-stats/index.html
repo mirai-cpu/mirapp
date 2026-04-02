@@ -20,7 +20,10 @@
   <!-- ── Header ── -->
   <header class="app-header">
     <h1 class="app-title" data-i18n="app.title">打撃成績</h1>
-    <button class="btn-lang" id="lang-toggle" aria-label="言語切替">EN</button>
+    <div class="header-right">
+      <button class="btn-theme" id="theme-toggle" aria-label="テーマ切替">🌙</button>
+      <button class="btn-lang" id="lang-toggle" aria-label="言語切替">EN</button>
+    </div>
   </header>
 
   <!-- AdSense: header-ad -->
@@ -43,7 +46,10 @@
         <div class="form-row">
           <div class="field-group">
             <label for="input-date" data-i18n="form.date">日付</label>
-            <input type="date" id="input-date" aria-label="日付">
+            <div class="date-input-row">
+              <input type="date" id="input-date" aria-label="日付">
+              <button type="button" class="btn-today" id="btn-today">今日</button>
+            </div>
           </div>
           <div class="field-group">
             <label for="input-opponent" data-i18n="form.opponent">相手チーム</label>
@@ -144,6 +150,14 @@
           <select id="stats-filter" aria-label="成績フィルター">
             <option value="all" data-i18n="filter.all">通算</option>
           </select>
+          <select id="opponent-filter" aria-label="対戦相手フィルター">
+            <option value="all">全チーム</option>
+          </select>
+        </div>
+        <div class="date-range-picker" id="date-range-picker" style="display:none">
+          <input type="date" id="date-from" aria-label="期間開始">
+          <span class="date-range-sep">〜</span>
+          <input type="date" id="date-to" aria-label="期間終了">
         </div>
 
         <!-- 1. 主要指標カード -->
@@ -295,6 +309,15 @@
           </div>
         </div>
 
+        <!-- 9. 特殊能力 -->
+        <div class="stats-section" id="abilities-section">
+          <h3 class="stats-section-title">
+            特殊能力
+            <span class="ability-count-badge" id="ability-count">0 / 50</span>
+          </h3>
+          <div id="abilities-grid"></div>
+        </div>
+
       </div>
     </section>
 
@@ -303,6 +326,16 @@
       <div class="section-inner">
         <div class="history-toolbar">
           <button class="btn-ghost btn-sm" id="btn-export-csv" data-i18n="history.exportCsv" aria-label="CSVエクスポート">CSVエクスポート</button>
+          <button class="btn-ghost btn-sm" id="btn-bulk-toggle">選択</button>
+        </div>
+        <div class="bulk-toolbar" id="bulk-toolbar" style="display:none">
+          <label class="bulk-all-label">
+            <input type="checkbox" id="bulk-check-all">
+            <span>全て</span>
+          </label>
+          <span id="bulk-count-text" class="bulk-count">0件選択中</span>
+          <button class="btn-danger btn-sm" id="btn-bulk-delete" disabled>削除</button>
+          <button class="btn-ghost btn-sm" id="btn-bulk-cancel">完了</button>
         </div>
         <div id="history-list">
           <p class="empty-state" data-i18n="history.noData">打席データがありません</p>
@@ -333,10 +366,30 @@
           <input type="text" id="share-player-name" data-i18n-ph="share.playerPh" placeholder="例：田中太郎" maxlength="20">
         </div>
         <div class="field-group">
-          <label for="share-scope" data-i18n="share.scopeLabel">範囲</label>
+          <label for="share-scope" data-i18n="share.scopeLabel">期間</label>
           <select id="share-scope" aria-label="シェア範囲">
             <option value="all" data-i18n="share.scopeAll">通算成績</option>
           </select>
+        </div>
+        <div class="date-range-picker" id="share-date-range" style="display:none">
+          <input type="date" id="share-date-from" aria-label="期間開始">
+          <span class="date-range-sep">〜</span>
+          <input type="date" id="share-date-to" aria-label="期間終了">
+        </div>
+        <div class="field-group">
+          <label for="share-opponent">対戦相手</label>
+          <select id="share-opponent" aria-label="シェア対象チーム">
+            <option value="all">全チーム</option>
+          </select>
+        </div>
+        <div class="field-group" id="share-abilities-group">
+          <div class="share-abilities-header">
+            <label>カードに載せる特殊能力 <span id="share-ability-count" class="ability-count-badge">0 / 10</span></label>
+            <button type="button" class="btn-ghost btn-xs" id="share-ability-clear">すべて外す</button>
+          </div>
+          <div id="share-abilities-picker" class="share-abilities-picker">
+            <p class="share-abilities-empty">能力を解放するとここに表示されます</p>
+          </div>
         </div>
         <button class="btn-primary" id="share-generate" data-i18n="share.generate">画像を作成</button>
         <div id="share-preview" class="share-preview"></div>

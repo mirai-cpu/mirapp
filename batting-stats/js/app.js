@@ -24,6 +24,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     btn.addEventListener('click', () => switchTab(btn.dataset.tab))
   );
 
+  // ── Theme toggle ───────────────────────────────────────────────
+  const themeBtn = document.getElementById('theme-toggle');
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeBtn();
+
+  themeBtn.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateThemeBtn();
+  });
+
+  function updateThemeBtn() {
+    themeBtn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+  }
+
   // ── Language toggle ────────────────────────────────────────────
   const langBtn = document.getElementById('lang-toggle');
   updateLangBtn();
@@ -88,6 +105,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ── Init date & opponent ───────────────────────────────────────
   inputDate.value     = new Date().toISOString().slice(0, 10);
   inputOpponent.value = Storage.getLastOpponent();
+
+  // ── 「今日」ボタン ────────────────────────────────────────────
+  document.getElementById('btn-today').addEventListener('click', () => {
+    inputDate.value = new Date().toISOString().slice(0, 10);
+  });
 
   // ── Pitcher hand buttons ───────────────────────────────────────
   const pitcherHandButtons = document.getElementById('pitcher-hand-buttons');
@@ -290,16 +312,39 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ── Stats tab ──────────────────────────────────────────────────
   const statsFilter         = document.getElementById('stats-filter');
+  const opponentFilter      = document.getElementById('opponent-filter');
+  const dateRangePicker     = document.getElementById('date-range-picker');
+  const dateFrom            = document.getElementById('date-from');
+  const dateTo              = document.getElementById('date-to');
   const statAvg             = document.getElementById('stat-avg');
   const statObp             = document.getElementById('stat-obp');
   const statSlg             = document.getElementById('stat-slg');
   const statOps             = document.getElementById('stat-ops');
   const statsTableContainer = document.getElementById('stats-table-container');
 
-  statsFilter.addEventListener('change', renderStats);
+  statsFilter.addEventListener('change', () => {
+    dateRangePicker.style.display = statsFilter.value === 'custom' ? '' : 'none';
+    renderStats();
+  });
+  opponentFilter.addEventListener('change', renderStats);
+  dateFrom.addEventListener('change', renderStats);
+  dateTo.addEventListener('change', renderStats);
 
   function getFilteredAtBats() {
-    return Stats.filterAtBats(Storage.load(), statsFilter.value);
+    let abs;
+    if (statsFilter.value === 'custom') {
+      abs = Storage.load().filter(ab => {
+        const d = ab.date || '';
+        if (dateFrom.value && d < dateFrom.value) return false;
+        if (dateTo.value   && d > dateTo.value)   return false;
+        return true;
+      });
+    } else {
+      abs = Stats.filterAtBats(Storage.load(), statsFilter.value);
+    }
+    const opp = opponentFilter.value;
+    if (opp !== 'all') abs = abs.filter(ab => ab.opponent === opp);
+    return abs;
   }
 
   document.getElementById('trend-show-ops').addEventListener('change', () => {
@@ -320,10 +365,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       `<option value="last10">${I18n.t('filter.last10')}</option>` +
       years.map(y =>
         `<option value="season:${y}">${y}${I18n.t('filter.seasonSuffix')}</option>`
-      ).join('');
+      ).join('') +
+      `<option value="custom">期間指定</option>`;
 
-    const valid = ['all', 'last5', 'last10', ...years.map(y => 'season:' + y)];
+    const valid = ['all', 'last5', 'last10', 'custom', ...years.map(y => 'season:' + y)];
     if (valid.includes(prev)) statsFilter.value = prev;
+    dateRangePicker.style.display = statsFilter.value === 'custom' ? '' : 'none';
+
+    // 対戦相手フィルターを更新
+    const opponents = Stats.getOpponents(atBats);
+    const prevOpp   = opponentFilter.value;
+    opponentFilter.innerHTML =
+      `<option value="all">全チーム</option>` +
+      opponents.map(opp => `<option value="${opp}">${opp}</option>`).join('');
+    if (opponents.includes(prevOpp)) opponentFilter.value = prevOpp;
 
     const filtered = Stats.filterAtBats(atBats, statsFilter.value);
 
@@ -337,6 +392,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     Charts.renderSprayDirSummary(filtered, _dirSummaryMode);
     renderVsHandSection(filtered);
     renderDiagnosis(filtered);
+    renderAbilities(filtered);
 
     if (filtered.length === 0) {
       statsTableContainer.innerHTML = `<p class="empty-state">${I18n.t('stats.noData')}</p>`;
@@ -444,6 +500,42 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 
+  // ── 特殊能力 ───────────────────────────────────────────────────
+  function renderAbilities(atBats) {
+    const grid      = document.getElementById('abilities-grid');
+    const countEl   = document.getElementById('ability-count');
+    if (!grid) return;
+
+    const results   = Stats.getAbilityResults(atBats);
+    const cats      = Stats.ABILITY_CATEGORIES;
+    const unlocked  = results.filter(a => a.unlocked).length;
+    countEl.textContent = `${unlocked} / ${results.length}`;
+
+    const byCat = {};
+    for (const r of results) {
+      (byCat[r.cat] = byCat[r.cat] || []).push(r);
+    }
+
+    grid.innerHTML = Object.entries(byCat).map(([cat, items]) => {
+      const { label, color } = cats[cat] || { label: cat, color: '#888' };
+      const cards = items.map(item => {
+        const cls = item.unlocked ? 'ability-card unlocked' : 'ability-card locked';
+        const style = item.unlocked
+          ? `--ab-color:${color}`
+          : '';
+        return `<div class="${cls}" style="${style}" title="${item.hint}">
+          <span class="ab-icon">${item.icon}</span>
+          <span class="ab-name">${item.unlocked ? item.name : '???'}</span>
+        </div>`;
+      }).join('');
+
+      return `<div class="ability-cat-block">
+        <div class="ability-cat-label" style="color:${color}">${label}</div>
+        <div class="ability-cards-row">${cards}</div>
+      </div>`;
+    }).join('');
+  }
+
   // ── CSV エクスポート ───────────────────────────────────────────
   document.getElementById('btn-export-csv')?.addEventListener('click', () => {
     const atBats = Stats.filterAtBats(Storage.load(), statsFilter.value);
@@ -477,6 +569,63 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ── History tab ────────────────────────────────────────────────
   const historyList = document.getElementById('history-list');
+
+  // ── 一括削除 ──────────────────────────────────────────────────
+  let isBulkMode = false;
+  const bulkToolbar   = document.getElementById('bulk-toolbar');
+  const bulkToggleBtn = document.getElementById('btn-bulk-toggle');
+  const bulkCountText = document.getElementById('bulk-count-text');
+  const bulkCheckAll  = document.getElementById('bulk-check-all');
+  const bulkDeleteBtn = document.getElementById('btn-bulk-delete');
+  const bulkCancelBtn = document.getElementById('btn-bulk-cancel');
+
+  function updateBulkCount() {
+    const all     = document.querySelectorAll('.ab-check');
+    const checked = document.querySelectorAll('.ab-check:checked');
+    const n       = checked.length;
+    bulkCountText.textContent     = `${n}件選択中`;
+    bulkDeleteBtn.disabled        = n === 0;
+    bulkCheckAll.checked          = all.length > 0 && n === all.length;
+    bulkCheckAll.indeterminate    = n > 0 && n < all.length;
+  }
+
+  function enterBulkMode() {
+    isBulkMode = true;
+    bulkToolbar.style.display   = '';
+    bulkToggleBtn.style.display = 'none';
+    renderHistory();
+    updateBulkCount();
+  }
+
+  function exitBulkMode() {
+    isBulkMode = false;
+    bulkToolbar.style.display   = 'none';
+    bulkToggleBtn.style.display = '';
+    bulkCheckAll.checked        = false;
+    renderHistory();
+  }
+
+  bulkToggleBtn.addEventListener('click', enterBulkMode);
+  bulkCancelBtn.addEventListener('click', exitBulkMode);
+
+  historyList.addEventListener('change', e => {
+    if (e.target.classList.contains('ab-check')) updateBulkCount();
+  });
+
+  bulkCheckAll.addEventListener('change', () => {
+    document.querySelectorAll('.ab-check').forEach(cb => cb.checked = bulkCheckAll.checked);
+    updateBulkCount();
+  });
+
+  bulkDeleteBtn.addEventListener('click', () => {
+    const checked = [...document.querySelectorAll('.ab-check:checked')];
+    if (checked.length === 0) return;
+    if (!confirm(`選択した${checked.length}件の打席データを削除しますか？`)) return;
+    checked.forEach(cb => Storage.remove(parseInt(cb.dataset.id)));
+    showToast(`${checked.length}件削除しました`);
+    exitBulkMode();
+    renderStats();
+  });
 
   function buildGameSummary(s) {
     const avg = Stats.fmtAvg(s.avg);
@@ -521,12 +670,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const atBatRows = gameAbs.map((ab, i) => `
         <div class="atbat-item">
-          <span class="atbat-num">${i + 1}</span>
+          ${isBulkMode
+            ? `<input type="checkbox" class="ab-check" data-id="${ab.id}" aria-label="打席${i + 1}を選択">`
+            : `<span class="atbat-num">${i + 1}</span>`
+          }
           <span class="atbat-desc">${fmtAtBatDesc(ab, i + 1)}</span>
+          ${isBulkMode ? '' : `
           <div class="atbat-actions">
             <button class="btn-edit-sm"   data-id="${ab.id}">${I18n.t('history.edit')}</button>
             <button class="btn-delete-sm" data-id="${ab.id}">${I18n.t('history.delete')}</button>
-          </div>
+          </div>`}
         </div>`).join('');
 
       return `
@@ -545,7 +698,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               <span class="expand-icon">▼</span>
             </div>
           </div>
-          <div class="game-detail" id="${detailId}" style="display:none">
+          <div class="game-detail" id="${detailId}" style="${isBulkMode ? '' : 'display:none'}">
             ${atBatRows}
           </div>
         </div>`;

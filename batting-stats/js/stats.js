@@ -283,5 +283,211 @@ const Stats = (() => {
     return s;
   }
 
-  return { calculate, fmtAvg, fmtRate, fmtOps, avgTrend, gameTrend, resultCounts, directionCounts, directionsByResult, getYears, filterAtBats, calcStatsByPitcherHand, getDiagnosis, seedSampleData, verify };
+  // 対戦相手の一覧を返す（データが存在するものだけ、五十音順）
+  function getOpponents(atBats) {
+    return [...new Set(atBats.map(ab => ab.opponent).filter(Boolean))].sort();
+  }
+
+  // ── 特殊能力定義（50個）────────────────────────────────────────
+  const ABILITIES = [
+    // ── パワー系 ─────────────────────────────────
+    { id: 'slg500',    name: 'パワーヒッター',   icon: '💪', cat: 'power',
+      cond: (s)      => s.pa >= 20 && s.slg !== null && s.slg >= 0.500,
+      hint: '長打率.500以上（20打席〜）' },
+    { id: 'hr5',       name: 'アーチスト',       icon: '🏟️', cat: 'power',
+      cond: (s)      => s.hr >= 5,
+      hint: '本塁打5本以上' },
+    { id: 'hr10',      name: 'ホームランキング', icon: '👑', cat: 'power',
+      cond: (s)      => s.hr >= 10,
+      hint: '本塁打10本以上' },
+    { id: 'hr20',      name: '本塁打製造機',     icon: '💣', cat: 'power',
+      cond: (s)      => s.hr >= 20,
+      hint: '本塁打20本以上' },
+    { id: 'double5',   name: '二塁打の鬼',       icon: '🔥', cat: 'power',
+      cond: (s)      => s.double >= 5,
+      hint: '二塁打5本以上' },
+    { id: 'triple3',   name: '三塁打ランナー',   icon: '⚡', cat: 'power',
+      cond: (s)      => s.triple >= 3,
+      hint: '三塁打3本以上' },
+    { id: 'ops900',    name: '強打者',           icon: '🗡️', cat: 'power',
+      cond: (s)      => s.pa >= 20 && s.ops !== null && s.ops >= 0.900,
+      hint: 'OPS .900以上（20打席〜）' },
+    { id: 'ops1000',   name: '怪物打者',         icon: '👹', cat: 'power',
+      cond: (s)      => s.pa >= 20 && s.ops !== null && s.ops >= 1.000,
+      hint: 'OPS 1.000以上（20打席〜）' },
+    { id: 'ops1200',   name: '異次元打者',       icon: '🌌', cat: 'power',
+      cond: (s)      => s.pa >= 20 && s.ops !== null && s.ops >= 1.200,
+      hint: 'OPS 1.200以上（20打席〜）' },
+
+    // ── コンタクト系 ─────────────────────────────
+    { id: 'avg300',    name: 'アベレージヒッター', icon: '🎯', cat: 'contact',
+      cond: (s)      => s.ab >= 20 && s.avg !== null && s.avg >= 0.300,
+      hint: '打率.300以上（20打数〜）' },
+    { id: 'avg350',    name: '打率王',            icon: '🥇', cat: 'contact',
+      cond: (s)      => s.ab >= 20 && s.avg !== null && s.avg >= 0.350,
+      hint: '打率.350以上（20打数〜）' },
+    { id: 'avg380',    name: '首位打者',          icon: '🏆', cat: 'contact',
+      cond: (s)      => s.ab >= 20 && s.avg !== null && s.avg >= 0.380,
+      hint: '打率.380以上（20打数〜）' },
+    { id: 'h20',       name: '安打製造機',        icon: '⚾', cat: 'contact',
+      cond: (s)      => s.h >= 20,
+      hint: '安打20本以上' },
+    { id: 'h50',       name: 'ヒットメイカー',    icon: '🌊', cat: 'contact',
+      cond: (s)      => s.h >= 50,
+      hint: '安打50本以上' },
+    { id: 'no_k',      name: 'コンタクトマスター', icon: '🎖️', cat: 'contact',
+      cond: (s)      => s.ab >= 20 && s.k / s.ab <= 0.10,
+      hint: '三振率10%以下（20打数〜）' },
+    { id: 'zero_k',    name: 'ノー三振',          icon: '✨', cat: 'contact',
+      cond: (s)      => s.pa >= 20 && s.k === 0,
+      hint: '三振0（20打席〜）' },
+    { id: 'infield3',  name: '内野安打の達人',    icon: '🏃', cat: 'contact',
+      cond: (_s, abs) => abs.filter(a => a.infieldHit).length >= 3,
+      hint: '内野安打3本以上' },
+
+    // ── 選球眼系 ─────────────────────────────────
+    { id: 'bb_rate',   name: '選球眼',            icon: '👁️', cat: 'eye',
+      cond: (s)      => s.pa >= 20 && s.bb / s.pa >= 0.15,
+      hint: '四球率15%以上（20打席〜）' },
+    { id: 'bb10',      name: 'フォアボール王',    icon: '🔭', cat: 'eye',
+      cond: (s)      => s.bb >= 10,
+      hint: '四球10個以上' },
+    { id: 'obp400',    name: '出塁の鬼',          icon: '🚶', cat: 'eye',
+      cond: (s)      => s.pa >= 20 && s.obp !== null && s.obp >= 0.400,
+      hint: '出塁率.400以上（20打席〜）' },
+    { id: 'obp450',    name: '塁上の支配者',      icon: '🏴', cat: 'eye',
+      cond: (s)      => s.pa >= 20 && s.obp !== null && s.obp >= 0.450,
+      hint: '出塁率.450以上（20打席〜）' },
+    { id: 'hbp3',      name: '死球魂',            icon: '🩸', cat: 'eye',
+      cond: (s)      => s.hbp >= 3,
+      hint: '死球3個以上' },
+
+    // ── 勝負強さ系 ───────────────────────────────
+    { id: 'rbi10',     name: 'クラッチヒッター',  icon: '🎯', cat: 'clutch',
+      cond: (s)      => s.rbi >= 10,
+      hint: '打点10以上' },
+    { id: 'rbi20',     name: '打点マシン',         icon: '💰', cat: 'clutch',
+      cond: (s)      => s.rbi >= 20,
+      hint: '打点20以上' },
+    { id: 'rbi30',     name: '打点王',             icon: '🥊', cat: 'clutch',
+      cond: (s)      => s.rbi >= 30,
+      hint: '打点30以上' },
+    { id: 'triplecrown', name: '三冠候補',         icon: '🌟', cat: 'clutch',
+      cond: (s)      => s.ab >= 20 && s.avg >= 0.300 && s.hr >= 3 && s.rbi >= 10,
+      hint: '打率.300↑ & HR3本↑ & 打点10↑' },
+    { id: 'slash',     name: '打撃の申し子',       icon: '⭐', cat: 'clutch',
+      cond: (s)      => s.pa >= 30 && s.avg >= 0.300 && s.obp >= 0.400 && s.slg >= 0.500,
+      hint: '打率.300 / 出塁率.400 / 長打率.500（30打席〜）' },
+
+    // ── 対投手系 ─────────────────────────────────
+    { id: 'vsR320',    name: '右投手キラー',      icon: '🗡️', cat: 'vs',
+      cond: (s)      => s.vsR.ab >= 10 && s.vsR.avg !== null && s.vsR.avg >= 0.320,
+      hint: '対右打率.320以上（10打数〜）' },
+    { id: 'vsL320',    name: '左腕ハンター',      icon: '⚔️', cat: 'vs',
+      cond: (s)      => s.vsL.ab >= 10 && s.vsL.avg !== null && s.vsL.avg >= 0.320,
+      hint: '対左打率.320以上（10打数〜）' },
+    { id: 'vsLR',      name: '左右不問',          icon: '🔀', cat: 'vs',
+      cond: (s)      => s.vsR.ab >= 10 && s.vsL.ab >= 10 &&
+                        s.vsR.avg >= 0.280 && s.vsL.avg >= 0.280,
+      hint: '対右.280↑ & 対左.280↑（各10打数〜）' },
+    { id: 'vsR350',    name: '右腕の天敵',        icon: '🎭', cat: 'vs',
+      cond: (s)      => s.vsR.ab >= 10 && s.vsR.avg !== null && s.vsR.avg >= 0.350,
+      hint: '対右打率.350以上（10打数〜）' },
+    { id: 'vsL350',    name: '左腕の悪夢',        icon: '👻', cat: 'vs',
+      cond: (s)      => s.vsL.ab >= 10 && s.vsL.avg !== null && s.vsL.avg >= 0.350,
+      hint: '対左打率.350以上（10打数〜）' },
+
+    // ── 打球方向系 ───────────────────────────────
+    { id: 'zones3',    name: '広角打法',          icon: '📐', cat: 'direction',
+      cond: (_s, abs) => new Set(
+        abs.filter(a => RESULT_TYPES[a.result]?.hit && a.direction).map(a => a.direction)
+      ).size >= 3,
+      hint: '3方向以上にヒット' },
+    { id: 'zones5',    name: 'スプレーヒッター',  icon: '🌈', cat: 'direction',
+      cond: (_s, abs) => new Set(
+        abs.filter(a => RESULT_TYPES[a.result]?.hit && a.direction).map(a => a.direction)
+      ).size >= 5,
+      hint: '5方向以上にヒット' },
+    { id: 'lf5',       name: 'レフト狙い',        icon: '↙️', cat: 'direction',
+      cond: (_s, abs) => abs.filter(a => RESULT_TYPES[a.result]?.hit &&
+        (a.direction === 'lf' || a.direction === 'lc')).length >= 5,
+      hint: 'レフト方向への安打5本以上' },
+    { id: 'rf5',       name: 'ライト狙い',        icon: '↘️', cat: 'direction',
+      cond: (_s, abs) => abs.filter(a => RESULT_TYPES[a.result]?.hit &&
+        (a.direction === 'rf' || a.direction === 'rc')).length >= 5,
+      hint: 'ライト方向への安打5本以上' },
+    { id: 'cf3',       name: 'センター返し',       icon: '⬆️', cat: 'direction',
+      cond: (_s, abs) => abs.filter(a => RESULT_TYPES[a.result]?.hit &&
+        a.direction === 'cf').length >= 3,
+      hint: 'センターへの安打3本以上' },
+
+    // ── キャリア系 ───────────────────────────────
+    { id: 'debut',     name: '初陣',              icon: '🌱', cat: 'career',
+      cond: (s)      => s.pa >= 1,
+      hint: '1打席以上記録' },
+    { id: 'games10',   name: '試合慣れ',           icon: '📅', cat: 'career',
+      cond: (s)      => s.games >= 10,
+      hint: '10試合以上' },
+    { id: 'games20',   name: 'ベテラン打者',       icon: '🎓', cat: 'career',
+      cond: (s)      => s.games >= 20,
+      hint: '20試合以上' },
+    { id: 'games30',   name: '百戦錬磨',           icon: '🦾', cat: 'career',
+      cond: (s)      => s.games >= 30,
+      hint: '30試合以上' },
+    { id: 'pa100',     name: '打席数王',           icon: '💯', cat: 'career',
+      cond: (s)      => s.pa >= 100,
+      hint: '100打席以上' },
+
+    // ── 特殊系 ───────────────────────────────────
+    { id: 'sb5',       name: '犠打職人',           icon: '🫴', cat: 'special',
+      cond: (s)      => s.sb >= 5,
+      hint: '犠打5個以上' },
+    { id: 'sf3',       name: '犠飛の名手',         icon: '🕊️', cat: 'special',
+      cond: (s)      => s.sf >= 3,
+      hint: '犠飛3個以上' },
+    { id: 'e5',        name: 'エラー誘発',         icon: '😈', cat: 'special',
+      cond: (s)      => s.e >= 5,
+      hint: '失策5個以上（相手エラーで出塁）' },
+    { id: 'dp5',       name: 'ゲッツー製造機',     icon: '😰', cat: 'special',
+      cond: (s)      => s.dp >= 5,
+      hint: '併殺打5個以上（要克服!）' },
+    { id: 'k_swing5',  name: '空振り王',           icon: '🌪️', cat: 'special',
+      cond: (_s, abs) => abs.filter(a => a.result === 'k' && a.kType === 'swing').length >= 5,
+      hint: '空振り三振5個以上（要克服!）' },
+    { id: 'perfect',   name: '完全体',             icon: '💎', cat: 'special',
+      cond: (s)      => s.pa >= 50 && s.avg >= 0.300 && s.obp >= 0.400 && s.ops >= 0.900,
+      hint: 'AVG.300↑ / OBP.400↑ / OPS.900↑（50打席〜）' },
+    { id: 'legend',    name: 'レジェンド',         icon: '🌟', cat: 'special',
+      cond: (s)      => s.pa >= 100 && s.ops !== null && s.ops >= 1.000,
+      hint: 'PA100↑ & OPS 1.000↑' },
+    { id: 'cheater',   name: '規格外',             icon: '🚀', cat: 'special',
+      cond: (s)      => s.ab >= 30 && s.avg !== null && s.avg >= 0.400,
+      hint: '打率.400以上（30打数〜）' },
+  ];
+
+  const ABILITY_CATEGORIES = {
+    power:     { label: 'パワー',   color: '#ef4444' },
+    contact:   { label: 'コンタクト', color: '#10b981' },
+    eye:       { label: '選球眼',   color: '#3b82f6' },
+    clutch:    { label: '勝負強さ', color: '#f97316' },
+    vs:        { label: '対投手',   color: '#8b5cf6' },
+    direction: { label: '打球方向', color: '#eab308' },
+    career:    { label: 'キャリア', color: '#06b6d4' },
+    special:   { label: '特殊',     color: '#f59e0b' },
+  };
+
+  function getAbilityResults(atBats) {
+    const s = calculate(atBats);
+    return ABILITIES.map(ab => ({
+      ...ab,
+      unlocked: (() => { try { return !!ab.cond(s, atBats); } catch { return false; } })(),
+    }));
+  }
+
+  // 対戦相手の一覧を返す（データが存在するものだけ、五十音順）
+  function getOpponents(atBats) {
+    return [...new Set(atBats.map(ab => ab.opponent).filter(Boolean))].sort();
+  }
+
+  return { calculate, fmtAvg, fmtRate, fmtOps, avgTrend, gameTrend, resultCounts, directionCounts, directionsByResult, getYears, filterAtBats, calcStatsByPitcherHand, getDiagnosis, getAbilityResults, ABILITY_CATEGORIES, getOpponents, seedSampleData, verify };
 })();

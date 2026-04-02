@@ -1,7 +1,6 @@
 // share.js - SNS Share Card generation
 
 const Share = (() => {
-  const HOME_CX = 150, HOME_CY = 255;
 
   // ── モーダル制御 ─────────────────────────────────────────────
   function init() {
@@ -13,6 +12,21 @@ const Share = (() => {
     document.getElementById('share-generate').addEventListener('click', onGenerate);
     document.getElementById('share-download').addEventListener('click', onDownload);
     document.getElementById('share-native').addEventListener('click', onNativeShare);
+
+    document.getElementById('share-scope').addEventListener('change', () => {
+      const isCustom = document.getElementById('share-scope').value === 'custom';
+      document.getElementById('share-date-range').style.display = isCustom ? '' : 'none';
+      _refreshAbilityPicker();
+    });
+    document.getElementById('share-date-from').addEventListener('change', _refreshAbilityPicker);
+    document.getElementById('share-date-to').addEventListener('change',   _refreshAbilityPicker);
+    document.getElementById('share-opponent').addEventListener('change',  _refreshAbilityPicker);
+    document.getElementById('share-ability-clear').addEventListener('click', () => {
+      document.querySelectorAll('.share-ability-chip').forEach(chip => {
+        chip.classList.remove('selected');
+      });
+      _updateAbilityCount();
+    });
   }
 
   function openModal() {
@@ -21,19 +35,104 @@ const Share = (() => {
     document.getElementById('share-actions').style.display = 'none';
     document.getElementById('share-preview').innerHTML = '';
 
-    // sync scope options with current filter
-    const filterVal  = document.getElementById('stats-filter')?.value || 'all';
-    const scopeSel   = document.getElementById('share-scope');
-    const allAtBats  = Storage.load();
-    const years      = Stats.getYears(allAtBats);
+    const allAtBats = Storage.load();
+    const years     = Stats.getYears(allAtBats);
+
+    // 期間セレクトを同期
+    const filterVal = document.getElementById('stats-filter')?.value || 'all';
+    const scopeSel  = document.getElementById('share-scope');
     scopeSel.innerHTML =
       `<option value="all">${I18n.t('share.scopeAll')}</option>` +
       `<option value="last5">${I18n.t('share.scopeLast5')}</option>` +
       `<option value="last10">${I18n.t('share.scopeLast10')}</option>` +
       years.map(y =>
         `<option value="season:${y}">${y}${I18n.t('filter.seasonSuffix')}</option>`
-      ).join('');
+      ).join('') +
+      `<option value="custom">期間指定</option>`;
     if ([...scopeSel.options].some(o => o.value === filterVal)) scopeSel.value = filterVal;
+    document.getElementById('share-date-range').style.display =
+      scopeSel.value === 'custom' ? '' : 'none';
+
+    // 対戦相手セレクトを同期
+    const opponents  = Stats.getOpponents(allAtBats);
+    const oppSel     = document.getElementById('share-opponent');
+    const currentOpp = document.getElementById('opponent-filter')?.value || 'all';
+    oppSel.innerHTML =
+      `<option value="all">全チーム</option>` +
+      opponents.map(o => `<option value="${o}">${o}</option>`).join('');
+    if (opponents.includes(currentOpp)) oppSel.value = currentOpp;
+
+    _refreshAbilityPicker();
+  }
+
+  // 能力ピッカーをフィルター条件に合わせて再構築
+  function _refreshAbilityPicker() {
+    const filtered  = _getFilteredForModal();
+    const results   = Stats.getAbilityResults(filtered).filter(a => a.unlocked);
+    const picker    = document.getElementById('share-abilities-picker');
+    const catColors = Stats.ABILITY_CATEGORIES;
+
+    // 現在の選択状態を保持
+    const prevSelected = new Set(
+      [...document.querySelectorAll('.share-ability-chip.selected')]
+        .map(el => el.dataset.id)
+    );
+
+    if (results.length === 0) {
+      picker.innerHTML = '<p class="share-abilities-empty">この期間で解放された能力はありません</p>';
+      _updateAbilityCount();
+      return;
+    }
+
+    picker.innerHTML = results.map(ab => {
+      const color   = (catColors[ab.cat] || { color: '#60a5fa' }).color;
+      const checked = prevSelected.has(ab.id) ? 'selected' : '';
+      return `<label class="share-ability-chip ${checked}" data-id="${ab.id}" style="--chip-color:${color}">
+        <input type="checkbox" value="${ab.id}" ${checked ? 'checked' : ''}>
+        <span>${ab.icon}</span>
+        <span>${ab.name}</span>
+      </label>`;
+    }).join('');
+
+    picker.querySelectorAll('.share-ability-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const selected = document.querySelectorAll('.share-ability-chip.selected').length;
+        const isNowSelected = chip.classList.contains('selected');
+        if (!isNowSelected && selected >= 10) return; // 10個上限
+        chip.classList.toggle('selected');
+        chip.querySelector('input').checked = chip.classList.contains('selected');
+        _updateAbilityCount();
+      });
+    });
+
+    _updateAbilityCount();
+  }
+
+  function _updateAbilityCount() {
+    const n = document.querySelectorAll('.share-ability-chip.selected').length;
+    const el = document.getElementById('share-ability-count');
+    if (el) el.textContent = `${n} / 10`;
+  }
+
+  // モーダルの現在の条件でフィルタ済みデータを返す
+  function _getFilteredForModal() {
+    const scopeVal = document.getElementById('share-scope').value;
+    const oppVal   = document.getElementById('share-opponent').value;
+    const dateFrom = document.getElementById('share-date-from').value;
+    const dateTo   = document.getElementById('share-date-to').value;
+    let filtered;
+    if (scopeVal === 'custom') {
+      filtered = Storage.load().filter(ab => {
+        const d = ab.date || '';
+        if (dateFrom && d < dateFrom) return false;
+        if (dateTo   && d > dateTo)   return false;
+        return true;
+      });
+    } else {
+      filtered = Stats.filterAtBats(Storage.load(), scopeVal);
+    }
+    if (oppVal !== 'all') filtered = filtered.filter(ab => ab.opponent === oppVal);
+    return filtered;
   }
 
   function closeModal() {
@@ -74,18 +173,32 @@ const Share = (() => {
   // ── カード生成 ──────────────────────────────────────────────
   function _generate() {
     const playerName = document.getElementById('share-player-name').value.trim() || 'My Stats';
-    const filterType = document.getElementById('share-scope').value;
+    const scopeVal   = document.getElementById('share-scope').value;
+    const oppVal     = document.getElementById('share-opponent').value;
+    const dateFrom   = document.getElementById('share-date-from').value;
+    const dateTo     = document.getElementById('share-date-to').value;
 
-    const atBats  = Storage.load();
-    const filtered = Stats.filterAtBats(atBats, filterType);
+    const filtered = _getFilteredForModal();
     const s        = Stats.calculate(filtered);
     const diag     = Stats.getDiagnosis(s);
 
-    return generateShareCard(playerName, filterType, s, diag);
+    const labelParts = [_filterLabel(scopeVal, dateFrom, dateTo)];
+    if (oppVal !== 'all') labelParts.push(`vs ${oppVal}`);
+    const label = labelParts.filter(Boolean).join(' / ');
+
+    // 選択された能力のみ取得（選択なしなら解放済み全て最大10個）
+    const selectedIds = [...document.querySelectorAll('.share-ability-chip.selected')]
+      .map(el => el.dataset.id);
+    const allUnlocked = Stats.getAbilityResults(filtered).filter(a => a.unlocked);
+    const abilities   = selectedIds.length > 0
+      ? allUnlocked.filter(a => selectedIds.includes(a.id))
+      : allUnlocked.slice(0, 10);
+
+    return generateShareCard(playerName, label, s, diag, filtered, abilities);
   }
 
-  function generateShareCard(playerName, filterType, s, diag) {
-    const W = 1200, H = 630;
+  function generateShareCard(playerName, filterType, s, diag, filteredAtBats, abilities) {
+    const W = 1200, H = 760;
     const canvas = document.createElement('canvas');
     canvas.width  = W;
     canvas.height = H;
@@ -110,7 +223,7 @@ const Share = (() => {
     ctx.fillStyle  = 'rgba(255,255,255,0.45)';
     ctx.font       = font(22);
     ctx.textAlign  = 'right';
-    ctx.fillText(_filterLabel(filterType), W - 60, 80);
+    ctx.fillText(filterType, W - 60, 80);
 
     // ── Player name
     ctx.fillStyle = 'rgba(255,255,255,0.90)';
@@ -174,29 +287,105 @@ const Share = (() => {
     }
 
     // ── Mini field (right panel background)
-    _drawMiniField(ctx, Stats.directionsByResult(
-      Stats.filterAtBats(Storage.load(), filterType)
-    ), 760, 60, 380, 350);
+    _drawMiniField(ctx, Stats.directionsByResult(filteredAtBats || []), 760, 60, 380, 350);
+
+    // ── 特殊能力バッジ
+    const abs = abilities || [];
+    if (abs.length > 0) {
+      const abY      = 455;
+      const badgeH   = 48;
+      const badgeGap = 10;
+      const catColors = Stats.ABILITY_CATEGORIES;
+
+      // セクションラベル
+      ctx.fillStyle = 'rgba(255,255,255,0.40)';
+      ctx.font      = font(17, 700);
+      ctx.textAlign = 'left';
+      ctx.fillText('SPECIAL ABILITIES', 60, abY);
+
+      // バッジを2行×最大10個で描画
+      abs.forEach((ab, i) => {
+        const col     = i % 5;
+        const row     = Math.floor(i / 5);
+        const color   = (catColors[ab.cat] || { color: '#60a5fa' }).color;
+
+
+        // 1行目はx=60から順に並べるため累積位置を計算
+        // シンプルに等間隔グリッドで配置
+        const cellW  = (W - 120) / 5;
+        const bx     = 60 + col * cellW;
+        const by     = abY + 18 + row * (badgeH + badgeGap);
+
+        // バッジ背景
+        const bgAlpha = 0.22;
+        ctx.fillStyle = color + Math.round(bgAlpha * 255).toString(16).padStart(2, '0');
+        _roundRect(ctx, bx, by, cellW - badgeGap, badgeH, 10);
+        ctx.fill();
+
+        // バッジ枠
+        ctx.strokeStyle = color + '66';
+        ctx.lineWidth   = 1.5;
+        _roundRect(ctx, bx, by, cellW - badgeGap, badgeH, 10);
+        ctx.stroke();
+
+        // アイコン
+        ctx.font      = font(22);
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(ab.icon, bx + 10, by + badgeH * 0.66);
+
+        // 能力名
+        ctx.font      = font(18, 700);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(ab.name, bx + 36, by + badgeH * 0.66);
+      });
+    }
+
+    // ── 区切り線（能力エリア下）
+    const footerDivY = abs.length > 5 ? 690 : abs.length > 0 ? 625 : 460;
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth   = 1;
+    ctx.beginPath(); ctx.moveTo(60, footerDivY); ctx.lineTo(W - 60, footerDivY); ctx.stroke();
 
     // ── Footer
     ctx.fillStyle = 'rgba(255,255,255,0.35)';
     ctx.font      = font(20, 700);
     ctx.textAlign = 'left';
-    ctx.fillText('My Batting Stats', 60, 490);
+    ctx.fillText('My Batting Stats', 60, footerDivY + 36);
 
     ctx.fillStyle = 'rgba(255,255,255,0.25)';
     ctx.font      = font(17);
     ctx.textAlign = 'right';
-    ctx.fillText('mybattingstats.web.app', W - 60, 490);
+    ctx.fillText('somirai.jp', W - 60, footerDivY + 36);
 
     return canvas;
   }
 
-  function _filterLabel(ft) {
-    if (ft === 'all')                   return I18n.t('filter.all');
-    if (ft === 'last5')                 return I18n.t('filter.last5');
-    if (ft === 'last10')                return I18n.t('filter.last10');
-    if (ft.startsWith('season:'))       return ft.slice(7) + I18n.t('filter.seasonSuffix');
+  function _roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
+  function _filterLabel(ft, dateFrom, dateTo) {
+    if (ft === 'all')             return I18n.t('filter.all');
+    if (ft === 'last5')           return I18n.t('filter.last5');
+    if (ft === 'last10')          return I18n.t('filter.last10');
+    if (ft.startsWith('season:')) return ft.slice(7) + I18n.t('filter.seasonSuffix');
+    if (ft === 'custom') {
+      if (dateFrom && dateTo)  return `${dateFrom} 〜 ${dateTo}`;
+      if (dateFrom)            return `${dateFrom} 〜`;
+      if (dateTo)              return `〜 ${dateTo}`;
+      return '期間指定';
+    }
     return '';
   }
 

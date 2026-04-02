@@ -26,6 +26,17 @@
   --radius-sm:   6px;
 }
 
+/* ── Dark Theme ───────────────────────────── */
+[data-theme="dark"] {
+  --bg:        #111827;
+  --surface:   #1f2937;
+  --border:    #374151;
+  --text:      #f9fafb;
+  --muted:     #9ca3af;
+  --accent:    #3b82f6;
+  --accent-bg: rgba(59,130,246,0.15);
+}
+
 html, body {
   height: 100%;
   font-family: system-ui, -apple-system, 'Hiragino Sans', sans-serif;
@@ -33,6 +44,7 @@ html, body {
   background: var(--bg);
   color: var(--text);
   -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s, color 0.2s;
 }
 
 /* ── Header ───────────────────────────────── */
@@ -55,7 +67,8 @@ html, body {
   letter-spacing: -0.02em;
 }
 
-.btn-lang {
+.btn-lang,
+.btn-theme {
   background: none;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -68,7 +81,10 @@ html, body {
   font-family: inherit;
   transition: background 0.1s;
 }
-.btn-lang:active { background: var(--surface); }
+.btn-lang:active,
+.btn-theme:active { background: var(--surface); }
+
+.header-right { display: flex; gap: 8px; align-items: center; }
 
 /* ── Tab Bar ──────────────────────────────── */
 .tab-bar {
@@ -431,9 +447,28 @@ textarea { resize: vertical; min-height: 64px; }
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* ── Date input row ───────────────────────── */
+.date-input-row { display: flex; gap: 6px; align-items: center; }
+.date-input-row input { flex: 1; }
+.btn-today {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  min-height: 38px;
+  white-space: nowrap;
+  font-family: inherit;
+  transition: background 0.1s;
+}
+.btn-today:active { background: var(--accent-bg); }
+
 /* ── Stats Tab ────────────────────────────── */
-.stats-filter { margin-bottom: 16px; }
-.stats-filter select { width: auto; min-width: 100px; }
+.stats-filter { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.stats-filter select { width: auto; min-width: 100px; flex: 1; }
 
 /* ── 主要指標カード ──────────────────────── */
 .stat-cards {
@@ -939,6 +974,61 @@ textarea { resize: vertical; min-height: 64px; }
 .modal-close-btn {
   width: 100%;
 }
+/* ── シェアモーダル 能力ピッカー ──────────── */
+.share-abilities-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.btn-xs {
+  padding: 3px 10px;
+  font-size: 11px;
+  min-height: 26px;
+}
+.share-abilities-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  max-height: 160px;
+  overflow-y: auto;
+  padding: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.share-abilities-empty {
+  font-size: 12px;
+  color: var(--muted);
+  width: 100%;
+  text-align: center;
+  padding: 8px 0;
+}
+.share-ability-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color .12s, background .12s;
+  color: var(--text);
+}
+.share-ability-chip input[type="checkbox"] {
+  display: none;
+}
+.share-ability-chip.selected {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+.share-ability-chip:active { opacity: .75; }
+
 .share-preview {
   border-radius: var(--radius);
   overflow: hidden;
@@ -1018,13 +1108,153 @@ textarea { resize: vertical; min-height: 64px; }
 .history-toolbar {
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
   margin-bottom: 12px;
+}
+
+/* ── 一括削除ツールバー ─────────────────────── */
+.bulk-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+}
+.bulk-all-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.bulk-all-label input { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent); }
+.bulk-count { font-size: 12px; color: var(--muted); flex: 1; }
+.btn-danger {
+  background: none;
+  border: 1px solid var(--c-out);
+  border-radius: var(--radius-sm);
+  color: var(--c-out);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 14px;
+  min-height: 36px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.1s;
+}
+.btn-danger:active { background: rgba(220,38,38,.08); }
+.btn-danger:disabled { opacity: 0.4; pointer-events: none; }
+.ab-check {
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: var(--accent);
 }
 .btn-sm {
   padding: 7px 14px;
   font-size: 13px;
   min-height: 36px;
 }
+
+/* ── 期間指定フィルター ───────────────────── */
+.date-range-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.date-range-picker input {
+  flex: 1;
+  min-width: 130px;
+}
+.date-range-sep {
+  font-size: 13px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* ── 特殊能力 ─────────────────────────────── */
+.ability-count-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid rgba(37,99,235,.2);
+  border-radius: 999px;
+  padding: 1px 9px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.ability-cat-block { margin-bottom: 18px; }
+
+.ability-cat-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.ability-cards-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+}
+
+@media (min-width: 400px) {
+  .ability-cards-row { grid-template-columns: repeat(5, 1fr); }
+}
+
+.ability-card {
+  border-radius: 8px;
+  padding: 8px 4px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  border: 1.5px solid transparent;
+  transition: transform .12s;
+  cursor: default;
+  min-height: 64px;
+  justify-content: center;
+}
+
+.ability-card.unlocked {
+  background: color-mix(in srgb, var(--ab-color, var(--accent)) 12%, transparent);
+  border-color: color-mix(in srgb, var(--ab-color, var(--accent)) 40%, transparent);
+}
+
+.ability-card.unlocked:hover { transform: scale(1.05); }
+
+.ability-card.locked {
+  background: var(--surface);
+  border-color: var(--border);
+  opacity: 0.45;
+}
+
+.ab-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.ability-card.locked .ab-icon { filter: grayscale(1); }
+
+.ab-name {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text);
+  word-break: break-all;
+}
+
+.ability-card.locked .ab-name { color: var(--muted); }
 
 /* ── スクリーンリーダー専用 ───────────────── */
 .sr-only {
