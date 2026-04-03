@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
-  <rect width="192" height="192" fill="#1a472a" rx="32"/>
-  <!-- Baseball -->
-  <circle cx="96" cy="96" r="58" fill="white"/>
-  <!-- Seam curves -->
-  <path d="M70,78 C80,90 80,102 70,114" fill="none" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
-  <path d="M122,78 C112,90 112,102 122,114" fill="none" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
-  <path d="M70,78 C83,73 109,73 122,78" fill="none" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
-  <path d="M70,114 C83,119 109,119 122,114" fill="none" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
-  <!-- Bat -->
-  <rect x="86" y="136" width="20" height="8" fill="#d97706" rx="4"/>
-  <rect x="89" y="108" width="14" height="30" fill="#92400e" rx="2"/>
-  <circle cx="96" cy="106" r="8" fill="#b45309"/>
+  <!-- 背景（緑） -->
+  <rect width="192" height="192" fill="#1a472a" rx="36"/>
+  <!-- ボール本体 -->
+  <circle cx="96" cy="96" r="62" fill="white"/>
+  <!-- 縫い目（左） -->
+  <path d="M58,70 C72,83 72,109 58,122" fill="none" stroke="#dc2626" stroke-width="5" stroke-linecap="round"/>
+  <!-- 縫い目（右） -->
+  <path d="M134,70 C120,83 120,109 134,122" fill="none" stroke="#dc2626" stroke-width="5" stroke-linecap="round"/>
+  <!-- 縫い目（上） -->
+  <path d="M58,70 C74,63 118,63 134,70" fill="none" stroke="#dc2626" stroke-width="5" stroke-linecap="round"/>
+  <!-- 縫い目（下） -->
+  <path d="M58,122 C74,129 118,129 134,122" fill="none" stroke="#dc2626" stroke-width="5" stroke-linecap="round"/>
 </svg>
