@@ -546,6 +546,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   Share.init();
 
   // ── PWAインストールバナー ─────────────────────────────────────
+  const _isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const _isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
   let _deferredPrompt = null;
   window.addEventListener('beforeinstallprompt', e => {
     e.preventDefault();
@@ -554,6 +557,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('pwa-banner').style.display = '';
     }
   });
+
+  // iOS Safari: 手動インストール案内
+  if (_isIOS && !_isStandalone && !localStorage.getItem('pwa-banner-dismissed')) {
+    const banner = document.getElementById('pwa-banner');
+    const msgEl = banner?.querySelector('.pwa-banner-msg');
+    const addBtn = banner?.querySelector('#pwa-banner-add');
+    if (banner && msgEl) {
+      msgEl.textContent = 'Safari の 共有ボタン → ホーム画面に追加 でアプリとして使えます';
+      msgEl.innerHTML = '📲 <strong>共有ボタン</strong> → <strong>ホーム画面に追加</strong> でアプリとして使えます';
+      if (addBtn) addBtn.style.display = 'none';
+      banner.style.display = '';
+    }
+  }
+
   document.getElementById('pwa-banner-add')?.addEventListener('click', async () => {
     if (_deferredPrompt) {
       _deferredPrompt.prompt();
