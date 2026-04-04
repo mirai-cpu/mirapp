@@ -91,6 +91,7 @@ const Share = (() => {
         <input type="checkbox" value="${ab.id}" ${checked ? 'checked' : ''}>
         <span>${ab.icon}</span>
         <span>${ab.name}</span>
+        <span class="chip-check">✓</span>
       </label>`;
     }).join('');
 
@@ -238,52 +239,70 @@ const Share = (() => {
       ctx.fillText(I18n.t(diag.typeKey), 60, 120);
     }
 
-    // ── Main stats (2 rows × 2 columns)
-    const mainStats = [
-      { label: I18n.t('stat.avg'), value: Stats.fmtAvg(s.avg)   },
-      { label: I18n.t('stat.ops'), value: Stats.fmtOps(s.ops)   },
-      { label: I18n.t('stat.obp'), value: Stats.fmtRate(s.obp)  },
-      { label: I18n.t('stat.slg'), value: Stats.fmtRate(s.slg)  },
+    // ── Main stats: AVG / H（大きく2列）
+    const statsStartX = 60, statsY = 200;
+
+    // AVG（左・大）
+    ctx.fillStyle = '#ffffff';
+    ctx.font      = font(72, 800);
+    ctx.textAlign = 'left';
+    ctx.fillText(Stats.fmtAvg(s.avg), statsStartX, statsY);
+    ctx.fillStyle = 'rgba(255,255,255,0.50)';
+    ctx.font      = font(16, 600);
+    ctx.fillText(I18n.t('stat.avg'), statsStartX, statsY + 26);
+
+    // H・安打数（右・大）
+    ctx.fillStyle = '#3ecf8e';
+    ctx.font      = font(72, 800);
+    ctx.textAlign = 'left';
+    ctx.fillText(`${s.h}`, statsStartX + 220, statsY);
+    ctx.fillStyle = 'rgba(255,255,255,0.50)';
+    ctx.font      = font(16, 600);
+    ctx.fillText(I18n.t('stat.h'), statsStartX + 220, statsY + 26);
+
+    // OBP / SLG / OPS（中段・3列）
+    const midStats = [
+      { label: I18n.t('stat.obp'), value: Stats.fmtRate(s.obp) },
+      { label: I18n.t('stat.slg'), value: Stats.fmtRate(s.slg) },
+      { label: I18n.t('stat.ops'), value: Stats.fmtOps(s.ops)  },
     ];
-    const colW = 220, statsStartX = 60, statsY = 230;
-    mainStats.forEach((st, i) => {
-      const col = i % 2, row = Math.floor(i / 2);
-      const x   = statsStartX + col * colW;
-      const y   = statsY + row * 100;
+    const midY = statsY + 100, midColW = 150;
+    midStats.forEach((st, i) => {
+      const x = statsStartX + i * midColW;
       ctx.fillStyle = '#ffffff';
-      ctx.font      = font(56, 800);
+      ctx.font      = font(40, 700);
       ctx.textAlign = 'left';
-      ctx.fillText(st.value, x, y);
-      ctx.fillStyle = 'rgba(255,255,255,0.55)';
-      ctx.font      = font(17, 600);
-      ctx.fillText(st.label, x, y + 26);
+      ctx.fillText(st.value, x, midY);
+      ctx.fillStyle = 'rgba(255,255,255,0.45)';
+      ctx.font      = font(14, 600);
+      ctx.fillText(st.label, x, midY + 22);
     });
 
-    // ── Sub stats (G / PA / H / HR / RBI / K)
+    // ── Sub stats（下段: G / PA / HR / RBI / 三振 / 二塁打）
     const subStats = [
-      { label: I18n.t('stat.games'), value: s.games },
-      { label: 'PA',                 value: s.pa    },
-      { label: I18n.t('stat.h'),     value: s.h     },
-      { label: I18n.t('stat.hr'),    value: s.hr    },
-      { label: I18n.t('stat.rbi'),   value: s.rbi   },
-      { label: '三振',               value: s.k     },
+      { label: I18n.t('stat.games'),  value: s.games  },
+      { label: 'PA',                  value: s.pa     },
+      { label: I18n.t('stat.hr'),     value: s.hr     },
+      { label: I18n.t('stat.rbi'),    value: s.rbi    },
+      { label: '三振',                value: s.k      },
+      { label: I18n.t('stat.double'), value: s.double },
     ];
-    const subColW = 90, subY = 460;
+    const subColW = 90, subY = 420;
     subStats.forEach((st, i) => {
       const x = statsStartX + i * subColW;
       ctx.fillStyle = 'rgba(255,255,255,0.85)';
-      ctx.font      = font(34, 700);
+      ctx.font      = font(32, 700);
       ctx.textAlign = 'left';
       ctx.fillText(st.value, x, subY);
-      ctx.fillStyle = 'rgba(255,255,255,0.45)';
-      ctx.font      = font(14);
-      ctx.fillText(st.label, x, subY + 20);
+      ctx.fillStyle = 'rgba(255,255,255,0.40)';
+      ctx.font      = font(13);
+      ctx.fillText(st.label, x, subY + 19);
     });
 
     // ── Divider
     ctx.strokeStyle = 'rgba(255,255,255,0.12)';
     ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(60, 510); ctx.lineTo(700, 510); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(60, 470); ctx.lineTo(700, 470); ctx.stroke();
 
     // ── Mini field (right panel)
     _drawMiniField(ctx, Stats.directionsByResult(filteredAtBats || []), 730, 50, 420, 390);
@@ -291,7 +310,7 @@ const Share = (() => {
     // ── 特殊能力バッジ
     const abs = abilities || [];
     if (abs.length > 0) {
-      const abY      = 530;
+      const abY      = 490;
       const badgeH   = 46;
       const badgeGap = 10;
       const catColors = Stats.ABILITY_CATEGORIES;
@@ -341,7 +360,7 @@ const Share = (() => {
     }
 
     // ── 区切り線（能力エリア下）
-    const footerDivY = abs.length > 5 ? 710 : abs.length > 0 ? 645 : 530;
+    const footerDivY = abs.length > 5 ? 700 : abs.length > 0 ? 630 : 490;
     ctx.strokeStyle = 'rgba(255,255,255,0.08)';
     ctx.lineWidth   = 1;
     ctx.beginPath(); ctx.moveTo(60, footerDivY); ctx.lineTo(W - 60, footerDivY); ctx.stroke();
@@ -414,29 +433,47 @@ const Share = (() => {
 
     ctx.globalAlpha = 1;
 
-    // spray dots
+    // spray dots — field.js の全ゾーンに対応
     const hitCounts = dirData.hit || {};
     const outCounts = dirData.out || {};
     const CENTERS = {
-      if3:{cx:113,cy:204}, ifss:{cx:131,cy:195}, if2:{cx:150,cy:192},
-      if2b:{cx:169,cy:195}, if1:{cx:187,cy:204},
-      lf:{cx:55,cy:108}, cf:{cx:150,cy:83}, rf:{cx:245,cy:108}, bs:{cx:150,cy:18},
+      if3:  {cx:113,cy:204}, ifss:{cx:131,cy:195}, if2:{cx:150,cy:192},
+      if2b: {cx:169,cy:195}, if1: {cx:187,cy:204},
+      lfl:  {cx:22, cy:135}, lf:  {cx:55, cy:108}, lc: {cx:108,cy:88},
+      cf:   {cx:150,cy:72},  rc:  {cx:192,cy:88},  rf: {cx:245,cy:108},
+      rfl:  {cx:278,cy:135}, bs:  {cx:150,cy:18},
     };
+
+    const allZones = Object.keys(CENTERS);
+    const maxH = Math.max(1, ...allZones.map(z => hitCounts[z] || 0));
+    const maxO = Math.max(1, ...allZones.map(z => outCounts[z] || 0));
 
     for (const [zid, zc] of Object.entries(CENTERS)) {
       const hc = hitCounts[zid] || 0;
       const oc = outCounts[zid] || 0;
-      if (hc > 0) {
-        ctx.fillStyle = 'rgba(22,163,74,0.9)';
+
+      // アウト（グレー・後ろに描画）
+      if (oc > 0) {
+        const r = Math.round((8 + (oc / maxO) * 14) * sx);
+        ctx.fillStyle = 'rgba(156,163,175,0.65)';
         ctx.beginPath();
-        ctx.arc(zc.cx * sx, zc.cy * sy, Math.min(18, 7 + hc * 2) * sx, 0, Math.PI * 2);
+        ctx.arc((zc.cx + 5) * sx, (zc.cy + 5) * sy, r, 0, Math.PI * 2);
         ctx.fill();
       }
-      if (oc > 0) {
-        ctx.fillStyle = 'rgba(156,163,175,0.9)';
+      // ヒット（緑・前に描画）
+      if (hc > 0) {
+        const r = Math.round((9 + (hc / maxH) * 16) * sx);
+        ctx.fillStyle = 'rgba(62,207,142,0.92)';
         ctx.beginPath();
-        ctx.arc((zc.cx + 7) * sx, (zc.cy + 7) * sy, Math.min(15, 5 + oc * 2) * sx, 0, Math.PI * 2);
+        ctx.arc(zc.cx * sx, zc.cy * sy, r, 0, Math.PI * 2);
         ctx.fill();
+        // 数字ラベル
+        ctx.fillStyle = '#fff';
+        ctx.font = `bold ${Math.round(13 * sx)}px system-ui,sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(hc, zc.cx * sx, zc.cy * sy);
+        ctx.textBaseline = 'alphabetic';
       }
     }
 

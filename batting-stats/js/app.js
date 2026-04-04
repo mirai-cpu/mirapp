@@ -63,9 +63,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   // i18n が未ロードの場合のポジション名フォールバック
   const POS_FALLBACK = { 1:'投手', 2:'捕手', 3:'一塁', 4:'二塁', 5:'三塁', 6:'遊撃', 7:'左翼', 8:'中堅', 9:'右翼' };
 
+  // 守備位置番号 → フィールドゾーンID
+  const POS_TO_ZONE = { 1:'if2', 3:'if1', 4:'if2b', 5:'if3', 6:'ifss', 7:'lf', 8:'cf', 9:'rf' };
+
   const FIELDER_POS_MAP = {
     single: POS_ALL,
-    go:     POS_INFIELD,
+    go:     POS_ALL,
     fo:     POS_ALL,
     lo:     POS_ALL,
     e:      POS_ALL,
@@ -74,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     dp:     POS_INFIELD,
   };
 
-  const INFIELD_ONLY_RESULTS = new Set(['go', 'sb', 'dp']);
+  const INFIELD_ONLY_RESULTS = new Set(['sb', 'dp']);
 
   let pitcherHand    = 'R';
   let selectedResult = null;
@@ -134,15 +137,29 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (selectedResult === result) {
         selectedResult = null;
         btn.classList.remove('selected');
+        selectedKType = null;
+        infieldHit    = false;
+        selectedPos   = null;
+        selectedDir   = null;
       } else {
         resultButtons.querySelectorAll('.result-btn').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
+        selectedKType = null;
+        infieldHit    = false;
+
+        // ポジションが選択済みで、新しい結果でもそのポジションが有効かチェック
+        const newPosSet = FIELDER_POS_MAP[result];
+        if (selectedPos && newPosSet && newPosSet.includes(selectedPos)) {
+          // ポジション維持・方向を再マッピング
+          selectedDir = POS_TO_ZONE[selectedPos] || selectedDir;
+        } else {
+          // 新しい結果でポジション不適合 → リセット
+          selectedPos = null;
+          selectedDir = null;
+        }
+
         selectedResult = result;
       }
-      selectedKType = null;
-      infieldHit    = false;
-      selectedPos   = null;
-      selectedDir   = null;
       updateSubSections();
     });
   });
@@ -207,7 +224,25 @@ document.addEventListener('DOMContentLoaded', async () => {
       btn.addEventListener('click', () => {
         const pos = parseInt(btn.dataset.pos);
         selectedPos = selectedPos === pos ? null : pos;
+        if (selectedPos) {
+          // ポジションに対応するゾーンを常に更新
+          const autoZone = POS_TO_ZONE[selectedPos] || null;
+          if (autoZone) {
+            selectedDir = autoZone;
+            directionLabel.textContent = Field.getZoneName(autoZone);
+          }
+        } else {
+          // ポジション解除時は方向もクリア
+          selectedDir = null;
+          directionLabel.textContent = '';
+        }
         buildFielderPosButtons(positions);
+        // フィールド図を更新
+        const infieldOnly = INFIELD_ONLY_RESULTS.has(selectedResult) || (selectedResult === 'single' && infieldHit);
+        Field.render('field-diagram', selectedDir, zone => {
+          selectedDir = zone;
+          directionLabel.textContent = zone ? Field.getZoneName(zone) : '';
+        }, infieldOnly, false);
       });
     });
   }

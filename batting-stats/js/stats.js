@@ -130,15 +130,19 @@ const Stats = (() => {
     return counts;
   }
 
+  // 守備位置番号 → フィールドゾーンID（方向未入力時の補完用）
+  const POS_TO_ZONE = { 1:'if2', 3:'if1', 4:'if2b', 5:'if3', 6:'ifss', 7:'lf', 8:'cf', 9:'rf' };
+
   // Direction counts split by hit vs non-hit (for spray heatmap)
   function directionsByResult(atBats) {
     const hit = {}, out = {};
     for (const ab of atBats) {
-      if (!ab.direction) continue;
+      const zone = ab.direction || (ab.fielderPos ? POS_TO_ZONE[ab.fielderPos] : null);
+      if (!zone) continue;
       const rt = RESULT_TYPES[ab.result];
       if (!rt) continue;
       const target = rt.hit ? hit : out;
-      target[ab.direction] = (target[ab.direction] || 0) + 1;
+      target[zone] = (target[zone] || 0) + 1;
     }
     return { hit, out };
   }
@@ -465,6 +469,50 @@ const Stats = (() => {
       hint: '打率.400以上（30打数〜）' },
   ];
 
+  // ── 試合別成績（日付単位）能力用 ────────────────────────────────
+  const ABILITIES_GAME = [
+    { id: 'g_multi2',   name: 'マルチヒット',     icon: '🔥', cat: 'game',
+      cond: (_s, _abs, games) => games.some(g => g.s.h >= 2),
+      hint: '1試合で2安打以上' },
+    { id: 'g_mouda',    name: '猛打賞',           icon: '💥', cat: 'game',
+      cond: (_s, _abs, games) => games.some(g => g.s.h >= 3),
+      hint: '1試合で3安打以上' },
+    { id: 'g_bigday',   name: '大暴れ',           icon: '🌊', cat: 'game',
+      cond: (_s, _abs, games) => games.some(g => g.s.h >= 4),
+      hint: '1試合で4安打以上' },
+    { id: 'g_hr_game',  name: '一発男',           icon: '💣', cat: 'game',
+      cond: (_s, _abs, games) => games.some(g => g.s.hr >= 1),
+      hint: '1試合でホームラン' },
+    { id: 'g_multi_hr', name: 'マルチアーチ',     icon: '🏟️', cat: 'game',
+      cond: (_s, _abs, games) => games.some(g => g.s.hr >= 2),
+      hint: '1試合で2本塁打以上' },
+    { id: 'g_rbi3',     name: '打点の塊',         icon: '💰', cat: 'game',
+      cond: (_s, _abs, games) => games.some(g => g.s.rbi >= 3),
+      hint: '1試合で3打点以上' },
+    { id: 'g_rbi5',     name: '大打点',           icon: '🥇', cat: 'game',
+      cond: (_s, _abs, games) => games.some(g => g.s.rbi >= 5),
+      hint: '1試合で5打点以上' },
+    { id: 'g_nok',      name: '三振なし',         icon: '✅', cat: 'game',
+      cond: (_s, _abs, games) => games.some(g => g.s.pa >= 3 && g.s.k === 0),
+      hint: '1試合3打席以上で三振0' },
+    { id: 'g_perfect',  name: '全打席出塁',       icon: '⭐', cat: 'game',
+      cond: (_s, _abs, games) => games.some(g => {
+        const outs = g.abs.filter(a => RESULT_TYPES[a.result]?.category === 'out').length;
+        return g.s.pa >= 3 && outs === 0;
+      }),
+      hint: '1試合3打席以上でアウト0' },
+    { id: 'g_cycle',    name: 'サイクルヒット',   icon: '🌟', cat: 'game',
+      cond: (_s, _abs, games) => games.some(g =>
+        g.s.single >= 1 && g.s.double >= 1 && g.s.triple >= 1 && g.s.hr >= 1),
+      hint: '1試合で単打・二塁打・三塁打・本塁打を達成' },
+    { id: 'g_multi5',   name: '猛打賞マスター',   icon: '👑', cat: 'game',
+      cond: (_s, _abs, games) => games.filter(g => g.s.h >= 3).length >= 5,
+      hint: '猛打賞を5試合以上達成' },
+    { id: 'g_bigshot',  name: 'ビッグゲーム',     icon: '🎯', cat: 'game',
+      cond: (_s, _abs, games) => games.some(g => g.s.hr >= 1 && g.s.rbi >= 3),
+      hint: '1試合でHR & 3打点以上' },
+  ];
+
   const ABILITY_CATEGORIES = {
     power:     { label: 'パワー',   color: '#ef4444' },
     contact:   { label: 'コンタクト', color: '#10b981' },
@@ -473,14 +521,28 @@ const Stats = (() => {
     vs:        { label: '対投手',   color: '#8b5cf6' },
     direction: { label: '打球方向', color: '#eab308' },
     career:    { label: 'キャリア', color: '#06b6d4' },
+    game:      { label: '試合MVP',  color: '#ec4899' },
     special:   { label: '特殊',     color: '#f59e0b' },
   };
 
+  // 日付ごとの試合成績を返す
+  function getGameStats(atBats) {
+    const byDate = {};
+    for (const ab of atBats) {
+      const d = ab.date || 'unknown';
+      if (!byDate[d]) byDate[d] = [];
+      byDate[d].push(ab);
+    }
+    return Object.values(byDate).map(abs => ({ abs, s: calculate(abs) }));
+  }
+
   function getAbilityResults(atBats) {
-    const s = calculate(atBats);
-    return ABILITIES.map(ab => ({
+    const s     = calculate(atBats);
+    const games = getGameStats(atBats);
+    const all   = [...ABILITIES, ...ABILITIES_GAME];
+    return all.map(ab => ({
       ...ab,
-      unlocked: (() => { try { return !!ab.cond(s, atBats); } catch { return false; } })(),
+      unlocked: (() => { try { return !!ab.cond(s, atBats, games); } catch { return false; } })(),
     }));
   }
 
