@@ -12,7 +12,7 @@ const RESULT_TYPES = {
   hr:     { atBat: true,  hit: true,  tb: 4, showDir: true,  category: 'hit' },
   bb:     { atBat: false, hit: false, tb: 0, showDir: false, category: 'walk' },
   hbp:    { atBat: false, hit: false, tb: 0, showDir: false, category: 'walk' },
-  k:      { atBat: true,  hit: false, tb: 0, showDir: false, category: 'out' },
+  k:      { atBat: true,  hit: false, tb: 0, showDir: true,  category: 'out' },
   go:     { atBat: true,  hit: false, tb: 0, showDir: true,  category: 'out' },
   fo:     { atBat: true,  hit: false, tb: 0, showDir: true,  category: 'out' },
   lo:     { atBat: true,  hit: false, tb: 0, showDir: true,  category: 'out' },
@@ -207,7 +207,7 @@ const Stats = (() => {
   // ── 打者タイプ診断 ─────────────────────────────────────────────
   // Returns { typeKey, descKey, power, meet, eye } or { remaining } if PA < 20
   function getDiagnosis(s) {
-    if (s.pa < 20) return { typeKey: null, descKey: null, remaining: 20 - s.pa };
+    if (s.pa < 10) return { typeKey: null, descKey: null, remaining: 10 - s.pa };
 
     const hrRate = s.ab  > 0 ? s.hr / s.ab  : 0;
     const bbRate = s.pa  > 0 ? s.bb / s.pa  : 0;

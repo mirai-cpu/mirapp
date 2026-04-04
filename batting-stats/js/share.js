@@ -238,62 +238,61 @@ const Share = (() => {
       ctx.fillText(I18n.t(diag.typeKey), 60, 120);
     }
 
-    // ── Main stats (4 columns)
+    // ── Main stats (2 rows × 2 columns)
     const mainStats = [
       { label: I18n.t('stat.avg'), value: Stats.fmtAvg(s.avg)   },
+      { label: I18n.t('stat.ops'), value: Stats.fmtOps(s.ops)   },
       { label: I18n.t('stat.obp'), value: Stats.fmtRate(s.obp)  },
       { label: I18n.t('stat.slg'), value: Stats.fmtRate(s.slg)  },
-      { label: I18n.t('stat.ops'), value: Stats.fmtOps(s.ops)   },
     ];
-    const colW = 170, statsStartX = 60, statsY = 230;
+    const colW = 220, statsStartX = 60, statsY = 230;
     mainStats.forEach((st, i) => {
-      const x = statsStartX + i * colW;
+      const col = i % 2, row = Math.floor(i / 2);
+      const x   = statsStartX + col * colW;
+      const y   = statsY + row * 100;
       ctx.fillStyle = '#ffffff';
-      ctx.font      = font(64, 800);
+      ctx.font      = font(56, 800);
       ctx.textAlign = 'left';
-      ctx.fillText(st.value, x, statsY);
+      ctx.fillText(st.value, x, y);
       ctx.fillStyle = 'rgba(255,255,255,0.55)';
-      ctx.font      = font(18, 600);
-      ctx.fillText(st.label, x, statsY + 32);
+      ctx.font      = font(17, 600);
+      ctx.fillText(st.label, x, y + 26);
     });
 
-    // ── Sub stats (G / H / HR / RBI)
+    // ── Sub stats (G / PA / H / HR / RBI / K)
     const subStats = [
       { label: I18n.t('stat.games'), value: s.games },
+      { label: 'PA',                 value: s.pa    },
       { label: I18n.t('stat.h'),     value: s.h     },
       { label: I18n.t('stat.hr'),    value: s.hr    },
       { label: I18n.t('stat.rbi'),   value: s.rbi   },
+      { label: '三振',               value: s.k     },
     ];
-    const subY = 340;
+    const subColW = 90, subY = 460;
     subStats.forEach((st, i) => {
-      const x = statsStartX + i * colW;
+      const x = statsStartX + i * subColW;
       ctx.fillStyle = 'rgba(255,255,255,0.85)';
-      ctx.font      = font(42, 700);
+      ctx.font      = font(34, 700);
       ctx.textAlign = 'left';
       ctx.fillText(st.value, x, subY);
       ctx.fillStyle = 'rgba(255,255,255,0.45)';
-      ctx.font      = font(16);
-      ctx.fillText(st.label, x, subY + 24);
+      ctx.font      = font(14);
+      ctx.fillText(st.label, x, subY + 20);
     });
 
     // ── Divider
     ctx.strokeStyle = 'rgba(255,255,255,0.12)';
     ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(60, 430); ctx.lineTo(740, 430); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(60, 510); ctx.lineTo(700, 510); ctx.stroke();
 
-    // ── Radar chart (right panel) — draw manually on canvas
-    if (diag && diag.typeKey) {
-      _drawRadar(ctx, diag, 900, 260, 160);
-    }
-
-    // ── Mini field (right panel background)
-    _drawMiniField(ctx, Stats.directionsByResult(filteredAtBats || []), 760, 60, 380, 350);
+    // ── Mini field (right panel)
+    _drawMiniField(ctx, Stats.directionsByResult(filteredAtBats || []), 730, 50, 420, 390);
 
     // ── 特殊能力バッジ
     const abs = abilities || [];
     if (abs.length > 0) {
-      const abY      = 455;
-      const badgeH   = 48;
+      const abY      = 530;
+      const badgeH   = 46;
       const badgeGap = 10;
       const catColors = Stats.ABILITY_CATEGORIES;
 
@@ -342,7 +341,7 @@ const Share = (() => {
     }
 
     // ── 区切り線（能力エリア下）
-    const footerDivY = abs.length > 5 ? 690 : abs.length > 0 ? 625 : 460;
+    const footerDivY = abs.length > 5 ? 710 : abs.length > 0 ? 645 : 530;
     ctx.strokeStyle = 'rgba(255,255,255,0.08)';
     ctx.lineWidth   = 1;
     ctx.beginPath(); ctx.moveTo(60, footerDivY); ctx.lineTo(W - 60, footerDivY); ctx.stroke();
@@ -442,64 +441,6 @@ const Share = (() => {
     }
 
     ctx.restore();
-  }
-
-  function _drawRadar(ctx, diag, cx, cy, r) {
-    const vals  = [diag.power, diag.meet, diag.eye];
-    const count = 3;
-    const angle = i => (i * 2 * Math.PI / count) - Math.PI / 2;
-
-    // Background rings
-    [0.25, 0.5, 0.75, 1].forEach(t => {
-      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      for (let i = 0; i < count; i++) {
-        const a = angle(i);
-        const px = cx + r * t * Math.cos(a);
-        const py = cy + r * t * Math.sin(a);
-        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-      }
-      ctx.closePath();
-      ctx.stroke();
-    });
-
-    // Axes
-    for (let i = 0; i < count; i++) {
-      const a = angle(i);
-      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a));
-      ctx.stroke();
-    }
-
-    // Data polygon
-    ctx.fillStyle = 'rgba(37,99,235,0.3)';
-    ctx.strokeStyle = '#60a5fa';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    for (let i = 0; i < count; i++) {
-      const a = angle(i);
-      const v = vals[i];
-      const px = cx + r * v * Math.cos(a);
-      const py = cy + r * v * Math.sin(a);
-      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-    }
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    // Points
-    ctx.fillStyle = '#93c5fd';
-    for (let i = 0; i < count; i++) {
-      const a = angle(i);
-      const px = cx + r * vals[i] * Math.cos(a);
-      const py = cy + r * vals[i] * Math.sin(a);
-      ctx.beginPath();
-      ctx.arc(px, py, 5, 0, Math.PI * 2);
-      ctx.fill();
-    }
   }
 
   return { init, generateShareCard };
