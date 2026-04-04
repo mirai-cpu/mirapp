@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#111c30"/>
+      <stop offset="100%" stop-color="#0b1120"/>
+    </linearGradient>
+    <linearGradient id="boltGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#7bb8ff"/>
+      <stop offset="100%" stop-color="#4f9eff"/>
+    </linearGradient>
+    <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#4f9eff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#4f9eff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="14" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="512" height="512" fill="url(#bgGrad)" rx="96"/>
+
+  <!-- 背景グロー -->
+  <ellipse cx="256" cy="260" rx="160" ry="180" fill="url(#glowGrad)"/>
+
+  <!-- 稲妻ボルト（グロー付き） -->
+  <path d="M 310 120 L 210 265 L 268 265 L 202 395 L 318 248 L 257 248 Z"
+        fill="#4f9eff" opacity="0.35" filter="url(#glow)"/>
+
+  <!-- 稲妻ボルト本体 -->
+  <path d="M 310 120 L 210 265 L 268 265 L 202 395 L 318 248 L 257 248 Z"
+        fill="url(#boltGrad)" filter="url(#softGlow)"/>
+
+  <!-- ハイライト（上部） -->
+  <path d="M 310 120 L 265 190 L 295 190 L 310 120 Z"
+        fill="white" fill-opacity="0.25"/>
+
+  <!-- 小さな輝き（右上） -->
+  <circle cx="360" cy="148" r="4" fill="#7bb8ff" fill-opacity="0.7"/>
+  <circle cx="372" cy="136" r="2.5" fill="#7bb8ff" fill-opacity="0.5"/>
+
+  <!-- 小さな輝き（左下） -->
+  <circle cx="155" cy="368" r="3.5" fill="#4f9eff" fill-opacity="0.6"/>
+  <circle cx="143" cy="382" r="2" fill="#4f9eff" fill-opacity="0.4"/>
+</svg>
