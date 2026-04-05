@@ -1349,3 +1349,75 @@ textarea { resize: vertical; min-height: 64px; }
   .modal { border-radius: 16px; max-height: 80vh; }
   .pwa-banner { left: 50%; right: auto; transform: translateX(-50%); width: 560px; border-radius: var(--radius) var(--radius) 0 0; }
 }
+
+/* ── 使い方ボタン ─────────────────────────── */
+.btn-help {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.1s, color 0.1s;
+}
+.btn-help:active { background: var(--surface); color: var(--accent); }
+
+/* ── チュートリアルモーダル ──────────────── */
+.tutorial-modal {
+  padding: 28px 20px 28px;
+  gap: 20px;
+}
+.tutorial-slide {
+  text-align: center;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.tutorial-icon {
+  font-size: 52px;
+  line-height: 1;
+}
+.tutorial-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+.tutorial-body {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  text-align: left;
+}
+.tutorial-body strong { color: var(--text); font-weight: 600; }
+.tutorial-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.tutorial-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.2s, transform 0.2s;
+}
+.tutorial-dot.active {
+  background: var(--accent);
+  transform: scale(1.25);
+}
+.tutorial-nav {
+  display: flex;
+  gap: 10px;
+}
+.tutorial-nav .btn-ghost { flex: 1; }
+.tutorial-nav .btn-primary { flex: 2; }

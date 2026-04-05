@@ -22,6 +22,7 @@
   <header class="app-header">
     <h1 class="app-title" data-i18n="app.title">打撃成績</h1>
     <div class="header-right">
+      <button class="btn-help" id="btn-help" aria-label="使い方">？</button>
       <button class="btn-theme" id="theme-toggle" aria-label="テーマ切替">🌙</button>
       <button class="btn-lang" id="lang-toggle" aria-label="言語切替">EN</button>
     </div>
@@ -412,6 +413,29 @@
     </div>
   </div>
 
+  <!-- ── チュートリアルモーダル ── -->
+  <div class="modal-overlay" id="tutorial-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="tutorial-title">
+    <div class="modal tutorial-modal">
+      <div class="tutorial-slide">
+        <div class="tutorial-icon" id="tutorial-icon">⚾</div>
+        <h2 class="tutorial-title" id="tutorial-title"></h2>
+        <p class="tutorial-body" id="tutorial-body"></p>
+      </div>
+      <div class="tutorial-dots" id="tutorial-dots">
+        <span class="tutorial-dot active"></span>
+        <span class="tutorial-dot"></span>
+        <span class="tutorial-dot"></span>
+        <span class="tutorial-dot"></span>
+        <span class="tutorial-dot"></span>
+      </div>
+      <div class="tutorial-nav">
+        <button class="btn-ghost" id="tutorial-prev">← 戻る</button>
+        <button class="btn-primary" id="tutorial-next">次へ →</button>
+      </div>
+      <button class="btn-ghost modal-close-btn" id="tutorial-close">スキップ</button>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.7/chart.umd.min.js" defer></script>
   <script src="js/i18n.js"></script>
@@ -420,6 +444,7 @@
   <script src="js/field.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/share.js"></script>
+  <script src="js/tutorial.js"></script>
   <script src="js/app.js"></script>
 
   <!-- Service Worker -->

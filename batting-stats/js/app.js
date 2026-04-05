@@ -580,6 +580,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ── シェアカード ──────────────────────────────────────────────
   Share.init();
 
+  // ── チュートリアル ────────────────────────────────────────────
+  Tutorial.init();
+
   // ── PWAインストールバナー ─────────────────────────────────────
   const _isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
   const _isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
