@@ -96,7 +96,8 @@ const Share = (() => {
     }).join('');
 
     picker.querySelectorAll('.share-ability-chip').forEach(chip => {
-      chip.addEventListener('click', () => {
+      chip.addEventListener('click', (e) => {
+        e.preventDefault(); // labelがinputへクリックを転送して2重発火するのを防ぐ
         const selected = document.querySelectorAll('.share-ability-chip.selected').length;
         const isNowSelected = chip.classList.contains('selected');
         if (!isNowSelected && selected >= 10) return; // 10個上限
