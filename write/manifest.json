@@ -1,0 +1,29 @@
+{
+  "name": "Write Quest",
+  "short_name": "WriteQuest",
+  "description": "書くたびにレベルアップするメモアプリ",
+  "start_url": "/write/",
+  "display": "standalone",
+  "background_color": "#1c1c21",
+  "theme_color": "#1c1c21",
+  "icons": [
+    {
+      "src": "/write/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/write/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/write/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
