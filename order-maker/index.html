@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>スタメンメーカー — Somira Lab</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:      #1c1c21;
+      --surface: #242429;
+      --card:    #1f1f26;
+      --border:  #323239;
+      --accent:  #f0a855;
+      --text:    #ece9e3;
+      --muted:   #6e6b65;
+      --green:   #3ecf8e;
+      --red:     #f87171;
+      --yellow:  #f0a855;
+      --radius:  10px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',system-ui,sans-serif;
+      min-height: 100vh; display: flex; flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--bg); border-bottom: 1px solid var(--border);
+      padding: 0 16px; height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-left { display: flex; align-items: center; gap: 10px; }
+    .header-back { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .15s; }
+    .header-back:hover { color: var(--text); }
+    .header-title { font-size: 16px; font-weight: 700; }
+    .header-right { display: flex; gap: 8px; }
+
+    /* ── Buttons ── */
+    .btn {
+      border: none; cursor: pointer; border-radius: 8px;
+      font-size: 13px; font-weight: 600; padding: 7px 14px;
+      transition: opacity .15s, transform .15s; font-family: inherit;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .btn-ghost:hover { color: var(--text); border-color: var(--accent); }
+    .btn-danger { background: rgba(248,113,113,.12); color: var(--red); border: 1px solid rgba(248,113,113,.2); }
+    .btn-share { background: var(--accent); color: #fff; display: flex; align-items: center; gap: 6px; }
+    .btn-sm { padding: 4px 10px; font-size: 12px; }
+    .btn-xs { padding: 3px 8px; font-size: 11px; }
+
+    /* ── Tab Nav ── */
+    .tab-nav { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); overflow-x: auto; }
+    .tab-btn {
+      flex: 1; min-width: 72px; padding: 13px 6px;
+      background: none; border: none; color: var(--muted);
+      font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
+      border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
+      white-space: nowrap;
+    }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* ── Main ── */
+    main { flex: 1; max-width: 720px; width: 100%; margin: 0 auto; padding: 16px 14px 100px; }
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* ── Card ── */
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .card-title { font-size: 14px; font-weight: 700; }
+    .card-sub { font-size: 12px; color: var(--muted); }
+
+    /* ── Form ── */
+    .form-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 90px; }
+    label { font-size: 12px; color: var(--muted); font-weight: 600; }
+    input[type=text], input[type=number], input[type=date], select {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 7px; color: var(--text); font-size: 14px;
+      padding: 8px 10px; font-family: inherit; outline: none;
+      transition: border-color .15s; width: 100%;
+    }
+    input:focus, select:focus { border-color: var(--accent); }
+    select option { background: var(--surface); }
+
+    /* ── Toggle ── */
+    .toggle-bar { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 14px; }
+    .toggle-label { font-size: 13px; font-weight: 600; flex: 1; }
+    .toggle-desc { font-size: 12px; color: var(--muted); }
+    .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 999px; cursor: pointer; transition: background .2s; }
+    .toggle-slider::before { content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%; background: #fff; top: 3px; left: 3px; transition: transform .2s; }
+    .toggle input:checked + .toggle-slider { background: var(--accent); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+    /* ── Roster ── */
+    .roster-list { display: flex; flex-direction: column; gap: 8px; }
+    .roster-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
+    .roster-num { font-size: 16px; font-weight: 800; color: var(--accent); min-width: 28px; text-align: center; }
+    .roster-info { flex: 1; min-width: 0; }
+    .roster-name { font-size: 14px; font-weight: 600; }
+    .roster-pos { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 3px; }
+    .pos-chip { font-size: 11px; padding: 1px 6px; border-radius: 999px; background: rgba(79,158,255,.08); border: 1px solid rgba(79,158,255,.18); color: var(--accent); }
+    .roster-actions { display: flex; gap: 5px; flex-shrink: 0; }
+
+    /* ── Pos Grid ── */
+    .pos-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 6px; }
+    .pos-toggle {
+      border: 1px solid var(--border); border-radius: 7px; padding: 7px 4px;
+      text-align: center; cursor: pointer; font-size: 13px; font-weight: 600;
+      transition: all .15s; background: var(--surface); color: var(--muted); user-select: none;
+    }
+    .pos-toggle.on { background: rgba(240,168,85,.12); border-color: var(--accent); color: var(--accent); }
+
+    /* ── Order ── */
+    .match-bar { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 14px; }
+    .match-bar .form-group { flex: 1; min-width: 140px; }
+    .order-header { display: grid; grid-template-columns: 16px 32px 1fr 100px 28px; gap: 8px; padding: 0 12px 8px; font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: .05em; }
+    .order-slots { display: flex; flex-direction: column; gap: 7px; }
+    .order-slot { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; display: grid; grid-template-columns: 16px 32px 1fr 100px 28px; gap: 8px; align-items: center; transition: border-color .15s, opacity .15s; }
+    .order-slot.filled { border-color: rgba(240,168,85,.3); }
+    .order-slot.dragging { opacity: 0.35; }
+    .order-slot.drag-over { border-color: var(--accent) !important; background: rgba(240,168,85,.08); }
+    .drag-handle { cursor: grab; color: var(--muted); font-size: 13px; display: flex; align-items: center; justify-content: center; touch-action: none; user-select: none; }
+    .drag-handle:active { cursor: grabbing; }
+    .slot-num { font-size: 18px; font-weight: 800; color: var(--yellow); text-align: center; }
+    .slot-player select, .slot-pos select { width: 100%; background: var(--card); }
+    .guest-input { width: 100%; margin-top: 5px; font-size: 13px; background: var(--card); border: 1px dashed var(--accent); border-radius: 7px; color: var(--text); padding: 5px 8px; font-family: inherit; outline: none; }
+    .guest-input:focus { border-style: solid; }
+    .slot-clear button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 15px; padding: 3px; border-radius: 5px; transition: color .15s; }
+    .slot-clear button:hover { color: var(--red); }
+
+    /* ── Saved ── */
+    .saved-bar { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .saved-chips { display: flex; gap: 7px; flex-wrap: wrap; }
+    .saved-chip { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 5px 10px; font-size: 12px; cursor: pointer; transition: border-color .15s; }
+    .saved-chip:hover { border-color: var(--accent); }
+    .chip-del { color: var(--muted); font-size: 10px; }
+    .chip-del:hover { color: var(--red); }
+
+    /* ── Pitcher ── */
+    .pitcher-list { display: flex; flex-direction: column; gap: 8px; }
+    .pitcher-row { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; display: grid; grid-template-columns: 28px 1fr auto; gap: 8px; align-items: center; }
+    .pitcher-order { font-size: 18px; font-weight: 800; color: var(--accent); text-align: center; }
+    .pitcher-actions { display: flex; gap: 5px; }
+
+    /* ── Gantt ── */
+    .gantt-wrap { overflow-x: auto; }
+    .gantt-table { border-collapse: collapse; width: 100%; min-width: 320px; }
+    .gantt-table th { font-size: 11px; color: var(--muted); font-weight: 700; text-align: center; padding: 5px 2px; width: 32px; }
+    .gantt-table td.g-name { font-size: 12px; font-weight: 600; white-space: nowrap; padding: 6px 8px 6px 0; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
+    .gantt-cell {
+      width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 4px;
+      cursor: pointer; transition: background .1s; background: var(--surface);
+      position: relative;
+    }
+    .gantt-cell:hover { background: var(--card); border-color: var(--accent); }
+    .gantt-cell.filled { background: var(--accent); border-color: var(--accent); }
+    .gantt-cell.pending { background: rgba(240,168,85,.3); border-color: var(--accent); border-style: dashed; }
+    .gantt-cell.filled .inning-num { color: rgba(0,0,0,.6); }
+    .inning-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--muted); pointer-events: none; }
+
+    /* ── Extra DH slots ── */
+    .extra-slot { border-color: rgba(62,207,142,.25) !important; }
+    .extra-badge { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 999px; background: rgba(62,207,142,.12); border: 1px solid rgba(62,207,142,.25); color: var(--green); white-space: nowrap; }
+
+    /* ── Field SVG ── */
+    .field-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
+    .field-title { font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 12px; }
+    #field-svg { width: 100%; max-width: 400px; display: block; margin: 0 auto; }
+
+    /* ── Print ── */
+    .print-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .print-title { font-size: 20px; font-weight: 800; margin-bottom: 2px; }
+    .print-meta { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+    .print-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+    .print-table th { font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: .06em; text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--border); }
+    .print-table td { padding: 9px 10px; font-size: 13px; border-bottom: 1px solid var(--border); }
+    .print-table tr:last-child td { border-bottom: none; }
+    .t-order { font-weight: 800; color: var(--yellow); text-align: center; }
+    .t-num { color: var(--accent); font-weight: 700; }
+    .section-label { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin: 16px 0 8px; }
+    .share-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+    /* ── Theme Modal ── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.65); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
+    .modal-overlay.hidden { display: none; }
+    .modal { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .modal-title { font-size: 18px; font-weight: 800; }
+    .modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 4px; transition: color .15s; }
+    .modal-close:hover { color: var(--text); }
+    .theme-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+    .theme-opt { border: 2px solid transparent; border-radius: 10px; padding: 10px 6px; cursor: pointer; text-align: center; transition: border-color .15s; background: var(--surface); }
+    .theme-opt:hover { border-color: var(--muted); }
+    .theme-opt.selected { border-color: var(--accent); }
+    .theme-swatch { display: flex; gap: 4px; justify-content: center; margin-bottom: 6px; }
+    .swatch-circle { width: 18px; height: 18px; border-radius: 50%; }
+    .theme-name { font-size: 11px; font-weight: 700; color: var(--muted); }
+
+    /* ── Tutorial ── */
+    .tut-steps { display: flex; flex-direction: column; gap: 16px; }
+    .tut-step { display: flex; gap: 14px; align-items: flex-start; }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .step-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* ── Empty / Toast ── */
+    .empty { text-align: center; padding: 36px 20px; color: var(--muted); }
+    .empty-icon { font-size: 36px; margin-bottom: 10px; }
+    .empty p { font-size: 13px; line-height: 1.8; }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--green); color: #fff; font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 999px; box-shadow: 0 4px 20px rgba(0,0,0,.4); transition: transform .3s ease; z-index: 999; pointer-events: none; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.error { background: var(--red); }
+
+    @media (max-width: 480px) {
+      .order-header, .order-slot { grid-template-columns: 14px 26px 1fr 82px 22px; gap: 5px; }
+      .theme-grid { grid-template-columns: repeat(4,1fr); }
+    }
+
+    @media print {
+      header, .tab-nav, .share-row, .field-wrap { display: none !important; }
+      body { background: #fff; color: #000; }
+      .print-card { border: none; padding: 0; background: none; }
+      .print-table td, .print-table th { color: #000; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <a href="/" class="header-back">← Somira Lab</a>
+    <div class="header-title">📋 スタメンメーカー</div>
+  </div>
+  <div class="header-right">
+    <button class="btn btn-ghost btn-sm" onclick="openTutorial()">使い方</button>
+    <button class="btn btn-ghost btn-sm" onclick="openTheme()">🎨</button>
+  </div>
+</header>
+
+<div class="tab-nav">
+  <button class="tab-btn active" id="tab-roster"  onclick="switchTab('roster')">👥 選手</button>
+  <button class="tab-btn"        id="tab-order"   onclick="switchTab('order')">📋 オーダー</button>
+  <button class="tab-btn"        id="tab-pitcher" onclick="switchTab('pitcher')">⚾ 投手陣</button>
+  <button class="tab-btn"        id="tab-print"   onclick="switchTab('print')">🖨️ スタメン表</button>
+</div>
+
+<main>
+
+  <!-- ── 選手登録 ── -->
+  <section class="section active" id="sec-roster">
+    <div class="card">
+      <div class="card-header"><span class="card-title">選手を追加</span></div>
+      <div class="form-row">
+        <div class="form-group" style="flex:0 0 76px">
+          <label>背番号</label>
+          <input type="number" id="inp-num" placeholder="10" min="0" max="99">
+        </div>
+        <div class="form-group">
+          <label>選手名</label>
+          <input type="text" id="inp-name" placeholder="山田 太郎" maxlength="20">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label>守備可能ポジション</label>
+        <div class="pos-grid" id="add-pos-grid"></div>
+      </div>
+      <button class="btn btn-primary" onclick="addPlayer()">＋ 追加する</button>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">登録選手一覧</span>
+        <span class="card-sub" id="roster-count">0人</span>
+      </div>
+      <div class="roster-list" id="roster-list">
+        <div class="empty"><div class="empty-icon">👥</div><p>まだ選手が登録されていません</p></div>
+      </div>
+    </div>
+
+    <!-- ポジション集計 -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">ポジション別 人数</span>
+        <span class="card-sub" id="pos-coverage"></span>
+      </div>
+      <div id="pos-stats-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px"></div>
+      <p style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.8">
+        <span style="color:var(--green)">●</span> 2人以上 &nbsp;
+        <span style="color:var(--yellow)">●</span> 1人 &nbsp;
+        <span style="color:var(--red)">●</span> 0人（不足）
+      </p>
+    </div>
+
+    <!-- エクスポート/インポート -->
+    <div class="card">
+      <div class="card-header"><span class="card-title">データ管理</span></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-ghost" onclick="exportRoster()">⬇️ 書き出し（エクスポート）</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('roster-file-input').click()">⬆️ 読み込み（インポート）</button>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.8">
+        選手データをJSONファイルで保存・読み込みできます。<br>機種変更時やバックアップにご利用ください。
+      </p>
+      <input type="file" id="roster-file-input" accept=".json" style="display:none" onchange="importRoster(event)">
+    </div>
+  </section>
+
+  <!-- ── オーダー ── -->
+  <section class="section" id="sec-order">
+    <div class="card">
+      <div class="card-header"><span class="card-title">試合情報</span></div>
+      <div class="match-bar">
+        <div class="form-group">
+          <label>オーダー名</label>
+          <input type="text" id="lineup-name" placeholder="例：vs チームA 先発" maxlength="30">
+        </div>
+        <div class="form-group" style="flex:0 0 150px">
+          <label>試合日</label>
+          <input type="date" id="match-date">
+        </div>
+      </div>
+      <div class="toggle-bar">
+        <div style="flex:1">
+          <div class="toggle-label">DH制（指名打者）</div>
+          <div class="toggle-desc">ONにするとDH選手を設定できます</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="dh-toggle" onchange="onDHChange()">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="saved-bar">
+        <button class="btn btn-primary btn-sm" onclick="saveLineup()">💾 保存</button>
+        <button class="btn btn-ghost btn-sm" onclick="clearOrder()">クリア</button>
+      </div>
+      <div id="saved-chips" class="saved-chips"></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">打順・守備設定</span>
+        <span class="card-sub" id="order-filled">0 / 9</span>
+      </div>
+      <div class="order-header">
+        <div></div><div style="text-align:center">打順</div><div>選手</div><div>守備</div><div></div>
+      </div>
+      <div class="order-slots" id="order-slots"></div>
+      <div style="margin-top:10px">
+        <button class="btn btn-ghost btn-sm" onclick="addExtraSlot()" id="add-extra-btn">＋ 指名打者を追加</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 投手陣 ── -->
+  <section class="section" id="sec-pitcher">
+    <div class="card">
+      <div class="card-header"><span class="card-title">投手を追加</span></div>
+      <div class="form-row" style="align-items:flex-end">
+        <div class="form-group">
+          <label>投手</label>
+          <select id="inp-pitcher"><option value="">— 選手を選ぶ —</option></select>
+        </div>
+        <div><button class="btn btn-primary" onclick="addPitcher()">追加</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">投手リスト（登板順）</span>
+      </div>
+      <div class="pitcher-list" id="pitcher-list">
+        <div class="empty"><div class="empty-icon">⚾</div><p>投手が設定されていません</p></div>
+      </div>
+    </div>
+    <div class="card" id="gantt-card" style="display:none">
+      <div class="card-header">
+        <span class="card-title">イニング担当（ガントチャート）</span>
+        <span class="card-sub">セルをタップして範囲を選択</span>
+      </div>
+      <div class="gantt-wrap">
+        <table class="gantt-table">
+          <thead>
+            <tr>
+              <th style="text-align:left;padding-left:4px">投手</th>
+              <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+              <th>6</th><th>7</th><th>8</th><th>9</th>
+            </tr>
+          </thead>
+          <tbody id="gantt-body"></tbody>
+        </table>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:10px">
+        1回目のタップ：開始回を選択（点線表示）→ 2回目のタップ：終了回を確定
+      </p>
+    </div>
+  </section>
+
+  <!-- ── スタメン表 ── -->
+  <section class="section" id="sec-print">
+    <!-- 守備配置図 -->
+    <div class="field-wrap">
+      <div class="field-title">守備配置図</div>
+      <svg id="field-svg" viewBox="0 0 400 370" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outfield grass -->
+        <path d="M 200,345 L 18,152 Q 200,22 382,152 Z" fill="#2d5a1e"/>
+        <!-- Inner outfield (lighter) -->
+        <path d="M 200,345 L 35,163 Q 200,40 365,163 Z" fill="#35692a"/>
+        <!-- Infield dirt -->
+        <path d="M 200,345 L 308,250 L 200,158 L 92,250 Z" fill="#8b6914" opacity=".9"/>
+        <!-- Pitcher's mound -->
+        <circle cx="200" cy="236" r="18" fill="#9b7520"/>
+        <!-- Foul lines -->
+        <line x1="200" y1="345" x2="18" y2="152" stroke="white" stroke-width="1.5" opacity=".5"/>
+        <line x1="200" y1="345" x2="382" y2="152" stroke="white" stroke-width="1.5" opacity=".5"/>
+        <!-- Diamond baselines -->
+        <line x1="200" y1="345" x2="308" y2="250" stroke="white" stroke-width="2"/>
+        <line x1="308" y1="250" x2="200" y2="158" stroke="white" stroke-width="2"/>
+        <line x1="200" y1="158" x2="92"  y2="250" stroke="white" stroke-width="2"/>
+        <line x1="92"  y1="250" x2="200" y2="345" stroke="white" stroke-width="2"/>
+        <!-- Bases -->
+        <rect x="299" y="242" width="18" height="18" rx="2" fill="white" transform="rotate(45,308,251)"/>
+        <rect x="191" y="150" width="18" height="18" rx="2" fill="white" transform="rotate(45,200,159)"/>
+        <rect x="83"  y="242" width="18" height="18" rx="2" fill="white" transform="rotate(45,92,251)"/>
+        <!-- Home plate -->
+        <polygon points="200,356 211,347 211,338 189,338 189,347" fill="white"/>
+        <!-- Pitcher rubber -->
+        <rect x="192" y="232" width="16" height="5" rx="2" fill="white" opacity=".8"/>
+        <!-- Player labels (dynamic) -->
+        <g id="field-labels"></g>
+      </svg>
+      <!-- DH badge (outside field) -->
+      <div id="dh-badge" style="display:none;text-align:center;margin-top:10px"></div>
+    </div>
+
+    <!-- スタメン表 -->
+    <div class="print-card">
+      <div class="print-title" id="print-title">スタメン</div>
+      <div class="print-meta" id="print-meta"></div>
+      <div class="section-label">打順・守備</div>
+      <table class="print-table">
+        <thead>
+          <tr>
+            <th style="text-align:center;width:42px">打順</th>
+            <th style="width:44px">番号</th>
+            <th>選手名</th>
+            <th style="width:60px">守備</th>
+          </tr>
+        </thead>
+        <tbody id="print-order-tbody"></tbody>
+      </table>
+      <div id="print-pitcher-section" style="display:none">
+        <div class="section-label">投手陣</div>
+        <table class="print-table">
+          <thead>
+            <tr>
+              <th style="text-align:center;width:42px">順</th>
+              <th style="width:44px">番号</th>
+              <th>選手名</th>
+              <th>担当</th>
+            </tr>
+          </thead>
+          <tbody id="print-pitcher-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="share-row">
+      <button class="btn btn-share" onclick="shareNative()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        シェアする
+      </button>
+      <button class="btn btn-ghost" onclick="copyText()">📋 テキストコピー</button>
+      <button class="btn btn-ghost" onclick="window.print()">🖨️ 印刷</button>
+      <button class="btn btn-ghost" onclick="switchTab('order')">← 戻る</button>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<!-- ── Theme Modal ── -->
+<div class="modal-overlay hidden" id="theme-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">🎨 テーマ</span>
+      <button class="modal-close" onclick="closeModal('theme-modal')">✕</button>
+    </div>
+    <div class="theme-grid" id="theme-grid"></div>
+  </div>
+</div>
+
+<!-- ── Tutorial Modal ── -->
+<div class="modal-overlay hidden" id="tutorial-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">📋 使い方</span>
+      <button class="modal-close" onclick="closeModal('tutorial-modal')">✕</button>
+    </div>
+    <div class="tut-steps">
+      <div class="tut-step"><div class="step-num">1</div><div><div class="step-title">👥 選手を登録</div><div class="step-desc">「選手」タブで背番号・名前・守備可能ポジションを登録。後から編集できます。</div></div></div>
+      <div class="tut-step"><div class="step-num">2</div><div><div class="step-title">📋 オーダーを組む</div><div class="step-desc">「オーダー」タブで1〜9番に選手と守備位置をアサイン。DH制の切替も可能。</div></div></div>
+      <div class="tut-step"><div class="step-num">3</div><div><div class="step-title">⚾ 投手陣を設定</div><div class="step-desc">「投手陣」タブで先発・中継ぎ・抑えの登板順と担当イニングを設定。</div></div></div>
+      <div class="tut-step"><div class="step-num">4</div><div><div class="step-title">🖨️ スタメン表を共有</div><div class="step-desc">「スタメン表」タブで守備配置図を確認。「シェアする」でLINE・X・メールなど各アプリに送れます。</div></div></div>
+    </div>
+    <div style="margin-top:24px">
+      <button class="btn btn-primary" style="width:100%" onclick="closeModal('tutorial-modal')">始める</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Edit Player Modal ── -->
+<div class="modal-overlay hidden" id="edit-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">✏️ 選手を編集</span>
+      <button class="modal-close" onclick="closeModal('edit-modal')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group" style="flex:0 0 76px">
+        <label>背番号</label>
+        <input type="number" id="edit-num" min="0" max="99">
+      </div>
+      <div class="form-group">
+        <label>選手名</label>
+        <input type="text" id="edit-name" maxlength="20">
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:16px">
+      <label>守備可能ポジション</label>
+      <div class="pos-grid" id="edit-pos-grid"></div>
+    </div>
+    <input type="hidden" id="edit-id">
+    <button class="btn btn-primary" style="width:100%" onclick="saveEdit()">保存する</button>
+  </div>
+</div>
+
+<script>
+// ── Constants ──────────────────────
+const POSITIONS = ['投','捕','一','二','三','遊','左','中','右','DH'];
+
+const THEMES = {
+  dark:    { name:'Dark',    bg:'#1c1c21', surface:'#242429', card:'#1f1f26', border:'#323239', accent:'#f0a855', text:'#ece9e3', muted:'#6e6b65', yellow:'#f0a855' },
+  navy:    { name:'Navy',    bg:'#0f172a', surface:'#1e293b', card:'#1a2540', border:'#334155', accent:'#fbbf24', text:'#e2e8f0', muted:'#64748b', yellow:'#fbbf24' },
+  purple:  { name:'Purple',  bg:'#1a1025', surface:'#241535', card:'#20112f', border:'#3d2558', accent:'#e9a0ff', text:'#ede9f6', muted:'#7a6890', yellow:'#e9a0ff' },
+  light:   { name:'Light',   bg:'#f7f6f3', surface:'#ffffff', card:'#f0ede8', border:'#e5e3de', accent:'#d97706', text:'#1c1c21', muted:'#9d9a94', yellow:'#d97706' },
+  beige:   { name:'Beige',   bg:'#faf7f2', surface:'#ffffff', card:'#f2ede4', border:'#e6ddd1', accent:'#d97706', text:'#2d2a24', muted:'#a89e93', yellow:'#d97706' },
+  pink:    { name:'Pink',    bg:'#fdf2f8', surface:'#ffffff', card:'#fce7f3', border:'#f9a8d4', accent:'#ec4899', text:'#3b0764', muted:'#be87e7', yellow:'#ec4899' },
+  skyblue: { name:'Sky',     bg:'#f0f9ff', surface:'#ffffff', card:'#e0f2fe', border:'#bae6fd', accent:'#0ea5e9', text:'#0c4a6e', muted:'#7dd3fc', yellow:'#0ea5e9' },
+  mint:    { name:'Mint',    bg:'#f0fdf4', surface:'#ffffff', card:'#dcfce7', border:'#bbf7d0', accent:'#22c55e', text:'#14532d', muted:'#86efac', yellow:'#22c55e' },
+};
+
+// 守備位置の座標 (SVG viewBox 0 0 400 370)
+const FIELD_POS = {
+  '投': {x:200, y:236},
+  '捕': {x:200, y:353},
+  '一': {x:322, y:250},
+  '二': {x:200, y:153},
+  '三': {x:78,  y:250},
+  '遊': {x:145, y:200},
+  '左': {x:72,  y:125},
+  '中': {x:200, y:62},
+  '右': {x:328, y:125},
+};
+
+// ── State ──────────────────────────
+let players  = load('sm_players',  []);
+let order    = load('sm_order',    Array(9).fill(null));
+let pitchers = load('sm_pitchers', []);
+let lineups  = load('sm_lineups',  []);
+let isDH     = load('sm_isDH',     false);
+let theme    = load('sm_theme',    'dark');
+
+if (!Array.isArray(order) || order.length !== 9) order = Array(9).fill(null);
+
+// ── Persistence ────────────────────
+function load(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } }
+function saveAll() {
+  localStorage.setItem('sm_players',  JSON.stringify(players));
+  localStorage.setItem('sm_order',    JSON.stringify(order));
+  localStorage.setItem('sm_pitchers', JSON.stringify(pitchers));
+  localStorage.setItem('sm_lineups',  JSON.stringify(lineups));
+  localStorage.setItem('sm_isDH',     JSON.stringify(isDH));
+  localStorage.setItem('sm_theme',    JSON.stringify(theme));
+}
+
+// ── Theme ───────────────────────────
+function applyTheme(key) {
+  const t = THEMES[key] || THEMES.dark;
+  const r = document.documentElement.style;
+  r.setProperty('--bg',      t.bg);
+  r.setProperty('--surface', t.surface);
+  r.setProperty('--card',    t.card);
+  r.setProperty('--border',  t.border);
+  r.setProperty('--accent',  t.accent);
+  r.setProperty('--text',    t.text);
+  r.setProperty('--muted',   t.muted);
+  r.setProperty('--yellow',  t.yellow);
+  theme = key;
+  saveAll();
+}
+function openTheme() {
+  renderThemeGrid();
+  openModal('theme-modal');
+}
+function renderThemeGrid() {
+  document.getElementById('theme-grid').innerHTML = Object.entries(THEMES).map(([k,t]) => `
+    <div class="theme-opt ${k===theme?'selected':''}" onclick="applyTheme('${k}');renderThemeGrid()">
+      <div class="theme-swatch">
+        <div class="swatch-circle" style="background:${t.bg};border:1px solid #555"></div>
+        <div class="swatch-circle" style="background:${t.accent}"></div>
+      </div>
+      <div class="theme-name">${t.name}</div>
+    </div>
+  `).join('');
+}
+
+// ── Modal ───────────────────────────
+function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+function openTutorial() { openModal('tutorial-modal'); }
+
+// ── Tab ─────────────────────────────
+function switchTab(tab) {
+  ['roster','order','pitcher','print'].forEach(t => {
+    document.getElementById('sec-'+t)?.classList.toggle('active', t===tab);
+    document.getElementById('tab-'+t)?.classList.toggle('active', t===tab);
+  });
+  if (tab === 'print') { renderPrint(); renderField(); }
+  if (tab === 'pitcher') renderPitcherSelect();
+}
+
+// ── Pos Grid ───────────────────────
+let addPosSel = new Set();
+let editPosSel = new Set();
+
+function buildPosGrid(id, sel) {
+  document.getElementById(id).innerHTML = POSITIONS.map(p => `
+    <div class="pos-toggle ${sel.has(p)?'on':''}" onclick="togglePos('${p}','${id}')">${p}</div>
+  `).join('');
+}
+function togglePos(pos, id) {
+  const sel = id === 'add-pos-grid' ? addPosSel : editPosSel;
+  sel.has(pos) ? sel.delete(pos) : sel.add(pos);
+  buildPosGrid(id, sel);
+}
+
+// ── Roster ─────────────────────────
+function addPlayer() {
+  const num  = document.getElementById('inp-num').value.trim();
+  const name = document.getElementById('inp-name').value.trim();
+  if (!name) { showToast('選手名を入力してください', true); return; }
+  players.push({ id: uid(), num, name, pos: [...addPosSel] });
+  saveAll(); renderRoster(); renderOrderSlots(); renderPitcherSelect();
+  document.getElementById('inp-num').value = '';
+  document.getElementById('inp-name').value = '';
+  addPosSel = new Set();
+  buildPosGrid('add-pos-grid', addPosSel);
+  showToast(`${name} を追加しました`);
+}
+function removePlayer(id) {
+  if (!confirm('この選手を削除しますか？')) return;
+  players = players.filter(p => p.id !== id);
+  order    = order.map(s => s?.playerId === id ? null : s);
+  pitchers = pitchers.filter(p => p.playerId !== id);
+  saveAll(); renderRoster(); renderOrderSlots(); renderPitcherSelect(); renderPitcherList();
+}
+function renderPosStats() {
+  const BASE_POS = ['投','捕','一','二','三','遊','左','中','右','DH'];
+  const countMap = {};
+  BASE_POS.forEach(p => countMap[p] = 0);
+  players.forEach(pl => pl.pos.forEach(p => { if (countMap[p] !== undefined) countMap[p]++; }));
+
+  const covered = BASE_POS.filter(p => p !== 'DH' && countMap[p] > 0).length;
+  document.getElementById('pos-coverage').textContent = `野手カバー率 ${covered}/9`;
+
+  document.getElementById('pos-stats-grid').innerHTML = BASE_POS.map(pos => {
+    const cnt = countMap[pos];
+    const color = cnt >= 2 ? 'var(--green)' : cnt === 1 ? 'var(--yellow)' : 'var(--red)';
+    return `
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center">
+        <div style="font-size:15px;font-weight:800;color:var(--accent)">${pos}</div>
+        <div style="font-size:20px;font-weight:800;color:${color};margin:2px 0">${cnt}</div>
+        <div style="font-size:10px;color:var(--muted)">人</div>
+      </div>`;
+  }).join('');
+}
+
+function renderRoster() {
+  const el = document.getElementById('roster-list');
+  document.getElementById('roster-count').textContent = players.length + '人';
+  if (!players.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">👥</div><p>まだ選手が登録されていません</p></div>`;
+    return;
+  }
+  el.innerHTML = players.map(p => `
+    <div class="roster-item">
+      <div class="roster-num">${p.num || '—'}</div>
+      <div class="roster-info">
+        <div class="roster-name">${esc(p.name)}</div>
+        <div class="roster-pos">${p.pos.map(x=>`<span class="pos-chip">${x}</span>`).join('') || '<span style="font-size:12px;color:var(--muted)">ポジション未設定</span>'}</div>
+      </div>
+      <div class="roster-actions">
+        <button class="btn btn-ghost btn-xs" onclick="openEdit('${p.id}')">編集</button>
+        <button class="btn btn-danger btn-xs" onclick="removePlayer('${p.id}')">削除</button>
+      </div>
+    </div>
+  `).join('');
+  renderPosStats();
+}
+
+// ── Edit Player ─────────────────────
+function openEdit(id) {
+  const p = players.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('edit-id').value   = id;
+  document.getElementById('edit-num').value  = p.num;
+  document.getElementById('edit-name').value = p.name;
+  editPosSel = new Set(p.pos);
+  buildPosGrid('edit-pos-grid', editPosSel);
+  openModal('edit-modal');
+}
+function saveEdit() {
+  const id   = document.getElementById('edit-id').value;
+  const num  = document.getElementById('edit-num').value.trim();
+  const name = document.getElementById('edit-name').value.trim();
+  if (!name) { showToast('選手名を入力してください', true); return; }
+  const i = players.findIndex(p => p.id === id);
+  if (i < 0) return;
+  players[i] = { ...players[i], num, name, pos: [...editPosSel] };
+  saveAll(); renderRoster(); renderOrderSlots(); renderPitcherSelect(); renderPitcherList();
+  closeModal('edit-modal');
+  showToast(`${name} を更新しました`);
+}
+
+// ── Order ───────────────────────────
+function onDHChange() {
+  isDH = document.getElementById('dh-toggle').checked;
+  saveAll(); renderOrderSlots();
+}
+function renderOrderSlots() {
+  const el = document.getElementById('order-slots');
+  const total = order.length;
+  const filled = order.filter(Boolean).length;
+  document.getElementById('order-filled').textContent = `${filled} / ${total}`;
+
+  const basePosOpts = isDH ? POSITIONS : POSITIONS.filter(p => p !== 'DH');
+
+  el.innerHTML = order.map((slot, i) => {
+    const isExtra = i >= 9;
+    slot = slot || {};
+    const selP = players.find(p => p.id === slot.playerId);
+    // DH はポジション登録関係なく常に選択可
+    const validPos = selP ? basePosOpts.filter(p => p === 'DH' || selP.pos.includes(p)) : basePosOpts;
+    const handle = `<div class="drag-handle"
+      draggable="true"
+      ondragstart="onDragStart(event,${i})"
+      ondragend="onDragEnd(event)"
+      ontouchstart="onTouchStart(event,${i})"
+    >⠿</div>`;
+    const slotAttrs = `id="slot-${i}" data-idx="${i}"
+      ondragover="onDragOver(event,${i})"
+      ondragleave="onDragLeave(event)"
+      ondrop="onDrop(event,${i})"`;
+    const isGuest = !!slot.isGuest;
+    const playerSelect = `
+      <select onchange="setPlayer(${i},this.value)">
+        <option value="">— 選手 —</option>
+        <option value="__guest__" ${isGuest?'selected':''}>✏️ 助っ人（直接入力）</option>
+        ${players.map(p=>`<option value="${p.id}" ${slot.playerId===p.id?'selected':''}>${p.num?'#'+p.num+' ':''}${esc(p.name)}</option>`).join('')}
+      </select>
+      ${isGuest?`<input class="guest-input" type="text" placeholder="助っ人の名前" value="${esc(slot.guestName||'')}" oninput="setGuestName(${i},this.value)">`:''}`;
+    const posSelect = `
+      <select onchange="setPos(${i},this.value)">
+        <option value="">— 守備 —</option>
+        ${(selP||isGuest?validPos:basePosOpts).map(p=>`<option value="${p}" ${slot.pos===p?'selected':''}>${p}</option>`).join('')}
+      </select>`;
+    const isFilled = slot.playerId || isGuest;
+
+    if (isExtra) {
+      return `
+        <div class="order-slot ${isFilled?'filled':''} extra-slot" ${slotAttrs}>
+          ${handle}
+          <div class="slot-num">${i+1}</div>
+          <div class="slot-player">${playerSelect}</div>
+          <div class="slot-pos">${posSelect}</div>
+          <div class="slot-clear"><button onclick="removeSlot(${i})" title="削除" style="color:var(--red)">✕</button></div>
+        </div>`;
+    }
+    return `
+      <div class="order-slot ${isFilled?'filled':''}" ${slotAttrs}>
+        ${handle}
+        <div class="slot-num">${i+1}</div>
+        <div class="slot-player">${playerSelect}</div>
+        <div class="slot-pos">${posSelect}</div>
+        <div class="slot-clear"><button onclick="clearSlot(${i})" title="クリア">✕</button></div>
+      </div>`;
+  }).join('');
+
+  // 15人超えたら追加ボタン非表示
+  document.getElementById('add-extra-btn').style.display = order.length >= 15 ? 'none' : '';
+}
+function addExtraSlot() {
+  if (order.length >= 15) return;
+  order.push({ playerId: null, pos: 'DH', isExtra: true });
+  saveAll(); renderOrderSlots();
+}
+function removeSlot(i) {
+  if (i < 9) return; // 基本9枠は削除不可
+  order.splice(i, 1);
+  saveAll(); renderOrderSlots();
+}
+function setPlayer(i, playerId) {
+  const prevPos = order[i]?.pos || null;
+  const isEx = i >= 9;
+  if (!playerId) {
+    order[i] = isEx ? { playerId: null, pos: null, isExtra: true } : null;
+  } else if (playerId === '__guest__') {
+    order[i] = { playerId: null, guestName: '', pos: prevPos, isGuest: true, isExtra: isEx };
+  } else {
+    order[i] = order[i] || {};
+    order[i].playerId = playerId;
+    order[i].isGuest = false;
+    order[i].guestName = '';
+    if (isEx) order[i].isExtra = true;
+    const p = players.find(pl => pl.id === playerId);
+    // DHは常に許可するので除外せずそのままチェック
+    const vp = p?.pos || [];
+    if (vp.length === 1 && vp[0] !== 'DH') order[i].pos = vp[0];
+    else if (order[i].pos && order[i].pos !== 'DH' && !vp.includes(order[i].pos)) order[i].pos = null;
+  }
+  saveAll(); renderOrderSlots();
+}
+function setGuestName(i, name) {
+  if (!order[i]) return;
+  order[i].guestName = name;
+  saveAll();
+}
+function setPos(i, pos) {
+  if (!order[i]) order[i] = {};
+  // 指名打者以外の重複チェック
+  if (pos && pos !== 'DH') {
+    const dupIdx = order.findIndex((s, j) => j !== i && s?.pos === pos && !s?.isExtra);
+    if (dupIdx >= 0) {
+      order[dupIdx].pos = null;
+      const dp = order[dupIdx]?.playerId ? players.find(p=>p.id===order[dupIdx]?.playerId) : null;
+      showToast(`${pos} を ${i+1}番に移動しました（${dp?dp.name:dupIdx+1+'番'}の守備位置を解除）`);
+    }
+  }
+  order[i].pos = pos || null;
+  saveAll(); renderOrderSlots();
+}
+function clearSlot(i) { order[i] = null; saveAll(); renderOrderSlots(); }
+function clearOrder() {
+  if (!confirm('オーダーをすべてクリアしますか？')) return;
+  order = Array(9).fill(null);
+  saveAll(); renderOrderSlots(); showToast('クリアしました');
+}
+
+// ── Saved Lineups ───────────────────
+function saveLineup() {
+  const name = document.getElementById('lineup-name').value.trim() || '無題のオーダー';
+  const date = document.getElementById('match-date').value;
+  lineups.unshift({ id: uid(), name, date, order: clone(order), pitchers: clone(pitchers), isDH });
+  if (lineups.length > 30) lineups = lineups.slice(0,30);
+  saveAll(); renderSavedChips(); showToast(`「${name}」を保存しました`);
+}
+function loadLineup(id) {
+  const l = lineups.find(x => x.id === id); if (!l) return;
+  order = clone(l.order); pitchers = clone(l.pitchers||[]); isDH = l.isDH ?? false;
+  document.getElementById('lineup-name').value = l.name;
+  document.getElementById('match-date').value  = l.date||'';
+  document.getElementById('dh-toggle').checked = isDH;
+  saveAll(); renderOrderSlots(); renderPitcherList(); renderSavedChips();
+  showToast(`「${l.name}」を読み込みました`);
+}
+function deleteLineup(id) {
+  lineups = lineups.filter(l => l.id !== id);
+  saveAll(); renderSavedChips(); showToast('削除しました');
+}
+function renderSavedChips() {
+  const el = document.getElementById('saved-chips');
+  if (!lineups.length) { el.innerHTML = ''; return; }
+  el.innerHTML = lineups.map(l => `
+    <div class="saved-chip" onclick="loadLineup('${l.id}')">
+      📋 ${esc(l.name)}
+      ${l.date?`<span style="color:var(--muted);font-size:11px">${fmtShort(l.date)}</span>`:''}
+      <span class="chip-del" onclick="event.stopPropagation();deleteLineup('${l.id}')">✕</span>
+    </div>
+  `).join('');
+}
+
+// ── Pitcher ─────────────────────────
+let ganttPending = {}; // pitcherId → pending start inning (1-9)
+
+function renderPitcherSelect() {
+  const sel = document.getElementById('inp-pitcher');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— 選手を選ぶ —</option>' +
+    players.map(p=>`<option value="${p.id}" ${p.id===cur?'selected':''}>${p.num?'#'+p.num+' ':''}${esc(p.name)}</option>`).join('');
+}
+function addPitcher() {
+  const playerId = document.getElementById('inp-pitcher').value;
+  if (!playerId) { showToast('投手を選んでください', true); return; }
+  pitchers.push({ id: uid(), playerId, inningStart: null, inningEnd: null });
+  saveAll(); renderPitcherList(); renderGantt();
+  document.getElementById('inp-pitcher').value = '';
+  const p = players.find(x=>x.id===playerId);
+  showToast(`${p?.name||''}を追加しました`);
+}
+function removePitcher(id) {
+  pitchers = pitchers.filter(p => p.id !== id);
+  delete ganttPending[id];
+  saveAll(); renderPitcherList(); renderGantt();
+}
+function movePitcher(id, dir) {
+  const i = pitchers.findIndex(p => p.id === id), j = i+dir;
+  if (j<0||j>=pitchers.length) return;
+  [pitchers[i],pitchers[j]] = [pitchers[j],pitchers[i]];
+  saveAll(); renderPitcherList(); renderGantt();
+}
+function renderPitcherList() {
+  const el = document.getElementById('pitcher-list');
+  document.getElementById('gantt-card').style.display = pitchers.length ? '' : 'none';
+  if (!pitchers.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">⚾</div><p>投手が設定されていません</p></div>`;
+    return;
+  }
+  el.innerHTML = pitchers.map((pt,i) => {
+    const p = players.find(x=>x.id===pt.playerId);
+    const inningLabel = (pt.inningStart && pt.inningEnd)
+      ? (pt.inningStart === pt.inningEnd ? `${pt.inningStart}回` : `${pt.inningStart}〜${pt.inningEnd}回`)
+      : '未設定';
+    return `
+      <div class="pitcher-row">
+        <div class="pitcher-order">${i+1}</div>
+        <div>
+          <div style="font-weight:600;font-size:14px">${p?(p.num?'#'+p.num+' ':'')+esc(p.name):'（削除済み）'}</div>
+          <div style="font-size:12px;color:var(--muted)">${inningLabel}</div>
+        </div>
+        <div class="pitcher-actions">
+          ${i>0?`<button class="btn btn-ghost btn-xs" onclick="movePitcher('${pt.id}',-1)">↑</button>`:''}
+          ${i<pitchers.length-1?`<button class="btn btn-ghost btn-xs" onclick="movePitcher('${pt.id}',1)">↓</button>`:''}
+          <button class="btn btn-danger btn-xs" onclick="removePitcher('${pt.id}')">削除</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function ganttClick(pitcherId, inning) {
+  const pt = pitchers.find(p => p.id === pitcherId); if (!pt) return;
+  const pending = ganttPending[pitcherId];
+  if (pending !== undefined) {
+    // 2回目タップ：範囲確定
+    pt.inningStart = Math.min(pending, inning);
+    pt.inningEnd   = Math.max(pending, inning);
+    delete ganttPending[pitcherId];
+  } else if (pt.inningStart && inning >= pt.inningStart && inning <= pt.inningEnd) {
+    // 選択済み範囲内をタップ：クリア
+    pt.inningStart = null; pt.inningEnd = null;
+  } else {
+    // 1回目タップ：開始回を保留
+    ganttPending[pitcherId] = inning;
+  }
+  saveAll(); renderGantt(); renderPitcherList();
+}
+
+function renderGantt() {
+  const tbody = document.getElementById('gantt-body');
+  if (!pitchers.length) return;
+  tbody.innerHTML = pitchers.map((pt, idx) => {
+    const p = players.find(x=>x.id===pt.playerId);
+    const name = p ? (p.num?'#'+p.num+' ':'')+trim(p.name,5) : '—';
+    const pending = ganttPending[pt.id];
+    const cells = Array.from({length:9}, (_,k) => {
+      const inning = k+1;
+      const isFilled = pt.inningStart && pt.inningEnd && inning>=pt.inningStart && inning<=pt.inningEnd;
+      const isPending = pending !== undefined && inning === pending;
+      return `<td><div class="gantt-cell ${isFilled?'filled':''} ${isPending?'pending':''}" onclick="ganttClick('${pt.id}',${inning})"><span class="inning-num">${inning}</span></div></td>`;
+    }).join('');
+    return `<tr><td class="g-name" title="${esc(name)}">${esc(name)}</td>${cells}</tr>`;
+  }).join('');
+}
+
+// ── Field Diagram ───────────────────
+function slotDisplayName(slot) {
+  if (!slot) return null;
+  if (slot.isGuest) return slot.guestName || '助っ人';
+  const p = players.find(x => x.id === slot.playerId);
+  return p ? p.name : null;
+}
+
+function renderField() {
+  // position → 表示名 map
+  const posMap = {};
+  order.forEach(slot => {
+    if (!slot?.pos || slot.pos === 'DH') return;
+    const name = slotDisplayName(slot);
+    if (name) posMap[slot.pos] = name;
+  });
+
+  const t = THEMES[theme] || THEMES.dark;
+
+  const labels = Object.entries(FIELD_POS).map(([pos, {x, y}]) => {
+    const name = posMap[pos] ? trim(posMap[pos], 5) : null;
+    const hasPlayer = !!name;
+    const player = hasPlayer ? { name } : null; // 互換用
+    const w = hasPlayer ? 76 : 28;
+    const h = hasPlayer ? 36 : 22;
+    return `
+      <g>
+        <rect x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" rx="6"
+          fill="${hasPlayer ? t.card : 'rgba(0,0,0,0.35)'}"
+          stroke="${hasPlayer ? t.accent : 'rgba(255,255,255,0.15)'}"
+          stroke-width="${hasPlayer?1.5:1}"/>
+        <text x="${x}" y="${y-(hasPlayer?5:1)}" text-anchor="middle"
+          font-size="9" font-weight="800" fill="${t.accent}"
+          font-family="system-ui,sans-serif">${pos}</text>
+        ${hasPlayer?`<text x="${x}" y="${y+11}" text-anchor="middle"
+          font-size="11" font-weight="700" fill="${t.text}"
+          font-family="system-ui,sans-serif">${esc(name)}</text>`:''}
+      </g>`;
+  }).join('');
+  document.getElementById('field-labels').innerHTML = labels;
+
+  // DH badges (複数DH対応)
+  const dhBadge = document.getElementById('dh-badge');
+  const dhSlots = order.filter(s => s?.pos === 'DH');
+  if (dhSlots.length) {
+    dhBadge.style.display = 'block';
+    dhBadge.innerHTML = dhSlots.map((s, idx) => {
+      const dname = slotDisplayName(s) || '未設定';
+      return `<span style="display:inline-flex;align-items:center;gap:8px;background:${t.card};border:1.5px solid ${t.accent};border-radius:8px;padding:6px 14px;font-size:13px;margin:3px">
+        <span style="font-weight:800;color:${t.accent}">DH</span>
+        <span style="font-weight:600;color:${t.text}">${esc(dname)}</span>
+      </span>`;
+    }).join('');
+  } else {
+    dhBadge.style.display = 'none';
+  }
+}
+
+// ── Print / Share ───────────────────
+function renderPrint() {
+  const name = document.getElementById('lineup-name').value.trim() || 'スタメン';
+  const date = document.getElementById('match-date').value;
+  document.getElementById('print-title').textContent = name;
+  document.getElementById('print-meta').textContent  = date ? fmtFull(date) : new Date().toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric'});
+
+  document.getElementById('print-order-tbody').innerHTML = order.map((slot,i) => {
+    const dname = slotDisplayName(slot);
+    if (!dname) return `<tr><td class="t-order">${i+1}</td><td colspan="3" style="color:var(--muted);font-size:12px">未設定</td></tr>`;
+    const p = slot?.playerId ? players.find(x=>x.id===slot.playerId) : null;
+    const numCell = p?.num ? '#'+p.num : (slot?.isGuest ? '助' : '—');
+    return `<tr><td class="t-order">${i+1}</td><td class="t-num">${numCell}</td><td>${esc(dname)}</td><td>${slot?.pos?`<span class="pos-chip">${slot.pos}</span>`:'—'}</td></tr>`;
+  }).join('');
+
+  const ps = document.getElementById('print-pitcher-section');
+  if (pitchers.length) {
+    ps.style.display = 'block';
+    document.getElementById('print-pitcher-tbody').innerHTML = pitchers.map((pt,i) => {
+      const p = players.find(x=>x.id===pt.playerId);
+      return `<tr><td class="t-order">${i+1}</td><td class="t-num">${p?.num?'#'+p.num:'—'}</td><td>${p?esc(p.name):'—'}</td><td>${pitcherInningLabel(pt)||'—'}</td></tr>`;
+    }).join('');
+  } else { ps.style.display = 'none'; }
+}
+
+function pitcherInningLabel(pt) {
+  if (!pt.inningStart) return '';
+  return pt.inningStart === pt.inningEnd ? `${pt.inningStart}回` : `${pt.inningStart}〜${pt.inningEnd}回`;
+}
+
+function buildText() {
+  const name = document.getElementById('lineup-name').value.trim() || 'スタメン';
+  const date = document.getElementById('match-date').value;
+  let txt = `【${name}】`;
+  if (date) txt += ` ${fmtFull(date)}`;
+  txt += '\n\n打順・守備\n';
+  order.forEach((slot,i) => {
+    const dname = slotDisplayName(slot);
+    const p = slot?.playerId ? players.find(x=>x.id===slot.playerId) : null;
+    const nameLabel = dname ? (p?.num?'#'+p.num+' ':slot?.isGuest?'[助っ人] ':'')+dname : '（未設定）';
+    txt += `${i+1}番  ${nameLabel}  ${slot?.pos||''}\n`;
+  });
+  if (pitchers.length) {
+    txt += '\n投手陣\n';
+    pitchers.forEach((pt,i) => {
+      const p = players.find(x=>x.id===pt.playerId);
+      txt += `${i+1}番手  ${p?p.name:'—'}  ${pitcherInningLabel(pt)}\n`;
+    });
+  }
+  txt += '\n⚾ スタメンメーカー https://somirai.jp/order-maker/';
+  return txt;
+}
+
+async function shareNative() {
+  const text = buildText();
+  const title = document.getElementById('lineup-name').value.trim() || 'スタメン';
+  if (navigator.share) {
+    try {
+      await navigator.share({ title, text });
+    } catch(e) {
+      if (e.name !== 'AbortError') copyText();
+    }
+  } else {
+    copyText();
+  }
+}
+
+function copyText() {
+  navigator.clipboard.writeText(buildText())
+    .then(()=>showToast('クリップボードにコピーしました'))
+    .catch(()=>showToast('コピーに失敗しました',true));
+}
+
+// ── Export / Import ─────────────────
+function exportRoster() {
+  const data = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    players,
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `スタメンメーカー_選手データ_${new Date().toLocaleDateString('ja-JP').replace(/\//g,'-')}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast(`${players.length}人の選手データを書き出しました`);
+}
+
+function importRoster(e) {
+  const file = e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const raw = JSON.parse(ev.target.result);
+      const imported = Array.isArray(raw) ? raw : (Array.isArray(raw.players) ? raw.players : null);
+      if (!imported) throw new Error('invalid');
+
+      const validPlayers = imported.filter(p => p && typeof p.name === 'string');
+      if (!validPlayers.length) { showToast('有効な選手データがありません', true); return; }
+
+      const doReplace = confirm(
+        `${validPlayers.length}人の選手データを読み込みます。\n\nOK → 既存データに追加\nキャンセル → 既存データと置き換え`
+      );
+      if (doReplace) {
+        // 追加（同名はスキップ）
+        const existing = new Set(players.map(p => p.name));
+        const added = validPlayers.filter(p => !existing.has(p.name))
+                                  .map(p => ({ ...p, id: uid() }));
+        players = [...players, ...added];
+        showToast(`${added.length}人を追加しました（重複${validPlayers.length - added.length}人スキップ）`);
+      } else {
+        // 置き換え
+        players = validPlayers.map(p => ({ ...p, id: uid() }));
+        showToast(`${players.length}人の選手データを読み込みました`);
+      }
+      saveAll(); renderRoster(); renderOrderSlots(); renderPitcherSelect();
+    } catch {
+      showToast('読み込みに失敗しました。正しいJSONファイルを選んでください', true);
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ── Drag & Drop ─────────────────────
+let dragIdx = null;
+let touchGhost = null;
+let touchTargetIdx = null;
+
+function onDragStart(e, i) {
+  dragIdx = i;
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => document.getElementById(`slot-${i}`)?.classList.add('dragging'), 0);
+}
+function onDragEnd(e) {
+  document.querySelectorAll('.order-slot').forEach(s => s.classList.remove('dragging','drag-over'));
+  dragIdx = null;
+}
+function onDragOver(e, i) {
+  e.preventDefault();
+  if (dragIdx === null || dragIdx === i) return;
+  document.querySelectorAll('.order-slot').forEach(s => s.classList.remove('drag-over'));
+  document.getElementById(`slot-${i}`)?.classList.add('drag-over');
+}
+function onDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+function onDrop(e, i) {
+  e.preventDefault();
+  document.querySelectorAll('.order-slot').forEach(s => s.classList.remove('dragging','drag-over'));
+  if (dragIdx === null || dragIdx === i) { dragIdx = null; return; }
+  const item = order.splice(dragIdx, 1)[0];
+  order.splice(i, 0, item);
+  // extraフラグ再整合: index>=9 はextra
+  order.forEach((s,idx) => { if(s) s.isExtra = idx>=9; });
+  dragIdx = null;
+  saveAll(); renderOrderSlots();
+}
+
+// タッチドラッグ
+function onTouchStart(e, i) {
+  if (e.touches.length !== 1) return;
+  dragIdx = i;
+  const touch = e.touches[0];
+  const slot = document.getElementById(`slot-${i}`);
+  const rect = slot.getBoundingClientRect();
+  touchGhost = slot.cloneNode(true);
+  Object.assign(touchGhost.style, {
+    position:'fixed', top:rect.top+'px', left:rect.left+'px',
+    width:rect.width+'px', opacity:'0.75', zIndex:'1000',
+    pointerEvents:'none', boxShadow:'0 8px 24px rgba(0,0,0,.4)',
+    transition:'none', border:'2px solid var(--accent)',
+  });
+  document.body.appendChild(touchGhost);
+  slot.classList.add('dragging');
+  document.addEventListener('touchmove', onTouchMove, {passive:false});
+  document.addEventListener('touchend', onTouchEnd);
+  e.preventDefault();
+}
+function onTouchMove(e) {
+  if (dragIdx === null || !touchGhost) return;
+  e.preventDefault();
+  const touch = e.touches[0];
+  const rect = document.getElementById(`slot-${dragIdx}`)?.getBoundingClientRect() || {width:300};
+  touchGhost.style.top  = (touch.clientY - 20)+'px';
+  touchGhost.style.left = (touch.clientX - rect.width/2)+'px';
+  document.querySelectorAll('.order-slot').forEach(s => s.classList.remove('drag-over'));
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  const target = el?.closest('.order-slot');
+  if (target && target.id !== `slot-${dragIdx}`) {
+    target.classList.add('drag-over');
+    touchTargetIdx = parseInt(target.dataset.idx);
+  } else { touchTargetIdx = null; }
+}
+function onTouchEnd(e) {
+  document.removeEventListener('touchmove', onTouchMove);
+  document.removeEventListener('touchend', onTouchEnd);
+  if (touchGhost) { touchGhost.remove(); touchGhost = null; }
+  document.querySelectorAll('.order-slot').forEach(s => s.classList.remove('dragging','drag-over'));
+  if (touchTargetIdx !== null && touchTargetIdx !== dragIdx) {
+    const item = order.splice(dragIdx, 1)[0];
+    order.splice(touchTargetIdx, 0, item);
+    order.forEach((s,idx) => { if(s) s.isExtra = idx>=9; });
+    saveAll(); renderOrderSlots();
+  }
+  dragIdx = null; touchTargetIdx = null;
+}
+
+// ── Utils ────────────────────────────
+function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function clone(x) { return JSON.parse(JSON.stringify(x)); }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function trim(s,n) { return s.length>n?s.slice(0,n)+'…':s; }
+function fmtShort(d) { if(!d) return ''; return new Date(d+'T00:00:00').toLocaleDateString('ja-JP',{month:'numeric',day:'numeric'}); }
+function fmtFull(d) { if(!d) return ''; return new Date(d+'T00:00:00').toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric'}); }
+function showToast(msg, isErr=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show'+(isErr?' error':'');
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+
+// ── Init ─────────────────────────────
+applyTheme(theme);
+document.getElementById('dh-toggle').checked = isDH;
+buildPosGrid('add-pos-grid', addPosSel);
+renderRoster();
+renderPosStats();
+renderOrderSlots();
+renderPitcherSelect();
+renderPitcherList();
+renderGantt();
+renderSavedChips();
+if (!localStorage.getItem('sm_tutorial_done')) {
+  openTutorial();
+  localStorage.setItem('sm_tutorial_done','1');
+}
+</script>
+</body>
+</html>
