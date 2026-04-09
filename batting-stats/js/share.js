@@ -141,6 +141,39 @@ const Share = (() => {
     document.getElementById('share-modal-overlay').style.display = 'none';
   }
 
+  function _buildShareText() {
+    const filtered = _getFilteredForModal();
+    const s        = Stats.calculate(filtered);
+    const playerName = document.getElementById('share-player-name').value.trim() || 'My Stats';
+    const scopeVal   = document.getElementById('share-scope').value;
+    const dateFrom   = document.getElementById('share-date-from').value;
+    const dateTo     = document.getElementById('share-date-to').value;
+    const label      = _filterLabel(scopeVal, dateFrom, dateTo);
+
+    const lines = [
+      `⚾ ${playerName} の打撃成績（${label}）`,
+      '',
+      `打率 ${Stats.fmtAvg(s.avg)} / 安打 ${s.h}本`,
+      `OBP ${Stats.fmtRate(s.obp)} / SLG ${Stats.fmtRate(s.slg)} / OPS ${Stats.fmtOps(s.ops)}`,
+      `${s.games}試合 / ${s.pa}打席 / HR ${s.hr} / RBI ${s.rbi}`,
+      '',
+      '#草野球 #MyBattingStats',
+      'https://somirai.jp/batting-stats/',
+    ];
+    return lines.join('\n');
+  }
+
+  function _updateSnsButtons() {
+    const text    = _buildShareText();
+    const encoded = encodeURIComponent(text);
+    const lineEl  = document.getElementById('share-line');
+    const xEl     = document.getElementById('share-x');
+    if (lineEl) lineEl.href = `https://line.me/R/share?text=${encoded}`;
+    if (xEl)    xEl.href    = `https://twitter.com/intent/tweet?text=${encoded}`;
+    const snsWrap = document.getElementById('share-sns-actions');
+    if (snsWrap) snsWrap.style.display = '';
+  }
+
   function onGenerate() {
     const canvas = _generate();
     canvas.style.cssText = 'width:100%;height:auto;border-radius:8px;';
@@ -148,6 +181,7 @@ const Share = (() => {
     preview.innerHTML = '';
     preview.appendChild(canvas);
     document.getElementById('share-actions').style.display = '';
+    _updateSnsButtons();
   }
 
   function onDownload() {
