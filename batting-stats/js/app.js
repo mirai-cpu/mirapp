@@ -602,9 +602,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const msgEl = banner?.querySelector('.pwa-banner-msg');
     const addBtn = banner?.querySelector('#pwa-banner-add');
     if (banner && msgEl) {
-      msgEl.textContent = 'Safari の 共有ボタン → ホーム画面に追加 でアプリとして使えます';
-      msgEl.innerHTML = '📲 <strong>共有ボタン</strong> → <strong>ホーム画面に追加</strong> でアプリとして使えます';
+      msgEl.innerHTML = '📲 <strong>ホーム画面に追加できます</strong> &nbsp;<button id="pwa-ios-steps-btn" style="background:none;border:none;color:#fff;font-size:12px;cursor:pointer;text-decoration:underline;padding:0 2px">手順を見る</button>';
       if (addBtn) addBtn.style.display = 'none';
+      setTimeout(() => {
+        document.getElementById('pwa-ios-steps-btn')?.addEventListener('click', () => {
+          if (msgEl) msgEl.innerHTML = '📲 <strong>ホーム画面に追加する方法</strong><ol style="font-size:12px;color:rgba(255,255,255,0.85);line-height:1.8;padding-left:18px;margin:4px 0 0">'+
+            '<li>Safari の画面下の <strong>共有ボタン（↑）</strong> をタップ</li>'+
+            '<li><strong>「ホーム画面に追加」</strong> をタップ</li>'+
+            '<li>名前を確認して <strong>「追加」</strong> をタップ</li></ol>';
+        });
+      }, 100);
       banner.style.display = '';
     }
   }
