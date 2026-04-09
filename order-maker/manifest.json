@@ -1,0 +1,25 @@
+{
+  "name": "スタメンメーカー",
+  "short_name": "スタメン",
+  "description": "草野球・軟式野球向けのスタメン・打順・守備ポジション作成ツール",
+  "start_url": "/order-maker/",
+  "display": "standalone",
+  "background_color": "#1c1c21",
+  "theme_color": "#1c1c21",
+  "orientation": "portrait-primary",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "/order-maker/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/order-maker/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
