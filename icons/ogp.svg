@@ -1,30 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
   <defs>
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#111c30"/>
-      <stop offset="100%" stop-color="#0b1120"/>
+      <stop offset="0%" stop-color="#1c0a00"/>
+      <stop offset="60%" stop-color="#2d1100"/>
+      <stop offset="100%" stop-color="#1a0800"/>
     </linearGradient>
-    <linearGradient id="boltGrad" x1="20%" y1="0%" x2="80%" y2="100%">
-      <stop offset="0%" stop-color="#7bb8ff"/>
-      <stop offset="100%" stop-color="#4f9eff"/>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
     </linearGradient>
     <linearGradient id="accentLine" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#4f9eff"/>
-      <stop offset="100%" stop-color="#4f9eff" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="60%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
     </linearGradient>
-    <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#4f9eff" stop-opacity="0.15"/>
-      <stop offset="100%" stop-color="#4f9eff" stop-opacity="0"/>
+    <radialGradient id="glowOrange" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowCenter" cx="30%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#fb923c" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
     </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="16" result="blur"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="14" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
     <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
@@ -35,108 +45,123 @@
   <!-- 背景 -->
   <rect width="1200" height="630" fill="url(#bgGrad)"/>
 
+  <!-- 背景グロー -->
+  <ellipse cx="350" cy="315" rx="380" ry="320" fill="url(#glowCenter)"/>
+  <ellipse cx="160" cy="220" rx="160" ry="140" fill="url(#glowOrange)"/>
+
   <!-- 右サイドの装飾グリッド -->
-  <g stroke="#1e3355" stroke-width="1" opacity="0.5">
-    <line x1="700" y1="0" x2="700" y2="630"/>
-    <line x1="800" y1="0" x2="800" y2="630"/>
-    <line x1="900" y1="0" x2="900" y2="630"/>
-    <line x1="1000" y1="0" x2="1000" y2="630"/>
-    <line x1="1100" y1="0" x2="1100" y2="630"/>
-    <line x1="700" y1="105" x2="1200" y2="105"/>
-    <line x1="700" y1="210" x2="1200" y2="210"/>
-    <line x1="700" y1="315" x2="1200" y2="315"/>
-    <line x1="700" y1="420" x2="1200" y2="420"/>
-    <line x1="700" y1="525" x2="1200" y2="525"/>
+  <g stroke="#3d1f05" stroke-width="1" opacity="0.6">
+    <line x1="680" y1="0" x2="680" y2="630"/>
+    <line x1="780" y1="0" x2="780" y2="630"/>
+    <line x1="880" y1="0" x2="880" y2="630"/>
+    <line x1="980" y1="0" x2="980" y2="630"/>
+    <line x1="1080" y1="0" x2="1080" y2="630"/>
+    <line x1="680" y1="105" x2="1200" y2="105"/>
+    <line x1="680" y1="210" x2="1200" y2="210"/>
+    <line x1="680" y1="315" x2="1200" y2="315"/>
+    <line x1="680" y1="420" x2="1200" y2="420"/>
+    <line x1="680" y1="525" x2="1200" y2="525"/>
   </g>
-
-  <!-- グリッドのグラデーションマスク -->
-  <rect x="700" y="0" width="500" height="630" fill="url(#bgGrad)" opacity="0.3"/>
-
-  <!-- 左背景グロー -->
-  <ellipse cx="310" cy="315" rx="220" ry="230" fill="url(#glowGrad)"/>
+  <!-- グリッドのフェードマスク -->
+  <rect x="680" y="0" width="520" height="630" fill="url(#bgGrad)" opacity="0.25"/>
 
   <!-- ===== 左ゾーン: アイコン ===== -->
   <!-- アイコン背景 -->
-  <rect x="80" y="155" width="200" height="200" fill="#111c30" rx="38" stroke="#1e3355" stroke-width="1.5"/>
-
+  <rect x="72" y="148" width="210" height="210" fill="#2a1005" rx="42" stroke="#7c2d0a" stroke-width="1.5"/>
   <!-- アイコン内グロー -->
-  <ellipse cx="180" cy="255" rx="75" ry="80" fill="url(#glowGrad)"/>
+  <ellipse cx="177" cy="253" rx="80" ry="85" fill="url(#glowOrange)"/>
 
-  <!-- アイコン稲妻（グロー） -->
-  <path d="M 208 178 L 148 258 L 183 258 L 143 335 L 215 245 L 179 245 Z"
-        fill="#4f9eff" opacity="0.3" filter="url(#glow)"/>
+  <!-- 炎アイコン（グロー） -->
+  <path d="M 177 175 C 177 175 215 210 215 245 C 215 268 200 285 177 285 C 154 285 139 268 139 245 C 139 228 152 215 162 207 C 158 220 163 232 172 237 C 168 225 170 210 177 200 C 182 215 188 225 185 238 C 193 228 195 215 190 205 C 202 215 212 230 210 248 C 210 248 215 235 210 220 C 218 232 220 248 215 260"
+        fill="#f97316" opacity="0.25" filter="url(#glow)"/>
 
-  <!-- アイコン稲妻本体 -->
-  <path d="M 208 178 L 148 258 L 183 258 L 143 335 L 215 245 L 179 245 Z"
-        fill="url(#boltGrad)" filter="url(#softGlow)"/>
+  <!-- 炎アイコン本体 -->
+  <path d="M 177 182 C 177 182 208 213 208 244 C 208 264 195 280 177 280 C 159 280 146 264 146 244 C 146 229 157 217 166 210 C 162 222 167 232 175 237 C 171 226 172 212 177 203 C 181 217 187 226 184 237 C 191 228 193 216 188 207 C 198 218 202 233 198 248 C 204 237 205 223 200 213 C 207 224 208 240 204 252"
+        fill="url(#orangeGrad)" filter="url(#softGlow)"/>
 
-  <!-- アイコン稲妻ハイライト -->
-  <path d="M 208 178 L 183 218 L 200 218 L 208 178 Z"
-        fill="white" fill-opacity="0.25"/>
+  <!-- 炎ハイライト -->
+  <path d="M 177 190 C 177 190 193 208 193 228 C 190 220 185 215 181 210 C 182 220 178 230 177 235 C 176 228 173 218 177 210 Z"
+        fill="white" fill-opacity="0.2"/>
+
+  <!-- ===== アイコン下のツールカウント ===== -->
+  <rect x="104" y="372" width="156" height="32" fill="#3d1a04" rx="16" stroke="#7c3a08" stroke-width="1"/>
+  <text x="182" y="392" text-anchor="middle"
+        font-family="'Helvetica Neue', Arial, sans-serif"
+        font-size="13" font-weight="600" fill="#fb923c" letter-spacing="0.5">4 TOOLS AVAILABLE</text>
 
   <!-- ===== 中央〜右ゾーン: テキスト ===== -->
 
-  <!-- サイト名 -->
-  <text x="330" y="270"
-        font-family="'Helvetica Neue', 'Arial', sans-serif"
-        font-size="82"
-        font-weight="700"
-        letter-spacing="-1"
-        fill="#dce8f5">Somira</text>
+  <!-- サイト名 "Somira" -->
+  <text x="325" y="268"
+        font-family="'Helvetica Neue', 'Arial Black', Arial, sans-serif"
+        font-size="86"
+        font-weight="800"
+        letter-spacing="-2"
+        fill="#fde8d0">Somira</text>
 
-  <text x="330" y="355"
-        font-family="'Helvetica Neue', 'Arial', sans-serif"
-        font-size="82"
-        font-weight="700"
-        letter-spacing="-1"
-        fill="#4f9eff">Lab</text>
+  <!-- サイト名 "Lab" (orange accent) -->
+  <text x="325" y="358"
+        font-family="'Helvetica Neue', 'Arial Black', Arial, sans-serif"
+        font-size="86"
+        font-weight="800"
+        letter-spacing="-2"
+        fill="url(#orangeGrad)" filter="url(#softGlow)">Lab</text>
 
   <!-- アクセントライン -->
-  <rect x="330" y="372" width="340" height="3" fill="url(#accentLine)" rx="2"/>
+  <rect x="325" y="375" width="360" height="3" fill="url(#accentLine)" rx="2"/>
 
   <!-- タグライン -->
-  <text x="330" y="418"
-        font-family="'Helvetica Neue', 'Arial', sans-serif"
+  <text x="325" y="422"
+        font-family="'Helvetica Neue', Arial, sans-serif"
         font-size="22"
-        fill="#5a7a9f"
-        letter-spacing="0.5">使いやすいWebツールの集積地</text>
+        fill="#c2773a"
+        letter-spacing="0.8">使いやすいを、かたちにする。</text>
 
   <!-- URL -->
-  <text x="330" y="468"
-        font-family="'Helvetica Neue', 'Arial', sans-serif"
+  <text x="325" y="468"
+        font-family="'Helvetica Neue', Arial, sans-serif"
         font-size="20"
-        fill="#4f9eff"
-        fill-opacity="0.8"
-        letter-spacing="0.5">somirai.jp</text>
+        fill="#f97316"
+        fill-opacity="0.85"
+        letter-spacing="1">somirai.jp</text>
 
-  <!-- 右側の装飾バッジ群 -->
-  <rect x="820" y="180" width="160" height="44" fill="#152036" rx="22" stroke="#1e3355" stroke-width="1"/>
-  <text x="900" y="207" text-anchor="middle"
-        font-family="'Helvetica Neue', 'Arial', sans-serif"
-        font-size="17" fill="#5a7a9f">野球成績管理</text>
+  <!-- ===== 右側の装飾バッジ群 ===== -->
+  <!-- バッジ1: 無料で使える (highlighted) -->
+  <rect x="800" y="175" width="156" height="44" fill="#3d1a04" rx="22" stroke="#f97316" stroke-width="1.5"/>
+  <text x="878" y="202" text-anchor="middle"
+        font-family="'Helvetica Neue', Arial, sans-serif"
+        font-size="17" font-weight="600" fill="#fb923c">無料で使える</text>
 
-  <rect x="1000" y="230" width="140" height="44" fill="#152036" rx="22" stroke="#1e3355" stroke-width="1"/>
-  <text x="1070" y="257" text-anchor="middle"
-        font-family="'Helvetica Neue', 'Arial', sans-serif"
-        font-size="17" fill="#5a7a9f">習慣トラッカー</text>
+  <!-- バッジ2: 野球成績管理 -->
+  <rect x="975" y="235" width="168" height="44" fill="#2a1005" rx="22" stroke="#5a2a08" stroke-width="1"/>
+  <text x="1059" y="262" text-anchor="middle"
+        font-family="'Helvetica Neue', Arial, sans-serif"
+        font-size="17" fill="#c2773a">野球成績管理</text>
 
-  <rect x="850" y="290" width="120" height="44" fill="#152036" rx="22" stroke="#4f9eff" stroke-width="1.5"/>
-  <text x="910" y="317" text-anchor="middle"
-        font-family="'Helvetica Neue', 'Arial', sans-serif"
-        font-size="17" fill="#4f9eff">無料で使える</text>
+  <!-- バッジ3: 習慣トラッカー -->
+  <rect x="820" y="295" width="156" height="44" fill="#2a1005" rx="22" stroke="#5a2a08" stroke-width="1"/>
+  <text x="898" y="322" text-anchor="middle"
+        font-family="'Helvetica Neue', Arial, sans-serif"
+        font-size="17" fill="#c2773a">習慣トラッカー</text>
 
-  <rect x="990" y="350" width="100" height="44" fill="#152036" rx="22" stroke="#1e3355" stroke-width="1"/>
-  <text x="1040" y="377" text-anchor="middle"
-        font-family="'Helvetica Neue', 'Arial', sans-serif"
-        font-size="17" fill="#5a7a9f">PWA対応</text>
+  <!-- バッジ4: 登録不要 -->
+  <rect x="995" y="355" width="130" height="44" fill="#2a1005" rx="22" stroke="#5a2a08" stroke-width="1"/>
+  <text x="1060" y="382" text-anchor="middle"
+        font-family="'Helvetica Neue', Arial, sans-serif"
+        font-size="17" fill="#c2773a">登録不要</text>
 
-  <rect x="820" y="410" width="130" height="44" fill="#152036" rx="22" stroke="#1e3355" stroke-width="1"/>
-  <text x="885" y="437" text-anchor="middle"
-        font-family="'Helvetica Neue', 'Arial', sans-serif"
-        font-size="17" fill="#5a7a9f">広告なし</text>
+  <!-- バッジ5: PWA対応 -->
+  <rect x="835" y="415" width="118" height="44" fill="#2a1005" rx="22" stroke="#5a2a08" stroke-width="1"/>
+  <text x="894" y="442" text-anchor="middle"
+        font-family="'Helvetica Neue', Arial, sans-serif"
+        font-size="17" fill="#c2773a">PWA対応</text>
 
-  <!-- 右上の輝き -->
-  <circle cx="1160" cy="80" r="5" fill="#7bb8ff" fill-opacity="0.6"/>
-  <circle cx="1145" cy="62" r="3" fill="#7bb8ff" fill-opacity="0.4"/>
-  <circle cx="1172" cy="98" r="2.5" fill="#4f9eff" fill-opacity="0.4"/>
+  <!-- 装飾: 右上の輝き -->
+  <circle cx="1155" cy="72" r="5" fill="#f97316" fill-opacity="0.65"/>
+  <circle cx="1138" cy="52" r="3" fill="#fbbf24" fill-opacity="0.5"/>
+  <circle cx="1170" cy="90" r="2.5" fill="#fb923c" fill-opacity="0.45"/>
+
+  <!-- 装飾: 左下の輝き -->
+  <circle cx="48" cy="560" r="4" fill="#f97316" fill-opacity="0.4"/>
+  <circle cx="68" cy="578" r="2.5" fill="#fbbf24" fill-opacity="0.35"/>
 </svg>

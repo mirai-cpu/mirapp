@@ -1379,9 +1379,9 @@ if (!localStorage.getItem('sm_tutorial_done')) {
     el.id = 'pwa-banner';
     el.style.cssText = [
       'position:fixed','bottom:0','left:0','right:0','z-index:9999',
-      'background:#1c1c21','color:#f0f0f0',
-      'border-top:1px solid #323239',
-      'padding:12px 16px','box-shadow:0 -4px 16px rgba(0,0,0,.4)',
+      'background:linear-gradient(135deg,#431407,#2d1100)','color:#fde8d0',
+      'border-top:2px solid #f97316',
+      'padding:14px 16px','box-shadow:0 -4px 24px rgba(249,115,22,.25)',
       'font-size:13px','font-family:sans-serif',
     ].join(';');
 
@@ -1396,17 +1396,17 @@ if (!localStorage.getItem('sm_tutorial_done')) {
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
           <div style="flex:1">
             <div style="font-size:13px;font-weight:700;margin-bottom:4px">📲 ホーム画面に追加できます</div>
-            <div id="pwa-ios-hint" style="font-size:12px;color:#a0a0b0">
+            <div id="pwa-ios-hint" style="font-size:12px;color:rgba(253,232,208,.7)">
               アプリのように使えます。
-              <button id="pwa-steps-btn" style="background:none;border:none;color:#f0a855;font-size:12px;cursor:pointer;text-decoration:underline;padding:0 2px">手順を見る</button>
+              <button id="pwa-steps-btn" style="background:none;border:none;color:#fb923c;font-size:12px;cursor:pointer;text-decoration:underline;padding:0 3px">手順を見る</button>
             </div>
-            <ol id="pwa-steps" style="display:none;font-size:12px;color:#a0a0b0;line-height:1.8;padding-left:16px;margin:4px 0 0">
-              <li>Safari 画面下の <strong style="color:#f0a855">共有ボタン（↑）</strong> をタップ</li>
-              <li><strong style="color:#f0a855">「ホーム画面に追加」</strong> をタップ</li>
-              <li>名前を確認して <strong style="color:#f0a855">「追加」</strong> をタップ</li>
+            <ol id="pwa-steps" style="display:none;font-size:12px;color:#fbbf24;line-height:1.9;padding-left:18px;margin:4px 0 0">
+              <li>Safari 画面下の <strong style="color:#fb923c">共有ボタン（↑）</strong> をタップ</li>
+              <li><strong style="color:#fb923c">「ホーム画面に追加」</strong> をタップ</li>
+              <li>名前を確認して <strong style="color:#fb923c">「追加」</strong> をタップ</li>
             </ol>
           </div>
-          <button id="pwa-dismiss" style="background:none;border:1px solid #3e3e4e;color:#a0a0b0;border-radius:6px;padding:5px 9px;font-size:12px;cursor:pointer;flex-shrink:0">✕</button>
+          <button id="pwa-dismiss" style="background:none;border:1px solid rgba(249,115,22,.45);color:#fde8d0;border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer;flex-shrink:0;min-height:32px">✕</button>
         </div>`;
       el.querySelector('#pwa-steps-btn').onclick = function() {
         stepsVisible = !stepsVisible;
@@ -1419,11 +1419,11 @@ if (!localStorage.getItem('sm_tutorial_done')) {
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
           <div style="flex:1">
             <div style="font-weight:700;margin-bottom:2px">📲 ホーム画面に追加できます</div>
-            <div style="font-size:12px;color:#a0a0b0">アプリのように起動できます</div>
+            <div style="font-size:12px;color:rgba(253,232,208,.7)">アプリのように起動できます</div>
           </div>
           <div style="display:flex;gap:8px;flex-shrink:0">
-            <button id="pwa-install" style="background:#f0a855;color:#1c1c21;border:none;border-radius:6px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer">追加する</button>
-            <button id="pwa-dismiss" style="background:none;border:1px solid #3e3e4e;color:#a0a0b0;border-radius:6px;padding:6px 10px;font-size:12px;cursor:pointer">✕</button>
+            <button id="pwa-install" style="background:#f97316;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(249,115,22,.4)">追加する</button>
+            <button id="pwa-dismiss" style="background:none;border:1px solid rgba(249,115,22,.45);color:#fde8d0;border-radius:8px;padding:7px 11px;font-size:12px;cursor:pointer">✕</button>
           </div>
         </div>`;
       el.querySelector('#pwa-install').onclick = async function() {

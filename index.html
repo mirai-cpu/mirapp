@@ -10,7 +10,7 @@
   <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#6366f1">
+  <meta name="theme-color" content="#f97316">
   <link rel="canonical" href="https://somirai.jp/">
 
   <script type="application/ld+json">
@@ -63,23 +63,23 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #ffffff;
-      --bg2:       #f8fafc;
+      --bg:        #fffcf8;
+      --bg2:       #fff7ed;
       --surface:   #ffffff;
-      --border:    #e2e8f0;
-      --border2:   rgba(99,102,241,.2);
-      --text:      #0f172a;
-      --textSec:   #334155;
-      --muted:     #64748b;
-      --accent:    #6366f1;
-      --accent2:   #8b5cf6;
-      --cyan:      #06b6d4;
+      --border:    #fed7aa;
+      --border2:   rgba(249,115,22,.2);
+      --text:      #1c0f04;
+      --textSec:   #431a07;
+      --muted:     #92400e;
+      --accent:    #f97316;
+      --accent2:   #f59e0b;
+      --cyan:      #fb923c;
       --green:     #10b981;
       --pink:      #ec4899;
       --orange:    #f97316;
       --radius:    16px;
       --shadow:    0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.06);
-      --shadow-lg: 0 8px 32px rgba(99,102,241,.15), 0 2px 8px rgba(0,0,0,.06);
+      --shadow-lg: 0 8px 32px rgba(249,115,22,.15), 0 2px 8px rgba(0,0,0,.06);
     }
 
     html { scroll-behavior: smooth; }
@@ -102,9 +102,9 @@
       100% { background-position:  200% center; }
     }
     @keyframes pulse-ring {
-      0%   { transform: scale(.95); box-shadow: 0 0 0 0 rgba(99,102,241,.5); }
-      70%  { transform: scale(1);   box-shadow: 0 0 0 12px rgba(99,102,241,0); }
-      100% { transform: scale(.95); box-shadow: 0 0 0 0 rgba(99,102,241,0); }
+      0%   { transform: scale(.95); box-shadow: 0 0 0 0 rgba(249,115,22,.5); }
+      70%  { transform: scale(1);   box-shadow: 0 0 0 12px rgba(249,115,22,0); }
+      100% { transform: scale(.95); box-shadow: 0 0 0 0 rgba(249,115,22,0); }
     }
     @keyframes scan {
       0%   { top: -4px; opacity: 0; }
@@ -183,7 +183,7 @@
     .hero-wrap {
       position: relative;
       overflow: hidden;
-      background: linear-gradient(180deg, #f0f4ff 0%, #fafbff 70%, #fff 100%);
+      background: linear-gradient(180deg, #fff4e8 0%, #fffbf5 70%, #fffcf8 100%);
     }
 
     /* canvas layer */
@@ -200,8 +200,8 @@
       position: absolute;
       left: 0; right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(99,102,241,.5), rgba(6,182,212,.6), rgba(99,102,241,.5), transparent);
-      box-shadow: 0 0 18px 6px rgba(99,102,241,.18);
+      background: linear-gradient(90deg, transparent, rgba(249,115,22,.5), rgba(251,191,36,.6), rgba(249,115,22,.5), transparent);
+      box-shadow: 0 0 18px 6px rgba(249,115,22,.18);
       animation: scan 5s linear infinite;
       pointer-events: none;
       z-index: 1;
@@ -599,9 +599,9 @@
       font-size: 20px;
       flex-shrink: 0;
     }
-    .feature-icon-1 { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
-    .feature-icon-2 { background: linear-gradient(135deg, #fdf4ff, #fae8ff); }
-    .feature-icon-3 { background: linear-gradient(135deg, #f0fdf4, #dcfce7); }
+    .feature-icon-1 { background: linear-gradient(135deg, #fff7ed, #fed7aa); }
+    .feature-icon-2 { background: linear-gradient(135deg, #fffbeb, #fde68a); }
+    .feature-icon-3 { background: linear-gradient(135deg, #fff7ed, #fecaca); }
     .feature-title {
       font-size: 14px;
       font-weight: 700;
@@ -621,8 +621,8 @@
       padding: 0 24px 88px;
     }
     .about-inner {
-      background: linear-gradient(135deg, #f5f3ff 0%, #eff6ff 50%, #ecfeff 100%);
-      border: 1px solid rgba(99,102,241,.2);
+      background: linear-gradient(135deg, #fff7ed 0%, #fffbf0 50%, #fef9ee 100%);
+      border: 1px solid rgba(249,115,22,.2);
       border-radius: 24px;
       padding: 40px 44px;
       display: flex;
@@ -928,9 +928,9 @@
     const CONNECT_D   = 130;
     const SPEED       = .45;
     const NODE_R      = 2.2;
-    const COLOR_NODE  = 'rgba(99,102,241,';
-    const COLOR_LINE  = 'rgba(99,102,241,';
-    const COLOR_PULSE = 'rgba(6,182,212,';
+    const COLOR_NODE  = 'rgba(249,115,22,';
+    const COLOR_LINE  = 'rgba(249,115,22,';
+    const COLOR_PULSE = 'rgba(251,191,36,';
 
     let W, H, nodes, packets;
 
@@ -968,7 +968,7 @@
 
       /* subtle perspective grid */
       ctx.save();
-      ctx.strokeStyle = 'rgba(99,102,241,.055)';
+      ctx.strokeStyle = 'rgba(249,115,22,.055)';
       ctx.lineWidth   = 1;
       const GS = 44;
       for(let x=0; x<W; x+=GS){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
@@ -1003,7 +1003,7 @@
         ctx.beginPath();
         ctx.arc(x, y, 3, 0, Math.PI*2);
         ctx.fillStyle = COLOR_PULSE + (alpha*.9) + ')';
-        ctx.shadowColor = 'rgba(6,182,212,.7)';
+        ctx.shadowColor = 'rgba(251,191,36,.7)';
         ctx.shadowBlur  = 10;
         ctx.fill();
         ctx.shadowBlur = 0;
@@ -1018,7 +1018,7 @@
         ctx.arc(n.x, n.y, n.pulse ? NODE_R*1.5 : NODE_R, 0, Math.PI*2);
         ctx.fillStyle = COLOR_NODE + (.55*flicker) + ')';
         if(n.pulse){
-          ctx.shadowColor = 'rgba(99,102,241,.5)';
+          ctx.shadowColor = 'rgba(249,115,22,.5)';
           ctx.shadowBlur  = 8;
         }
         ctx.fill();
