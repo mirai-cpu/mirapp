@@ -1081,36 +1081,34 @@ textarea { resize: vertical; min-height: 64px; }
   left: 0;
   right: 0;
   z-index: 150;
-  background: linear-gradient(135deg, #431407, #2d1100);
-  color: #fde8d0;
-  border-top: 2px solid #f97316;
+  background: #1a472a;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 14px 16px;
+  padding: 12px 16px;
   font-size: 13px;
-  box-shadow: 0 -4px 24px rgba(249,115,22,.25);
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
 }
 .pwa-banner-msg { flex: 1; line-height: 1.4; }
 .pwa-banner-actions { display: flex; gap: 8px; flex-shrink: 0; }
 .pwa-btn-add {
-  background: #f97316;
-  color: #fff;
+  background: #fff;
+  color: #1a472a;
   border: none;
   border-radius: var(--radius-sm);
-  padding: 8px 16px;
+  padding: 7px 14px;
   font-size: 13px;
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
   min-height: 36px;
-  box-shadow: 0 2px 8px rgba(249,115,22,.4);
 }
 .pwa-btn-close {
   background: none;
-  border: 1px solid rgba(249,115,22,.45);
-  color: #fde8d0;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #fff;
   border-radius: var(--radius-sm);
   padding: 7px 10px;
   font-size: 13px;
