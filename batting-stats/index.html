@@ -128,6 +128,22 @@
           </div>
         </div>
 
+        <!-- 打順 -->
+        <div class="field-group">
+          <label>打順 <span style="font-size:11px;opacity:.6">（任意）</span></label>
+          <div class="hand-row" id="batting-order-buttons" style="flex-wrap:wrap;gap:6px;">
+            <button type="button" class="hand-btn" data-order="1">1番</button>
+            <button type="button" class="hand-btn" data-order="2">2番</button>
+            <button type="button" class="hand-btn" data-order="3">3番</button>
+            <button type="button" class="hand-btn" data-order="4">4番</button>
+            <button type="button" class="hand-btn" data-order="5">5番</button>
+            <button type="button" class="hand-btn" data-order="6">6番</button>
+            <button type="button" class="hand-btn" data-order="7">7番</button>
+            <button type="button" class="hand-btn" data-order="8">8番</button>
+            <button type="button" class="hand-btn" data-order="9">9番</button>
+          </div>
+        </div>
+
         <!-- 結果 -->
         <div class="field-group">
           <label data-i18n="form.result">結果</label>
@@ -242,6 +258,18 @@
           </div>
         </div>
 
+        <!-- ストリーク表示 -->
+        <div id="streak-row" style="display:none;gap:12px;margin-bottom:8px;" class="streak-row">
+          <div class="streak-card" id="streak-current">
+            <span class="streak-num" id="streak-current-num">0</span>
+            <span class="streak-label">🔥 現在の連続安打</span>
+          </div>
+          <div class="streak-card" id="streak-max">
+            <span class="streak-num" id="streak-max-num">0</span>
+            <span class="streak-label">🏆 最長連続安打</span>
+          </div>
+        </div>
+
         <!-- シェアボタン -->
         <div class="share-btn-wrap">
           <button class="btn-share" id="btn-share" data-i18n="share.btn" aria-label="成績をシェアする">成績をシェアする</button>
@@ -292,6 +320,12 @@
           <div class="trend-controls">
             <label><input type="checkbox" id="trend-show-ops" checked> <span data-i18n="trend.showOps">OPS</span></label>
             <label><input type="checkbox" id="trend-show-250" checked> <span data-i18n="trend.show250">.250基準線</span></label>
+            <label><input type="checkbox" id="trend-show-movavg"> <span>移動平均(5試合)</span></label>
+            <label style="display:flex;align-items:center;gap:4px;">
+              <span style="white-space:nowrap">目標:</span>
+              <input type="number" id="trend-target-avg" min="0" max="1" step="0.001" placeholder=".300"
+                style="width:58px;padding:2px 4px;border-radius:4px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:12px;">
+            </label>
           </div>
           <div class="chart-wrap chart-wrap-trend">
             <canvas id="chart-batting-trend"></canvas>
@@ -363,7 +397,19 @@
           </div>
         </div>
 
-        <!-- 8. 詳細成績リスト -->
+        <!-- 8. 対チーム別成績 -->
+        <div class="stats-section" id="vs-opponent-section" style="display:none">
+          <h3 class="stats-section-title">対チーム別成績</h3>
+          <div id="vs-opponent-table"></div>
+        </div>
+
+        <!-- 9. 打順別成績 -->
+        <div class="stats-section" id="batting-order-section" style="display:none">
+          <h3 class="stats-section-title">打順別成績</h3>
+          <div id="batting-order-table"></div>
+        </div>
+
+        <!-- 10. 詳細成績リスト -->
         <div class="stats-section">
           <h3 class="stats-section-title" data-i18n="stats.sectionDetail">詳細成績</h3>
           <div class="stats-table-wrap" id="stats-table-container">

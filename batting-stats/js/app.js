@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let selectedDir    = null;
   let rbiValue       = 0;
   let editingId      = null;
+  let selectedOrder  = null;
 
   // ── DOM refs ───────────────────────────────────────────────────
   const inputDate         = document.getElementById('input-date');
@@ -127,6 +128,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     btn.addEventListener('click', () => {
       pitcherHand = btn.dataset.hand;
       updateHandButtons();
+    });
+  });
+
+  // ── Batting order buttons ───────────────────────────────────────
+  const battingOrderButtons = document.getElementById('batting-order-buttons');
+  battingOrderButtons.querySelectorAll('.hand-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const order = parseInt(btn.dataset.order);
+      selectedOrder = selectedOrder === order ? null : order;
+      battingOrderButtons.querySelectorAll('.hand-btn').forEach(b =>
+        b.classList.toggle('selected', parseInt(b.dataset.order) === selectedOrder)
+      );
     });
   });
 
@@ -280,16 +293,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const atBat = {
-      date:        inputDate.value || new Date().toISOString().slice(0, 10),
-      opponent:    inputOpponent.value.trim(),
-      pitcherHand: pitcherHand,
-      result:      selectedResult,
-      kType:       selectedKType  || null,
-      infieldHit:  infieldHit     || false,
-      fielderPos:  selectedPos    || null,
-      direction:   selectedDir    || null,
-      rbi:         rbiValue,
-      memo:        inputMemo.value.trim(),
+      date:         inputDate.value || new Date().toISOString().slice(0, 10),
+      opponent:     inputOpponent.value.trim(),
+      pitcherHand:  pitcherHand,
+      result:       selectedResult,
+      kType:        selectedKType  || null,
+      infieldHit:   infieldHit     || false,
+      fielderPos:   selectedPos    || null,
+      direction:    selectedDir    || null,
+      rbi:          rbiValue,
+      memo:         inputMemo.value.trim(),
+      battingOrder: selectedOrder  || null,
     };
 
     if (atBat.opponent) Storage.setLastOpponent(atBat.opponent);
@@ -317,6 +331,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   function resetForm() {
     pitcherHand    = 'R';
     selectedResult = null;
+    selectedOrder  = null;
+    battingOrderButtons.querySelectorAll('.hand-btn').forEach(b => b.classList.remove('selected'));
     selectedKType  = null;
     infieldHit     = false;
     selectedPos    = null;
@@ -388,6 +404,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('trend-show-250').addEventListener('change', () => {
     Charts.renderBattingTrendChart(getFilteredAtBats());
   });
+  document.getElementById('trend-show-movavg').addEventListener('change', () => {
+    Charts.renderBattingTrendChart(getFilteredAtBats());
+  });
+  document.getElementById('trend-target-avg').addEventListener('input', () => {
+    Charts.renderBattingTrendChart(getFilteredAtBats());
+  });
 
   function renderStats() {
     const atBats = Storage.load();
@@ -428,6 +450,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderVsHandSection(filtered);
     renderDiagnosis(filtered);
     renderAbilities(filtered);
+    renderStreakRow(atBats);
+    renderVsOpponentSection(filtered);
+    renderBattingOrderSection(filtered);
 
     if (filtered.length === 0) {
       statsTableContainer.innerHTML = `<p class="empty-state">${I18n.t('stats.noData')}</p>`;
@@ -451,6 +476,68 @@ document.addEventListener('DOMContentLoaded', async () => {
           <tr class="stats-table-divider"><td colspan="4"></td></tr>
           <tr><th>${tl('vsR')}</th><td colspan="3">${Stats.fmtAvg(s.vsR.avg)} (${s.vsR.h}/${s.vsR.ab})</td></tr>
           <tr><th>${tl('vsL')}</th><td colspan="3">${Stats.fmtAvg(s.vsL.avg)} (${s.vsL.h}/${s.vsL.ab})</td></tr>
+        </tbody>
+      </table>`;
+  }
+
+  // ── ストリーク表示 ────────────────────────────────────────────
+  function renderStreakRow(atBats) {
+    const { current, max } = Stats.getHitStreak(atBats);
+    const row = document.getElementById('streak-row');
+    if (!row) return;
+    if (max === 0) { row.style.display = 'none'; return; }
+    row.style.display = 'flex';
+    document.getElementById('streak-current-num').textContent = current + '試合';
+    document.getElementById('streak-max-num').textContent     = max + '試合';
+    document.getElementById('streak-current').style.borderColor = current >= 3 ? '#f59e0b' : '';
+    document.getElementById('streak-current').style.color       = current >= 3 ? '#f59e0b' : '';
+  }
+
+  // ── 対チーム別成績テーブル ────────────────────────────────────
+  function renderVsOpponentSection(atBats) {
+    const section = document.getElementById('vs-opponent-section');
+    const container = document.getElementById('vs-opponent-table');
+    if (!section || !container) return;
+    const rows = Stats.calcStatsByOpponent(atBats);
+    if (rows.length === 0) { section.style.display = 'none'; return; }
+    section.style.display = '';
+    container.innerHTML = `
+      <table class="stats-table vs-opp-table">
+        <thead><tr>
+          <th style="text-align:left">相手チーム</th>
+          <th>試合</th><th>打席</th><th>安打</th><th>HR</th><th>打率</th><th>OPS</th>
+        </tr></thead>
+        <tbody>
+          ${rows.map(r => `<tr>
+            <td style="text-align:left;font-weight:600;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.team}</td>
+            <td>${r.games}</td><td>${r.pa}</td><td>${r.h}</td><td>${r.hr}</td>
+            <td style="font-weight:700;color:var(--accent)">${Stats.fmtAvg(r.avg)}</td>
+            <td>${Stats.fmtOps(r.ops)}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+  }
+
+  // ── 打順別成績テーブル ────────────────────────────────────────
+  function renderBattingOrderSection(atBats) {
+    const section = document.getElementById('batting-order-section');
+    const container = document.getElementById('batting-order-table');
+    if (!section || !container) return;
+    const rows = Stats.calcStatsByBattingOrder(atBats);
+    if (rows.length === 0) { section.style.display = 'none'; return; }
+    section.style.display = '';
+    container.innerHTML = `
+      <table class="stats-table">
+        <thead><tr>
+          <th>打順</th><th>打席</th><th>打数</th><th>安打</th><th>打率</th><th>OPS</th>
+        </tr></thead>
+        <tbody>
+          ${rows.map(r => `<tr>
+            <td style="font-weight:700">${r.order}番</td>
+            <td>${r.pa}</td><td>${r.ab}</td><td>${r.h}</td>
+            <td style="font-weight:700;color:var(--accent)">${Stats.fmtAvg(r.avg)}</td>
+            <td>${Stats.fmtOps(r.ops)}</td>
+          </tr>`).join('')}
         </tbody>
       </table>`;
   }

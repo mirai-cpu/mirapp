@@ -195,8 +195,12 @@ const Charts = (() => {
     canvas.style.display = '';
     if (nodata) nodata.style.display = 'none';
 
-    const showOps = document.getElementById('trend-show-ops')?.checked ?? true;
-    const show250 = document.getElementById('trend-show-250')?.checked ?? true;
+    const showOps     = document.getElementById('trend-show-ops')?.checked ?? true;
+    const show250     = document.getElementById('trend-show-250')?.checked ?? true;
+    const showMovAvg  = document.getElementById('trend-show-movavg')?.checked ?? false;
+    const targetVal   = parseFloat(document.getElementById('trend-target-avg')?.value || '0');
+    const showTarget  = !isNaN(targetVal) && targetVal > 0;
+    const movAvgData  = showMovAvg ? Stats.movingAvgByGame(atBats, 5) : [];
 
     _trendChart = new Chart(canvas, {
       type: 'line',
@@ -237,6 +241,28 @@ const Charts = (() => {
             pointRadius: 0,
             yAxisID: 'yAvg',
             hidden: !show250,
+          },
+          {
+            label: '移動平均(5)',
+            data: movAvgData,
+            borderColor: '#16a34a',
+            backgroundColor: 'rgba(22,163,74,0.08)',
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.4,
+            yAxisID: 'yAvg',
+            hidden: !showMovAvg,
+            spanGaps: false,
+          },
+          {
+            label: '目標',
+            data: showTarget ? Array(games.length).fill(targetVal) : [],
+            borderColor: '#ef4444',
+            borderDash: [6, 3],
+            borderWidth: 1.5,
+            pointRadius: 0,
+            yAxisID: 'yAvg',
+            hidden: !showTarget,
           },
         ],
       },

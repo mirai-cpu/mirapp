@@ -551,5 +551,70 @@ const Stats = (() => {
     return [...new Set(atBats.map(ab => ab.opponent).filter(Boolean))].sort();
   }
 
-  return { calculate, fmtAvg, fmtRate, fmtOps, avgTrend, gameTrend, resultCounts, directionCounts, directionsByResult, getYears, filterAtBats, calcStatsByPitcherHand, getDiagnosis, getAbilityResults, ABILITY_CATEGORIES, getOpponents, seedSampleData, verify };
+  // ── 対チーム別成績 ───────────────────────────────────────────────
+  function calcStatsByOpponent(atBats) {
+    const teams = getOpponents(atBats);
+    return teams.map(team => {
+      const s = calculate(atBats.filter(ab => ab.opponent === team));
+      return { team, games: s.games, pa: s.pa, ab: s.ab, h: s.h, hr: s.hr, rbi: s.rbi, avg: s.avg, ops: s.ops };
+    }).sort((a, b) => b.pa - a.pa);
+  }
+
+  // ── 打順別成績 ───────────────────────────────────────────────────
+  function calcStatsByBattingOrder(atBats) {
+    const results = [];
+    for (let order = 1; order <= 9; order++) {
+      const subset = atBats.filter(ab => ab.battingOrder === order);
+      if (subset.length === 0) continue;
+      const s = calculate(subset);
+      results.push({ order, pa: s.pa, ab: s.ab, h: s.h, avg: s.avg, ops: s.ops });
+    }
+    return results;
+  }
+
+  // ── 連続安打ストリーク（試合単位）──────────────────────────────
+  function getHitStreak(atBats) {
+    // 日付ごとにヒットがあったか判定
+    const byDate = {};
+    for (const ab of atBats) {
+      if (!ab.date) continue;
+      const rt = RESULT_TYPES[ab.result];
+      if (!byDate[ab.date]) byDate[ab.date] = false;
+      if (rt && rt.hit) byDate[ab.date] = true;
+    }
+    const dates = Object.keys(byDate).sort();
+    if (dates.length === 0) return { current: 0, max: 0 };
+
+    let maxStreak = 0, curStreak = 0;
+    for (const d of dates) {
+      if (byDate[d]) { curStreak++; maxStreak = Math.max(maxStreak, curStreak); }
+      else curStreak = 0;
+    }
+    // 現在のストリーク = 末尾から連続でヒットがある試合数
+    let current = 0;
+    for (let i = dates.length - 1; i >= 0; i--) {
+      if (byDate[dates[i]]) current++;
+      else break;
+    }
+    return { current, max: maxStreak };
+  }
+
+  // ── 打率推移の移動平均（n試合ウィンドウ）───────────────────────
+  // gameTrendArray は gameTrend() の戻り値
+  function movingAvgByGame(atBats, n) {
+    const byDate = {};
+    for (const ab of atBats) {
+      if (!ab.date) continue;
+      (byDate[ab.date] = byDate[ab.date] || []).push(ab);
+    }
+    const dates = Object.keys(byDate).sort();
+    return dates.map((_, i) => {
+      const start = Math.max(0, i - n + 1);
+      const window = dates.slice(start, i + 1).flatMap(d => byDate[d]);
+      const s = calculate(window);
+      return s.avg;
+    });
+  }
+
+  return { calculate, fmtAvg, fmtRate, fmtOps, avgTrend, gameTrend, resultCounts, directionCounts, directionsByResult, getYears, filterAtBats, calcStatsByPitcherHand, getDiagnosis, getAbilityResults, ABILITY_CATEGORIES, getOpponents, calcStatsByOpponent, calcStatsByBattingOrder, getHitStreak, movingAvgByGame, seedSampleData, verify };
 })();
