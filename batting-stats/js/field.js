@@ -7,9 +7,9 @@
 const FIELD_ZONES = [
   // Infield zones
   { id: 'if3',  path: 'M150,255 L83,188 A95,95 0 0 1 107,170 Z',  cx: 113, cy: 204 },
-  { id: 'ifss', path: 'M150,255 L107,170 A95,95 0 0 1 135,161 Z', cx: 131, cy: 195 },
+  { id: 'ifss', path: 'M150,255 L107,170 A95,95 0 0 1 135,161 Z', cx: 118, cy: 163 },
   { id: 'if2',  path: 'M150,255 L135,161 A95,95 0 0 1 165,161 Z', cx: 150, cy: 192 },
-  { id: 'if2b', path: 'M150,255 L165,161 A95,95 0 0 1 193,170 Z', cx: 169, cy: 195 },
+  { id: 'if2b', path: 'M150,255 L165,161 A95,95 0 0 1 193,170 Z', cx: 182, cy: 163 },
   { id: 'if1',  path: 'M150,255 L193,170 A95,95 0 0 1 217,188 Z', cx: 187, cy: 204 },
   // Outfield zones (7 zones: lfl, lf, lc, cf, rc, rf, rfl)
   { id: 'lfl', path: 'M83,188 A95,95 0 0 1 100,175 L45,69 A230,230 0 0 0 5,92 Z',     cx: 22,  cy: 135 },
