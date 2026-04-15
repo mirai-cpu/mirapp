@@ -1483,4 +1483,243 @@ textarea { resize: vertical; min-height: 64px; }
   gap: 10px;
 }
 .tutorial-nav .btn-ghost { flex: 1; }
+
+/* ══════════════════════════════════════════
+   コンディション入力
+   ══════════════════════════════════════════ */
+.condition-details {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.condition-summary {
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+}
+.condition-summary::-webkit-details-marker { display: none; }
+.condition-summary-hint {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.condition-inputs {
+  padding: 10px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.condition-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.condition-label {
+  font-size: 12px;
+  color: var(--muted);
+  min-width: 32px;
+  flex-shrink: 0;
+}
+.condition-btn-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.cond-btn {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.cond-btn.selected {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ══════════════════════════════════════════
+   シーズン目標
+   ══════════════════════════════════════════ */
+.goal-inputs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.goal-input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+.goal-input-label {
+  font-size: 11px;
+  color: var(--muted);
+}
+.goal-input-field {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  font-size: 14px;
+  color: var(--text);
+  width: 100%;
+}
+.goal-input-field:focus { outline: 2px solid var(--accent); border-color: transparent; }
+
+.goal-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+.goal-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.goal-card-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+.goal-card-value {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: monospace;
+}
+.goal-card-target {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.goal-card-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.goal-progress-bar-track {
+  height: 6px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.goal-progress-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+/* ══════════════════════════════════════════
+   コンディション相関
+   ══════════════════════════════════════════ */
+.cond-corr-block {
+  margin-bottom: 14px;
+}
+.cond-corr-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.cond-corr-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.cond-corr-table td {
+  padding: 6px 8px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+}
+.cond-corr-label { color: var(--text); }
+.cond-corr-avg   { font-family: monospace; font-weight: 700; text-align: right; }
+.cond-corr-detail { color: var(--muted); font-size: 11px; text-align: right; }
+.cond-corr-best td { background: var(--accent-bg); }
+
+/* ══════════════════════════════════════════
+   打席日誌（ストーリータブ）
+   ══════════════════════════════════════════ */
+.story-game-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.story-game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+.story-game-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.story-game-date {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.story-game-opp {
+  font-size: 12px;
+  color: var(--muted);
+}
+.story-cond-icons {
+  font-size: 13px;
+  margin-top: 2px;
+}
+.story-game-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.story-game-avg {
+  font-family: monospace;
+  font-size: 18px;
+  font-weight: 700;
+}
+.story-game-detail {
+  font-size: 11px;
+  color: var(--muted);
+}
+.story-abs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.story-ab-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.story-ab-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+.story-ab-memo {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+}
 .tutorial-nav .btn-primary { flex: 2; }

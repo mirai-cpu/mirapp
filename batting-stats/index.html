@@ -94,6 +94,7 @@
   <nav class="tab-bar" aria-label="メインナビゲーション">
     <button class="tab-btn active" data-tab="record"  data-i18n="tab.record">記録</button>
     <button class="tab-btn"        data-tab="stats"   data-i18n="tab.stats">成績</button>
+    <button class="tab-btn"        data-tab="story">📖 日誌</button>
     <button class="tab-btn"        data-tab="history" data-i18n="tab.history">履歴</button>
   </nav>
 
@@ -209,6 +210,37 @@
           <textarea id="input-memo" data-i18n-ph="form.memoPh" placeholder="（任意）" rows="2" maxlength="100"></textarea>
         </div>
 
+        <!-- コンディション -->
+        <details class="condition-details" id="condition-details">
+          <summary class="condition-summary">コンディション記録 <span class="condition-summary-hint">（任意・成績との相関を分析）</span></summary>
+          <div class="condition-inputs">
+            <div class="condition-row">
+              <span class="condition-label">体調</span>
+              <div class="condition-btn-group" id="cond-body-group">
+                <button type="button" class="cond-btn" data-cond-type="condition" data-cond-val="1">😔 不調</button>
+                <button type="button" class="cond-btn" data-cond-type="condition" data-cond-val="2">😐 普通</button>
+                <button type="button" class="cond-btn" data-cond-type="condition" data-cond-val="3">😊 好調</button>
+              </div>
+            </div>
+            <div class="condition-row">
+              <span class="condition-label">天気</span>
+              <div class="condition-btn-group" id="cond-weather-group">
+                <button type="button" class="cond-btn" data-cond-type="weather" data-cond-val="sunny">☀️ 晴れ</button>
+                <button type="button" class="cond-btn" data-cond-type="weather" data-cond-val="cloudy">☁️ 曇り</button>
+                <button type="button" class="cond-btn" data-cond-type="weather" data-cond-val="rainy">🌧️ 雨</button>
+              </div>
+            </div>
+            <div class="condition-row">
+              <span class="condition-label">疲れ</span>
+              <div class="condition-btn-group" id="cond-fatigue-group">
+                <button type="button" class="cond-btn" data-cond-type="fatigue" data-cond-val="1">💪 元気</button>
+                <button type="button" class="cond-btn" data-cond-type="fatigue" data-cond-val="2">🙂 普通</button>
+                <button type="button" class="cond-btn" data-cond-type="fatigue" data-cond-val="3">😴 疲労</button>
+              </div>
+            </div>
+          </div>
+        </details>
+
         <!-- 送信 -->
         <div class="form-actions">
           <button type="submit" class="btn-primary" id="form-submit" data-i18n="form.submit">記録する</button>
@@ -273,6 +305,24 @@
         <!-- シェアボタン -->
         <div class="share-btn-wrap">
           <button class="btn-share" id="btn-share" data-i18n="share.btn" aria-label="成績をシェアする">成績をシェアする</button>
+        </div>
+
+        <!-- シーズン目標 -->
+        <div class="stats-section" id="goal-section">
+          <h3 class="stats-section-title">🎯 シーズン目標</h3>
+          <div class="goal-inputs">
+            <div class="goal-input-row">
+              <label class="goal-input-label">目標打率</label>
+              <input type="number" id="goal-avg-input" min="0" max="1" step="0.001" placeholder=".300"
+                class="goal-input-field">
+            </div>
+            <div class="goal-input-row">
+              <label class="goal-input-label">目標安打数</label>
+              <input type="number" id="goal-hits-input" min="1" max="999" step="1" placeholder="30"
+                class="goal-input-field">
+            </div>
+          </div>
+          <div id="goal-panel"></div>
         </div>
 
         <!-- AdSense: in-content-ad -->
@@ -409,7 +459,13 @@
           <div id="batting-order-table"></div>
         </div>
 
-        <!-- 10. 詳細成績リスト -->
+        <!-- 10. コンディション相関 -->
+        <div class="stats-section" id="condition-section" style="display:none">
+          <h3 class="stats-section-title">🌤️ コンディション別成績</h3>
+          <div id="condition-correlation-panel"></div>
+        </div>
+
+        <!-- 11. 詳細成績リスト -->
         <div class="stats-section">
           <h3 class="stats-section-title" data-i18n="stats.sectionDetail">詳細成績</h3>
           <div class="stats-table-wrap" id="stats-table-container">
@@ -426,6 +482,15 @@
           <div id="abilities-grid"></div>
         </div>
 
+      </div>
+    </section>
+
+    <!-- ── 日誌タブ ── -->
+    <section id="tab-story" class="tab-panel" aria-label="打席日誌">
+      <div class="section-inner">
+        <div id="story-list">
+          <p class="empty-state">打席データがありません</p>
+        </div>
       </div>
     </section>
 
@@ -561,6 +626,8 @@
   <script src="js/charts.js"></script>
   <script src="js/share.js"></script>
   <script src="js/tutorial.js"></script>
+  <script src="js/conditions.js"></script>
+  <script src="js/goal.js"></script>
   <script src="js/app.js"></script>
 
   <!-- Service Worker -->

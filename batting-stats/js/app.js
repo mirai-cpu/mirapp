@@ -453,6 +453,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderStreakRow(atBats);
     renderVsOpponentSection(filtered);
     renderBattingOrderSection(filtered);
+    renderGoalSection(filtered);
+    renderConditionSection(filtered);
 
     if (filtered.length === 0) {
       statsTableContainer.innerHTML = `<p class="empty-state">${I18n.t('stats.noData')}</p>`;
@@ -657,6 +659,268 @@ document.addEventListener('DOMContentLoaded', async () => {
       </div>`;
     }).join('');
   }
+
+  // ── シーズン目標 ───────────────────────────────────────────────
+  const goalAvgInput  = document.getElementById('goal-avg-input');
+  const goalHitsInput = document.getElementById('goal-hits-input');
+
+  // 保存済みゴールをロード
+  (() => {
+    const g = Goal.load();
+    if (g.targetAvg)  goalAvgInput.value  = g.targetAvg;
+    if (g.targetHits) goalHitsInput.value = g.targetHits;
+  })();
+
+  function saveGoal() {
+    const g = Goal.load();
+    const avg  = parseFloat(goalAvgInput.value);
+    const hits = parseInt(goalHitsInput.value);
+    g.targetAvg  = !isNaN(avg)  && avg  > 0 ? avg  : null;
+    g.targetHits = !isNaN(hits) && hits > 0 ? hits : null;
+    Goal.save(g);
+    renderStats();
+  }
+
+  goalAvgInput.addEventListener('change',  saveGoal);
+  goalHitsInput.addEventListener('change', saveGoal);
+
+  function renderGoalSection(atBats) {
+    const panel = document.getElementById('goal-panel');
+    if (!panel) return;
+
+    const goal = Goal.load();
+    if (!goal.targetAvg && !goal.targetHits) {
+      panel.innerHTML = '<p class="empty-state-sm" style="margin-top:8px">目標を入力するとここに進捗が表示されます</p>';
+      return;
+    }
+
+    const p = Goal.calcProgress(atBats, goal);
+    let html = '';
+
+    if (p.targetAvg) {
+      const color    = p.onTrack ? '#16a34a' : '#dc2626';
+      const pctWidth = p.pct + '%';
+      const msgStyle = `color:${color};font-size:12px;font-weight:600;margin-top:6px`;
+      let msg;
+      if (p.onTrack) {
+        msg = `🎉 目標打率 ${Stats.fmtAvg(p.targetAvg)} 達成中！`;
+      } else if (p.hitsNeededStreak !== undefined) {
+        msg = `あと連続 ${p.hitsNeededStreak} 安打で目標打率に到達`;
+      } else {
+        msg = `現在 ${Stats.fmtAvg(p.currentAvg)} ／ 目標 ${Stats.fmtAvg(p.targetAvg)}`;
+      }
+
+      html += `
+        <div class="goal-card">
+          <div class="goal-card-header">
+            <span class="goal-card-label">打率目標</span>
+            <span class="goal-card-value" style="color:${color}">${Stats.fmtAvg(p.currentAvg)}<span class="goal-card-target"> ／ ${Stats.fmtAvg(p.targetAvg)}</span></span>
+          </div>
+          <div class="goal-progress-bar-track">
+            <div class="goal-progress-bar-fill" style="width:${pctWidth};background:${color}"></div>
+          </div>
+          <div style="${msgStyle}">${msg}</div>
+          <div class="goal-card-sub">${p.h}安打 / ${p.ab}打数</div>
+        </div>`;
+    }
+
+    if (p.targetHits) {
+      const color    = p.hitsRemaining === 0 ? '#16a34a' : '#2563eb';
+      const pctWidth = p.hitsPct + '%';
+      const msg = p.hitsRemaining === 0
+        ? `🎉 目標 ${p.targetHits} 安打達成！`
+        : `あと <strong>${p.hitsRemaining}</strong> 安打で目標達成`;
+
+      html += `
+        <div class="goal-card">
+          <div class="goal-card-header">
+            <span class="goal-card-label">安打数目標</span>
+            <span class="goal-card-value" style="color:${color}">${p.hitsProgress}<span class="goal-card-target"> ／ ${p.targetHits} 本</span></span>
+          </div>
+          <div class="goal-progress-bar-track">
+            <div class="goal-progress-bar-fill" style="width:${pctWidth};background:${color}"></div>
+          </div>
+          <div style="color:${color};font-size:12px;font-weight:600;margin-top:6px">${msg}</div>
+        </div>`;
+    }
+
+    panel.innerHTML = html;
+  }
+
+  // ── コンディション入力 ─────────────────────────────────────────
+  const conditionDetails = document.getElementById('condition-details');
+
+  // コンディション状態
+  let _cond = {};
+
+  function loadConditionForCurrentGame() {
+    const date = inputDate.value;
+    const opp  = inputOpponent.value.trim();
+    _cond = Conditions.get(date, opp);
+    updateCondButtons();
+  }
+
+  function updateCondButtons() {
+    document.querySelectorAll('.cond-btn').forEach(btn => {
+      const type = btn.dataset.condType;
+      const val  = btn.dataset.condVal;
+      btn.classList.toggle('selected', String(_cond[type]) === String(val));
+    });
+  }
+
+  document.querySelectorAll('.cond-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const type = btn.dataset.condType;
+      const val  = btn.dataset.condVal;
+      // トグル
+      if (String(_cond[type]) === String(val)) {
+        delete _cond[type];
+      } else {
+        _cond[type] = isNaN(val) ? val : Number(val);
+      }
+      const date = inputDate.value;
+      const opp  = inputOpponent.value.trim();
+      Conditions.set(date, opp, _cond);
+      updateCondButtons();
+    });
+  });
+
+  // 日付・相手チームが変わったらコンディションを再ロード
+  inputDate.addEventListener('change',    loadConditionForCurrentGame);
+  inputOpponent.addEventListener('change', loadConditionForCurrentGame);
+  loadConditionForCurrentGame();
+
+  // ── コンディション相関セクション ──────────────────────────────
+  function renderConditionSection(atBats) {
+    const section = document.getElementById('condition-section');
+    const panel   = document.getElementById('condition-correlation-panel');
+    if (!section || !panel) return;
+
+    const corr = Conditions.calcCorrelation(atBats);
+    if (!corr.hasAny) { section.style.display = 'none'; return; }
+    section.style.display = '';
+
+    function buildTable(rows, title) {
+      if (rows.length === 0) return '';
+      const best = rows.reduce((a, b) => ((a.avg ?? -1) > (b.avg ?? -1) ? a : b), rows[0]);
+      return `
+        <div class="cond-corr-block">
+          <div class="cond-corr-title">${title}</div>
+          <table class="cond-corr-table">
+            <tbody>
+              ${rows.map(r => {
+                const isBest = r.avg !== null && r === best && rows.length > 1;
+                return `<tr${isBest ? ' class="cond-corr-best"' : ''}>
+                  <td class="cond-corr-label">${r.label}</td>
+                  <td class="cond-corr-avg" style="color:${r.color}">${Stats.fmtAvg(r.avg)}</td>
+                  <td class="cond-corr-detail">${r.h}/${r.ab}打数</td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>`;
+    }
+
+    panel.innerHTML =
+      buildTable(corr.condition, '体調別') +
+      buildTable(corr.weather,   '天気別') +
+      buildTable(corr.fatigue,   '疲れ別');
+  }
+
+  // ── 打席日誌（ストーリータブ） ────────────────────────────────
+  function renderStoryTab() {
+    const list = document.getElementById('story-list');
+    if (!list) return;
+
+    const atBats = Storage.load();
+    const conditions = Conditions.load();
+
+    if (atBats.length === 0) {
+      list.innerHTML = '<p class="empty-state">打席データがありません</p>';
+      return;
+    }
+
+    // ゲームごとにグループ化（日付+相手チーム）
+    const gamesMap = new Map();
+    for (const ab of atBats) {
+      const key = `${ab.date}_${ab.opponent || ''}`;
+      if (!gamesMap.has(key)) {
+        gamesMap.set(key, {
+          date: ab.date,
+          opponent: ab.opponent || '',
+          abs: [],
+          cond: conditions[Conditions.gameKey(ab.date, ab.opponent)] || {},
+        });
+      }
+      gamesMap.get(key).abs.push(ab);
+    }
+
+    // 新しい日付順
+    const games = [...gamesMap.values()].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+    const RESULT_LABEL = {
+      single: '単打', double: '二塁打', triple: '三塁打', hr: '本塁打',
+      bb: '四球', hbp: '死球', k: '三振', go: 'ゴロ', fo: 'フライ',
+      lo: 'ライナー', sb: '犠打', sf: '犠飛', e: '失策', dp: '併殺',
+    };
+    const RESULT_COLOR = {
+      single: '#16a34a', double: '#059669', triple: '#0d9488', hr: '#7c3aed',
+      bb: '#2563eb', hbp: '#1d4ed8',
+      k: '#dc2626', go: '#b91c1c', fo: '#9f1239', lo: '#be185d',
+      sb: '#d97706', sf: '#b45309', e: '#92400e', dp: '#78350f',
+    };
+
+    const COND_ICONS = {
+      condition: { 1: '😔', 2: '😐', 3: '😊' },
+      weather:   { sunny: '☀️', cloudy: '☁️', rainy: '🌧️' },
+      fatigue:   { 1: '💪', 2: '🙂', 3: '😴' },
+    };
+
+    list.innerHTML = games.map(game => {
+      const s  = Stats.calculate(game.abs);
+      const dateObj = new Date((game.date || '2000-01-01') + 'T00:00:00');
+      const dateLabel = dateObj.toLocaleDateString('ja-JP', { month: 'long', day: 'numeric', weekday: 'short' });
+
+      const condIcons = [
+        game.cond.condition ? COND_ICONS.condition[game.cond.condition] : null,
+        game.cond.weather   ? COND_ICONS.weather[game.cond.weather]     : null,
+        game.cond.fatigue   ? COND_ICONS.fatigue[game.cond.fatigue]     : null,
+      ].filter(Boolean).join(' ');
+
+      const abBadges = game.abs.map(ab => {
+        const label = RESULT_LABEL[ab.result] || ab.result;
+        const color = RESULT_COLOR[ab.result] || '#71717a';
+        const memo  = ab.memo ? `<span class="story-ab-memo">"${ab.memo}"</span>` : '';
+        return `<div class="story-ab-row">
+          <span class="story-ab-badge" style="background:${color}20;color:${color};border:1px solid ${color}40">${label}</span>
+          ${memo}
+        </div>`;
+      }).join('');
+
+      return `
+        <div class="story-game-card">
+          <div class="story-game-header">
+            <div class="story-game-meta">
+              <span class="story-game-date">${dateLabel}</span>
+              ${game.opponent ? `<span class="story-game-opp">vs ${game.opponent}</span>` : ''}
+              ${condIcons ? `<span class="story-cond-icons">${condIcons}</span>` : ''}
+            </div>
+            <div class="story-game-stats">
+              <span class="story-game-avg" style="color:var(--accent)">${Stats.fmtAvg(s.avg)}</span>
+              <span class="story-game-detail">${s.h}/${s.ab}</span>
+            </div>
+          </div>
+          <div class="story-abs">${abBadges}</div>
+        </div>`;
+    }).join('');
+  }
+
+  // ストーリータブの切替時にレンダリング
+  tabBtns.forEach(btn => {
+    if (btn.dataset.tab === 'story') {
+      btn.addEventListener('click', renderStoryTab);
+    }
+  });
 
   // ── CSV エクスポート ───────────────────────────────────────────
   document.getElementById('btn-export-csv')?.addEventListener('click', () => {
