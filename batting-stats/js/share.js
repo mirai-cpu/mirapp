@@ -2,8 +2,9 @@
 
 const Share = (() => {
 
-  // ── 生成済みCanvasを保持 ───────────────────────────────────
+  // ── 生成済みCanvas / Blobを保持 ──────────────────────────
   let _lastCanvas = null;
+  let _lastBlob   = null;   // 事前生成しておく（同期的にwindow.openできるように）
 
   // ── モーダル制御 ─────────────────────────────────────────────
   function init() {
@@ -183,38 +184,34 @@ const Share = (() => {
 
   // ── X（旧Twitter）への画像付きシェア ─────────────────────────
   async function onXShare() {
-    const text    = _buildShareText();
+    const text     = _buildShareText();
     const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
 
-    // カード画像がある場合 → クリップボードにコピーしてからXを開く
-    if (_lastCanvas) {
-      let copied = false;
+    // ── モバイル：navigator.share でXアプリに直接画像付き投稿 ──
+    if (_lastBlob) {
+      const file = new File([_lastBlob], 'batting-stats.png', { type: 'image/png' });
+      if (navigator.canShare?.({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], text, title: 'My Batting Stats' });
+          return;  // 成功したらここで終了
+        } catch (e) {
+          if (e.name === 'AbortError') return;  // ユーザーがキャンセル
+          // 非対応なら下のPC向けフローへ
+        }
+      }
+    }
+
+    // ── PC：window.open を先に呼ぶ（ユーザーアクション内で同期的に実行）──
+    window.open(tweetUrl, '_blank', 'noopener,noreferrer');
+
+    // その後クリップボードにコピー
+    if (_lastBlob) {
       try {
-        await new Promise((resolve, reject) => {
-          _lastCanvas.toBlob(async blob => {
-            try {
-              await navigator.clipboard.write([
-                new ClipboardItem({ 'image/png': blob })
-              ]);
-              copied = true;
-              resolve();
-            } catch (err) {
-              reject(err);
-            }
-          }, 'image/png');
-        });
-      } catch (_) { /* クリップボードAPIが使えない環境 */ }
-
-      window.open(tweetUrl, '_blank', 'noopener,noreferrer');
-
-      // トースト通知
-      const msg = copied
-        ? '📋 画像をコピーしました！Xの投稿欄に貼り付けてください'
-        : 'Xが開きました。画像は「ダウンロード」してから添付してください';
-      _showToast(msg, copied ? 3500 : 4500);
-    } else {
-      // カード未生成 → テキストのみで投稿
-      window.open(tweetUrl, '_blank', 'noopener,noreferrer');
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': _lastBlob })]);
+        _showToast('📋 画像をコピーしました！Xの投稿欄に画像を貼り付けてください', 4000);
+      } catch (_) {
+        _showToast('Xが開きました。「ダウンロード」して画像を添付してください', 4500);
+      }
     }
   }
 
@@ -240,7 +237,9 @@ const Share = (() => {
 
   function onGenerate() {
     const canvas = _generate();
-    _lastCanvas = canvas;  // 生成済みcanvasを保持（X投稿時の画像コピー用）
+    _lastCanvas = canvas;
+    // Blobを事前生成しておく（onXShareで同期的にwindow.openできるように）
+    canvas.toBlob(blob => { _lastBlob = blob; }, 'image/png');
     canvas.style.cssText = 'width:100%;height:auto;border-radius:8px;';
     const preview = document.getElementById('share-preview');
     preview.innerHTML = '';
