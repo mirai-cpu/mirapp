@@ -1,0 +1,291 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500">
+  <defs>
+    <!-- 背景: 白〜薄いクリーム -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#ffffff"/>
+      <stop offset="60%"  stop-color="#f8faff"/>
+      <stop offset="100%" stop-color="#f0f4ff"/>
+    </linearGradient>
+
+    <!-- アクセントグラデーション -->
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#6366f1"/>
+      <stop offset="50%"  stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="accentV" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+
+    <!-- テキストグラデーション（見出し用） -->
+    <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#4f46e5"/>
+      <stop offset="50%"  stop-color="#0891b2"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+
+    <!-- 右パネル背景グラデーション -->
+    <linearGradient id="panelBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#f5f3ff"/>
+    </linearGradient>
+
+    <!-- グロー -->
+    <radialGradient id="glow1" cx="25%" cy="50%" r="40%">
+      <stop offset="0%"   stop-color="#818cf8" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="80%" cy="45%" r="35%">
+      <stop offset="0%"   stop-color="#67e8f9" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#67e8f9" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- フィルター -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#6366f1" flood-opacity="0.12"/>
+    </filter>
+    <filter id="shadowCard" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#6366f1" flood-opacity="0.08"/>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- アクセントライン用フェード -->
+    <linearGradient id="lineFade" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#6366f1" stop-opacity="0.8"/>
+      <stop offset="60%"  stop-color="#06b6d4" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </linearGradient>
+
+    <clipPath id="clip"><rect width="1500" height="500"/></clipPath>
+  </defs>
+
+  <!-- ── 背景 ── -->
+  <rect width="1500" height="500" fill="url(#bg)"/>
+  <ellipse cx="350"  cy="250" rx="450" ry="320" fill="url(#glow1)"/>
+  <ellipse cx="1150" cy="220" rx="400" ry="280" fill="url(#glow2)"/>
+
+  <!-- ── グリッド（薄い） ── -->
+  <g clip-path="url(#clip)" stroke="#6366f1" stroke-width="0.6" opacity="0.06">
+    <line x1="80"   y1="0" x2="80"   y2="500"/>
+    <line x1="160"  y1="0" x2="160"  y2="500"/>
+    <line x1="240"  y1="0" x2="240"  y2="500"/>
+    <line x1="320"  y1="0" x2="320"  y2="500"/>
+    <line x1="400"  y1="0" x2="400"  y2="500"/>
+    <line x1="480"  y1="0" x2="480"  y2="500"/>
+    <line x1="560"  y1="0" x2="560"  y2="500"/>
+    <line x1="640"  y1="0" x2="640"  y2="500"/>
+    <line x1="720"  y1="0" x2="720"  y2="500"/>
+    <line x1="800"  y1="0" x2="800"  y2="500"/>
+    <line x1="880"  y1="0" x2="880"  y2="500"/>
+    <line x1="960"  y1="0" x2="960"  y2="500"/>
+    <line x1="0" y1="62"  x2="1500" y2="62"/>
+    <line x1="0" y1="125" x2="1500" y2="125"/>
+    <line x1="0" y1="187" x2="1500" y2="187"/>
+    <line x1="0" y1="250" x2="1500" y2="250"/>
+    <line x1="0" y1="312" x2="1500" y2="312"/>
+    <line x1="0" y1="375" x2="1500" y2="375"/>
+    <line x1="0" y1="437" x2="1500" y2="437"/>
+  </g>
+
+  <!-- ── トップアクセントライン ── -->
+  <rect x="0" y="0" width="1500" height="4" fill="url(#accent)"/>
+
+  <!-- ── ノード装飾（左側・薄め） ── -->
+  <g stroke="#6366f1" stroke-width="0.9" opacity="0.2">
+    <line x1="55"  y1="90"  x2="120" y2="155"/>
+    <line x1="120" y1="155" x2="220" y2="125"/>
+    <line x1="220" y1="125" x2="280" y2="195"/>
+    <line x1="55"  y1="90"  x2="100" y2="210"/>
+    <line x1="100" y1="210" x2="220" y2="230"/>
+    <line x1="220" y1="230" x2="280" y2="195"/>
+    <line x1="60"  y1="340" x2="110" y2="410"/>
+    <line x1="110" y1="410" x2="210" y2="385"/>
+  </g>
+  <circle cx="55"  cy="90"  r="3"   fill="#6366f1" opacity="0.4"/>
+  <circle cx="120" cy="155" r="4.5" fill="#6366f1" opacity="0.5" filter="url(#softGlow)"/>
+  <circle cx="220" cy="125" r="3"   fill="#06b6d4" opacity="0.4"/>
+  <circle cx="280" cy="195" r="3.5" fill="#8b5cf6" opacity="0.4"/>
+  <circle cx="100" cy="210" r="3"   fill="#6366f1" opacity="0.3"/>
+  <circle cx="220" cy="230" r="4"   fill="#6366f1" opacity="0.5" filter="url(#softGlow)"/>
+  <circle cx="60"  cy="340" r="2.5" fill="#06b6d4" opacity="0.3"/>
+  <circle cx="110" cy="410" r="3"   fill="#6366f1" opacity="0.35"/>
+  <circle cx="210" cy="385" r="2.5" fill="#8b5cf6" opacity="0.3"/>
+
+  <!-- ── ロゴマーク ── -->
+  <!-- アイコン背景（白＋インディゴ境界） -->
+  <rect x="340" y="140" width="78" height="78" rx="20"
+        fill="white" stroke="#c7d2fe" stroke-width="1.5" filter="url(#shadow)"/>
+  <!-- グロー -->
+  <ellipse cx="379" cy="179" rx="26" ry="26" fill="#6366f1" opacity="0.08"/>
+  <!-- 稲妻グロー -->
+  <path d="M 395 156 L 373 181 L 387 181 L 368 202 L 398 176 L 384 176 Z"
+        fill="#6366f1" opacity="0.15" filter="url(#softGlow)"/>
+  <!-- 稲妻本体 -->
+  <path d="M 395 156 L 373 181 L 387 181 L 368 202 L 398 176 L 384 176 Z"
+        fill="url(#accentV)"/>
+  <!-- ハイライト -->
+  <path d="M 395 156 L 386 172 L 393 172 L 395 156 Z"
+        fill="white" fill-opacity="0.4"/>
+
+  <!-- ── サイト名 ── -->
+  <!-- "Somira" -->
+  <text x="436" y="195"
+        font-family="'Helvetica Neue','Arial Black',Arial,sans-serif"
+        font-size="68" font-weight="800" letter-spacing="-2"
+        fill="#0f172a">Somira</text>
+  <!-- "Lab" グラデーション -->
+  <text x="436" y="263"
+        font-family="'Helvetica Neue','Arial Black',Arial,sans-serif"
+        font-size="68" font-weight="800" letter-spacing="-2"
+        fill="url(#titleGrad)" filter="url(#softGlow)">Lab</text>
+
+  <!-- アクセントライン -->
+  <rect x="436" y="278" width="400" height="2.5" fill="url(#lineFade)" rx="2"/>
+
+  <!-- タグライン -->
+  <text x="438" y="316"
+        font-family="'Hiragino Sans','Noto Sans JP',sans-serif"
+        font-size="19" fill="#475569" letter-spacing="1.5">
+    使いやすいを、かたちにする。
+  </text>
+
+  <!-- URL バッジ -->
+  <rect x="438" y="335" width="120" height="30" rx="15"
+        fill="white" stroke="#c7d2fe" stroke-width="1.2"/>
+  <text x="498" y="355" text-anchor="middle"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="13" font-weight="700" fill="#6366f1" letter-spacing="0.5">somirai.jp</text>
+
+  <!-- ── 特徴バッジ行 ── -->
+  <!-- バッジ: 無料 -->
+  <rect x="438" y="382" width="82" height="32" rx="16"
+        fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.2"/>
+  <text x="479" y="403" text-anchor="middle"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="13" font-weight="600" fill="#4f46e5">完全無料</text>
+
+  <!-- バッジ: 登録不要 -->
+  <rect x="530" y="382" width="90" height="32" rx="16"
+        fill="#e0f2fe" stroke="#bae6fd" stroke-width="1.2"/>
+  <text x="575" y="403" text-anchor="middle"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="13" font-weight="600" fill="#0369a1">登録不要</text>
+
+  <!-- バッジ: PWA -->
+  <rect x="630" y="382" width="90" height="32" rx="16"
+        fill="#faf5ff" stroke="#ddd6fe" stroke-width="1.2"/>
+  <text x="675" y="403" text-anchor="middle"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="13" font-weight="600" fill="#7c3aed">PWA対応</text>
+
+  <!-- バッジ: ローカル保存 -->
+  <rect x="730" y="382" width="110" height="32" rx="16"
+        fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.2"/>
+  <text x="785" y="403" text-anchor="middle"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="13" font-weight="600" fill="#15803d">ローカル保存</text>
+
+  <!-- ── 縦の区切り線 ── -->
+  <line x1="920" y1="30" x2="920" y2="470"
+        stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- ── 右側ツールパネル（白カード） ── -->
+
+  <!-- カード1: My Batting Stats -->
+  <rect x="948" y="52" width="210" height="88" rx="16"
+        fill="white" stroke="#e2e8f0" stroke-width="1" filter="url(#shadowCard)"/>
+  <rect x="948" y="52" width="210" height="4" rx="4" fill="url(#accent)"/>
+  <text x="968" y="84"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="10.5" fill="#6366f1" font-weight="700" letter-spacing="0.8">⚾ SPORTS</text>
+  <text x="968" y="106"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="15.5" font-weight="800" fill="#0f172a">My Batting Stats</text>
+  <text x="968" y="125"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="11.5" fill="#94a3b8">打撃成績トラッカー</text>
+
+  <!-- カード2: スタメンメーカー -->
+  <rect x="1178" y="40" width="210" height="88" rx="16"
+        fill="white" stroke="#e2e8f0" stroke-width="1" filter="url(#shadowCard)"/>
+  <rect x="1178" y="40" width="210" height="4" rx="4" fill="url(#accent)"/>
+  <text x="1198" y="72"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="10.5" fill="#6366f1" font-weight="700" letter-spacing="0.8">⚾ SPORTS</text>
+  <text x="1198" y="94"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="15.5" font-weight="800" fill="#0f172a">スタメンメーカー</text>
+  <text x="1198" y="113"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="11.5" fill="#94a3b8">オーダー表作成</text>
+
+  <!-- カード3: Habit Quest -->
+  <rect x="948" y="166" width="210" height="88" rx="16"
+        fill="white" stroke="#e2e8f0" stroke-width="1" filter="url(#shadowCard)"/>
+  <rect x="948" y="166" width="210" height="4" rx="4" fill="url(#accent)"/>
+  <text x="968" y="198"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="10.5" fill="#10b981" font-weight="700" letter-spacing="0.8">✅ HABIT</text>
+  <text x="968" y="220"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="15.5" font-weight="800" fill="#0f172a">Habit Quest</text>
+  <text x="968" y="239"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="11.5" fill="#94a3b8">習慣トラッカー</text>
+
+  <!-- カード4: Write Quest -->
+  <rect x="1178" y="154" width="210" height="88" rx="16"
+        fill="white" stroke="#e2e8f0" stroke-width="1" filter="url(#shadowCard)"/>
+  <rect x="1178" y="154" width="210" height="4" rx="4" fill="url(#accent)"/>
+  <text x="1198" y="186"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="10.5" fill="#8b5cf6" font-weight="700" letter-spacing="0.8">✏️ MEMO</text>
+  <text x="1198" y="208"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="15.5" font-weight="800" fill="#0f172a">Write Quest</text>
+  <text x="1198" y="227"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="11.5" fill="#94a3b8">メモ・ToDo管理</text>
+
+  <!-- カード5: 節約クエスト -->
+  <rect x="1063" y="285" width="210" height="88" rx="16"
+        fill="white" stroke="#e2e8f0" stroke-width="1" filter="url(#shadowCard)"/>
+  <rect x="1063" y="285" width="210" height="4" rx="4" fill="url(#accent)"/>
+  <text x="1083" y="317"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="10.5" fill="#f59e0b" font-weight="700" letter-spacing="0.8">💰 LIFE</text>
+  <text x="1083" y="339"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="15.5" font-weight="800" fill="#0f172a">節約クエスト</text>
+  <text x="1083" y="358"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="11.5" fill="#94a3b8">RPG風家計簿</text>
+
+  <!-- カード間の点線 -->
+  <line x1="1053" y1="96"  x2="1178" y2="84"  stroke="#cbd5e1" stroke-width="0.8" stroke-dasharray="3,4"/>
+  <line x1="1053" y1="210" x2="1178" y2="198" stroke="#cbd5e1" stroke-width="0.8" stroke-dasharray="3,4"/>
+  <line x1="1053" y1="210" x2="1063" y2="329" stroke="#cbd5e1" stroke-width="0.8" stroke-dasharray="3,4"/>
+  <line x1="1283" y1="128" x2="1283" y2="154" stroke="#cbd5e1" stroke-width="0.8" stroke-dasharray="3,4"/>
+  <line x1="1283" y1="242" x2="1268" y2="285" stroke="#cbd5e1" stroke-width="0.8" stroke-dasharray="3,4"/>
+
+  <!-- ツール数 -->
+  <rect x="940" y="406" width="458" height="56" rx="14"
+        fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="1169" y="440" text-anchor="middle"
+        font-family="'Helvetica Neue',Arial,sans-serif"
+        font-size="13" fill="#94a3b8" letter-spacing="0.5">
+    5 tools · すべて無料 · 登録不要 · ブラウザ保存
+  </text>
+
+  <!-- ボトムアクセントライン -->
+  <rect x="0" y="496" width="1500" height="4" fill="url(#accent)" opacity="0.5"/>
+
+  <!-- 右下の輝き装飾 -->
+  <circle cx="1460" cy="60"  r="2.5" fill="#6366f1" opacity="0.3"/>
+  <circle cx="1475" cy="44"  r="1.8" fill="#06b6d4" opacity="0.3"/>
+  <circle cx="1448" cy="76"  r="1.5" fill="#8b5cf6" opacity="0.3"/>
+</svg>

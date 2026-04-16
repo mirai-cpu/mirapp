@@ -1065,5 +1065,16 @@
     <p>© 2026 <span class="footer-brand">Somira Lab</span></p>
   </footer>
 
+  <script>
+    (function(){
+      if(localStorage.getItem('cookie_ok')) return;
+      var b = document.createElement('div');
+      b.id = 'ck-banner';
+      b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#1e293b;color:#cbd5e1;font-size:13px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9999;border-top:1px solid #334155';
+      b.innerHTML = '<span>本サイトはGoogle AdSense・Google AnalyticsのためにCookieを使用しています。詳細は<a href="/privacy.html" style="color:#60a5fa">プライバシーポリシー</a>をご覧ください。</span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:#3b82f6;color:#fff;border:none;border-radius:6px;padding:6px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">OK</button>';
+      document.body.appendChild(b);
+    })();
+  </script>
+
 </body>
 </html>
