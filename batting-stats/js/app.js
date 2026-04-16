@@ -315,6 +315,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       showToast(I18n.t('msg.updated'));
     } else {
       Storage.add(atBat);
+      if (typeof gtag === 'function') gtag('event', 'tool_used', { tool_name: 'batting-stats', action: 'record_atbat' });
       showToast(I18n.t('msg.saved'));
     }
 

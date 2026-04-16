@@ -187,6 +187,9 @@ const Share = (() => {
     const text     = _buildShareText();
     const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
 
+    // GA4 カスタムイベント
+    if (typeof gtag === 'function') gtag('event', 'share_clicked', { tool_name: 'batting-stats', platform: 'x' });
+
     // ── モバイル：navigator.share でXアプリに直接画像付き投稿 ──
     if (_lastBlob) {
       const file = new File([_lastBlob], 'batting-stats.png', { type: 'image/png' });
