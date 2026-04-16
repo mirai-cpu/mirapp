@@ -2,6 +2,9 @@
 
 const Share = (() => {
 
+  // ── 生成済みCanvasを保持 ───────────────────────────────────
+  let _lastCanvas = null;
+
   // ── モーダル制御 ─────────────────────────────────────────────
   function init() {
     document.getElementById('btn-share').addEventListener('click', openModal);
@@ -157,7 +160,7 @@ const Share = (() => {
       `OBP ${Stats.fmtRate(s.obp)} / SLG ${Stats.fmtRate(s.slg)} / OPS ${Stats.fmtOps(s.ops)}`,
       `${s.games}試合 / ${s.pa}打席 / HR ${s.hr} / RBI ${s.rbi}`,
       '',
-      '#草野球 #MyBattingStats',
+      '#野球 #打率 #野球好きと繋がりたい #MyBattingStats',
       'https://somirai.jp/batting-stats/',
     ];
     return lines.join('\n');
@@ -169,13 +172,75 @@ const Share = (() => {
     const lineEl  = document.getElementById('share-line');
     const xEl     = document.getElementById('share-x');
     if (lineEl) lineEl.href = `https://line.me/R/share?text=${encoded}`;
-    if (xEl)    xEl.href    = `https://twitter.com/intent/tweet?text=${encoded}`;
+    // X は画像コピー付きシェアに切り替え（href は onXShare で制御）
+    if (xEl) {
+      xEl.removeAttribute('href');
+      xEl.onclick = (e) => { e.preventDefault(); onXShare(); };
+    }
     const snsWrap = document.getElementById('share-sns-actions');
     if (snsWrap) snsWrap.style.display = '';
   }
 
+  // ── X（旧Twitter）への画像付きシェア ─────────────────────────
+  async function onXShare() {
+    const text    = _buildShareText();
+    const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+
+    // カード画像がある場合 → クリップボードにコピーしてからXを開く
+    if (_lastCanvas) {
+      let copied = false;
+      try {
+        await new Promise((resolve, reject) => {
+          _lastCanvas.toBlob(async blob => {
+            try {
+              await navigator.clipboard.write([
+                new ClipboardItem({ 'image/png': blob })
+              ]);
+              copied = true;
+              resolve();
+            } catch (err) {
+              reject(err);
+            }
+          }, 'image/png');
+        });
+      } catch (_) { /* クリップボードAPIが使えない環境 */ }
+
+      window.open(tweetUrl, '_blank', 'noopener,noreferrer');
+
+      // トースト通知
+      const msg = copied
+        ? '📋 画像をコピーしました！Xの投稿欄に貼り付けてください'
+        : 'Xが開きました。画像は「ダウンロード」してから添付してください';
+      _showToast(msg, copied ? 3500 : 4500);
+    } else {
+      // カード未生成 → テキストのみで投稿
+      window.open(tweetUrl, '_blank', 'noopener,noreferrer');
+    }
+  }
+
+  function _showToast(msg, duration = 3000) {
+    let toast = document.getElementById('share-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'share-toast';
+      toast.style.cssText = [
+        'position:fixed', 'bottom:80px', 'left:50%', 'transform:translateX(-50%)',
+        'background:#1e293b', 'color:#f8fafc', 'font-size:13px', 'padding:10px 18px',
+        'border-radius:8px', 'box-shadow:0 4px 16px rgba(0,0,0,.4)',
+        'z-index:99999', 'max-width:90vw', 'text-align:center',
+        'transition:opacity .3s',
+      ].join(';');
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.opacity = '1';
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, duration);
+  }
+
   function onGenerate() {
     const canvas = _generate();
+    _lastCanvas = canvas;  // 生成済みcanvasを保持（X投稿時の画像コピー用）
     canvas.style.cssText = 'width:100%;height:auto;border-radius:8px;';
     const preview = document.getElementById('share-preview');
     preview.innerHTML = '';
