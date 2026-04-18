@@ -1,0 +1,15 @@
+{
+  "name": "somirai-analytics",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Somira Lab analytics scripts — GA4 + X API",
+  "scripts": {
+    "report":   "node report.js 30",
+    "report7":  "node report.js 7",
+    "ga4":      "node fetch-ga4.js",
+    "x":        "node fetch-x.js"
+  },
+  "dependencies": {
+    "@google-analytics/data": "^4.8.0"
+  }
+}
