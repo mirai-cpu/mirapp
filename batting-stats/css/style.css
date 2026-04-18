@@ -6,45 +6,59 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:          #ffffff;
-  --surface:     #f4f4f5;
-  --border:      #e4e4e7;
-  --text:        #18181b;
-  --muted:       #71717a;
-  --accent:      #2563eb;
-  --accent-bg:   #eff6ff;
+  /* Light theme */
+  --bg:          #f8fafc;
+  --surface:     #ffffff;
+  --border:      #e2e8f0;
+  --text:        #0f172a;
+  --muted:       #64748b;
+  --accent:      #0ea5e9;
+  --accent-bg:   rgba(14,165,233,0.1);
 
   --c-hit:       #16a34a;
   --c-out:       #dc2626;
-  --c-walk:      #2563eb;
+  --c-walk:      #0ea5e9;
   --c-special:   #d97706;
   --c-purple:    #7c3aed;
 
-  --header-h:    48px;
+  --header-h:    52px;
   --tabbar-h:    48px;
-  --radius:      8px;
-  --radius-sm:   6px;
+  --radius:      14px;
+  --radius-sm:   10px;
 }
 
-/* ── Dark Theme ───────────────────────────── */
+/* ── Dark Theme (Sports: Navy × Ice Blue) ── */
 [data-theme="dark"] {
-  --bg:        #111827;
-  --surface:   #1f2937;
-  --border:    #374151;
-  --text:      #f9fafb;
-  --muted:     #9ca3af;
-  --accent:    #3b82f6;
-  --accent-bg: rgba(59,130,246,0.15);
+  --bg:        #060d1a;
+  --surface:   #0c1626;
+  --border:    #162336;
+  --text:      #e8f4fd;
+  --muted:     #5e82a0;
+  --accent:    #38bdf8;
+  --accent-bg: rgba(56,189,248,0.12);
 }
+
+/* ── Animations ─────────────────────────── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes popIn {
+  0%   { opacity: 0; transform: scale(0.88); }
+  70%  { transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.anim-fade-up { animation: fadeSlideUp 0.3s ease-out both; }
+.anim-pop-in  { animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both; }
 
 html, body {
   height: 100%;
-  font-family: system-ui, -apple-system, 'Hiragino Sans', sans-serif;
+  font-family: "DM Sans", system-ui, -apple-system, 'Hiragino Sans', sans-serif;
   font-size: 15px;
   background: var(--bg);
   color: var(--text);
   -webkit-tap-highlight-color: transparent;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.25s, color 0.25s;
 }
 
 /* ── Header ───────────────────────────────── */
@@ -62,29 +76,36 @@ html, body {
 }
 
 .app-title {
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
 .btn-lang,
-.btn-theme {
+.btn-theme,
+.btn-help {
   background: none;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 5px 12px;
+  padding: 0;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--muted);
   cursor: pointer;
-  min-height: 32px;
   font-family: inherit;
-  transition: background 0.1s;
+  transition: background 0.15s, color 0.15s;
 }
+.btn-lang { width: auto; padding: 0 10px; font-size: 11px; }
 .btn-lang:active,
-.btn-theme:active { background: var(--surface); }
+.btn-theme:active,
+.btn-help:active { background: var(--surface); color: var(--text); }
 
-.header-right { display: flex; gap: 8px; align-items: center; }
+.header-right { display: flex; gap: 6px; align-items: center; }
 
 /* ── Tab Bar ──────────────────────────────── */
 .tab-bar {
@@ -94,26 +115,35 @@ html, body {
   background: var(--bg);
   border-bottom: 1px solid var(--border);
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .tab-btn {
   background: none;
   border: none;
-  border-bottom: 2px solid transparent;
   height: var(--tabbar-h);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--muted);
   cursor: pointer;
   font-family: inherit;
-  transition: color 0.15s, border-color 0.15s;
-  margin-bottom: -1px;
+  transition: color 0.15s;
+  position: relative;
 }
 .tab-btn.active {
   color: var(--accent);
-  border-bottom-color: var(--accent);
-  font-weight: 600;
+  font-weight: 700;
+}
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: var(--accent);
 }
 .tab-btn:not(.active):active { color: var(--text); }
 
@@ -482,21 +512,34 @@ textarea { resize: vertical; min-height: 64px; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 12px 8px;
+  padding: 14px 6px 10px;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity: 0.6;
 }
 .stat-value {
   display: block;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
   margin-bottom: 4px;
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  color: var(--text);
 }
 .stat-label {
   display: block;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 700;
   color: var(--muted);
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -543,15 +586,33 @@ textarea { resize: vertical; min-height: 64px; }
 
 /* ── セクション共通 ──────────────────────── */
 .stats-section {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 .stats-section-title {
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin: 0 0 10px;
+  letter-spacing: 0.07em;
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.stats-section-title::before {
+  content: '';
+  display: block;
+  width: 3px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.stats-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
 }
 
 /* ── 打席結果内訳バー ──────────────────── */
@@ -902,20 +963,22 @@ textarea { resize: vertical; min-height: 64px; }
 .btn-share {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 24px;
-  background: linear-gradient(135deg, #1a472a, #0a2540);
-  color: #fff;
+  gap: 8px;
+  padding: 11px 28px;
+  background: linear-gradient(135deg, var(--accent), #0ea5e9);
+  color: #060d1a;
   border: none;
   border-radius: 20px;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 800;
   font-family: inherit;
   cursor: pointer;
   min-height: 44px;
-  transition: opacity 0.15s;
+  transition: opacity 0.15s, transform 0.1s;
+  box-shadow: 0 4px 16px rgba(56,189,248,0.3);
+  letter-spacing: -0.01em;
 }
-.btn-share:active { opacity: 0.8; }
+.btn-share:active { opacity: 0.85; transform: scale(0.97); }
 
 /* ── スプレー切替タブ ─────────────────────── */
 .spray-section-header {

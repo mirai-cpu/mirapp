@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ── Theme toggle ───────────────────────────────────────────────
   const themeBtn = document.getElementById('theme-toggle');
-  const savedTheme = localStorage.getItem('theme') || 'light';
+  const savedTheme = localStorage.getItem('theme') || 'dark';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeBtn();
 
@@ -38,7 +38,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   function updateThemeBtn() {
-    themeBtn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const moon = document.getElementById('theme-icon-moon');
+    const sun  = document.getElementById('theme-icon-sun');
+    if (moon) moon.style.display = isDark ? 'none' : 'block';
+    if (sun)  sun.style.display  = isDark ? 'block' : 'none';
   }
 
   // ── Language toggle ────────────────────────────────────────────
