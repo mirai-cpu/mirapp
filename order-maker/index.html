@@ -81,37 +81,55 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:      #1c1c21;
-      --surface: #242429;
-      --card:    #1f1f26;
-      --border:  #323239;
+      --bg:      #0c0e16;
+      --surface: #12151f;
+      --card:    #0f1219;
+      --border:  #1e2333;
       --accent:  #f0a855;
       --text:    #ece9e3;
-      --muted:   #6e6b65;
+      --muted:   #5a5870;
       --green:   #3ecf8e;
       --red:     #f87171;
       --yellow:  #f0a855;
-      --radius:  10px;
+      --radius:  14px;
     }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popIn {
+      0%   { opacity: 0; transform: scale(0.88); }
+      70%  { transform: scale(1.04); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .anim-fade-up { animation: fadeSlideUp 0.3s ease-out both; }
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg); color: var(--text);
-      font-family: 'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',system-ui,sans-serif;
+      font-family: 'DM Sans','Hiragino Sans','Noto Sans JP',system-ui,sans-serif;
       min-height: 100vh; display: flex; flex-direction: column;
     }
 
     /* ── Header ── */
     header {
       background: var(--bg); border-bottom: 1px solid var(--border);
-      padding: 0 16px; height: 56px;
+      padding: 0 16px; height: 52px;
       display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 100;
     }
     .header-left { display: flex; align-items: center; gap: 10px; }
     .header-back { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .15s; }
     .header-back:hover { color: var(--text); }
-    .header-title { font-size: 16px; font-weight: 700; }
-    .header-right { display: flex; gap: 8px; }
+    .header-title { font-size: 14px; font-weight: 800; letter-spacing: -0.02em; }
+    .header-right { display: flex; gap: 6px; }
+    .btn-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: none; border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s, color .15s;
+    }
+    .btn-icon:hover { background: var(--surface); color: var(--text); }
 
     /* ── Buttons ── */
     .btn {
@@ -129,15 +147,19 @@
     .btn-xs { padding: 3px 8px; font-size: 11px; }
 
     /* ── Tab Nav ── */
-    .tab-nav { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); overflow-x: auto; }
+    .tab-nav { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); overflow-x: auto; }
     .tab-btn {
-      flex: 1; min-width: 72px; padding: 13px 6px;
+      flex: 1; min-width: 72px; padding: 12px 6px;
       background: none; border: none; color: var(--muted);
-      font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
-      border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
-      white-space: nowrap;
+      font-size: 11px; font-weight: 600; cursor: pointer; font-family: inherit;
+      position: relative; transition: color .15s;
+      white-space: nowrap; letter-spacing: 0.02em;
     }
-    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-btn.active { color: var(--accent); }
+    .tab-btn.active::after {
+      content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 24px; height: 2px; border-radius: 2px 2px 0 0; background: var(--accent);
+    }
 
     /* ── Main ── */
     main { flex: 1; max-width: 720px; width: 100%; margin: 0 auto; padding: 16px 14px 100px; }
@@ -147,8 +169,8 @@
     /* ── Card ── */
     .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
     .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-    .card-title { font-size: 14px; font-weight: 700; }
-    .card-sub { font-size: 12px; color: var(--muted); }
+    .card-title { font-size: 13px; font-weight: 800; letter-spacing: -0.01em; }
+    .card-sub { font-size: 11px; color: var(--muted); }
 
     /* ── Form ── */
     .form-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
@@ -176,12 +198,12 @@
 
     /* ── Roster ── */
     .roster-list { display: flex; flex-direction: column; gap: 8px; }
-    .roster-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
-    .roster-num { font-size: 16px; font-weight: 800; color: var(--accent); min-width: 28px; text-align: center; }
+    .roster-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+    .roster-num { font-size: 15px; font-weight: 800; color: var(--accent); min-width: 28px; text-align: center; font-family: monospace; }
     .roster-info { flex: 1; min-width: 0; }
     .roster-name { font-size: 14px; font-weight: 600; }
-    .roster-pos { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 3px; }
-    .pos-chip { font-size: 11px; padding: 1px 6px; border-radius: 999px; background: rgba(79,158,255,.08); border: 1px solid rgba(79,158,255,.18); color: var(--accent); }
+    .roster-pos { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
+    .pos-chip { font-size: 10px; padding: 2px 7px; border-radius: 999px; background: rgba(240,168,85,.08); border: 1px solid rgba(240,168,85,.2); color: var(--accent); font-weight: 700; }
     .roster-actions { display: flex; gap: 5px; flex-shrink: 0; }
 
     /* ── Pos Grid ── */
@@ -287,8 +309,8 @@
     .step-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
 
     /* ── Empty / Toast ── */
-    .empty { text-align: center; padding: 36px 20px; color: var(--muted); }
-    .empty-icon { font-size: 36px; margin-bottom: 10px; }
+    .empty { text-align: center; padding: 40px 20px; color: var(--muted); }
+    .empty-icon { margin-bottom: 12px; opacity: 0.4; display: flex; justify-content: center; }
     .empty p { font-size: 13px; line-height: 1.8; }
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--green); color: #fff; font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 999px; box-shadow: 0 4px 20px rgba(0,0,0,.4); transition: transform .3s ease; z-index: 999; pointer-events: none; }
     .toast.show { transform: translateX(-50%) translateY(0); }
@@ -312,19 +334,23 @@
 <header>
   <div class="header-left">
     <a href="/" class="header-back" style="display:inline-flex;align-items:center;gap:5px;"><img src="/icons/somirai_icon.png" alt="" style="width:20px;height:20px;border-radius:5px;">Somira Lab</a>
-    <div class="header-title">📋 スタメンメーカー</div>
+    <div class="header-title">スタメンメーカー</div>
   </div>
   <div class="header-right">
-    <button class="btn btn-ghost btn-sm" onclick="openTutorial()">使い方</button>
-    <button class="btn btn-ghost btn-sm" onclick="openTheme()">🎨</button>
+    <button class="btn-icon" onclick="openTutorial()" aria-label="使い方">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </button>
+    <button class="btn-icon" onclick="openTheme()" aria-label="テーマ変更">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20"/><path d="M12 2v20M2 12h20"/></svg>
+    </button>
   </div>
 </header>
 
 <div class="tab-nav">
-  <button class="tab-btn active" id="tab-roster"  onclick="switchTab('roster')">👥 選手</button>
-  <button class="tab-btn"        id="tab-order"   onclick="switchTab('order')">📋 オーダー</button>
-  <button class="tab-btn"        id="tab-pitcher" onclick="switchTab('pitcher')">⚾ 投手陣</button>
-  <button class="tab-btn"        id="tab-print"   onclick="switchTab('print')">🖨️ スタメン表</button>
+  <button class="tab-btn active" id="tab-roster"  onclick="switchTab('roster')">選手</button>
+  <button class="tab-btn"        id="tab-order"   onclick="switchTab('order')">オーダー</button>
+  <button class="tab-btn"        id="tab-pitcher" onclick="switchTab('pitcher')">投手陣</button>
+  <button class="tab-btn"        id="tab-print"   onclick="switchTab('print')">スタメン表</button>
 </div>
 
 <main>
@@ -355,7 +381,7 @@
         <span class="card-sub" id="roster-count">0人</span>
       </div>
       <div class="roster-list" id="roster-list">
-        <div class="empty"><div class="empty-icon">👥</div><p>まだ選手が登録されていません</p></div>
+        <div class="empty"><div class="empty-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><p>まだ選手が登録されていません</p></div>
       </div>
     </div>
 
@@ -449,7 +475,7 @@
         <span class="card-title">投手リスト（登板順）</span>
       </div>
       <div class="pitcher-list" id="pitcher-list">
-        <div class="empty"><div class="empty-icon">⚾</div><p>投手が設定されていません</p></div>
+        <div class="empty"><div class="empty-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93c4.08 4.08 4.08 10.53 0 14.61"/><path d="M19.07 4.93c-4.08 4.08-4.08 10.53 0 14.61"/></svg></div><p>投手が設定されていません</p></div>
       </div>
     </div>
     <div class="card" id="gantt-card" style="display:none">
@@ -769,7 +795,7 @@ function renderRoster() {
   const el = document.getElementById('roster-list');
   document.getElementById('roster-count').textContent = players.length + '人';
   if (!players.length) {
-    el.innerHTML = `<div class="empty"><div class="empty-icon">👥</div><p>まだ選手が登録されていません</p></div>`;
+    el.innerHTML = `<div class="empty"><div class="empty-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><p>まだ選手が登録されていません</p></div>`;
     return;
   }
   el.innerHTML = players.map(p => `
@@ -1002,7 +1028,7 @@ function renderPitcherList() {
   const el = document.getElementById('pitcher-list');
   document.getElementById('gantt-card').style.display = pitchers.length ? '' : 'none';
   if (!pitchers.length) {
-    el.innerHTML = `<div class="empty"><div class="empty-icon">⚾</div><p>投手が設定されていません</p></div>`;
+    el.innerHTML = `<div class="empty"><div class="empty-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93c4.08 4.08 4.08 10.53 0 14.61"/><path d="M19.07 4.93c-4.08 4.08-4.08 10.53 0 14.61"/></svg></div><p>投手が設定されていません</p></div>`;
     return;
   }
   el.innerHTML = pitchers.map((pt,i) => {
