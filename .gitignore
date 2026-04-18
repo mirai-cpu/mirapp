@@ -3,7 +3,12 @@
 AGENT_TEAM.md
 key/
 analytics/config.json
+analytics/config.json.save
 analytics/node_modules/
 **/*.json.key
 **/*-credentials.json
 **/*-service-account.json
+**/*.pem
+**/*.p12
+**/.env
+**/.env.local
