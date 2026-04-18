@@ -1,29 +1,49 @@
 /**
  * fetch-x.js
- * X (Twitter) API v2 から自アカウントのデータを取得する
+ * X (Twitter) API v2 — OAuth 1.0a 認証で自アカウントのデータを取得する
  * 使用: node fetch-x.js
  */
 
-const https = require('https');
-const config = require('./config.json');
+const https   = require('https');
+const crypto  = require('crypto');
+const OAuth   = require('oauth-1.0a');
+const config  = require('./config.json');
 
-const BEARER = config.x.bearerToken;
-const BASE   = 'api.twitter.com';
+const { apiKey, apiKeySecret, accessToken, accessTokenSecret } = config.x;
 
-function apiGet(path) {
+// OAuth 1.0a クライアント初期化
+const oauth = OAuth({
+  consumer: { key: apiKey, secret: apiKeySecret },
+  signature_method: 'HMAC-SHA1',
+  hash_function(base, key) {
+    return crypto.createHmac('sha1', key).update(base).digest('base64');
+  },
+});
+
+const token = { key: accessToken, secret: accessTokenSecret };
+
+function apiGet(url) {
   return new Promise((resolve, reject) => {
+    const requestData = { url, method: 'GET' };
+    const authHeader  = oauth.toHeader(oauth.authorize(requestData, token));
+
+    const parsed = new URL(url);
     const options = {
-      hostname: BASE,
-      path,
-      method: 'GET',
-      headers: { Authorization: `Bearer ${BEARER}` },
+      hostname: parsed.hostname,
+      path:     parsed.pathname + parsed.search,
+      method:   'GET',
+      headers: {
+        ...authHeader,
+        'User-Agent': 'SomiraAnalytics/1.0',
+      },
     };
+
     const req = https.request(options, res => {
       let body = '';
       res.on('data', chunk => body += chunk);
       res.on('end', () => {
         try { resolve(JSON.parse(body)); }
-        catch(e) { reject(new Error('JSONパースエラー: ' + body)); }
+        catch(e) { reject(new Error('JSONパースエラー: ' + body.slice(0, 200))); }
       });
     });
     req.on('error', reject);
@@ -32,39 +52,42 @@ function apiGet(path) {
 }
 
 async function fetchX() {
-  if (!BEARER || BEARER === 'YOUR_X_BEARER_TOKEN') {
-    return { error: 'X Bearer Token が未設定です。config.json を更新してください。' };
+  if (!apiKey || apiKey === 'YOUR_API_KEY') {
+    return { error: 'X APIキーが未設定です。config.json を更新してください。' };
   }
 
-  // 自分のユーザー情報取得
-  const meRes = await apiGet('/2/users/me?user.fields=public_metrics,description,created_at');
+  // 自分のユーザー情報
+  const meRes = await apiGet(
+    'https://api.twitter.com/2/users/me?user.fields=public_metrics,description,created_at'
+  );
   if (meRes.errors || !meRes.data) {
     return { error: 'ユーザー情報取得失敗', detail: meRes };
   }
 
-  const userId = meRes.data.id;
+  const userId  = meRes.data.id;
   const metrics = meRes.data.public_metrics;
 
   // 直近20ツイートとエンゲージメント
   const tweetsRes = await apiGet(
-    `/2/users/${userId}/tweets?max_results=20&tweet.fields=public_metrics,created_at,text`
+    `https://api.twitter.com/2/users/${userId}/tweets?max_results=20&tweet.fields=public_metrics,created_at,text`
   );
 
   const tweets = (tweetsRes.data || []).map(t => ({
-    id: t.id,
-    text: t.text.slice(0, 60) + (t.text.length > 60 ? '…' : ''),
-    created_at: t.created_at,
-    impressions:  t.public_metrics?.impression_count   ?? 0,
-    likes:        t.public_metrics?.like_count         ?? 0,
-    retweets:     t.public_metrics?.retweet_count      ?? 0,
-    replies:      t.public_metrics?.reply_count        ?? 0,
-    engagements:  (t.public_metrics?.like_count ?? 0)
-                + (t.public_metrics?.retweet_count ?? 0)
-                + (t.public_metrics?.reply_count ?? 0),
+    id:           t.id,
+    text:         t.text.slice(0, 60) + (t.text.length > 60 ? '…' : ''),
+    created_at:   t.created_at,
+    likes:        t.public_metrics?.like_count      ?? 0,
+    retweets:     t.public_metrics?.retweet_count   ?? 0,
+    replies:      t.public_metrics?.reply_count     ?? 0,
+    impressions:  t.public_metrics?.impression_count ?? 0,
+    engagements: (t.public_metrics?.like_count      ?? 0)
+               + (t.public_metrics?.retweet_count   ?? 0)
+               + (t.public_metrics?.reply_count     ?? 0),
   }));
 
-  // エンゲージメント率の高い順にソート
-  const topTweets = [...tweets].sort((a, b) => b.engagements - a.engagements).slice(0, 5);
+  const topTweets = [...tweets]
+    .sort((a, b) => b.engagements - a.engagements)
+    .slice(0, 5);
 
   return {
     account: {
@@ -74,7 +97,7 @@ async function fetchX() {
       following:  metrics.following_count,
       tweetCount: metrics.tweet_count,
     },
-    recentTweets: tweets,
+    recentTweets:   tweets,
     topTweets,
     avgImpressions: tweets.length
       ? Math.round(tweets.reduce((s, t) => s + t.impressions, 0) / tweets.length)
@@ -87,7 +110,6 @@ async function fetchX() {
 
 module.exports = { fetchX };
 
-// 単体実行時
 if (require.main === module) {
   fetchX().then(data => {
     console.log(JSON.stringify(data, null, 2));
