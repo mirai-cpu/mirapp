@@ -1,67 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <radialGradient id="ballGrad" cx="40%" cy="35%" r="65%">
-      <stop offset="0%"   stop-color="#ffffff"/>
-      <stop offset="60%"  stop-color="#f2ede4"/>
-      <stop offset="100%" stop-color="#c9bfac"/>
-    </radialGradient>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#1f5233"/>
-      <stop offset="100%" stop-color="#0f2e1a"/>
+    <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1220"/>
+      <stop offset="100%" stop-color="#0f172a"/>
     </linearGradient>
-    <clipPath id="clip">
-      <circle cx="96" cy="96" r="63"/>
-    </clipPath>
+    <linearGradient id="spG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="45%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
+    </linearGradient>
+    <linearGradient id="coG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="obG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
+    </linearGradient>
   </defs>
-
-  <!-- 背景 -->
-  <rect width="192" height="192" fill="url(#bgGrad)" rx="36"/>
-
-  <!-- ボール本体 -->
-  <circle cx="96" cy="96" r="63" fill="url(#ballGrad)"/>
-  <circle cx="96" cy="96" r="63" fill="none" stroke="#d4c9b5" stroke-width="1"/>
-
-  <g clip-path="url(#clip)" fill="none" stroke="#cc2200" stroke-linecap="round" stroke-linejoin="round">
-
-    <!-- 左の縫い目ライン（S字カーブ） -->
-    <path d="M72,36 C48,52 38,72 42,96 C46,120 60,140 72,156"
-          stroke-width="4.5"/>
-    <!-- 右の縫い目ライン（逆S字カーブ） -->
-    <path d="M120,36 C144,52 154,72 150,96 C146,120 132,140 120,156"
-          stroke-width="4.5"/>
-
-    <!-- 左縫い目のステッチ -->
-    <g stroke-width="2.2">
-      <line x1="69"  y1="44"  x2="63"  y2="48"/>
-      <line x1="63"  y1="54"  x2="57"  y2="57"/>
-      <line x1="57"  y1="65"  x2="52"  y2="67"/>
-      <line x1="53"  y1="76"  x2="48"  y2="78"/>
-      <line x1="51"  y1="87"  x2="46"  y2="89"/>
-      <line x1="51"  y1="98"  x2="46"  y2="98"/>
-      <line x1="53"  y1="109" x2="48"  y2="110"/>
-      <line x1="57"  y1="119" x2="52"  y2="121"/>
-      <line x1="62"  y1="129" x2="58"  y2="132"/>
-      <line x1="68"  y1="139" x2="64"  y2="143"/>
-      <line x1="72"  y1="149" x2="69"  y2="153"/>
-    </g>
-
-    <!-- 右縫い目のステッチ -->
-    <g stroke-width="2.2">
-      <line x1="123" y1="44"  x2="129" y2="48"/>
-      <line x1="129" y1="54"  x2="135" y2="57"/>
-      <line x1="135" y1="65"  x2="140" y2="67"/>
-      <line x1="139" y1="76"  x2="144" y2="78"/>
-      <line x1="141" y1="87"  x2="146" y2="89"/>
-      <line x1="141" y1="98"  x2="146" y2="98"/>
-      <line x1="139" y1="109" x2="144" y2="110"/>
-      <line x1="135" y1="119" x2="140" y2="121"/>
-      <line x1="130" y1="129" x2="134" y2="132"/>
-      <line x1="124" y1="139" x2="128" y2="143"/>
-      <line x1="120" y1="149" x2="123" y2="153"/>
-    </g>
-
-  </g>
-
-  <!-- ハイライト -->
-  <ellipse cx="74" cy="68" rx="16" ry="10" fill="white" fill-opacity="0.2" transform="rotate(-25 74 68)"/>
+  <rect width="512" height="512" rx="96" fill="url(#bgG)"/>
+  <circle cx="256" cy="210" r="180" fill="#f97316" opacity="0.05"/>
+  <ellipse cx="256" cy="210" rx="150" ry="150" fill="none" stroke="url(#obG)" stroke-width="3.5" opacity="0.35" stroke-dasharray="12 16"/>
+  <path d="M256 78 C296 140, 340 170, 288 240 C274 268, 238 268, 224 240 C172 170, 216 140, 256 78Z" fill="url(#spG)" opacity="0.2"/>
+  <circle cx="256" cy="195" r="56" fill="url(#coG)"/>
+  <circle cx="248" cy="175" r="20" fill="#fff" opacity="0.25"/>
+  <path d="M256 105 L266 145 L256 195 L246 145 Z" fill="#fb923c" opacity="0.9"/>
+  <path d="M176 195 L236 201 L256 195 L236 189 Z" fill="#fbbf24" opacity="0.7"/>
+  <path d="M336 195 L276 201 L256 195 L276 189 Z" fill="#fbbf24" opacity="0.7"/>
+  <path d="M256 285 L266 220 L256 195 L246 220 Z" fill="#fbbf24" opacity="0.5"/>
+  <circle cx="360" cy="118" r="14" fill="#fb923c" opacity="0.7"/>
+  <circle cx="142" cy="290" r="12" fill="#fbbf24" opacity="0.55"/>
+  <circle cx="378" cy="266" r="10" fill="#6ee7b7" opacity="0.5"/>
+  <text x="256" y="430" text-anchor="middle" font-family="'DM Sans','Helvetica Neue',system-ui" font-size="56" font-weight="800" fill="#94a3b8" letter-spacing="0.08em">SOMIRAI</text>
 </svg>
