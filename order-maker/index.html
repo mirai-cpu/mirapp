@@ -1484,8 +1484,8 @@ if (!localStorage.getItem('sm_tutorial_done')) {
     if(localStorage.getItem('cookie_ok')) return;
     var b = document.createElement('div');
     b.id = 'ck-banner';
-    b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#1e293b;color:#cbd5e1;font-size:13px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9999;border-top:1px solid #334155';
-    b.innerHTML = '<span>本サイトはGoogle AdSense・Google AnalyticsのためにCookieを使用しています。詳細は<a href="/privacy.html" style="color:#60a5fa">プライバシーポリシー</a>をご覧ください。</span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:#3b82f6;color:#fff;border:none;border-radius:6px;padding:6px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">OK</button>';
+    b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#1a1220;color:#d4c4a8;font-size:13px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9999;border-top:1px solid rgba(251,191,36,.15)';
+    b.innerHTML = '<span>本サイトはGoogle AdSense・Google AnalyticsのためにCookieを使用しています。詳細は<a href="/privacy.html" style="color:#fbbf24">プライバシーポリシー</a>をご覧ください。</span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:#f97316;color:#fff;border:none;border-radius:6px;padding:6px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">OK</button>';
     document.body.appendChild(b);
   })();
 </script>
@@ -1509,17 +1509,17 @@ if (!localStorage.getItem('sm_tutorial_done')) {
   </ul>
 </section>
 
-<section aria-label="関連ツール" style="background:#0f172a;border-top:1px solid #1e293b;padding:16px 12px 8px;text-align:center;">
-  <p style="font-size:11px;color:#64748b;margin:0 0 10px;letter-spacing:.05em;">Somirai Lab の他のツール</p>
+<section aria-label="関連ツール" style="background:#1a1220;border-top:1px solid rgba(251,191,36,.15);padding:20px 12px 12px;text-align:center;">
+  <p style="font-size:11px;color:#94a3b8;margin:0 0 12px;letter-spacing:.05em;font-weight:600;">Somirai Lab の他のツール</p>
   <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
-    <a href="https://somirai.jp/batting-stats/" style="display:inline-flex;align-items:center;gap:5px;background:#1e293b;color:#f1f5f9;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid #334155;">⚾ 打撃成績トラッカー</a>
-    <a href="https://somirai.jp/habit/"         style="display:inline-flex;align-items:center;gap:5px;background:#1e293b;color:#f1f5f9;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid #334155;">🔥 習慣クエスト</a>
-    <a href="https://somirai.jp/write/"         style="display:inline-flex;align-items:center;gap:5px;background:#1e293b;color:#f1f5f9;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid #334155;">✏️ Write Quest</a>
-    <a href="https://somirai.jp/savings/"       style="display:inline-flex;align-items:center;gap:5px;background:#1e293b;color:#f1f5f9;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid #334155;">💰 節約クエスト</a>
+    <a href="https://somirai.jp/batting-stats/" style="display:inline-flex;align-items:center;gap:5px;background:#231a2e;color:#f1f5f9;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(249,115,22,.2);">⚾ 打撃成績トラッカー</a>
+    <a href="https://somirai.jp/habit/"         style="display:inline-flex;align-items:center;gap:5px;background:#231a2e;color:#f1f5f9;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(249,115,22,.2);">🔥 習慣クエスト</a>
+    <a href="https://somirai.jp/write/"         style="display:inline-flex;align-items:center;gap:5px;background:#231a2e;color:#f1f5f9;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(249,115,22,.2);">✏️ Write Quest</a>
+    <a href="https://somirai.jp/savings/"       style="display:inline-flex;align-items:center;gap:5px;background:#231a2e;color:#f1f5f9;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(249,115,22,.2);">💰 節約クエスト</a>
   </div>
 </section>
-<footer style="text-align:center;padding:16px;font-size:11px;color:#94a3b8;border-top:1px solid #e2e8f0;margin-top:8px;">
-  <div>© 2026 <a href="/" style="color:#94a3b8;text-decoration:none;">Somirai Lab</a></div>
+<footer style="text-align:center;padding:16px;font-size:11px;color:#94a3b8;background:#1a1220;border-top:1px solid rgba(251,191,36,.15);">
+  <div>© 2026 <a href="/" style="color:#f97316;text-decoration:none;font-weight:700;">Somirai Lab</a></div>
   <div style="margin-top:4px;"><a href="/privacy.html" style="color:#94a3b8;text-decoration:underline;">プライバシーポリシー</a></div>
 </footer>
 </body>
