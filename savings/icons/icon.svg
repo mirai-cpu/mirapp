@@ -12,7 +12,7 @@
       <stop offset="0%" stop-color="#fb923c"/>
       <stop offset="100%" stop-color="#6ee7b7"/>
     </linearGradient>
-    <linearGradient id="penG" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="cnG" x1="50%" y1="0%" x2="50%" y2="100%">
       <stop offset="0%" stop-color="#fbbf24"/>
       <stop offset="100%" stop-color="#f97316"/>
     </linearGradient>
@@ -29,34 +29,29 @@
   <path d="M198 175 L240 179 L256 175 L240 171Z" fill="#fbbf24" opacity=".65"/>
   <path d="M314 175 L272 179 L256 175 L272 171Z" fill="#fbbf24" opacity=".65"/>
 
-  <!-- Pen -->
-  <g transform="translate(280, 260) rotate(35)">
-    <rect x="-8" y="-80" width="16" height="100" rx="3" fill="url(#penG)" opacity=".7"/>
-    <polygon points="0,28 -8,20 8,20" fill="#fbbf24" opacity=".8"/>
-    <rect x="-8" y="-80" width="16" height="14" rx="3" fill="#ea580c" opacity=".5"/>
+  <!-- Stacked coins -->
+  <g transform="translate(256, 385)">
+    <!-- Bottom coin -->
+    <ellipse cx="0" cy="30" rx="65" ry="18" fill="#ea580c" opacity=".4"/>
+    <ellipse cx="0" cy="24" rx="65" ry="18" fill="url(#cnG)" opacity=".45"/>
+    <!-- Middle coin -->
+    <ellipse cx="0" cy="8" rx="60" ry="16" fill="#ea580c" opacity=".45"/>
+    <ellipse cx="0" cy="2" rx="60" ry="16" fill="url(#cnG)" opacity=".55"/>
+    <!-- Top coin -->
+    <ellipse cx="0" cy="-14" rx="55" ry="14" fill="#ea580c" opacity=".5"/>
+    <ellipse cx="0" cy="-20" rx="55" ry="14" fill="url(#cnG)" opacity=".65"/>
+    <!-- Yen mark on top coin -->
+    <text x="0" y="-13" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="800" fill="#fff" opacity=".6">¥</text>
   </g>
 
-  <!-- Writing lines -->
+  <!-- Rising arrow -->
   <g opacity=".5">
-    <rect x="145" y="320" width="140" height="8" rx="4" fill="#fb923c" opacity=".4"/>
-    <rect x="145" y="348" width="110" height="8" rx="4" fill="#fbbf24" opacity=".35"/>
-    <rect x="145" y="376" width="125" height="8" rx="4" fill="#6ee7b7" opacity=".3"/>
-    <rect x="145" y="404" width="90" height="8" rx="4" fill="#fb923c" opacity=".25"/>
-  </g>
-
-  <!-- Timeline dots -->
-  <g opacity=".6">
-    <circle cx="130" cy="324" r="5" fill="#f97316"/>
-    <circle cx="130" cy="352" r="5" fill="#fbbf24"/>
-    <circle cx="130" cy="380" r="5" fill="#6ee7b7"/>
-    <circle cx="130" cy="408" r="5" fill="#fb923c" opacity=".5"/>
-    <line x1="130" y1="329" x2="130" y2="347" stroke="#fb923c" stroke-width="1.5" opacity=".3"/>
-    <line x1="130" y1="357" x2="130" y2="375" stroke="#fbbf24" stroke-width="1.5" opacity=".3"/>
-    <line x1="130" y1="385" x2="130" y2="403" stroke="#6ee7b7" stroke-width="1.5" opacity=".3"/>
+    <path d="M340 420 L340 300 L370 330" fill="none" stroke="#6ee7b7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M340 300 L310 330" fill="none" stroke="#6ee7b7" stroke-width="3" stroke-linecap="round"/>
   </g>
 
   <!-- Orbiting dots -->
   <circle cx="360" cy="110" r="10" fill="#fb923c" opacity=".6"/>
-  <circle cx="135" cy="260" r="8" fill="#fbbf24" opacity=".45"/>
-  <circle cx="380" cy="280" r="7" fill="#6ee7b7" opacity=".4"/>
+  <circle cx="135" cy="270" r="8" fill="#fbbf24" opacity=".45"/>
+  <circle cx="385" cy="280" r="7" fill="#6ee7b7" opacity=".4"/>
 </svg>

@@ -4,11 +4,6 @@
       <stop offset="0%" stop-color="#1a1220"/>
       <stop offset="100%" stop-color="#0f172a"/>
     </linearGradient>
-    <linearGradient id="spG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f97316"/>
-      <stop offset="45%" stop-color="#fbbf24"/>
-      <stop offset="100%" stop-color="#6ee7b7"/>
-    </linearGradient>
     <linearGradient id="coG" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#f97316"/>
       <stop offset="100%" stop-color="#ea580c"/>
@@ -19,17 +14,32 @@
     </linearGradient>
   </defs>
   <rect width="512" height="512" rx="96" fill="url(#bgG)"/>
-  <circle cx="256" cy="210" r="180" fill="#f97316" opacity="0.05"/>
-  <ellipse cx="256" cy="210" rx="150" ry="150" fill="none" stroke="url(#obG)" stroke-width="3.5" opacity="0.35" stroke-dasharray="12 16"/>
-  <path d="M256 78 C296 140, 340 170, 288 240 C274 268, 238 268, 224 240 C172 170, 216 140, 256 78Z" fill="url(#spG)" opacity="0.2"/>
-  <circle cx="256" cy="195" r="56" fill="url(#coG)"/>
-  <circle cx="248" cy="175" r="20" fill="#fff" opacity="0.25"/>
-  <path d="M256 105 L266 145 L256 195 L246 145 Z" fill="#fb923c" opacity="0.9"/>
-  <path d="M176 195 L236 201 L256 195 L236 189 Z" fill="#fbbf24" opacity="0.7"/>
-  <path d="M336 195 L276 201 L256 195 L276 189 Z" fill="#fbbf24" opacity="0.7"/>
-  <path d="M256 285 L266 220 L256 195 L246 220 Z" fill="#fbbf24" opacity="0.5"/>
-  <circle cx="360" cy="118" r="14" fill="#fb923c" opacity="0.7"/>
-  <circle cx="142" cy="290" r="12" fill="#fbbf24" opacity="0.55"/>
-  <circle cx="378" cy="266" r="10" fill="#6ee7b7" opacity="0.5"/>
-  <text x="256" y="430" text-anchor="middle" font-family="'DM Sans','Helvetica Neue',system-ui" font-size="56" font-weight="800" fill="#94a3b8" letter-spacing="0.08em">SOMIRAI</text>
+
+  <!-- Orbit ring -->
+  <ellipse cx="256" cy="220" rx="140" ry="140" fill="none" stroke="url(#obG)" stroke-width="3" opacity=".25" stroke-dasharray="10 14"/>
+
+  <!-- Core spark -->
+  <circle cx="256" cy="200" r="50" fill="url(#coG)"/>
+  <circle cx="247" cy="182" r="18" fill="#fff" opacity=".22"/>
+  <path d="M256 115 L264 175 L256 200 L248 175Z" fill="#fb923c" opacity=".85"/>
+  <path d="M185 200 L240 205 L256 200 L240 195Z" fill="#fbbf24" opacity=".65"/>
+  <path d="M327 200 L272 205 L256 200 L272 195Z" fill="#fbbf24" opacity=".65"/>
+
+  <!-- Baseball stitching -->
+  <circle cx="256" cy="360" r="52" fill="none" stroke="#fb923c" stroke-width="3" opacity=".5"/>
+  <path d="M222 315 Q232 342, 227 365 Q224 388, 232 405" fill="none" stroke="#f97316" stroke-width="2.5" opacity=".7" stroke-linecap="round"/>
+  <path d="M290 315 Q280 342, 285 365 Q288 388, 280 405" fill="none" stroke="#f97316" stroke-width="2.5" opacity=".7" stroke-linecap="round"/>
+  <g stroke="#fbbf24" stroke-width="1.5" opacity=".5" stroke-linecap="round">
+    <line x1="226" y1="322" x2="219" y2="316"/><line x1="224" y1="340" x2="217" y2="336"/>
+    <line x1="225" y1="358" x2="218" y2="356"/><line x1="226" y1="376" x2="219" y2="376"/>
+    <line x1="230" y1="394" x2="224" y2="396"/>
+    <line x1="286" y1="322" x2="293" y2="316"/><line x1="288" y1="340" x2="295" y2="336"/>
+    <line x1="287" y1="358" x2="294" y2="356"/><line x1="286" y1="376" x2="293" y2="376"/>
+    <line x1="282" y1="394" x2="288" y2="396"/>
+  </g>
+
+  <!-- Orbiting dots -->
+  <circle cx="350" cy="120" r="10" fill="#fb923c" opacity=".6"/>
+  <circle cx="150" cy="290" r="8" fill="#fbbf24" opacity=".45"/>
+  <circle cx="370" cy="270" r="7" fill="#6ee7b7" opacity=".4"/>
 </svg>
