@@ -4,10 +4,6 @@
       <stop offset="0%" stop-color="#1a1220"/>
       <stop offset="100%" stop-color="#0f172a"/>
     </linearGradient>
-    <linearGradient id="coG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f97316"/>
-      <stop offset="100%" stop-color="#ea580c"/>
-    </linearGradient>
     <linearGradient id="obG" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#fb923c"/>
       <stop offset="100%" stop-color="#6ee7b7"/>
@@ -24,28 +20,45 @@
   <rect x="0" y="0" width="1200" height="3" fill="url(#obG)"/>
   <rect x="0" y="627" width="1200" height="3" fill="url(#obG)" opacity="0.4"/>
 
+  <!-- Spark icon -->
   <g transform="translate(100, 280)">
-    <circle cx="0" cy="0" r="18" fill="url(#coG)"/>
+    <circle cx="0" cy="0" r="18" fill="#f97316"/>
     <path d="M0 -28 L3 -8 L0 0 L-3 -8Z" fill="#fb923c" opacity=".85"/>
     <circle cx="28" cy="-22" r="4" fill="#fb923c" opacity=".5"/>
     <circle cx="-24" cy="18" r="3" fill="#fbbf24" opacity=".4"/>
     <circle cx="30" cy="14" r="2.5" fill="#6ee7b7" opacity=".35"/>
   </g>
 
-  <text x="600" y="200" text-anchor="middle" font-size="120">💰</text>
+  <!-- Coin stack icon (SVG drawn) -->
+  <g transform="translate(600, 165)">
+    <!-- Bottom coin -->
+    <ellipse cx="0" cy="40" rx="50" ry="14" fill="#ea580c" opacity=".4"/>
+    <ellipse cx="0" cy="34" rx="50" ry="14" fill="#fbbf24" opacity=".45"/>
+    <!-- Middle coin -->
+    <ellipse cx="0" cy="14" rx="45" ry="12" fill="#ea580c" opacity=".45"/>
+    <ellipse cx="0" cy="8" rx="45" ry="12" fill="#fbbf24" opacity=".55"/>
+    <!-- Top coin -->
+    <ellipse cx="0" cy="-10" rx="40" ry="11" fill="#ea580c" opacity=".5"/>
+    <ellipse cx="0" cy="-16" rx="40" ry="11" fill="#fbbf24" opacity=".65"/>
+    <!-- Yen mark -->
+    <text x="0" y="-8" text-anchor="middle" font-family="'DM Sans',system-ui" font-size="18" font-weight="800" fill="#fff" opacity=".6">Y</text>
+    <!-- Rising arrow -->
+    <g opacity=".6">
+      <path d="M65 50 L65 -20 L80 -5" fill="none" stroke="#6ee7b7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M65 -20 L50 -5" fill="none" stroke="#6ee7b7" stroke-width="3" stroke-linecap="round"/>
+    </g>
+  </g>
 
   <text x="600" y="330" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="64" font-weight="800" fill="#f1f5f9" letter-spacing="-1">節約クエスト</text>
-
   <text x="600" y="400" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="24" fill="#94a3b8" letter-spacing="1">支出を5秒で記録、RPG風に見える化</text>
-
   <text x="600" y="470" text-anchor="middle" font-family="'DM Sans','Helvetica Neue',sans-serif" font-size="22" fill="#fb923c" font-weight="700" letter-spacing="0.5">Somirai Lab</text>
 
   <g transform="translate(600, 510)">
-    <rect x="-200" y="0" width="110" height="36" rx="18" fill="#1a1220" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
+    <rect x="-200" y="0" width="110" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
     <text x="-145" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fb923c" font-weight="600">無料</text>
-    <rect x="-75" y="0" width="150" height="36" rx="18" fill="#1a1220" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
+    <rect x="-75" y="0" width="150" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
     <text x="0" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fbbf24" font-weight="600">家計簿</text>
-    <rect x="90" y="0" width="160" height="36" rx="18" fill="#1a1220" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
+    <rect x="90" y="0" width="160" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
     <text x="170" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#6ee7b7" font-weight="600">ゲーミフィケーション</text>
   </g>
 </svg>

@@ -21,40 +21,57 @@
   <rect width="1200" height="630" fill="url(#bgG)"/>
   <ellipse cx="350" cy="315" rx="400" ry="320" fill="url(#glR)"/>
 
-  <!-- Top/bottom accent -->
   <rect x="0" y="0" width="1200" height="3" fill="url(#obG)"/>
   <rect x="0" y="627" width="1200" height="3" fill="url(#obG)" opacity="0.4"/>
 
-  <!-- Spark icon small -->
+  <!-- Spark icon -->
   <g transform="translate(100, 280)">
-    <circle cx="0" cy="0" r="18" fill="url(#coG)"/>
+    <circle cx="0" cy="0" r="18" fill="#f97316"/>
     <path d="M0 -28 L3 -8 L0 0 L-3 -8Z" fill="#fb923c" opacity=".85"/>
     <circle cx="28" cy="-22" r="4" fill="#fb923c" opacity=".5"/>
     <circle cx="-24" cy="18" r="3" fill="#fbbf24" opacity=".4"/>
     <circle cx="30" cy="14" r="2.5" fill="#6ee7b7" opacity=".35"/>
   </g>
 
-  <!-- Tool icon -->
-  <text x="600" y="200" text-anchor="middle" font-size="120">⚾</text>
+  <!-- Baseball icon (SVG drawn) -->
+  <g transform="translate(600, 175)">
+    <circle cx="0" cy="0" r="55" fill="#f97316" opacity=".8"/>
+    <circle cx="0" cy="0" r="50" fill="none" stroke="#fbbf24" stroke-width="2" opacity=".5"/>
+    <!-- Stitching -->
+    <path d="M-20 -45 C-10 -30, -10 -15, -18 0 C-10 15, -10 30, -20 45" fill="none" stroke="#fff" stroke-width="2.5" opacity=".6" stroke-linecap="round"/>
+    <path d="M20 -45 C10 -30, 10 -15, 18 0 C10 15, 10 30, 20 45" fill="none" stroke="#fff" stroke-width="2.5" opacity=".6" stroke-linecap="round"/>
+    <!-- Stitch marks -->
+    <g stroke="#fff" stroke-width="1.5" opacity=".4">
+      <line x1="-18" y1="-38" x2="-10" y2="-34"/>
+      <line x1="-14" y1="-26" x2="-6" y2="-22"/>
+      <line x1="-14" y1="-14" x2="-6" y2="-10"/>
+      <line x1="-16" y1="0" x2="-8" y2="4"/>
+      <line x1="-14" y1="14" x2="-6" y2="10"/>
+      <line x1="-14" y1="26" x2="-6" y2="22"/>
+      <line x1="-18" y1="38" x2="-10" y2="34"/>
+      <line x1="18" y1="-38" x2="10" y2="-34"/>
+      <line x1="14" y1="-26" x2="6" y2="-22"/>
+      <line x1="14" y1="-14" x2="6" y2="-10"/>
+      <line x1="16" y1="0" x2="8" y2="4"/>
+      <line x1="14" y1="14" x2="6" y2="10"/>
+      <line x1="14" y1="26" x2="6" y2="22"/>
+      <line x1="18" y1="38" x2="10" y2="34"/>
+    </g>
+  </g>
 
   <!-- Tool name -->
   <text x="600" y="330" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="64" font-weight="800" fill="#f1f5f9" letter-spacing="-1">打撃成績トラッカー</text>
 
-  <!-- Description -->
   <text x="600" y="400" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="24" fill="#94a3b8" letter-spacing="1">打率・OPS・スプレーチャートを記録・分析</text>
 
-  <!-- Brand -->
   <text x="600" y="470" text-anchor="middle" font-family="'DM Sans','Helvetica Neue',sans-serif" font-size="22" fill="#fb923c" font-weight="700" letter-spacing="0.5">Somirai Lab</text>
 
-  <!-- Tags -->
   <g transform="translate(600, 510)">
-    <rect x="-200" y="0" width="110" height="36" rx="18" fill="#1a1220" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
+    <rect x="-200" y="0" width="110" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
     <text x="-145" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fb923c" font-weight="600">無料</text>
-
-    <rect x="-75" y="0" width="150" height="36" rx="18" fill="#1a1220" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
+    <rect x="-75" y="0" width="150" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
     <text x="0" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fbbf24" font-weight="600">登録不要</text>
-
-    <rect x="90" y="0" width="110" height="36" rx="18" fill="#1a1220" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
+    <rect x="90" y="0" width="110" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
     <text x="145" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#6ee7b7" font-weight="600">PWA対応</text>
   </g>
 </svg>

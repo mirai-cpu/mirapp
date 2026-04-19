@@ -4,10 +4,6 @@
       <stop offset="0%" stop-color="#1a1220"/>
       <stop offset="100%" stop-color="#0f172a"/>
     </linearGradient>
-    <linearGradient id="coG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f97316"/>
-      <stop offset="100%" stop-color="#ea580c"/>
-    </linearGradient>
     <linearGradient id="obG" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#fb923c"/>
       <stop offset="100%" stop-color="#6ee7b7"/>
@@ -24,28 +20,37 @@
   <rect x="0" y="0" width="1200" height="3" fill="url(#obG)"/>
   <rect x="0" y="627" width="1200" height="3" fill="url(#obG)" opacity="0.4"/>
 
+  <!-- Spark icon -->
   <g transform="translate(100, 280)">
-    <circle cx="0" cy="0" r="18" fill="url(#coG)"/>
+    <circle cx="0" cy="0" r="18" fill="#f97316"/>
     <path d="M0 -28 L3 -8 L0 0 L-3 -8Z" fill="#fb923c" opacity=".85"/>
     <circle cx="28" cy="-22" r="4" fill="#fb923c" opacity=".5"/>
     <circle cx="-24" cy="18" r="3" fill="#fbbf24" opacity=".4"/>
     <circle cx="30" cy="14" r="2.5" fill="#6ee7b7" opacity=".35"/>
   </g>
 
-  <text x="600" y="200" text-anchor="middle" font-size="120">📋</text>
+  <!-- Clipboard icon (SVG drawn) -->
+  <g transform="translate(600, 165)">
+    <rect x="-40" y="-15" width="80" height="95" rx="8" fill="none" stroke="#fb923c" stroke-width="3" opacity=".7"/>
+    <rect x="-18" y="-24" width="36" height="18" rx="9" fill="#fb923c" opacity=".6"/>
+    <circle cx="-22" cy="14" r="4" fill="#f97316" opacity=".8"/>
+    <rect x="-10" y="10" width="38" height="7" rx="3.5" fill="#fb923c" opacity=".4"/>
+    <circle cx="-22" cy="34" r="4" fill="#fbbf24" opacity=".7"/>
+    <rect x="-10" y="30" width="32" height="7" rx="3.5" fill="#fbbf24" opacity=".35"/>
+    <circle cx="-22" cy="54" r="4" fill="#6ee7b7" opacity=".6"/>
+    <rect x="-10" y="50" width="35" height="7" rx="3.5" fill="#6ee7b7" opacity=".3"/>
+  </g>
 
   <text x="600" y="330" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="64" font-weight="800" fill="#f1f5f9" letter-spacing="-1">スタメンメーカー</text>
-
   <text x="600" y="400" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="24" fill="#94a3b8" letter-spacing="1">打順・守備・投手ローテを一画面で管理</text>
-
   <text x="600" y="470" text-anchor="middle" font-family="'DM Sans','Helvetica Neue',sans-serif" font-size="22" fill="#fb923c" font-weight="700" letter-spacing="0.5">Somirai Lab</text>
 
   <g transform="translate(600, 510)">
-    <rect x="-200" y="0" width="110" height="36" rx="18" fill="#1a1220" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
-    <text x="-145" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fb923c" font-weight="600">無料</text>
-    <rect x="-75" y="0" width="150" height="36" rx="18" fill="#1a1220" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
-    <text x="0" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fbbf24" font-weight="600">シェア機能付き</text>
-    <rect x="90" y="0" width="110" height="36" rx="18" fill="#1a1220" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
+    <rect x="-220" y="0" width="110" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
+    <text x="-165" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fb923c" font-weight="600">無料</text>
+    <rect x="-95" y="0" width="170" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
+    <text x="-10" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fbbf24" font-weight="600">シェア機能付き</text>
+    <rect x="90" y="0" width="110" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
     <text x="145" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#6ee7b7" font-weight="600">DH対応</text>
   </g>
 </svg>
