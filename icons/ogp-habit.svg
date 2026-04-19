@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1220"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="coG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="obG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
+    </linearGradient>
+    <radialGradient id="glR" cx="30%" cy="50%" r="45%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bgG)"/>
+  <ellipse cx="350" cy="315" rx="400" ry="320" fill="url(#glR)"/>
+
+  <rect x="0" y="0" width="1200" height="3" fill="url(#obG)"/>
+  <rect x="0" y="627" width="1200" height="3" fill="url(#obG)" opacity="0.4"/>
+
+  <g transform="translate(100, 280)">
+    <circle cx="0" cy="0" r="18" fill="url(#coG)"/>
+    <path d="M0 -28 L3 -8 L0 0 L-3 -8Z" fill="#fb923c" opacity=".85"/>
+    <circle cx="28" cy="-22" r="4" fill="#fb923c" opacity=".5"/>
+    <circle cx="-24" cy="18" r="3" fill="#fbbf24" opacity=".4"/>
+    <circle cx="30" cy="14" r="2.5" fill="#6ee7b7" opacity=".35"/>
+  </g>
+
+  <text x="600" y="200" text-anchor="middle" font-size="120">🔥</text>
+
+  <text x="600" y="330" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="64" font-weight="800" fill="#f1f5f9" letter-spacing="-1">習慣トラッカー</text>
+
+  <text x="600" y="400" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="24" fill="#94a3b8" letter-spacing="1">レベルアップ・バッジ・連続記録で継続サポート</text>
+
+  <text x="600" y="470" text-anchor="middle" font-family="'DM Sans','Helvetica Neue',sans-serif" font-size="22" fill="#fb923c" font-weight="700" letter-spacing="0.5">Somirai Lab</text>
+
+  <g transform="translate(600, 510)">
+    <rect x="-230" y="0" width="120" height="36" rx="18" fill="#1a1220" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
+    <text x="-170" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fb923c" font-weight="600">無料</text>
+    <rect x="-95" y="0" width="190" height="36" rx="18" fill="#1a1220" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
+    <text x="0" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fbbf24" font-weight="600">ゲーミフィケーション</text>
+    <rect x="110" y="0" width="120" height="36" rx="18" fill="#1a1220" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
+    <text x="170" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#6ee7b7" font-weight="600">PWA対応</text>
+  </g>
+</svg>
