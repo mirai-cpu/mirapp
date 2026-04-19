@@ -503,45 +503,60 @@ textarea { resize: vertical; min-height: 64px; }
 /* ── 主要指標カード ──────────────────────── */
 .stat-cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
   margin-bottom: 20px;
 }
 
 .stat-card {
-  background: var(--surface);
+  background: linear-gradient(145deg, var(--surface), var(--bg));
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 14px 6px 10px;
-  text-align: center;
+  padding: 16px 14px 14px;
   position: relative;
   overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
+.stat-card:nth-child(1) { --card-accent: var(--accent); }
+.stat-card:nth-child(2) { --card-accent: var(--c-hit); }
+.stat-card:nth-child(3) { --card-accent: var(--c-special); }
+.stat-card:nth-child(4) { --card-accent: var(--c-purple); }
 .stat-card::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), transparent);
-  opacity: 0.6;
+  top: 0; left: 0; bottom: 0;
+  width: 3px;
+  background: var(--card-accent, var(--accent));
+  opacity: 0.7;
+  border-radius: 3px 0 0 3px;
+}
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--card-accent, var(--accent));
+  opacity: 0.04;
 }
 .stat-value {
   display: block;
-  font-size: 21px;
-  font-weight: 800;
+  font-size: 26px;
+  font-weight: 900;
   letter-spacing: -0.04em;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   font-family: "JetBrains Mono", "DM Mono", monospace;
   color: var(--text);
+  line-height: 1.1;
 }
 .stat-label {
   display: block;
   font-size: 10px;
   font-weight: 700;
-  color: var(--muted);
-  letter-spacing: 0.04em;
+  color: var(--card-accent, var(--muted));
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  opacity: 0.8;
 }
 
 /* ── ストリーク ──────────────────────────── */
@@ -552,26 +567,28 @@ textarea { resize: vertical; min-height: 64px; }
 }
 .streak-card {
   flex: 1;
-  background: var(--surface);
+  background: linear-gradient(145deg, var(--surface), var(--bg));
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 10px 12px;
+  padding: 12px 14px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
-  transition: border-color 0.2s, color 0.2s;
+  gap: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 .streak-num {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
   color: var(--accent);
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  line-height: 1;
 }
 .streak-label {
   font-size: 11px;
   color: var(--muted);
   white-space: nowrap;
+  line-height: 1.3;
 }
 
 /* ── 対チーム別テーブル ─────────────────── */
@@ -861,74 +878,115 @@ textarea { resize: vertical; min-height: 64px; }
 .game-card {
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--bg);
+  background: linear-gradient(145deg, var(--surface), var(--bg));
   overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
+.game-card + .game-card { margin-top: 10px; }
 .game-card-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px;
+  gap: 10px;
+  padding: 14px;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
+  transition: background 0.15s;
 }
 .game-card-header:active { background: var(--surface); }
 .game-card-info   { flex: 1; min-width: 0; }
-.game-card-meta   { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 3px; }
-.game-date        { font-size: 13px; font-weight: 600; }
-.game-opponent    { font-size: 13px; color: var(--muted); }
-.game-season-tag  {
-  font-size: 11px;
-  color: var(--muted);
-  background: var(--surface);
-  border-radius: 4px;
-  padding: 1px 5px;
+.game-card-meta   { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 4px; }
+.game-date {
+  font-size: 13px;
+  font-weight: 700;
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  letter-spacing: -0.01em;
 }
-.game-summary     { font-size: 12px; color: var(--muted); }
-.game-card-right  { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
+.game-opponent {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.game-season-tag  {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border-radius: 6px;
+  padding: 2px 7px;
+  letter-spacing: 0.02em;
+}
+.game-summary {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.game-card-right  { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
 .btn-game-menu {
   background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  padding: 4px 6px;
-  color: var(--muted);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
   line-height: 1;
+  transition: background 0.15s;
 }
 .btn-game-menu:active { background: var(--surface); }
 .expand-icon {
   font-size: 11px;
   color: var(--muted);
   padding: 4px;
-  display: inline-block;
-  transition: transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .expand-icon.open { transform: rotate(180deg); }
 
 .game-detail {
   border-top: 1px solid var(--border);
   padding: 4px 0;
+  animation: fadeSlideUp 0.25s ease-out both;
 }
 .atbat-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 7px 12px;
+  gap: 10px;
+  padding: 8px 14px;
   border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
 }
 .atbat-item:last-child { border-bottom: none; }
 .atbat-num  {
-  font-size: 11px;
+  font-size: 10px;
+  font-weight: 700;
   color: var(--muted);
   flex-shrink: 0;
-  min-width: 18px;
+  min-width: 20px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-family: "JetBrains Mono", "DM Mono", monospace;
 }
 .atbat-desc {
   flex: 1;
-  font-size: 12px;
+  font-size: 13px;
   min-width: 0;
+  font-weight: 500;
 }
 .atbat-actions { display: flex; gap: 4px; flex-shrink: 0; }
 .btn-edit-sm,
@@ -941,11 +999,12 @@ textarea { resize: vertical; min-height: 64px; }
   cursor: pointer;
   font-family: inherit;
   min-height: 28px;
+  transition: background 0.15s, border-color 0.15s;
 }
 .btn-edit-sm   { color: var(--accent); }
 .btn-delete-sm { color: var(--c-out); }
-.btn-edit-sm:active   { background: var(--accent-bg); }
-.btn-delete-sm:active { background: #fef2f2; }
+.btn-edit-sm:active   { background: var(--accent-bg); border-color: var(--accent); }
+.btn-delete-sm:active { background: rgba(220,38,38,0.08); border-color: var(--c-out); }
 
 /* ── Empty State ──────────────────────────── */
 .empty-state {
