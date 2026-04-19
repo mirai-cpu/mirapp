@@ -4,59 +4,60 @@
       <stop offset="0%" stop-color="#1a1220"/>
       <stop offset="100%" stop-color="#0f172a"/>
     </linearGradient>
-    <linearGradient id="coG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f97316"/>
-      <stop offset="100%" stop-color="#ea580c"/>
-    </linearGradient>
-    <linearGradient id="obG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fb923c"/>
-      <stop offset="100%" stop-color="#6ee7b7"/>
-    </linearGradient>
     <linearGradient id="penG" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#fbbf24"/>
       <stop offset="100%" stop-color="#f97316"/>
     </linearGradient>
+    <radialGradient id="glowG" cx="45%" cy="45%" r="40%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
   </defs>
   <rect width="512" height="512" rx="96" fill="url(#bgG)"/>
 
-  <!-- Orbit ring -->
-  <ellipse cx="256" cy="210" rx="135" ry="135" fill="none" stroke="url(#obG)" stroke-width="3" opacity=".2" stroke-dasharray="10 14"/>
+  <ellipse cx="240" cy="240" rx="200" ry="200" fill="url(#glowG)"/>
 
-  <!-- Core spark -->
-  <circle cx="256" cy="175" r="40" fill="url(#coG)"/>
-  <circle cx="248" cy="160" r="14" fill="#fff" opacity=".22"/>
-  <path d="M256 105 L262 157 L256 175 L250 157Z" fill="#fb923c" opacity=".85"/>
-  <path d="M198 175 L240 179 L256 175 L240 171Z" fill="#fbbf24" opacity=".65"/>
-  <path d="M314 175 L272 179 L256 175 L272 171Z" fill="#fbbf24" opacity=".65"/>
+  <!-- Ghost Spark -->
+  <g opacity=".08">
+    <ellipse cx="256" cy="256" rx="160" ry="160" fill="none" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="8 12"/>
+    <circle cx="256" cy="160" r="24" fill="#f97316"/>
+    <path d="M256 120 L260 150 L256 160 L252 150Z" fill="#fb923c"/>
+  </g>
 
-  <!-- Pen -->
-  <g transform="translate(280, 260) rotate(35)">
-    <rect x="-8" y="-80" width="16" height="100" rx="3" fill="url(#penG)" opacity=".7"/>
-    <polygon points="0,28 -8,20 8,20" fill="#fbbf24" opacity=".8"/>
-    <rect x="-8" y="-80" width="16" height="14" rx="3" fill="#ea580c" opacity=".5"/>
+  <!-- Main: Pen -->
+  <g transform="translate(280, 230) rotate(40)">
+    <!-- Pen body -->
+    <rect x="-16" y="-140" width="32" height="200" rx="4" fill="url(#penG)" opacity=".85"/>
+    <!-- Tip -->
+    <polygon points="0,72 -16,60 16,60" fill="#ea580c" opacity=".9"/>
+    <!-- Grip ring -->
+    <rect x="-16" y="40" width="32" height="8" fill="#fff" opacity=".15" rx="2"/>
+    <!-- Eraser end -->
+    <rect x="-16" y="-140" width="32" height="22" rx="4" fill="#ea580c" opacity=".6"/>
+    <!-- Shine -->
+    <rect x="-6" y="-120" width="6" height="140" rx="3" fill="#fff" opacity=".1"/>
   </g>
 
   <!-- Writing lines -->
-  <g opacity=".5">
-    <rect x="145" y="320" width="140" height="8" rx="4" fill="#fb923c" opacity=".4"/>
-    <rect x="145" y="348" width="110" height="8" rx="4" fill="#fbbf24" opacity=".35"/>
-    <rect x="145" y="376" width="125" height="8" rx="4" fill="#6ee7b7" opacity=".3"/>
-    <rect x="145" y="404" width="90" height="8" rx="4" fill="#fb923c" opacity=".25"/>
+  <g opacity=".7">
+    <rect x="95" y="310" width="180" height="10" rx="5" fill="#fb923c" opacity=".5"/>
+    <rect x="95" y="340" width="145" height="10" rx="5" fill="#fbbf24" opacity=".4"/>
+    <rect x="95" y="370" width="165" height="10" rx="5" fill="#6ee7b7" opacity=".35"/>
+    <rect x="95" y="400" width="120" height="10" rx="5" fill="#fb923c" opacity=".25"/>
   </g>
 
-  <!-- Timeline dots -->
+  <!-- Line dots (timeline) -->
   <g opacity=".6">
-    <circle cx="130" cy="324" r="5" fill="#f97316"/>
-    <circle cx="130" cy="352" r="5" fill="#fbbf24"/>
-    <circle cx="130" cy="380" r="5" fill="#6ee7b7"/>
-    <circle cx="130" cy="408" r="5" fill="#fb923c" opacity=".5"/>
-    <line x1="130" y1="329" x2="130" y2="347" stroke="#fb923c" stroke-width="1.5" opacity=".3"/>
-    <line x1="130" y1="357" x2="130" y2="375" stroke="#fbbf24" stroke-width="1.5" opacity=".3"/>
-    <line x1="130" y1="385" x2="130" y2="403" stroke="#6ee7b7" stroke-width="1.5" opacity=".3"/>
+    <circle cx="78" cy="315" r="6" fill="#f97316"/>
+    <circle cx="78" cy="345" r="6" fill="#fbbf24"/>
+    <circle cx="78" cy="375" r="6" fill="#6ee7b7"/>
+    <circle cx="78" cy="405" r="6" fill="#fb923c" opacity=".5"/>
+    <line x1="78" y1="321" x2="78" y2="339" stroke="#fb923c" stroke-width="1.5" opacity=".3"/>
+    <line x1="78" y1="351" x2="78" y2="369" stroke="#fbbf24" stroke-width="1.5" opacity=".3"/>
+    <line x1="78" y1="381" x2="78" y2="399" stroke="#6ee7b7" stroke-width="1.5" opacity=".3"/>
   </g>
 
-  <!-- Orbiting dots -->
-  <circle cx="360" cy="110" r="10" fill="#fb923c" opacity=".6"/>
-  <circle cx="135" cy="260" r="8" fill="#fbbf24" opacity=".45"/>
-  <circle cx="380" cy="280" r="7" fill="#6ee7b7" opacity=".4"/>
+  <!-- Accent -->
+  <circle cx="400" cy="110" r="5" fill="#fbbf24" opacity=".2"/>
+  <circle cx="420" cy="390" r="4" fill="#6ee7b7" opacity=".18"/>
 </svg>

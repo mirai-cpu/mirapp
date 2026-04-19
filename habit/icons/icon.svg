@@ -4,40 +4,47 @@
       <stop offset="0%" stop-color="#1a1220"/>
       <stop offset="100%" stop-color="#0f172a"/>
     </linearGradient>
-    <linearGradient id="coG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f97316"/>
-      <stop offset="100%" stop-color="#ea580c"/>
-    </linearGradient>
-    <linearGradient id="obG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fb923c"/>
-      <stop offset="100%" stop-color="#6ee7b7"/>
-    </linearGradient>
-    <linearGradient id="flG" x1="50%" y1="100%" x2="50%" y2="0%">
+    <linearGradient id="flameOuter" x1="50%" y1="100%" x2="50%" y2="0%">
       <stop offset="0%" stop-color="#ea580c"/>
       <stop offset="50%" stop-color="#f97316"/>
       <stop offset="100%" stop-color="#fbbf24"/>
     </linearGradient>
+    <linearGradient id="flameInner" x1="50%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#fde68a"/>
+    </linearGradient>
+    <radialGradient id="glowG" cx="50%" cy="55%" r="35%">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+    </radialGradient>
   </defs>
   <rect width="512" height="512" rx="96" fill="url(#bgG)"/>
 
-  <!-- Orbit ring -->
-  <ellipse cx="256" cy="220" rx="140" ry="140" fill="none" stroke="url(#obG)" stroke-width="3" opacity=".2" stroke-dasharray="10 14"/>
+  <ellipse cx="256" cy="290" rx="200" ry="200" fill="url(#glowG)"/>
 
-  <!-- Core spark -->
-  <circle cx="256" cy="180" r="40" fill="url(#coG)"/>
-  <circle cx="248" cy="165" r="14" fill="#fff" opacity=".22"/>
-  <path d="M256 110 L262 160 L256 180 L250 160Z" fill="#fb923c" opacity=".85"/>
+  <!-- Ghost Spark -->
+  <g opacity=".08">
+    <ellipse cx="256" cy="256" rx="160" ry="160" fill="none" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="8 12"/>
+    <circle cx="256" cy="160" r="24" fill="#f97316"/>
+    <path d="M256 120 L260 150 L256 160 L252 150Z" fill="#fb923c"/>
+  </g>
 
-  <!-- Flame shape -->
-  <path d="M256 420 C220 400, 175 360, 175 310 C175 270, 200 250, 220 260 C210 230, 230 200, 256 210 C282 200, 302 230, 292 260 C312 250, 337 270, 337 310 C337 360, 292 400, 256 420Z" fill="url(#flG)" opacity=".35"/>
-  <path d="M256 420 C235 405, 210 375, 210 340 C210 310, 235 295, 256 310 C277 295, 302 310, 302 340 C302 375, 277 405, 256 420Z" fill="#f97316" opacity=".3"/>
-  <path d="M256 410 C245 400, 232 380, 232 358 C232 338, 248 330, 256 342 C264 330, 280 338, 280 358 C280 380, 267 400, 256 410Z" fill="#fbbf24" opacity=".35"/>
+  <!-- Main: Flame -->
+  <path d="M256 440 C200 410, 120 350, 120 260 C120 200, 160 170, 190 185 C175 140, 210 90, 256 100 C302 90, 337 140, 322 185 C352 170, 392 200, 392 260 C392 350, 312 410, 256 440Z" fill="url(#flameOuter)" opacity=".8"/>
+
+  <path d="M256 430 C215 405, 165 360, 165 290 C165 245, 205 220, 256 248 C307 220, 347 245, 347 290 C347 360, 297 405, 256 430Z" fill="#f97316" opacity=".6"/>
+
+  <path d="M256 415 C235 400, 200 365, 200 320 C200 290, 230 275, 256 295 C282 275, 312 290, 312 320 C312 365, 277 400, 256 415Z" fill="url(#flameInner)" opacity=".7"/>
+
+  <!-- Core glow -->
+  <ellipse cx="256" cy="340" rx="35" ry="30" fill="#fde68a" opacity=".25"/>
 
   <!-- Streak number -->
-  <text x="256" y="380" text-anchor="middle" font-family="'DM Sans',system-ui" font-size="48" font-weight="900" fill="#fff" opacity=".8">7</text>
+  <text x="256" y="372" text-anchor="middle" font-family="system-ui" font-size="72" font-weight="900" fill="#fff" opacity=".9">7</text>
 
-  <!-- Orbiting dots -->
-  <circle cx="355" cy="110" r="10" fill="#fb923c" opacity=".6"/>
-  <circle cx="140" cy="280" r="8" fill="#fbbf24" opacity=".45"/>
-  <circle cx="378" cy="280" r="7" fill="#6ee7b7" opacity=".4"/>
+  <!-- Subtle sparks flying off -->
+  <circle cx="170" cy="180" r="4" fill="#fbbf24" opacity=".3"/>
+  <circle cx="345" cy="165" r="3.5" fill="#fb923c" opacity=".25"/>
+  <circle cx="145" cy="250" r="3" fill="#6ee7b7" opacity=".2"/>
+  <circle cx="375" cy="235" r="3" fill="#fbbf24" opacity=".2"/>
 </svg>

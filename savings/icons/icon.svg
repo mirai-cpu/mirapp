@@ -4,54 +4,67 @@
       <stop offset="0%" stop-color="#1a1220"/>
       <stop offset="100%" stop-color="#0f172a"/>
     </linearGradient>
-    <linearGradient id="coG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f97316"/>
-      <stop offset="100%" stop-color="#ea580c"/>
-    </linearGradient>
-    <linearGradient id="obG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fb923c"/>
-      <stop offset="100%" stop-color="#6ee7b7"/>
-    </linearGradient>
-    <linearGradient id="cnG" x1="50%" y1="0%" x2="50%" y2="100%">
-      <stop offset="0%" stop-color="#fbbf24"/>
+    <linearGradient id="coinTop" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#fde68a"/>
       <stop offset="100%" stop-color="#f97316"/>
     </linearGradient>
+    <linearGradient id="coinSide" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <radialGradient id="glowG" cx="45%" cy="55%" r="40%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
   </defs>
   <rect width="512" height="512" rx="96" fill="url(#bgG)"/>
 
-  <!-- Orbit ring -->
-  <ellipse cx="256" cy="210" rx="135" ry="135" fill="none" stroke="url(#obG)" stroke-width="3" opacity=".2" stroke-dasharray="10 14"/>
+  <ellipse cx="240" cy="290" rx="200" ry="200" fill="url(#glowG)"/>
 
-  <!-- Core spark -->
-  <circle cx="256" cy="175" r="40" fill="url(#coG)"/>
-  <circle cx="248" cy="160" r="14" fill="#fff" opacity=".22"/>
-  <path d="M256 105 L262 157 L256 175 L250 157Z" fill="#fb923c" opacity=".85"/>
-  <path d="M198 175 L240 179 L256 175 L240 171Z" fill="#fbbf24" opacity=".65"/>
-  <path d="M314 175 L272 179 L256 175 L272 171Z" fill="#fbbf24" opacity=".65"/>
+  <!-- Ghost Spark -->
+  <g opacity=".08">
+    <ellipse cx="256" cy="256" rx="160" ry="160" fill="none" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="8 12"/>
+    <circle cx="256" cy="160" r="24" fill="#f97316"/>
+    <path d="M256 120 L260 150 L256 160 L252 150Z" fill="#fb923c"/>
+  </g>
 
-  <!-- Stacked coins -->
-  <g transform="translate(256, 385)">
-    <!-- Bottom coin -->
-    <ellipse cx="0" cy="30" rx="65" ry="18" fill="#ea580c" opacity=".4"/>
-    <ellipse cx="0" cy="24" rx="65" ry="18" fill="url(#cnG)" opacity=".45"/>
-    <!-- Middle coin -->
-    <ellipse cx="0" cy="8" rx="60" ry="16" fill="#ea580c" opacity=".45"/>
-    <ellipse cx="0" cy="2" rx="60" ry="16" fill="url(#cnG)" opacity=".55"/>
+  <!-- Main: Coin Stack -->
+  <g transform="translate(230, 0)">
+    <!-- Bottom coin (5th) -->
+    <ellipse cx="0" cy="390" rx="100" ry="28" fill="url(#coinSide)" opacity=".4"/>
+    <ellipse cx="0" cy="380" rx="100" ry="28" fill="url(#coinTop)" opacity=".45"/>
+
+    <!-- 4th coin -->
+    <ellipse cx="0" cy="345" rx="95" ry="26" fill="url(#coinSide)" opacity=".5"/>
+    <ellipse cx="0" cy="335" rx="95" ry="26" fill="url(#coinTop)" opacity=".55"/>
+
+    <!-- 3rd coin -->
+    <ellipse cx="0" cy="298" rx="90" ry="24" fill="url(#coinSide)" opacity=".6"/>
+    <ellipse cx="0" cy="288" rx="90" ry="24" fill="url(#coinTop)" opacity=".65"/>
+
+    <!-- 2nd coin -->
+    <ellipse cx="0" cy="253" rx="85" ry="22" fill="url(#coinSide)" opacity=".7"/>
+    <ellipse cx="0" cy="243" rx="85" ry="22" fill="url(#coinTop)" opacity=".75"/>
+
     <!-- Top coin -->
-    <ellipse cx="0" cy="-14" rx="55" ry="14" fill="#ea580c" opacity=".5"/>
-    <ellipse cx="0" cy="-20" rx="55" ry="14" fill="url(#cnG)" opacity=".65"/>
-    <!-- Yen mark on top coin -->
-    <text x="0" y="-13" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="800" fill="#fff" opacity=".6">¥</text>
+    <ellipse cx="0" cy="210" rx="80" ry="20" fill="url(#coinSide)" opacity=".8"/>
+    <ellipse cx="0" cy="200" rx="80" ry="20" fill="url(#coinTop)" opacity=".9"/>
+
+    <!-- Yen symbol on top -->
+    <text x="0" y="210" text-anchor="middle" font-family="system-ui" font-size="30" font-weight="900" fill="#fff" opacity=".7">&#165;</text>
+
+    <!-- Shine on top coin -->
+    <ellipse cx="-25" cy="193" rx="20" ry="8" fill="#fff" opacity=".1" transform="rotate(-10 -25 193)"/>
   </g>
 
   <!-- Rising arrow -->
-  <g opacity=".5">
-    <path d="M340 420 L340 300 L370 330" fill="none" stroke="#6ee7b7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M340 300 L310 330" fill="none" stroke="#6ee7b7" stroke-width="3" stroke-linecap="round"/>
+  <g opacity=".65">
+    <path d="M370 400 L370 180 L400 215" fill="none" stroke="#6ee7b7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M370 180 L340 215" fill="none" stroke="#6ee7b7" stroke-width="4" stroke-linecap="round"/>
   </g>
 
-  <!-- Orbiting dots -->
-  <circle cx="360" cy="110" r="10" fill="#fb923c" opacity=".6"/>
-  <circle cx="135" cy="270" r="8" fill="#fbbf24" opacity=".45"/>
-  <circle cx="385" cy="280" r="7" fill="#6ee7b7" opacity=".4"/>
+  <!-- Small sparkles -->
+  <circle cx="380" cy="150" r="4" fill="#6ee7b7" opacity=".3"/>
+  <circle cx="100" cy="160" r="5" fill="#fbbf24" opacity=".2"/>
+  <circle cx="420" cy="320" r="3.5" fill="#fbbf24" opacity=".18"/>
 </svg>
