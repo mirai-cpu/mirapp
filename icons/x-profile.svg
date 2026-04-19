@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1220"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="spG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="45%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
+    </linearGradient>
+    <linearGradient id="coG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="obG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="400" fill="url(#bgG)"/>
+
+  <!-- Background glow -->
+  <circle cx="200" cy="170" r="150" fill="#f97316" opacity="0.05"/>
+
+  <!-- Orbit ring -->
+  <ellipse cx="200" cy="170" rx="120" ry="120" fill="none" stroke="url(#obG)" stroke-width="2.5" opacity="0.3" stroke-dasharray="8 12"/>
+
+  <!-- Inner shape -->
+  <path d="M200 55 C230 110, 268 135, 228 195 C218 218, 182 218, 172 195 C132 135, 170 110, 200 55Z" fill="url(#spG)" opacity="0.18"/>
+
+  <!-- Core -->
+  <circle cx="200" cy="160" r="44" fill="url(#coG)"/>
+  <circle cx="192" cy="145" r="16" fill="#fff" opacity="0.22"/>
+
+  <!-- Sparkle rays -->
+  <path d="M200 85 L206 140 L200 160 L194 140 Z" fill="#fb923c" opacity="0.9"/>
+  <path d="M140 160 L186 164 L200 160 L186 156 Z" fill="#fbbf24" opacity="0.7"/>
+  <path d="M260 160 L214 164 L200 160 L214 156 Z" fill="#fbbf24" opacity="0.7"/>
+  <path d="M200 240 L206 180 L200 160 L194 180 Z" fill="#fbbf24" opacity="0.5"/>
+
+  <!-- Orbiting dots -->
+  <circle cx="290" cy="95" r="10" fill="#fb923c" opacity="0.65"/>
+  <circle cx="108" cy="238" r="8.5" fill="#fbbf24" opacity="0.5"/>
+  <circle cx="302" cy="218" r="7.5" fill="#6ee7b7" opacity="0.45"/>
+
+  <!-- Small particles -->
+  <circle cx="150" cy="80" r="3" fill="#fbbf24" opacity="0.3"/>
+  <circle cx="320" cy="140" r="2.5" fill="#6ee7b7" opacity="0.25"/>
+
+  <!-- Label -->
+  <text x="200" y="345" text-anchor="middle" font-family="'DM Sans','Helvetica Neue',system-ui" font-size="40" font-weight="800" fill="#f1f5f9" letter-spacing="-0.01em">Somi<tspan fill="url(#coG)">rai</tspan></text>
+  <text x="200" y="378" text-anchor="middle" font-family="'DM Sans','Helvetica Neue',system-ui" font-size="16" font-weight="600" letter-spacing="0.15em" fill="#94a3b8">LAB</text>
+</svg>

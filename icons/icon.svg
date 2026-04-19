@@ -1,56 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#111c30"/>
-      <stop offset="100%" stop-color="#0b1120"/>
+    <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1220"/>
+      <stop offset="100%" stop-color="#0f172a"/>
     </linearGradient>
-    <linearGradient id="boltGrad" x1="20%" y1="0%" x2="80%" y2="100%">
-      <stop offset="0%" stop-color="#7bb8ff"/>
-      <stop offset="100%" stop-color="#4f9eff"/>
+    <linearGradient id="spG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="45%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
     </linearGradient>
-    <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#4f9eff" stop-opacity="0.18"/>
-      <stop offset="100%" stop-color="#4f9eff" stop-opacity="0"/>
-    </radialGradient>
-    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="14" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
+    <linearGradient id="coG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="obG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
+    </linearGradient>
   </defs>
-
-  <!-- 背景 -->
-  <rect width="512" height="512" fill="url(#bgGrad)" rx="96"/>
-
-  <!-- 背景グロー -->
-  <ellipse cx="256" cy="260" rx="160" ry="180" fill="url(#glowGrad)"/>
-
-  <!-- 稲妻ボルト（グロー付き） -->
-  <path d="M 310 120 L 210 265 L 268 265 L 202 395 L 318 248 L 257 248 Z"
-        fill="#4f9eff" opacity="0.35" filter="url(#glow)"/>
-
-  <!-- 稲妻ボルト本体 -->
-  <path d="M 310 120 L 210 265 L 268 265 L 202 395 L 318 248 L 257 248 Z"
-        fill="url(#boltGrad)" filter="url(#softGlow)"/>
-
-  <!-- ハイライト（上部） -->
-  <path d="M 310 120 L 265 190 L 295 190 L 310 120 Z"
-        fill="white" fill-opacity="0.25"/>
-
-  <!-- 小さな輝き（右上） -->
-  <circle cx="360" cy="148" r="4" fill="#7bb8ff" fill-opacity="0.7"/>
-  <circle cx="372" cy="136" r="2.5" fill="#7bb8ff" fill-opacity="0.5"/>
-
-  <!-- 小さな輝き（左下） -->
-  <circle cx="155" cy="368" r="3.5" fill="#4f9eff" fill-opacity="0.6"/>
-  <circle cx="143" cy="382" r="2" fill="#4f9eff" fill-opacity="0.4"/>
+  <rect width="512" height="512" rx="96" fill="url(#bgG)"/>
+  <circle cx="256" cy="210" r="180" fill="#f97316" opacity="0.05"/>
+  <ellipse cx="256" cy="210" rx="150" ry="150" fill="none" stroke="url(#obG)" stroke-width="3.5" opacity="0.35" stroke-dasharray="12 16"/>
+  <path d="M256 78 C296 140, 340 170, 288 240 C274 268, 238 268, 224 240 C172 170, 216 140, 256 78Z" fill="url(#spG)" opacity="0.2"/>
+  <circle cx="256" cy="195" r="56" fill="url(#coG)"/>
+  <circle cx="248" cy="175" r="20" fill="#fff" opacity="0.25"/>
+  <path d="M256 105 L266 145 L256 195 L246 145 Z" fill="#fb923c" opacity="0.9"/>
+  <path d="M176 195 L236 201 L256 195 L236 189 Z" fill="#fbbf24" opacity="0.7"/>
+  <path d="M336 195 L276 201 L256 195 L276 189 Z" fill="#fbbf24" opacity="0.7"/>
+  <path d="M256 285 L266 220 L256 195 L246 220 Z" fill="#fbbf24" opacity="0.5"/>
+  <circle cx="360" cy="118" r="14" fill="#fb923c" opacity="0.7"/>
+  <circle cx="142" cy="290" r="12" fill="#fbbf24" opacity="0.55"/>
+  <circle cx="378" cy="266" r="10" fill="#6ee7b7" opacity="0.5"/>
+  <text x="256" y="430" text-anchor="middle" font-family="'DM Sans','Helvetica Neue',system-ui" font-size="56" font-weight="800" fill="#94a3b8" letter-spacing="0.08em">SOMIRAI</text>
 </svg>
