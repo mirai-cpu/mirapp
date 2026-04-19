@@ -12,7 +12,7 @@ const days = parseInt(process.argv[2] || '30', 10);
 
 async function generateReport() {
   console.log(`\n${'='.repeat(60)}`);
-  console.log(`  Somira Lab 分析レポート — ${new Date().toLocaleDateString('ja-JP')}`);
+  console.log(`  Somirai Lab 分析レポート — ${new Date().toLocaleDateString('ja-JP')}`);
   console.log(`${'='.repeat(60)}\n`);
 
   // ── GA4 ──────────────────────────────────────────────────

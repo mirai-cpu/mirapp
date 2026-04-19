@@ -2,7 +2,7 @@
   "name": "somirai-analytics",
   "version": "1.0.0",
   "private": true,
-  "description": "Somira Lab analytics scripts — GA4 + X API",
+  "description": "Somirai Lab analytics scripts — GA4 + X API",
   "scripts": {
     "report": "node report.js 30",
     "report7": "node report.js 7",
