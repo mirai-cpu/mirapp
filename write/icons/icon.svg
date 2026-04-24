@@ -1,63 +1,90 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1a1220"/>
-      <stop offset="100%" stop-color="#0f172a"/>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1a2e"/>
+      <stop offset="100%" stop-color="#12101c"/>
     </linearGradient>
-    <linearGradient id="penG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fbbf24"/>
-      <stop offset="100%" stop-color="#f97316"/>
+    <linearGradient id="penGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#ffcc66"/>
+      <stop offset="100%" stop-color="#f0a855"/>
     </linearGradient>
-    <radialGradient id="glowG" cx="45%" cy="45%" r="40%">
-      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.1"/>
-      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+    <linearGradient id="pageGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#f0ede8" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="sparkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe08a"/>
+      <stop offset="100%" stop-color="#f0a855"/>
+    </linearGradient>
+    <radialGradient id="glowGrad" cx="50%" cy="45%" r="45%">
+      <stop offset="0%" stop-color="#f0a855" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#f0a855" stop-opacity="0"/>
     </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
   </defs>
-  <rect width="512" height="512" rx="96" fill="url(#bgG)"/>
 
-  <ellipse cx="240" cy="240" rx="200" ry="200" fill="url(#glowG)"/>
+  <!-- Background -->
+  <rect width="512" height="512" fill="url(#bgGrad)" rx="96"/>
 
-  <!-- Ghost Spark -->
-  <g opacity=".08">
-    <ellipse cx="256" cy="256" rx="160" ry="160" fill="none" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="8 12"/>
-    <circle cx="256" cy="160" r="24" fill="#f97316"/>
-    <path d="M256 120 L260 150 L256 160 L252 150Z" fill="#fb923c"/>
+  <!-- Background glow -->
+  <ellipse cx="260" cy="240" rx="180" ry="180" fill="url(#glowGrad)"/>
+
+  <!-- Folded page / memo card -->
+  <g filter="url(#shadow)">
+    <path d="M 130 110 L 330 110 L 370 150 L 370 390 L 130 390 Z" fill="url(#pageGrad)" rx="8"/>
+    <!-- Fold corner -->
+    <path d="M 330 110 L 330 150 L 370 150 Z" fill="#d8d4cc" opacity="0.8"/>
   </g>
 
-  <!-- Main: Pen -->
-  <g transform="translate(280, 230) rotate(40)">
+  <!-- Lines on the page -->
+  <line x1="160" y1="175" x2="300" y2="175" stroke="#f0a855" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+  <line x1="160" y1="210" x2="340" y2="210" stroke="#c8c4bc" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+  <line x1="160" y1="240" x2="320" y2="240" stroke="#c8c4bc" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+  <line x1="160" y1="270" x2="290" y2="270" stroke="#c8c4bc" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+  <line x1="160" y1="300" x2="340" y2="300" stroke="#c8c4bc" stroke-width="3" stroke-linecap="round" opacity="0.35"/>
+  <line x1="160" y1="330" x2="260" y2="330" stroke="#c8c4bc" stroke-width="3" stroke-linecap="round" opacity="0.35"/>
+
+  <!-- Pen (diagonal, writing position) -->
+  <g transform="translate(310, 280) rotate(35)" filter="url(#glow)">
     <!-- Pen body -->
-    <rect x="-16" y="-140" width="32" height="200" rx="4" fill="url(#penG)" opacity=".85"/>
-    <!-- Tip -->
-    <polygon points="0,72 -16,60 16,60" fill="#ea580c" opacity=".9"/>
-    <!-- Grip ring -->
-    <rect x="-16" y="40" width="32" height="8" fill="#fff" opacity=".15" rx="2"/>
-    <!-- Eraser end -->
-    <rect x="-16" y="-140" width="32" height="22" rx="4" fill="#ea580c" opacity=".6"/>
-    <!-- Shine -->
-    <rect x="-6" y="-120" width="6" height="140" rx="3" fill="#fff" opacity=".1"/>
+    <rect x="-10" y="-120" width="20" height="100" rx="4" fill="url(#penGrad)"/>
+    <!-- Pen grip ring -->
+    <rect x="-12" y="-30" width="24" height="8" rx="3" fill="#e09030"/>
+    <!-- Pen tip -->
+    <polygon points="-8,-20 8,-20 0,10" fill="#e09030"/>
+    <polygon points="-3,-5 3,-5 0,10" fill="#333"/>
+    <!-- Pen cap -->
+    <rect x="-10" y="-130" width="20" height="14" rx="4" fill="#e09030"/>
   </g>
 
-  <!-- Writing lines -->
-  <g opacity=".7">
-    <rect x="95" y="310" width="180" height="10" rx="5" fill="#fb923c" opacity=".5"/>
-    <rect x="95" y="340" width="145" height="10" rx="5" fill="#fbbf24" opacity=".4"/>
-    <rect x="95" y="370" width="165" height="10" rx="5" fill="#6ee7b7" opacity=".35"/>
-    <rect x="95" y="400" width="120" height="10" rx="5" fill="#fb923c" opacity=".25"/>
+  <!-- Sparkle effects (writing magic) -->
+  <!-- Star 1 - top right -->
+  <g transform="translate(400, 100)">
+    <path d="M 0,-14 L 4,-4 L 14,0 L 4,4 L 0,14 L -4,4 L -14,0 L -4,-4 Z" fill="url(#sparkGrad)" opacity="0.9"/>
+  </g>
+  <!-- Star 2 - smaller -->
+  <g transform="translate(420, 148)">
+    <path d="M 0,-8 L 2.5,-2.5 L 8,0 L 2.5,2.5 L 0,8 L -2.5,2.5 L -8,0 L -2.5,-2.5 Z" fill="#ffe08a" opacity="0.7"/>
+  </g>
+  <!-- Star 3 - left side -->
+  <g transform="translate(95, 160)">
+    <path d="M 0,-10 L 3,-3 L 10,0 L 3,3 L 0,10 L -3,3 L -10,0 L -3,-3 Z" fill="#ffe08a" opacity="0.6"/>
   </g>
 
-  <!-- Line dots (timeline) -->
-  <g opacity=".6">
-    <circle cx="78" cy="315" r="6" fill="#f97316"/>
-    <circle cx="78" cy="345" r="6" fill="#fbbf24"/>
-    <circle cx="78" cy="375" r="6" fill="#6ee7b7"/>
-    <circle cx="78" cy="405" r="6" fill="#fb923c" opacity=".5"/>
-    <line x1="78" y1="321" x2="78" y2="339" stroke="#fb923c" stroke-width="1.5" opacity=".3"/>
-    <line x1="78" y1="351" x2="78" y2="369" stroke="#fbbf24" stroke-width="1.5" opacity=".3"/>
-    <line x1="78" y1="381" x2="78" y2="399" stroke="#6ee7b7" stroke-width="1.5" opacity=".3"/>
-  </g>
+  <!-- XP bar at bottom of page -->
+  <rect x="160" y="358" width="180" height="8" rx="4" fill="#2a2530" opacity="0.6"/>
+  <rect x="160" y="358" width="120" height="8" rx="4" fill="url(#penGrad)" opacity="0.85"/>
 
-  <!-- Accent -->
-  <circle cx="400" cy="110" r="5" fill="#fbbf24" opacity=".2"/>
-  <circle cx="420" cy="390" r="4" fill="#6ee7b7" opacity=".18"/>
+  <!-- Small dot accents -->
+  <circle cx="108" cy="400" r="3" fill="#f0a855" opacity="0.5"/>
+  <circle cx="390" cy="405" r="2.5" fill="#ffe08a" opacity="0.4"/>
 </svg>
