@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Somirai Lab について — 野球成績管理・習慣トラッカー・家計簿アプリなど、登録不要の無料Webツール集を個人開発しています。">
+  <title>About — Somirai Lab</title>
+
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#f97316">
+  <link rel="canonical" href="https://somirai.jp/about.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://somirai.jp/about.html">
+  <meta property="og:title" content="About — Somirai Lab">
+  <meta property="og:description" content="野球成績管理・習慣トラッカー・家計簿アプリなど、登録不要の無料Webツール集を個人開発しています。">
+  <meta property="og:locale" content="ja_JP">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9485428408605916" crossorigin="anonymous"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-902VNDKEE9');
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark:    #1a1220;
+      --dark2:   #231a2e;
+      --accent:  #f97316;
+      --accent2: #fbbf24;
+      --text:    #f1f5f9;
+      --textSec: #94a3b8;
+      --border:  rgba(255,255,255,.08);
+      --radius:  16px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', system-ui, sans-serif;
+      line-height: 1.8;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(26,18,32,.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo-mark {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .nav-logo-name {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -.01em;
+      color: #f1f5f9;
+    }
+    .nav-links { display: flex; gap: 4px; align-items: center; }
+    .nav-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: color .15s, background .15s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: #f1f5f9; background: rgba(249,115,22,.1); }
+
+    /* ── Page header ── */
+    .page-header {
+      background: linear-gradient(135deg, var(--dark2) 0%, var(--dark) 100%);
+      border-bottom: 1px solid rgba(249,115,22,.15);
+      padding: 56px 24px 48px;
+      text-align: center;
+    }
+    .page-header-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(249,115,22,.12);
+      border: 1px solid rgba(249,115,22,.25);
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent2);
+      margin-bottom: 20px;
+      letter-spacing: .04em;
+    }
+    .page-header h1 {
+      font-size: clamp(26px, 5vw, 40px);
+      font-weight: 900;
+      letter-spacing: -.02em;
+      color: #f1f5f9;
+      margin-bottom: 12px;
+    }
+    .page-header p {
+      font-size: 15px;
+      color: var(--textSec);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── Main content ── */
+    .content-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    .section {
+      margin-bottom: 52px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      opacity: .85;
+    }
+    .section h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #f1f5f9;
+      margin-bottom: 16px;
+      letter-spacing: -.01em;
+      line-height: 1.4;
+    }
+    .section h2::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 1em;
+      background: var(--accent);
+      border-radius: 2px;
+      margin-right: 10px;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
+    }
+    .section p {
+      font-size: 15px;
+      color: #b0bec5;
+      line-height: 1.9;
+      margin-bottom: 14px;
+    }
+    .section p:last-child { margin-bottom: 0; }
+
+    /* ── Tool list ── */
+    .tool-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .tool-item {
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+    .tool-item-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tool-item-name span {
+      font-size: 18px;
+    }
+    .tool-item p {
+      font-size: 14px;
+      color: var(--textSec);
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    /* ── Feature chips ── */
+    .feature-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(249,115,22,.08);
+      border: 1px solid rgba(249,115,22,.18);
+      border-radius: 999px;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #f1a06e;
+    }
+    .chip-icon { font-size: 15px; }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,.06);
+      margin: 48px 0;
+    }
+
+    /* ── Info card ── */
+    .info-card {
+      background: var(--dark2);
+      border: 1px solid rgba(251,191,36,.15);
+      border-top: 2px solid var(--accent2);
+      border-radius: var(--radius);
+      padding: 28px 28px;
+    }
+    .info-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .info-card dl {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 10px 16px;
+    }
+    .info-card dt {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent2);
+      padding-top: 2px;
+    }
+    .info-card dd {
+      font-size: 14px;
+      color: var(--textSec);
+      line-height: 1.7;
+    }
+    .info-card dd a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .info-card dd a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid rgba(251,191,36,.15);
+      background: var(--dark);
+      text-align: center;
+      padding: 40px 24px;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+    footer a { color: #94a3b8; text-decoration: none; transition: color .15s; }
+    footer a:hover { color: var(--accent); }
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap; }
+    .footer-brand { font-weight: 700; font-size: 13px; color: var(--accent); }
+
+    /* ── Responsive ── */
+    @media (max-width: 720px) {
+      .nav-links { display: none; }
+      .page-header { padding: 40px 20px 36px; }
+      .content-wrap { padding: 36px 20px 60px; }
+      .info-card dl { grid-template-columns: 1fr; gap: 4px; }
+      .info-card dt { margin-bottom: 0; }
+      .info-card dd { margin-bottom: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <svg class="nav-logo-mark" viewBox="0 0 120 120" width="32" height="32"><defs><linearGradient id="nlG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1220"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><linearGradient id="ncG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/></linearGradient><linearGradient id="noG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fb923c"/><stop offset="100%" stop-color="#6ee7b7"/></linearGradient></defs><rect width="120" height="120" rx="26" fill="url(#nlG)"/><ellipse cx="60" cy="52" rx="36" ry="36" fill="none" stroke="url(#noG)" stroke-width="1.8" opacity=".3" stroke-dasharray="5 7"/><circle cx="60" cy="48" r="14" fill="url(#ncG)"/><circle cx="57" cy="43" r="5" fill="#fff" opacity=".22"/><path d="M60 26 L62 42 L60 48 L58 42Z" fill="#fb923c" opacity=".85"/><path d="M42 48 L55 49.5 L60 48 L55 46.5Z" fill="#fbbf24" opacity=".65"/><path d="M78 48 L65 49.5 L60 48 L65 46.5Z" fill="#fbbf24" opacity=".65"/><circle cx="84" cy="30" r="3.5" fill="#fb923c" opacity=".6"/><circle cx="34" cy="68" r="3" fill="#fbbf24" opacity=".5"/><circle cx="88" cy="62" r="2.5" fill="#6ee7b7" opacity=".45"/></svg>
+      <span class="nav-logo-name">Somirai Lab</span>
+    </a>
+    <div class="nav-links">
+      <a href="/#tools">ツール</a>
+      <a href="/about.html" class="active">About</a>
+      <a href="/privacy.html">プライバシー</a>
+    </div>
+  </nav>
+
+  <!-- Page header -->
+  <div class="page-header">
+    <div class="page-header-label">About Somirai Lab</div>
+    <h1>Somirai Lab について</h1>
+    <p>「自分が使いたいものを作る」という想いからはじまった、個人開発の無料Webツール集です。</p>
+  </div>
+
+  <!-- Content -->
+  <div class="content-wrap">
+
+    <!-- Section 1: 目的・背景 -->
+    <div class="section">
+      <span class="section-tag">Background</span>
+      <h2>サイトの目的と、作りはじめた背景</h2>
+      <p>
+        Somirai Lab は、個人開発者が「自分自身が使いたいと思ったツール」を少しずつ積み上げてきたWebサービスです。きっかけは単純で、「野球の打撃成績をシンプルに管理したい」「習慣を楽しく続けたい」「支出の記録をもっとカジュアルにしたい」という日常の小さな不満でした。
+      </p>
+      <p>
+        市販のアプリは高機能すぎたり、アカウント登録が必要だったり、スマホ専用だったりと、ちょっと使いにくいことが多い。だったら、登録不要・ブラウザだけで完結する、シンプルで使いやすい無料Webツールを自分で作ってしまおう——そんな発想からこのサイトは生まれました。
+      </p>
+      <p>
+        個人開発ならではの「自分が本当に欲しい機能だけを入れる」というこだわりで、UIのシンプルさと使いやすさを最優先にしています。画面を開いた瞬間から直感的に操作でき、余計なステップを踏まずにすぐ記録・確認できることを意識して設計しています。
+      </p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Section 2: 各ツールへの想い -->
+    <div class="section">
+      <span class="section-tag">Tools</span>
+      <h2>各ツールへの想い</h2>
+      <div class="tool-list">
+        <div class="tool-item">
+          <div class="tool-item-name"><span>⚾</span> 打撃成績トラッカー</div>
+          <p>野球の打撃成績を手軽に記録・管理できるツールです。打率や出塁率、長打率、OPS などを自動計算し、スプレーチャートで打球方向の傾向も可視化できます。試合ごとの打席結果をその場でサクッと入力できるよう設計しており、少年野球から社会人野球まで幅広く使えます。紙のスコアブックより手軽に、専用アプリよりシンプルに使える「ちょうどいい」野球成績管理ツールを目指しました。</p>
+        </div>
+        <div class="tool-item">
+          <div class="tool-item-name"><span>✅</span> 習慣トラッカー（Habit Quest）</div>
+          <p>毎日の習慣を記録・可視化する習慣トラッカーです。「三日坊主で終わってしまう」という経験から、続けることそのものが楽しくなる仕組みを取り入れました。レベルアップ・バッジ獲得・連続記録（ストリーク）など、ゲームのような達成感が習慣化をサポートします。朝のルーティン管理から読書・運動の記録まで、生活のあらゆる場面で使える習慣管理ツールです。</p>
+        </div>
+        <div class="tool-item">
+          <div class="tool-item-name"><span>✏️</span> Write Quest</div>
+          <p>書くことを習慣にするためのタイムライン型メモツールです。日記・アイデアメモ・ToDo 管理など、書くたびにレベルアップしていくゲーム感覚の仕掛けが、書く習慣を楽しく続けさせてくれます。色分けやタグ付けで整理しやすく、シンプルなUIで思考の邪魔をしません。「毎日少しでも書き続けたい」という人のために作りました。</p>
+        </div>
+        <div class="tool-item">
+          <div class="tool-item-name"><span>💰</span> 節約クエスト</div>
+          <p>支出を5秒で記録してRPG風に見える化できる家計簿アプリです。「今月の節約レベル」がゲームのステータスのように上がっていく体験を作ることで、お金の管理を億劫に感じさせない設計にしました。複雑な家計管理ソフトではなく、「ざっくり支出を把握して節約意識を高めたい」という人にちょうどいい、ゲーミフィケーション家計簿を目指しています。登録不要でブラウザだけで使えるのも大きな特徴です。</p>
+        </div>
+        <div class="tool-item">
+          <div class="tool-item-name"><span>📋</span> スタメンメーカー</div>
+          <p>監督目線でスタメンを組めるツールです。打順・守備位置・投手陣を自由に設定し、球場図でビジュアル確認できます。作成したスタメンはLINEやXにシェアすることも可能。チームの試合前の準備や、野球ゲーム・観戦の予想スタメン作りなど、幅広い場面で活用できます。野球ファンが「あったらいいな」と思うツールをシンプルに実現しました。</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Section 3: こだわり -->
+    <div class="section">
+      <span class="section-tag">Philosophy</span>
+      <h2>こだわっていること</h2>
+      <p>
+        Somirai Lab のすべてのツールは、いくつかの共通したこだわりを持っています。まず最も大切にしているのは「登録不要・すぐ使える」という点です。メールアドレスの入力もパスワードの設定も不要で、URLを開いた瞬間から使いはじめられます。使ってみたいと思ったときのハードルを限りなく下げることで、「ちょっと試してみよう」が気軽にできるようにしました。
+      </p>
+      <p>
+        次に「プライバシー重視のブラウザ保存」です。各ツールに入力したデータは、すべてお使いの端末のブラウザ（localStorage）に保存されます。外部サーバーには一切送信されないため、個人の記録や支出・習慣などのセンシティブな情報が外部に流出する心配がありません。ユーザーのデータはユーザー自身のものという考え方を大切にしています。
+      </p>
+      <p>
+        また、主要ツールはPWA（プログレッシブウェブアプリ）に対応しており、スマートフォンのホーム画面に追加すれば、ネイティブアプリのような感覚で使えます。インターネット環境が不安定な場所でも使いやすいよう、オフライン対応も意識して設計しています。
+      </p>
+      <div class="feature-chips">
+        <div class="chip"><span class="chip-icon">🚀</span> 登録不要・即使える</div>
+        <div class="chip"><span class="chip-icon">🔒</span> データはブラウザ内保存</div>
+        <div class="chip"><span class="chip-icon">📱</span> PWA対応</div>
+        <div class="chip"><span class="chip-icon">0円</span> 完全無料</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Section 4: 今後の展望 -->
+    <div class="section">
+      <span class="section-tag">Roadmap</span>
+      <h2>今後の展望</h2>
+      <p>
+        現在公開中のツールに加え、新たなWebツールの開発・追加を継続的に進めています。近日公開予定のツールとして「ライフコンパス」があります。仕事・健康・お金・人間関係など6ジャンルを10段階評価してレーダーチャートで人生のバランスを可視化し、月次で記録することで自分自身の成長を確認できるセルフリフレクションツールです。
+      </p>
+      <p>
+        既存ツールの機能改善も並行して進めています。打撃成績トラッカーへのチーム管理機能追加、習慣トラッカーへのグラフ分析機能強化、Write Quest の検索・フィルター機能改善など、実際に使ってみてのフィードバックをもとにアップデートを重ねています。
+      </p>
+      <p>
+        「こんな機能があったらいいな」「こんなツールが欲しい」というご意見・ご要望があれば、ぜひお気軽にご連絡ください。個人開発なので大規模な開発はすぐには難しいかもしれませんが、ユーザーの声を一番の参考にしながら、少しずつ改善を続けていきます。
+      </p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Section 5: 運営者情報 -->
+    <div class="section">
+      <span class="section-tag">About</span>
+      <h2>運営者情報</h2>
+      <div class="info-card">
+        <div class="info-card-title">🌟 Somirai Lab</div>
+        <dl>
+          <dt>サービス名</dt>
+          <dd>Somirai Lab（ソミライラボ）</dd>
+          <dt>URL</dt>
+          <dd><a href="https://somirai.jp/" target="_blank" rel="noopener">https://somirai.jp/</a></dd>
+          <dt>運営形態</dt>
+          <dd>個人開発・個人運営</dd>
+          <dt>開設</dt>
+          <dd>2026年</dd>
+          <dt>お問い合わせ</dt>
+          <dd><a href="/contact.html">お問い合わせページ</a>よりご連絡ください。バグ報告・機能リクエスト・ご意見など、どなたでもお気軽にどうぞ。</dd>
+        </dl>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="/">ツール一覧</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">お問い合わせ</a>
+      <a href="/privacy.html">プライバシーポリシー</a>
+    </div>
+    <p>© 2026 <span class="footer-brand">Somirai Lab</span></p>
+  </footer>
+
+</body>
+</html>
