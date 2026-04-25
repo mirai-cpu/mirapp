@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>節約クエスト 使い方ガイド — 無料家計簿アプリ | Somirai Lab</title>
+  <meta name="description" content="節約クエスト（家計簿アプリ）の使い方ガイド。支出記録・カテゴリ管理・月次レポート・後悔出費分析・バッジ収集まで、全機能をわかりやすく解説します。">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://somirai.jp/savings/guide.html">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, 'Hiragino Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #f1ede8;
+      background: #0e0a14;
+      padding: 24px 16px 80px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    a { color: #f97316; }
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 32px;
+      font-size: 13px;
+      color: #f97316;
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid #2a1f35;
+      border-radius: 20px;
+      transition: background 0.2s;
+    }
+    .back:hover { background: rgba(249,115,22,0.08); }
+    .hero {
+      text-align: center;
+      margin-bottom: 48px;
+      padding: 40px 20px;
+      border: 1px solid #2a1f35;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #1a1220 0%, #0e0a14 100%);
+    }
+    .hero-icon { font-size: 48px; margin-bottom: 12px; }
+    .hero-title {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: #f97316;
+      text-shadow: 0 0 20px rgba(249,115,22,0.4);
+      margin-bottom: 4px;
+    }
+    .hero-sub {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #4a3850;
+      margin-bottom: 16px;
+    }
+    .hero-desc { font-size: 14px; color: #8a7e94; line-height: 1.7; max-width: 500px; margin: 0 auto; }
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #f97316;
+      margin: 40px 0 16px;
+      padding-left: 12px;
+      border-left: 3px solid #f97316;
+    }
+    h3 { font-size: 15px; font-weight: 700; color: #f1ede8; margin: 24px 0 10px; }
+    p { color: #8a7e94; margin-bottom: 12px; }
+    .step-list { list-style: none; margin-bottom: 20px; }
+    .step-list li {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      padding: 14px 16px;
+      background: #1a1220;
+      border: 1px solid #2a1f35;
+      border-radius: 12px;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #f97316;
+      color: #0e0a14;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-body { flex: 1; }
+    .step-title { font-weight: 700; color: #f1ede8; margin-bottom: 4px; font-size: 14px; }
+    .step-desc { color: #5a4868; font-size: 13px; line-height: 1.6; }
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin: 12px 0 20px;
+    }
+    @media (max-width: 400px) { .category-grid { grid-template-columns: 1fr; } }
+    .cat-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: #1a1220;
+      border: 1px solid #2a1f35;
+      border-radius: 10px;
+      font-size: 13px;
+      color: #b0a8ba;
+    }
+    .cat-icon { font-size: 20px; }
+    .cat-info {}
+    .cat-name { font-weight: 700; color: #f1ede8; font-size: 13px; }
+    .cat-label { font-size: 11px; color: #5a4868; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 500px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature-card {
+      padding: 16px;
+      background: #1a1220;
+      border: 1px solid #2a1f35;
+      border-radius: 12px;
+    }
+    .feature-icon { font-size: 22px; margin-bottom: 6px; }
+    .feature-name { font-size: 13px; font-weight: 700; color: #f1ede8; margin-bottom: 4px; }
+    .feature-desc { font-size: 12px; color: #5a4868; line-height: 1.5; }
+    .feeling-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 12px 0 20px;
+    }
+    .feeling-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .faq-item {
+      margin-bottom: 16px;
+      border: 1px solid #2a1f35;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .faq-q { padding: 14px 16px; background: #1a1220; font-weight: 700; font-size: 14px; color: #f1ede8; }
+    .faq-q::before { content: "Q. "; color: #f97316; }
+    .faq-a { padding: 12px 16px; font-size: 13px; color: #5a4868; line-height: 1.7; border-top: 1px solid #2a1f35; }
+    .faq-a::before { content: "A. "; color: #4a3850; font-weight: 700; }
+    .tip-box {
+      padding: 16px 18px;
+      background: rgba(249,115,22,0.05);
+      border: 1px solid rgba(249,115,22,0.2);
+      border-radius: 12px;
+      margin: 20px 0;
+      font-size: 13px;
+      color: #8a7e94;
+      line-height: 1.7;
+    }
+    .tip-box strong { color: #f97316; }
+    .footer-nav {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #2a1f35;
+      text-align: center;
+      font-size: 12px;
+      color: #4a3850;
+    }
+    .footer-nav a { color: #4a3850; margin: 0 8px; }
+  </style>
+</head>
+<body>
+
+  <a href="/savings/" class="back">← 節約クエスト に戻る</a>
+
+  <div class="hero">
+    <div class="hero-icon">💰</div>
+    <div class="hero-title">節約クエスト</div>
+    <div class="hero-sub">家計簿アプリ — 使い方ガイド</div>
+    <p class="hero-desc">支出を記録するたびに経験値を獲得し、レベルアップ・バッジ収集でお金の管理をゲーム感覚で楽しく続けられる家計簿アプリ。登録不要・無料で使えます。</p>
+  </div>
+
+  <h2>はじめ方（3分でスタート）</h2>
+
+  <ol class="step-list">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">月予算を設定する（任意）</div>
+        <div class="step-desc">「記録」タブ上部の「予算設定」をタップして今月の支出目標金額を入力します。後から変更も可能です。設定しなくても記録機能は使えます。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">支出を記録する</div>
+        <div class="step-desc">「記録」タブで金額・カテゴリ・感情（必要/後悔/満足）・メモを入力して「記録する」をタップ。経験値（XP）を獲得します。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">レポートで今月の支出を確認</div>
+        <div class="step-desc">「レポート」タブでカテゴリ別グラフ・月別合計・後悔出費レポートを確認。どこにお金を使っているかが一目でわかります。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">バッジを獲得してモチベーション維持</div>
+        <div class="step-desc">「バッジ」タブで獲得状況を確認。節約目標達成・連続記録・特定のカテゴリ管理など様々な条件でバッジを解放できます。</div>
+      </div>
+    </li>
+  </ol>
+
+  <h2>支出カテゴリ</h2>
+
+  <p>7種類のカテゴリから支出の種類を選べます。RPG風の個性的なカテゴリ名で管理がより楽しくなります。</p>
+
+  <div class="category-grid">
+    <div class="cat-card"><div class="cat-icon">🍔</div><div class="cat-info"><div class="cat-name">食の誘惑</div><div class="cat-label">食費・外食</div></div></div>
+    <div class="cat-card"><div class="cat-icon">🎮</div><div class="cat-info"><div class="cat-name">娯楽の魔物</div><div class="cat-label">娯楽・趣味</div></div></div>
+    <div class="cat-card"><div class="cat-icon">🛍️</div><div class="cat-info"><div class="cat-name">衝動の悪魔</div><div class="cat-label">衝動買い・ショッピング</div></div></div>
+    <div class="cat-card"><div class="cat-icon">🚃</div><div class="cat-info"><div class="cat-name">移動の幽霊</div><div class="cat-label">交通費</div></div></div>
+    <div class="cat-card"><div class="cat-icon">🏠</div><div class="cat-info"><div class="cat-name">生活の守護</div><div class="cat-label">生活用品・光熱費</div></div></div>
+    <div class="cat-card"><div class="cat-icon">💊</div><div class="cat-info"><div class="cat-name">健康の聖騎士</div><div class="cat-label">医療・健康</div></div></div>
+    <div class="cat-card"><div class="cat-icon">📦</div><div class="cat-info"><div class="cat-name">その他</div><div class="cat-label">その他の支出</div></div></div>
+  </div>
+
+  <h2>後悔出費分類機能</h2>
+
+  <p>支出を記録するときに「どんな気持ちで使ったか」を3択で分類できます。月末に後悔出費を振り返ることで、本当に必要な支出と無駄遣いを見極められます。</p>
+
+  <div class="feeling-row">
+    <div class="feeling-chip" style="background:#1a1220;border:1px solid #6b7280;color:#9ca3af">🛒 必要な出費</div>
+    <div class="feeling-chip" style="background:#2a1018;border:1px solid #f87171;color:#f87171">😔 後悔した出費</div>
+    <div class="feeling-chip" style="background:#0a1e14;border:1px solid #34d399;color:#34d399">😊 満足した出費</div>
+  </div>
+
+  <p>「レポート」タブの「後悔出費レポート」セクションで今月の後悔出費合計・件数・明細を確認できます。後悔出費が多いカテゴリを特定して改善しましょう。</p>
+
+  <h2>主な機能</h2>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">💰</div>
+      <div class="feature-name">支出記録＆XP獲得</div>
+      <div class="feature-desc">記録するたびに経験値を獲得。続ければ続けるほどレベルアップ。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-name">カテゴリ別グラフ</div>
+      <div class="feature-desc">食費・娯楽・交通費など7カテゴリの内訳をグラフで可視化。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📅</div>
+      <div class="feature-name">月次レポート</div>
+      <div class="feature-desc">毎月の支出合計・予算達成率・前月比をまとめて確認。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">😔</div>
+      <div class="feature-name">後悔出費レポート</div>
+      <div class="feature-desc">後悔した支出を月ごとに集計。無駄遣いを見える化して改善。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <div class="feature-name">月予算管理</div>
+      <div class="feature-desc">月の支出目標を設定して進捗をトラッキング。超過アラートあり。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏆</div>
+      <div class="feature-name">バッジ＆レベルシステム</div>
+      <div class="feature-desc">節約達成・記録継続などでバッジを獲得。称号もレベルアップ。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌈</div>
+      <div class="feature-name">10種類のテーマ</div>
+      <div class="feature-desc">ソミライ・フォレスト・オーシャンなど好みのテーマにカスタマイズ。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💾</div>
+      <div class="feature-name">エクスポート／インポート</div>
+      <div class="feature-desc">データをJSONで書き出し・読み込み。機種変更時にも安心。</div>
+    </div>
+  </div>
+
+  <h2>よくある質問（FAQ）</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">登録やアカウントは必要ですか？</div>
+    <div class="faq-a">不要です。ブラウザを開くだけで今すぐ使えます。データはブラウザのlocalStorageに保存され、外部には一切送信されません。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">記録した支出を後から修正・削除できますか？</div>
+    <div class="faq-a">できます。「記録」タブの支出リストから各記録をタップすると編集・削除ボタンが表示されます。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">月をまたいでも過去のデータは残りますか？</div>
+    <div class="faq-a">はい。ブラウザを消去しない限り全期間のデータが保存されます。「レポート」タブで月を切り替えることで過去の月次データも確認できます。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">収入も記録できますか？</div>
+    <div class="faq-a">現在は支出のみの記録に対応しています。収支両方の管理には対応予定です。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">データのバックアップはどうすればいいですか？</div>
+    <div class="faq-a">ヘッダーの「エクスポート」ボタンからJSONファイルとしてダウンロードできます。定期的（月1回など）にエクスポートしておくことをおすすめします。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">スマートフォンのホーム画面に追加できますか？</div>
+    <div class="faq-a">はい。iOSは Safari → 「共有」→「ホーム画面に追加」、Androidは Chrome → メニュー →「ホーム画面に追加」でアプリのように使えます（PWA対応）。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">後悔出費の分類は後から変えられますか？</div>
+    <div class="faq-a">はい。記録を編集モードで開くと「感情」欄の選択を変更できます。後日振り返って「やはり後悔だった」と気づいた場合も修正できます。</div>
+  </div>
+
+  <div class="tip-box">
+    <strong>節約のコツ：</strong>毎日その日の支出を記録する習慣をつけましょう。後から思い出して記録するより、お金を使ったその場でスマートフォンを開いて入力するのが正確性を高めるコツです。月末に「後悔出費レポート」を見ると、次月に削れる支出が見えてきます。
+  </div>
+
+  <div class="footer-nav">
+    <p>© 2026 節約クエスト — <a href="https://somirai.jp/">Somirai Lab</a></p>
+    <p style="margin-top:8px">
+      <a href="/savings/">アプリを開く</a>
+    </p>
+  </div>
+
+</body>
+</html>

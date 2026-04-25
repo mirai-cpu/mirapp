@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PLAYCARD 使い方ガイド — 野球打撃成績管理 | Somirai Lab</title>
+  <meta name="description" content="PLAYCARD（野球打撃成績管理アプリ）の使い方ガイド。選手登録・打席記録・成績グラフ・CSVエクスポートまで、野球チームのスコア管理を完全解説します。">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://somirai.jp/batting-stats/guide.html">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, 'Hiragino Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #e8f0ff;
+      background: #050912;
+      padding: 24px 16px 80px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    a { color: #ffd700; }
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 32px;
+      font-size: 13px;
+      color: #ffd700;
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid #1a2040;
+      border-radius: 20px;
+      transition: background 0.2s;
+    }
+    .back:hover { background: rgba(255,215,0,0.08); }
+    .hero {
+      text-align: center;
+      margin-bottom: 48px;
+      padding: 40px 20px;
+      border: 1px solid #1a2040;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #0a1028 0%, #050912 100%);
+    }
+    .hero-icon { font-size: 48px; margin-bottom: 12px; }
+    .hero-title {
+      font-family: 'Bebas Neue', 'Arial Black', sans-serif;
+      font-size: 36px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: #ffd700;
+      text-shadow: 0 0 20px rgba(255,215,0,0.4);
+      margin-bottom: 4px;
+    }
+    .hero-sub {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #4a5070;
+      margin-bottom: 16px;
+    }
+    .hero-desc { font-size: 14px; color: #8090b8; line-height: 1.7; max-width: 500px; margin: 0 auto; }
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffd700;
+      margin: 40px 0 16px;
+      padding-left: 12px;
+      border-left: 3px solid #ffd700;
+    }
+    h3 { font-size: 15px; font-weight: 700; color: #e8f0ff; margin: 24px 0 10px; }
+    p { color: #8090b8; margin-bottom: 12px; }
+    .step-list { list-style: none; margin-bottom: 20px; }
+    .step-list li {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      padding: 14px 16px;
+      background: #0a1028;
+      border: 1px solid #1a2040;
+      border-radius: 12px;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #ffd700;
+      color: #050912;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-body { flex: 1; }
+    .step-title { font-weight: 700; color: #e8f0ff; margin-bottom: 4px; font-size: 14px; }
+    .step-desc { color: #4a5878; font-size: 13px; line-height: 1.6; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 500px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature-card {
+      padding: 16px;
+      background: #0a1028;
+      border: 1px solid #1a2040;
+      border-radius: 12px;
+    }
+    .feature-icon { font-size: 22px; margin-bottom: 6px; }
+    .feature-name { font-size: 13px; font-weight: 700; color: #e8f0ff; margin-bottom: 4px; }
+    .feature-desc { font-size: 12px; color: #4a5878; line-height: 1.5; }
+    .stat-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 13px;
+    }
+    .stat-table th {
+      padding: 8px 12px;
+      text-align: left;
+      background: #0a1028;
+      color: #ffd700;
+      font-weight: 700;
+      border-bottom: 1px solid #1a2040;
+    }
+    .stat-table td {
+      padding: 8px 12px;
+      color: #8090b8;
+      border-bottom: 1px solid #1a2040;
+    }
+    .stat-table tr:nth-child(even) td { background: #080e20; }
+    .faq-item {
+      margin-bottom: 16px;
+      border: 1px solid #1a2040;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .faq-q { padding: 14px 16px; background: #0a1028; font-weight: 700; font-size: 14px; color: #e8f0ff; }
+    .faq-q::before { content: "Q. "; color: #ffd700; }
+    .faq-a { padding: 12px 16px; font-size: 13px; color: #4a5878; line-height: 1.7; border-top: 1px solid #1a2040; }
+    .faq-a::before { content: "A. "; color: #4a5070; font-weight: 700; }
+    .tip-box {
+      padding: 16px 18px;
+      background: rgba(255,215,0,0.04);
+      border: 1px solid rgba(255,215,0,0.2);
+      border-radius: 12px;
+      margin: 20px 0;
+      font-size: 13px;
+      color: #8090b8;
+      line-height: 1.7;
+    }
+    .tip-box strong { color: #ffd700; }
+    .footer-nav {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #1a2040;
+      text-align: center;
+      font-size: 12px;
+      color: #4a5070;
+    }
+    .footer-nav a { color: #4a5070; margin: 0 8px; }
+  </style>
+</head>
+<body>
+
+  <a href="/batting-stats/" class="back">← PLAYCARD に戻る</a>
+
+  <div class="hero">
+    <div class="hero-icon">⚾</div>
+    <div class="hero-title">PLAYCARD</div>
+    <div class="hero-sub">野球打撃成績管理 — 使い方ガイド</div>
+    <p class="hero-desc">チームメンバーの打撃成績をホログラフィックカード形式で管理。打率・本塁打・打点など全指標をリアルタイム集計します。登録不要・無料で使えます。</p>
+  </div>
+
+  <h2>はじめ方（5分でスタート）</h2>
+
+  <ol class="step-list">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">選手を登録する</div>
+        <div class="step-desc">「選手管理」タブで「＋ 選手を追加」をタップ。選手名・背番号・ポジション・利き腕を設定します。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">打席結果を記録する</div>
+        <div class="step-desc">「記録」タブで選手・試合日・打席結果（ヒット/2塁打/3塁打/本塁打/四死球/凡退など）を選択して保存。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">成績グラフで確認</div>
+        <div class="step-desc">「成績」タブで打率・出塁率・OPSなどの指標をグラフで確認。選手ごとの推移も表示されます。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">CSVでエクスポート</div>
+        <div class="step-desc">「履歴」タブのエクスポートボタンから全成績データをCSVファイルとして書き出せます。Excelやスプレッドシートでの二次活用も可能です。</div>
+      </div>
+    </li>
+  </ol>
+
+  <h2>計算される打撃指標</h2>
+
+  <p>入力した打席データから以下の指標を自動計算します。</p>
+
+  <table class="stat-table">
+    <thead>
+      <tr>
+        <th>指標</th>
+        <th>説明</th>
+        <th>計算式</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>打率（AVG）</td><td>安打を打つ確率</td><td>安打数 ÷ 打数</td></tr>
+      <tr><td>出塁率（OBP）</td><td>塁に出る確率</td><td>（安打＋四死球）÷（打数＋四死球）</td></tr>
+      <tr><td>長打率（SLG）</td><td>平均塁打数</td><td>塁打数 ÷ 打数</td></tr>
+      <tr><td>OPS</td><td>総合打撃指標</td><td>出塁率 ＋ 長打率</td></tr>
+      <tr><td>本塁打（HR）</td><td>本塁打数の合計</td><td>—</td></tr>
+      <tr><td>打点（RBI）</td><td>打点の合計</td><td>—</td></tr>
+      <tr><td>盗塁（SB）</td><td>盗塁数の合計</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <h2>主な機能</h2>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⚾</div>
+      <div class="feature-name">打席記録</div>
+      <div class="feature-desc">1打席ごとに結果・得点・打点・盗塁を詳細に記録できます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-name">自動成績計算</div>
+      <div class="feature-desc">打率・出塁率・長打率・OPSをリアルタイムで自動計算します。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📈</div>
+      <div class="feature-name">推移グラフ</div>
+      <div class="feature-desc">試合ごとの成績推移をグラフで可視化。スランプや好調期も一目でわかります。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">👥</div>
+      <div class="feature-name">複数選手管理</div>
+      <div class="feature-desc">チーム全員の成績を一括管理。ポジション別フィルターにも対応。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📥</div>
+      <div class="feature-name">CSVエクスポート</div>
+      <div class="feature-desc">全成績データをCSVで書き出し。Excelでの詳細分析にも使えます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌍</div>
+      <div class="feature-name">日英対応</div>
+      <div class="feature-desc">日本語・英語の2言語に対応。海外チームにもお使いいただけます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📅</div>
+      <div class="feature-name">試合履歴</div>
+      <div class="feature-desc">試合日ごとに記録を整理。特定の試合の成績も振り返れます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-name">プライベート保存</div>
+      <div class="feature-desc">データはすべてブラウザ内に保存。外部サーバーへの送信なし。</div>
+    </div>
+  </div>
+
+  <h2>よくある質問（FAQ）</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">何人まで選手を登録できますか？</div>
+    <div class="faq-a">登録人数に上限はありません。ブラウザのストレージ容量（通常5MB以上）の範囲内であれば、何人でも登録できます。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">複数のチームを管理できますか？</div>
+    <div class="faq-a">現在は1つのチームのみ対応しています。複数チームを管理したい場合は、ブラウザのプロファイルを分けてご利用ください。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">打席結果を後から修正できますか？</div>
+    <div class="faq-a">「履歴」タブから各打席記録を選択すると編集・削除が可能です。誤入力があった場合もすぐに修正できます。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">CSVファイルはどのソフトで開けますか？</div>
+    <div class="faq-a">Microsoft Excel・Google スプレッドシート・Numbers（Mac）などで開けます。文字コードはUTF-8です。Excelで文字化けする場合は「データ → テキストから取り込む」を使い、UTF-8を選択してください。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">ブラウザを変えるとデータが消えますか？</div>
+    <div class="faq-a">はい。データは各ブラウザのlocalStorageに保存されるため、別のブラウザでは共有されません。「エクスポート」機能でJSONバックアップを取り、別ブラウザで「インポート」してください。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">スマートフォンでも使えますか？</div>
+    <div class="faq-a">はい、スマートフォン・タブレット・PCのすべてのブラウザに対応しています。ホーム画面に追加するとアプリのように起動できます（PWA対応）。</div>
+  </div>
+
+  <div class="tip-box">
+    <strong>活用のコツ：</strong>練習試合の後にスマートフォンでその場で記録すると記録漏れを防げます。シーズン終了後にCSVエクスポートして年間成績をスプレッドシートで集計する使い方も便利です。
+  </div>
+
+  <div class="footer-nav">
+    <p>© 2026 PLAYCARD · 野球打撃成績 — <a href="https://somirai.jp/">Somirai Lab</a></p>
+    <p style="margin-top:8px">
+      <a href="/batting-stats/privacy.html">プライバシーポリシー</a>
+      <a href="/batting-stats/">アプリを開く</a>
+    </p>
+  </div>
+
+</body>
+</html>

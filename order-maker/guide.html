@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TACTICIAN 使い方ガイド — 野球スタメンメーカー | Somirai Lab</title>
+  <meta name="description" content="TACTICIAN（野球スタメンメーカー）の使い方ガイド。打順・守備配置の設定方法、画像保存、チームデータの管理まで、野球チームのオーダー作成を完全解説します。">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://somirai.jp/order-maker/guide.html">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, 'Hiragino Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #c8f0d8;
+      background: #020805;
+      padding: 24px 16px 80px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    a { color: #00e676; }
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 32px;
+      font-size: 13px;
+      color: #00e676;
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid #0a2818;
+      border-radius: 20px;
+      transition: background 0.2s;
+    }
+    .back:hover { background: rgba(0,230,118,0.08); }
+    .hero {
+      text-align: center;
+      margin-bottom: 48px;
+      padding: 40px 20px;
+      border: 1px solid #0a2818;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #040e08 0%, #020805 100%);
+    }
+    .hero-icon { font-size: 48px; margin-bottom: 12px; }
+    .hero-title {
+      font-family: 'Orbitron', 'Arial Black', monospace;
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      color: #00e676;
+      text-shadow: 0 0 20px rgba(0,230,118,0.4);
+      margin-bottom: 4px;
+    }
+    .hero-sub {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #1a4030;
+      margin-bottom: 16px;
+    }
+    .hero-desc { font-size: 14px; color: #4a8060; line-height: 1.7; max-width: 500px; margin: 0 auto; }
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #00e676;
+      margin: 40px 0 16px;
+      padding-left: 12px;
+      border-left: 3px solid #00e676;
+    }
+    h3 { font-size: 15px; font-weight: 700; color: #c8f0d8; margin: 24px 0 10px; }
+    p { color: #4a8060; margin-bottom: 12px; }
+    .step-list { list-style: none; margin-bottom: 20px; }
+    .step-list li {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      padding: 14px 16px;
+      background: #040e08;
+      border: 1px solid #0a2818;
+      border-radius: 12px;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #00e676;
+      color: #020805;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-body { flex: 1; }
+    .step-title { font-weight: 700; color: #c8f0d8; margin-bottom: 4px; font-size: 14px; }
+    .step-desc { color: #2a5038; font-size: 13px; line-height: 1.6; }
+    .pos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 12px 0 20px;
+    }
+    @media (max-width: 400px) { .pos-grid { grid-template-columns: repeat(2, 1fr); } }
+    .pos-card {
+      padding: 10px 12px;
+      background: #040e08;
+      border: 1px solid #0a2818;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #c8f0d8;
+    }
+    .pos-abbr { color: #00e676; font-weight: 700; margin-right: 4px; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 500px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature-card {
+      padding: 16px;
+      background: #040e08;
+      border: 1px solid #0a2818;
+      border-radius: 12px;
+    }
+    .feature-icon { font-size: 22px; margin-bottom: 6px; }
+    .feature-name { font-size: 13px; font-weight: 700; color: #c8f0d8; margin-bottom: 4px; }
+    .feature-desc { font-size: 12px; color: #2a5038; line-height: 1.5; }
+    .faq-item {
+      margin-bottom: 16px;
+      border: 1px solid #0a2818;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .faq-q { padding: 14px 16px; background: #040e08; font-weight: 700; font-size: 14px; color: #c8f0d8; }
+    .faq-q::before { content: "Q. "; color: #00e676; }
+    .faq-a { padding: 12px 16px; font-size: 13px; color: #2a5038; line-height: 1.7; border-top: 1px solid #0a2818; }
+    .faq-a::before { content: "A. "; color: #1a4030; font-weight: 700; }
+    .tip-box {
+      padding: 16px 18px;
+      background: rgba(0,230,118,0.04);
+      border: 1px solid rgba(0,230,118,0.2);
+      border-radius: 12px;
+      margin: 20px 0;
+      font-size: 13px;
+      color: #4a8060;
+      line-height: 1.7;
+    }
+    .tip-box strong { color: #00e676; }
+    .footer-nav {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #0a2818;
+      text-align: center;
+      font-size: 12px;
+      color: #1a4030;
+    }
+    .footer-nav a { color: #1a4030; margin: 0 8px; }
+  </style>
+</head>
+<body>
+
+  <a href="/order-maker/" class="back">← TACTICIAN に戻る</a>
+
+  <div class="hero">
+    <div class="hero-icon">📋</div>
+    <div class="hero-title">TACTICIAN</div>
+    <div class="hero-sub">スタメンメーカー — 使い方ガイド</div>
+    <p class="hero-desc">野球チームの打順・守備配置を直感的に作成・管理するアプリ。オーダー表を画像として保存してLINE等でシェアできます。登録不要・無料で使えます。</p>
+  </div>
+
+  <h2>はじめ方（3分でスタート）</h2>
+
+  <ol class="step-list">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">選手を登録する</div>
+        <div class="step-desc">「選手管理」タブで選手名・背番号・守備ポジションを登録。チーム全員を事前登録しておくと打順設定がスムーズです。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">打順を設定する</div>
+        <div class="step-desc">「打順」タブで1番〜9番の各打順に選手をドラッグ＆ドロップまたはタップで割り当てます。DH制のオン・オフも切り替えられます。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">守備配置を確認・調整</div>
+        <div class="step-desc">「守備」タブでフィールド図上に選手が配置されます。各ポジションをタップして選手を変更できます。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">画像保存またはシェア</div>
+        <div class="step-desc">オーダー表を画像としてダウンロード、またはLINEやXにシェアできます。試合前にチームへの共有が簡単にできます。</div>
+      </div>
+    </li>
+  </ol>
+
+  <h2>対応ポジション一覧</h2>
+
+  <div class="pos-grid">
+    <div class="pos-card"><span class="pos-abbr">P</span>投手</div>
+    <div class="pos-card"><span class="pos-abbr">C</span>捕手</div>
+    <div class="pos-card"><span class="pos-abbr">1B</span>一塁手</div>
+    <div class="pos-card"><span class="pos-abbr">2B</span>二塁手</div>
+    <div class="pos-card"><span class="pos-abbr">3B</span>三塁手</div>
+    <div class="pos-card"><span class="pos-abbr">SS</span>遊撃手</div>
+    <div class="pos-card"><span class="pos-abbr">LF</span>左翼手</div>
+    <div class="pos-card"><span class="pos-abbr">CF</span>中堅手</div>
+    <div class="pos-card"><span class="pos-abbr">RF</span>右翼手</div>
+    <div class="pos-card"><span class="pos-abbr">DH</span>指名打者</div>
+  </div>
+
+  <h2>主な機能</h2>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <div class="feature-name">打順設定</div>
+      <div class="feature-desc">1〜9番の打順を直感的なUIで素早く設定できます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏟️</div>
+      <div class="feature-name">守備配置図</div>
+      <div class="feature-desc">フィールド図上に選手名を表示。全体像を視覚的に確認できます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💾</div>
+      <div class="feature-name">複数テンプレート保存</div>
+      <div class="feature-desc">Aチーム・Bチームなど複数のオーダーをテンプレートとして保存可能。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📸</div>
+      <div class="feature-name">画像ダウンロード</div>
+      <div class="feature-desc">オーダー表を画像（PNG）としてダウンロード。印刷にも使えます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔗</div>
+      <div class="feature-name">LINE・Xシェア</div>
+      <div class="feature-desc">ワンタップでLINEグループやXにオーダー表をシェアできます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌍</div>
+      <div class="feature-name">日英対応</div>
+      <div class="feature-desc">日本語・英語の2言語に対応。国際チームにもお使いいただけます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌙</div>
+      <div class="feature-name">ダーク／ライトテーマ</div>
+      <div class="feature-desc">TACTICIAN（暗）・ライト（明）から見やすいテーマを選択。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-name">ブラウザ内保存</div>
+      <div class="feature-desc">データはローカル保存のみ。外部サーバーへの送信なし。</div>
+    </div>
+  </div>
+
+  <h2>よくある質問（FAQ）</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">DH制（指名打者）に対応していますか？</div>
+    <div class="faq-a">はい。打順設定画面でDHをオンにすると9名に加えてDH（指名打者）を設定できます。軟式・少年野球・草野球など様々なルールに対応しています。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">作成したオーダーを保存できますか？</div>
+    <div class="faq-a">はい。作成したオーダーはブラウザのlocalStorageに自動保存されます。次回アクセス時も同じデータが表示されます。複数のテンプレートに名前を付けて保存する機能もあります。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">画像ダウンロードでLINEに送る方法は？</div>
+    <div class="faq-a">「画像として保存」ボタンでPNG画像をダウンロード後、通常通りLINEのトークに添付して送信してください。または「LINEでシェア」ボタンを直接タップする方法もあります。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">何人まで選手を登録できますか？</div>
+    <div class="faq-a">人数の上限はありません。控え選手も含めてチーム全員を登録しておくと、試合ごとのオーダー変更がスムーズになります。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">スマートフォンのホーム画面に追加できますか？</div>
+    <div class="faq-a">はい。iOSは Safari → 「共有」→「ホーム画面に追加」、Androidは Chrome → メニュー →「ホーム画面に追加」でアプリのように使えます（PWA対応）。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">ソフトボール・少年野球でも使えますか？</div>
+    <div class="faq-a">はい。打順・守備ポジションの設定はどの形式の野球にも対応しています。ポジション名はあくまでラベルなので自由に割り当てて使っていただけます。</div>
+  </div>
+
+  <div class="tip-box">
+    <strong>活用のコツ：</strong>「レギュラーオーダー」「対右投手」「対左投手」など複数のテンプレートを事前に用意しておくと、試合当日に素早くオーダーを選択・シェアできます。チームのLINEグループに毎回共有する手間が大幅に減ります。
+  </div>
+
+  <div class="footer-nav">
+    <p>© 2026 TACTICIAN · スタメンメーカー — <a href="https://somirai.jp/">Somirai Lab</a></p>
+    <p style="margin-top:8px">
+      <a href="/order-maker/">アプリを開く</a>
+    </p>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FORGE 使い方ガイド — 習慣クエスト | Somirai Lab</title>
+  <meta name="description" content="FORGE（習慣クエスト）の使い方を詳しく解説。習慣の追加・毎日のチェック・レベルアップ・バッジ収集・テーマ変更まで、スクリーンショット付きでわかりやすく説明します。">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://somirai.jp/habit/guide.html">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, 'Hiragino Sans', sans-serif; font-size: 15px; line-height: 1.8; color: #ede8e0; background: #0a0805; padding: 24px 16px 80px; max-width: 720px; margin: 0 auto; }
+    a { color: #e63030; }
+    .back { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 32px; font-size: 13px; color: #e63030; text-decoration: none; padding: 6px 14px; border: 1px solid #3a1a1a; border-radius: 20px; }
+    .hero { text-align: center; margin-bottom: 48px; padding: 40px 20px; border: 1px solid #2a1a12; border-radius: 20px; background: linear-gradient(135deg, #140e09 0%, #0a0805 100%); }
+    .hero-icon { font-size: 48px; margin-bottom: 12px; }
+    .hero-title { font-size: 32px; font-weight: 800; letter-spacing: 0.12em; color: #e63030; text-shadow: 0 0 20px rgba(230,48,48,0.4); margin-bottom: 4px; }
+    .hero-sub { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #6b5044; margin-bottom: 16px; }
+    .hero-desc { font-size: 14px; color: #b09880; line-height: 1.7; max-width: 500px; margin: 0 auto; }
+    h2 { font-size: 18px; font-weight: 700; color: #e63030; margin: 40px 0 16px; padding-left: 12px; border-left: 3px solid #e63030; }
+    h3 { font-size: 15px; font-weight: 700; color: #ede8e0; margin: 24px 0 10px; }
+    p { color: #b09880; margin-bottom: 12px; }
+    .step-list { list-style: none; margin-bottom: 20px; }
+    .step-list li { display: flex; gap: 14px; margin-bottom: 14px; padding: 14px 16px; background: #140e09; border: 1px solid #2a1a12; border-radius: 12px; }
+    .step-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #e63030; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .step-body { flex: 1; }
+    .step-title { font-weight: 700; color: #ede8e0; margin-bottom: 4px; font-size: 14px; }
+    .step-desc { color: #8a7060; font-size: 13px; line-height: 1.6; }
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    @media (max-width: 500px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature-card { padding: 16px; background: #140e09; border: 1px solid #2a1a12; border-radius: 12px; }
+    .feature-icon { font-size: 22px; margin-bottom: 6px; }
+    .feature-name { font-size: 13px; font-weight: 700; color: #ede8e0; margin-bottom: 4px; }
+    .feature-desc { font-size: 12px; color: #8a7060; line-height: 1.5; }
+    .faq-item { margin-bottom: 16px; border: 1px solid #2a1a12; border-radius: 12px; overflow: hidden; }
+    .faq-q { padding: 14px 16px; background: #140e09; font-weight: 700; font-size: 14px; color: #ede8e0; }
+    .faq-q::before { content: "Q. "; color: #e63030; }
+    .faq-a { padding: 12px 16px; font-size: 13px; color: #8a7060; line-height: 1.7; border-top: 1px solid #2a1a12; }
+    .faq-a::before { content: "A. "; color: #6b5044; font-weight: 700; }
+    .tip-box { padding: 16px 18px; background: rgba(230,48,48,0.05); border: 1px solid rgba(230,48,48,0.2); border-radius: 12px; margin: 20px 0; font-size: 13px; color: #b09880; line-height: 1.7; }
+    .tip-box strong { color: #e63030; }
+    .footer-nav { margin-top: 48px; padding-top: 24px; border-top: 1px solid #2a1a12; text-align: center; font-size: 12px; color: #6b5044; }
+    .footer-nav a { color: #6b5044; margin: 0 8px; }
+  </style>
+</head>
+<body>
+  <a href="/habit/" class="back">← FORGE に戻る</a>
+  <div class="hero">
+    <div class="hero-icon">🔥</div>
+    <div class="hero-title">FORGE</div>
+    <div class="hero-sub">習慣クエスト — 使い方ガイド</div>
+    <p class="hero-desc">毎日の習慣を「鍛え上げる」アプリ。習慣をチェックするたびに経験値を獲得し、レベルアップ・バッジ収集でモチベーションを維持しましょう。登録不要・無料で使えます。</p>
+  </div>
+  <h2>はじめ方（5分でスタート）</h2>
+  <ol class="step-list">
+    <li><div class="step-num">1</div><div class="step-body"><div class="step-title">「習慣を追加」ボタンをタップ</div><div class="step-desc">ダッシュボード下部の「＋ 習慣を追加」をタップ。まずは1〜3個の習慣から始めるのがおすすめです。</div></div></li>
+    <li><div class="step-num">2</div><div class="step-body"><div class="step-title">習慣名・カテゴリ・アイコンを設定</div><div class="step-desc">習慣名（例：「朝のストレッチ」「読書30分」）を入力し、カテゴリ（健康・勉強・仕事・生活）とアイコンを選びます。毎日または週次の頻度も設定できます。</div></div></li>
+    <li><div class="step-num">3</div><div class="step-body"><div class="step-title">毎日チェックして経験値を獲得</div><div class="step-desc">達成した習慣のチェックボタンを押すと経験値（XP）を獲得。レベルが上がるとランク称号が変わります。連続達成日数（ストリーク）も記録されます。</div></div></li>
+    <li><div class="step-num">4</div><div class="step-body"><div class="step-title">統計・バッジタブで成長を確認</div><div class="step-desc">「統計」タブで週別達成率・最高ストリーク・MVP習慣を確認。「バッジ」タブで獲得済み・未獲得のバッジを一覧表示します。</div></div></li>
+  </ol>
+  <h2>主な機能</h2>
+  <div class="feature-grid">
+    <div class="feature-card"><div class="feature-icon">✅</div><div class="feature-name">習慣チェック＆XP獲得</div><div class="feature-desc">1回のチェックで経験値を獲得。難易度設定で獲得XPを調整できます。</div></div>
+    <div class="feature-card"><div class="feature-icon">🔥</div><div class="feature-name">ストリーク（連続記録）</div><div class="feature-desc">連続達成日数を記録。最高記録を更新するたびにモチベーションアップ。</div></div>
+    <div class="feature-card"><div class="feature-icon">🏆</div><div class="feature-name">レベルアップ＆ランク</div><div class="feature-desc">Lv.1「見習い」からLv.50「覚醒者」まで、成長を称号で実感。</div></div>
+    <div class="feature-card"><div class="feature-icon">🎖️</div><div class="feature-name">バッジコレクション</div><div class="feature-desc">50種類以上のバッジを解放。特定の条件を達成すると自動で獲得。</div></div>
+    <div class="feature-card"><div class="feature-icon">📊</div><div class="feature-name">週次レポート</div><div class="feature-desc">今週の達成率・MVP習慣・連続記録をまとめて確認できます。</div></div>
+    <div class="feature-card"><div class="feature-icon">🗑️</div><div class="feature-name">削除済み習慣のゴミ箱</div><div class="feature-desc">削除した習慣はゴミ箱に保存。後から復元または完全削除できます。</div></div>
+    <div class="feature-card"><div class="feature-icon">🌈</div><div class="feature-name">9種類のテーマ</div><div class="feature-desc">FORGE（炎）・ヴォイド・オーシャンなど、好みのテーマに切り替え可能。</div></div>
+    <div class="feature-card"><div class="feature-icon">💾</div><div class="feature-name">エクスポート／インポート</div><div class="feature-desc">データをJSONファイルで書き出し・読み込み。機種変更時にも安心。</div></div>
+  </div>
+  <h2>よくある質問（FAQ）</h2>
+  <div class="faq-item"><div class="faq-q">登録やアカウント作成は必要ですか？</div><div class="faq-a">不要です。ブラウザを開くだけで今すぐ使えます。データはお使いの端末のブラウザ（localStorage）に保存されるため、外部サーバーへの送信は一切ありません。</div></div>
+  <div class="faq-item"><div class="faq-q">スマートフォンのホーム画面に追加できますか？</div><div class="faq-a">はい。iOSは Safari → 「共有」→「ホーム画面に追加」、Androidは Chrome → 「メニュー」→「ホーム画面に追加」でアプリのようにご利用いただけます（PWA対応）。</div></div>
+  <div class="faq-item"><div class="faq-q">ブラウザのデータを消去するとデータが消えますか？</div><div class="faq-a">はい。データはブラウザのlocalStorageに保存されているため、ブラウザのキャッシュ・データを消去すると失われます。大切なデータは「エクスポート」機能でJSONファイルとして保存しておくことをおすすめします。</div></div>
+  <div class="faq-item"><div class="faq-q">週次習慣と毎日習慣の違いは何ですか？</div><div class="faq-a">毎日習慣は毎日チェック可能です。週次習慣は週に1回以上達成すればストリーク継続と判定されます。週1〜3回ほどの頻度で行う習慣には週次設定が向いています。</div></div>
+  <div class="faq-item"><div class="faq-q">チェックを誤って押してしまった場合は取り消せますか？</div><div class="faq-a">当日中であれば、同じチェックボタンをもう一度タップすることで取り消せます。翌日以降の取り消しはできません。</div></div>
+  <div class="faq-item"><div class="faq-q">バッジはどうやって獲得できますか？</div><div class="faq-a">各バッジに設定された条件（例：「7日連続達成」「レベル10到達」「習慣を10個追加」など）を満たすと自動的に獲得できます。バッジタブで条件を確認しながら目標を立てましょう。</div></div>
+  <div class="faq-item"><div class="faq-q">複数の端末で同期できますか？</div><div class="faq-a">現時点では端末間の自動同期には対応していません。エクスポートしたJSONファイルを別の端末でインポートすることでデータを移行できます。</div></div>
+  <div class="tip-box"><strong>継続のコツ：</strong>最初から習慣を10個追加しても続きません。まずは「絶対続けられる」簡単な習慣を2〜3個だけ設定し、30日間で完璧に達成することを目標にしましょう。小さな成功体験がストリークを伸ばす原動力になります。</div>
+  <h2>ヒントと活用例</h2>
+  <h3>📅 毎朝のルーティン化</h3>
+  <p>「歯磨き後にアプリを開いてチェックする」というルーティンを作ると忘れにくくなります。スマートフォンのホーム画面に追加しておくと、毎日自然と目に入ります。</p>
+  <h3>🎯 週次レポートの活用</h3>
+  <p>週末に「統計」タブを開いて今週の達成率を振り返りましょう。達成率が低かった習慣は「難しすぎるのか」「タイミングが合っていないか」を見直すきっかけになります。</p>
+  <div class="footer-nav">
+    <p>© 2026 FORGE · 習慣クエスト — <a href="https://somirai.jp/">Somirai Lab</a></p>
+    <p style="margin-top:8px"><a href="/habit/privacy.html">プライバシーポリシー</a><a href="/habit/terms.html">利用規約</a><a href="/habit/">アプリを開く</a></p>
+  </div>
+</body>
+</html>
