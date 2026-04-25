@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="400" height="120">
+  <defs>
+    <linearGradient id="warmG" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="50%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
+    </linearGradient>
+    <linearGradient id="bgG" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="leafG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6ee7b7"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="120" rx="16" fill="url(#bgG)"/>
+
+  <!-- Symbol: Sprout / seedling growing toward future -->
+  <g transform="translate(52, 60)">
+    <!-- Ground arc -->
+    <path d="M-26 10 Q0 18, 26 10" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Stem -->
+    <path d="M0 8 C0 -2, -2 -8, 0 -20" fill="none" stroke="url(#leafG)" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- Left leaf -->
+    <path d="M0 -8 C-14 -14, -18 -6, -8 -2 C-4 0, -2 -2, 0 -8Z" fill="url(#leafG)" opacity="0.8"/>
+
+    <!-- Right leaf (larger, reaching up) -->
+    <path d="M0 -14 C10 -24, 18 -20, 12 -10 C8 -4, 4 -8, 0 -14Z" fill="url(#warmG)" opacity="0.85"/>
+
+    <!-- Tiny bud at top -->
+    <circle cx="0" cy="-22" r="3" fill="#fbbf24"/>
+    <circle cx="0" cy="-22" r="5" fill="#fbbf24" opacity="0.15"/>
+
+    <!-- Light particles rising -->
+    <circle cx="-8" cy="-30" r="1.5" fill="#6ee7b7" opacity="0.5"/>
+    <circle cx="6" cy="-34" r="1" fill="#fbbf24" opacity="0.6"/>
+    <circle cx="14" cy="-28" r="1.2" fill="#38bdf8" opacity="0.4"/>
+    <circle cx="-4" cy="-38" r="0.8" fill="#fbbf24" opacity="0.3"/>
+  </g>
+
+  <!-- Text: Somirai -->
+  <text x="105" y="55" font-family="'DM Sans', system-ui, sans-serif" font-size="34" font-weight="800" letter-spacing="-0.02em" fill="#f1f5f9">
+    Somi<tspan fill="url(#warmG)">rai</tspan>
+  </text>
+
+  <!-- Tagline -->
+  <text x="105" y="78" font-family="'DM Sans', system-ui, sans-serif" font-size="12" font-weight="500" letter-spacing="0.08em" fill="#64748b">
+    LAB
+  </text>
+  <text x="140" y="78" font-family="'Hiragino Sans', system-ui, sans-serif" font-size="11" fill="#64748b" opacity="0.6">
+    &#x2014; tools for tomorrow
+  </text>
+
+  <!-- Accent line under text -->
+  <line x1="105" y1="86" x2="185" y2="86" stroke="url(#warmG)" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+</svg>

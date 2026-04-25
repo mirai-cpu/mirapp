@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="400" height="120">
+  <defs>
+    <linearGradient id="sunG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="50%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ef4444"/>
+    </linearGradient>
+    <linearGradient id="rayG" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="skyG" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="120" rx="16" fill="#0f172a"/>
+
+  <!-- Rays of light -->
+  <g opacity="0.3">
+    <line x1="52" y1="58" x2="30" y2="20" stroke="url(#rayG)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="52" y1="58" x2="18" y2="40" stroke="url(#rayG)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="52" y1="58" x2="52" y2="14" stroke="url(#rayG)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="52" y1="58" x2="76" y2="20" stroke="url(#rayG)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="52" y1="58" x2="86" y2="40" stroke="url(#rayG)" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Sun (half circle rising) -->
+  <circle cx="52" cy="68" r="22" fill="url(#sunG)"/>
+  <!-- Horizon mask -->
+  <rect x="20" y="68" width="64" height="30" fill="#0f172a"/>
+  <!-- Horizon line -->
+  <line x1="24" y1="68" x2="80" y2="68" stroke="url(#skyG)" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Glow -->
+  <circle cx="52" cy="58" r="30" fill="#fbbf24" opacity="0.08"/>
+
+  <!-- Text: Somirai -->
+  <text x="105" y="65" font-family="'DM Sans', system-ui, sans-serif" font-size="36" font-weight="800" letter-spacing="-0.03em" fill="#f1f5f9">
+    Somi<tspan fill="url(#sunG)">rai</tspan>
+  </text>
+
+  <!-- Text: Lab -->
+  <text x="105" y="90" font-family="'DM Sans', system-ui, sans-serif" font-size="16" font-weight="500" letter-spacing="0.15em" fill="#64748b">
+    LAB
+  </text>
+
+  <!-- Small sparkle -->
+  <g transform="translate(290, 42)" fill="#fbbf24" opacity="0.7">
+    <path d="M4 0 L5 3 L8 4 L5 5 L4 8 L3 5 L0 4 L3 3 Z"/>
+  </g>
+  <g transform="translate(310, 30)" fill="#38bdf8" opacity="0.5">
+    <path d="M3 0 L3.75 2.25 L6 3 L3.75 3.75 L3 6 L2.25 3.75 L0 3 L2.25 2.25 Z"/>
+  </g>
+</svg>

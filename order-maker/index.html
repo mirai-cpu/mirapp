@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#020805">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,600&family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="manifest" href="/order-maker/manifest.json">
   <link rel="apple-touch-icon" href="/order-maker/icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -136,13 +136,15 @@
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg); color: var(--text);
-      font-family: 'Noto Sans JP','Hiragino Sans',system-ui,sans-serif;
+      font-family: 'Barlow Condensed','Noto Sans JP','Hiragino Sans',system-ui,sans-serif;
       min-height: 100vh; display: flex; flex-direction: column;
       -webkit-tap-highlight-color: transparent;
       background-image:
-        linear-gradient(rgba(0,230,118,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,230,118,0.025) 1px, transparent 1px);
-      background-size: 44px 44px;
+        linear-gradient(rgba(0,230,118,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,230,118,0.02) 1px, transparent 1px),
+        linear-gradient(rgba(0,230,118,0.008) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,230,118,0.008) 1px, transparent 1px);
+      background-size: 44px 44px, 44px 44px, 8.8px 8.8px, 8.8px 8.8px;
     }
     body::before {
       content: '';
@@ -154,13 +156,13 @@
 
     /* ── Header ── */
     header {
-      background: linear-gradient(180deg, rgba(2,8,5,0.98) 0%, rgba(4,12,7,0.97) 100%);
-      border-bottom: 1px solid var(--accent);
-      box-shadow: 0 0 20px rgba(0,230,118,0.1), 0 1px 0 rgba(0,230,118,0.25);
+      background: linear-gradient(180deg, rgba(2,8,5,0.98) 0%, rgba(3,10,6,0.97) 100%);
+      border-bottom: 1px solid rgba(0,230,118,0.5);
+      box-shadow: 0 0 30px rgba(0,230,118,0.08), 0 1px 0 rgba(0,230,118,0.3), inset 0 -1px 0 rgba(0,230,118,0.08);
       padding: 0 16px; height: 56px;
       display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 100;
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
     }
     .header-left { display: flex; align-items: center; gap: 10px; }
     .header-back { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .15s; }
@@ -169,15 +171,15 @@
       display: flex; flex-direction: column; gap: 0;
     }
     .header-title-main {
-      font-size: 14px; font-weight: 900; letter-spacing: 0.12em;
+      font-size: 15px; font-weight: 900; letter-spacing: 0.14em;
       color: var(--accent); font-family: 'Orbitron', monospace;
-      text-shadow: 0 0 10px rgba(0,230,118,0.5);
+      text-shadow: 0 0 14px rgba(0,230,118,0.6), 0 0 28px rgba(0,230,118,0.2);
       line-height: 1;
     }
     .header-title-sub {
-      font-size: 9px; font-weight: 700; letter-spacing: 0.15em;
+      font-size: 8px; font-weight: 700; letter-spacing: 0.2em;
       color: var(--muted); text-transform: uppercase;
-      line-height: 1.4;
+      line-height: 1.4; font-family: 'JetBrains Mono', monospace;
     }
     .header-right { display: flex; gap: 6px; }
     .btn-icon {
@@ -254,7 +256,7 @@
       box-shadow: 0 2px 16px rgba(0,0,0,0.2);
     }
     .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-    .card-title { font-size: 13px; font-weight: 800; letter-spacing: 0.06em; font-family: 'Orbitron', monospace; color: var(--text); }
+    .card-title { font-size: 13px; font-weight: 800; letter-spacing: 0.1em; font-family: 'Barlow Condensed', 'Orbitron', monospace; color: var(--text); text-transform: uppercase; }
     .card-sub { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
 
     /* ── Form ── */

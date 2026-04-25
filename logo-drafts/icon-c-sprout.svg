@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="lfG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6ee7b7"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="wmG" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="50%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="26" fill="#0f172a"/>
+  <!-- Ground arc -->
+  <path d="M30 78 Q60 90, 90 78" fill="none" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Stem -->
+  <path d="M60 76 C60 58, 56 48, 60 32" fill="none" stroke="url(#lfG)" stroke-width="3" stroke-linecap="round"/>
+  <!-- Left leaf -->
+  <path d="M60 54 C40 44, 34 54, 48 62 C54 64, 56 60, 60 54Z" fill="url(#lfG)" opacity="0.75"/>
+  <!-- Right leaf -->
+  <path d="M60 42 C76 28, 86 34, 76 48 C70 56, 64 50, 60 42Z" fill="url(#wmG)" opacity="0.8"/>
+  <!-- Bud -->
+  <circle cx="60" cy="28" r="5" fill="#fbbf24"/>
+  <circle cx="60" cy="28" r="9" fill="#fbbf24" opacity="0.12"/>
+  <!-- Particles -->
+  <circle cx="46" cy="20" r="2" fill="#6ee7b7" opacity="0.5"/>
+  <circle cx="72" cy="16" r="1.5" fill="#fbbf24" opacity="0.55"/>
+  <circle cx="78" cy="26" r="1.8" fill="#38bdf8" opacity="0.4"/>
+  <circle cx="50" cy="12" r="1" fill="#fbbf24" opacity="0.35"/>
+  <circle cx="64" cy="10" r="1.3" fill="#a78bfa" opacity="0.3"/>
+  <!-- Label -->
+  <text x="60" y="104" text-anchor="middle" font-family="'DM Sans', system-ui" font-size="14" font-weight="700" fill="#64748b" letter-spacing="0.1em">SOMIRAI</text>
+</svg>

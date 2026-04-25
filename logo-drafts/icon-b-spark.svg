@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="spG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="40%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
+    </linearGradient>
+    <linearGradient id="coG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="26" fill="#0f172a"/>
+  <!-- Orbit -->
+  <ellipse cx="60" cy="52" rx="34" ry="34" fill="none" stroke="url(#spG)" stroke-width="1.5" opacity="0.3" stroke-dasharray="5 7"/>
+  <!-- Inner shape -->
+  <path d="M60 20 C70 34, 82 42, 68 56 C64 64, 56 64, 52 56 C38 42, 50 34, 60 20Z" fill="url(#spG)" opacity="0.2"/>
+  <!-- Core -->
+  <circle cx="60" cy="48" r="12" fill="url(#coG)"/>
+  <!-- Sparkle -->
+  <path d="M60 30 L62 43 L60 48 L58 43 Z" fill="#fff" opacity="0.85"/>
+  <path d="M44 48 L55 49.5 L60 48 L55 46.5 Z" fill="#fff" opacity="0.65"/>
+  <path d="M76 48 L65 49.5 L60 48 L65 46.5 Z" fill="#fff" opacity="0.65"/>
+  <path d="M60 66 L62 53 L60 48 L58 53 Z" fill="#fff" opacity="0.5"/>
+  <!-- Orbiting dots -->
+  <circle cx="82" cy="32" r="3" fill="#6ee7b7" opacity="0.65"/>
+  <circle cx="36" cy="68" r="2.5" fill="#a78bfa" opacity="0.5"/>
+  <circle cx="86" cy="62" r="2" fill="#fbbf24" opacity="0.45"/>
+  <!-- Label -->
+  <text x="60" y="100" text-anchor="middle" font-family="'DM Sans', system-ui" font-size="14" font-weight="700" fill="#64748b" letter-spacing="0.1em">SOMIRAI</text>
+</svg>

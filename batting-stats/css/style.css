@@ -78,15 +78,16 @@
 
 html, body {
   height: 100%;
-  font-family: "Noto Sans JP", system-ui, -apple-system, 'Hiragino Sans', sans-serif;
+  font-family: "Barlow Condensed", "Noto Sans JP", system-ui, -apple-system, 'Hiragino Sans', sans-serif;
   font-size: 15px;
   background: var(--bg);
   color: var(--text);
   -webkit-tap-highlight-color: transparent;
   transition: background 0.3s, color 0.3s;
   background-image:
-    radial-gradient(ellipse at 20% 0%, rgba(255,215,0,0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(100,255,218,0.03) 0%, transparent 50%);
+    radial-gradient(ellipse at 15% 0%, rgba(255,215,0,0.06) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 100%, rgba(100,255,218,0.04) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 50%, rgba(255,171,0,0.02) 0%, transparent 60%);
 }
 
 /* ── Header ───────────────────────────────── */
@@ -95,20 +96,20 @@ html, body {
   top: 0;
   z-index: 20;
   height: var(--header-h);
-  background: rgba(5,9,18,0.95);
-  border-bottom: 1px solid var(--accent);
-  box-shadow: 0 0 20px rgba(255,215,0,0.08), 0 1px 0 rgba(255,215,0,0.2);
+  background: rgba(5,9,18,0.96);
+  border-bottom: 1px solid rgba(255,215,0,0.35);
+  box-shadow: 0 0 30px rgba(255,215,0,0.06), 0 1px 0 rgba(255,215,0,0.25), 0 0 1px rgba(100,255,218,0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 [data-theme="dark"] .app-header {
-  background: rgba(5,9,18,0.97);
-  border-bottom-color: rgba(255,215,0,0.4);
+  background: rgba(3,5,14,0.98);
+  border-bottom-color: rgba(255,215,0,0.45);
 }
 
 .app-title {
@@ -118,12 +119,16 @@ html, body {
   line-height: 1;
 }
 .app-title-main {
-  font-family: 'Bebas Neue', 'JetBrains Mono', monospace;
-  font-size: 22px;
+  font-family: 'Anton', 'Barlow Condensed', sans-serif;
+  font-size: 24px;
   font-weight: 400;
-  letter-spacing: 0.12em;
-  color: var(--accent);
-  text-shadow: 0 0 12px rgba(255,215,0,0.5);
+  letter-spacing: 0.1em;
+  background: linear-gradient(90deg, #ffd700, #ffab00, #64ffda, #ffd700);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: holoShimmer 4s linear infinite;
   line-height: 1;
 }
 .app-title-sub {

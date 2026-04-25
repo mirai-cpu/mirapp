@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="spF" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="45%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
+    </linearGradient>
+    <linearGradient id="coF" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="obF" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
+    </linearGradient>
+    <linearGradient id="bgF" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1220"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="120" height="120" rx="26" fill="url(#bgF)"/>
+
+  <!-- Outer glow -->
+  <circle cx="60" cy="50" r="44" fill="#f97316" opacity="0.05"/>
+
+  <!-- Orbit -->
+  <ellipse cx="60" cy="50" rx="36" ry="36" fill="none" stroke="url(#obF)" stroke-width="1.8" opacity="0.35" stroke-dasharray="5 7"/>
+
+  <!-- Inner shape -->
+  <path d="M60 18 C71 34, 84 42, 70 58 C65 67, 55 67, 50 58 C36 42, 49 34, 60 18Z" fill="url(#spF)" opacity="0.2"/>
+
+  <!-- Core -->
+  <circle cx="60" cy="46" r="14" fill="url(#coF)"/>
+  <circle cx="57" cy="41" r="5" fill="#fff" opacity="0.25"/>
+
+  <!-- Sparkle -->
+  <path d="M60 24 L62.5 40 L60 46 L57.5 40 Z" fill="#fb923c" opacity="0.9"/>
+  <path d="M40 46 L54 47.5 L60 46 L54 44.5 Z" fill="#fbbf24" opacity="0.7"/>
+  <path d="M80 46 L66 47.5 L60 46 L66 44.5 Z" fill="#fbbf24" opacity="0.7"/>
+  <path d="M60 68 L62.5 52 L60 46 L57.5 52 Z" fill="#fbbf24" opacity="0.5"/>
+
+  <!-- Orbiting dots -->
+  <circle cx="86" cy="28" r="3.5" fill="#fb923c" opacity="0.7"/>
+  <circle cx="32" cy="70" r="3" fill="#fbbf24" opacity="0.55"/>
+  <circle cx="90" cy="64" r="2.5" fill="#6ee7b7" opacity="0.5"/>
+
+  <!-- Label -->
+  <text x="60" y="104" text-anchor="middle" font-family="'DM Sans', system-ui" font-size="13" font-weight="700" fill="#94a3b8" letter-spacing="0.12em">SOMIRAI</text>
+</svg>
