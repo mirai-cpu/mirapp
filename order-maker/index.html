@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="草野球・軟式野球向けの無料スタメン作成ツール。選手登録・打順・守備ポジション・投手ローテをまとめて管理。印刷・シェア機能付き。アプリ不要。">
   <meta name="keywords" content="スタメン,打順,オーダー表,草野球,軟式野球,野球,スタメンメーカー,守備,投手ローテ">
-  <meta name="theme-color" content="#1a1220">
+  <meta name="theme-color" content="#020805">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="manifest" href="/order-maker/manifest.json">
   <link rel="apple-touch-icon" href="/order-maker/icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -88,20 +88,20 @@
        ============================================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:      #0e0a14;
-      --surface: #1a1220;
-      --card:    #151020;
-      --border:  #2a1f35;
-      --accent:  #f97316;
-      --text:    #f1ede8;
-      --muted:   #8a7e94;
-      --green:   #6ee7b7;
-      --red:     #f87171;
-      --yellow:  #fbbf24;
-      --mint:    #6ee7b7;
+      --bg:      #020805;
+      --surface: #061009;
+      --card:    #04080d;
+      --border:  #0d3320;
+      --accent:  #00e676;
+      --text:    #c8f0d8;
+      --muted:   #3d6e52;
+      --green:   #00e676;
+      --red:     #ff5252;
+      --yellow:  #ffd740;
+      --mint:    #64ffda;
       --radius:  14px;
-      --glow-orange: 0 0 24px rgba(249,115,22,0.15);
-      --glow-gold:   0 0 20px rgba(251,191,36,0.12);
+      --glow-green: 0 0 24px rgba(0,230,118,0.25);
+      --glow-teal:  0 0 20px rgba(100,255,218,0.15);
     }
     @keyframes fadeSlideUp {
       from { opacity: 0; transform: translateY(10px); }
@@ -117,22 +117,46 @@
       100% { background-position: 200% 0; }
     }
     @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 8px rgba(249,115,22,0.2); }
-      50%      { box-shadow: 0 0 20px rgba(249,115,22,0.4); }
+      0%, 100% { box-shadow: 0 0 8px rgba(0,230,118,0.2); }
+      50%      { box-shadow: 0 0 20px rgba(0,230,118,0.5); }
+    }
+    @keyframes scanline {
+      0%   { transform: translateY(-100%); opacity: 0.06; }
+      100% { transform: translateY(200vh);  opacity: 0.02; }
+    }
+    @keyframes holoPulse {
+      0%, 100% { box-shadow: 0 0 8px rgba(0,230,118,0.15), inset 0 0 8px rgba(0,230,118,0.03); }
+      50%      { box-shadow: 0 0 22px rgba(0,230,118,0.4), inset 0 0 14px rgba(0,230,118,0.07); }
+    }
+    @keyframes terminalBlink {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0; }
     }
     .anim-fade-up { animation: fadeSlideUp 0.3s ease-out both; }
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg); color: var(--text);
-      font-family: 'Outfit','Hiragino Sans','Noto Sans JP',system-ui,sans-serif;
+      font-family: 'Noto Sans JP','Hiragino Sans',system-ui,sans-serif;
       min-height: 100vh; display: flex; flex-direction: column;
       -webkit-tap-highlight-color: transparent;
+      background-image:
+        linear-gradient(rgba(0,230,118,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,230,118,0.025) 1px, transparent 1px);
+      background-size: 44px 44px;
+    }
+    body::before {
+      content: '';
+      position: fixed; top: 0; left: 0; right: 0; height: 200vh;
+      background: linear-gradient(180deg, rgba(0,230,118,0.04) 0%, transparent 60%);
+      pointer-events: none; z-index: 0;
+      animation: scanline 10s linear infinite;
     }
 
     /* ── Header ── */
     header {
-      background: linear-gradient(180deg, var(--bg) 0%, rgba(14,10,20,0.95) 100%);
-      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(2,8,5,0.98) 0%, rgba(4,12,7,0.97) 100%);
+      border-bottom: 1px solid var(--accent);
+      box-shadow: 0 0 20px rgba(0,230,118,0.1), 0 1px 0 rgba(0,230,118,0.25);
       padding: 0 16px; height: 56px;
       display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 100;
@@ -140,17 +164,30 @@
     }
     .header-left { display: flex; align-items: center; gap: 10px; }
     .header-back { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .15s; }
-    .header-back:hover { color: var(--text); }
-    .header-title { font-size: 15px; font-weight: 800; letter-spacing: -0.02em; color: var(--text); }
+    .header-back:hover { color: var(--accent); }
+    .header-title {
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .header-title-main {
+      font-size: 14px; font-weight: 900; letter-spacing: 0.12em;
+      color: var(--accent); font-family: 'Orbitron', monospace;
+      text-shadow: 0 0 10px rgba(0,230,118,0.5);
+      line-height: 1;
+    }
+    .header-title-sub {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.15em;
+      color: var(--muted); text-transform: uppercase;
+      line-height: 1.4;
+    }
     .header-right { display: flex; gap: 6px; }
     .btn-icon {
       width: 36px; height: 36px; border-radius: 10px;
-      background: rgba(249,115,22,0.06); border: 1px solid var(--border);
+      background: rgba(0,230,118,0.04); border: 1px solid var(--border);
       color: var(--muted); cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: all .2s;
     }
-    .btn-icon:hover { background: rgba(249,115,22,0.12); color: var(--accent); border-color: rgba(249,115,22,0.3); }
+    .btn-icon:hover { background: rgba(0,230,118,0.1); color: var(--accent); border-color: rgba(0,230,118,0.35); box-shadow: 0 0 10px rgba(0,230,118,0.15); }
 
     /* ── Buttons ── */
     .btn {
@@ -161,21 +198,30 @@
     }
     .btn:active { transform: scale(.97); }
     .btn-primary {
-      background: linear-gradient(135deg, #f97316, #ea580c);
-      color: #fff;
-      box-shadow: 0 2px 12px rgba(249,115,22,0.3);
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      box-shadow: 0 0 10px rgba(0,230,118,0.18), inset 0 0 10px rgba(0,230,118,0.04);
+      letter-spacing: 0.05em;
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
     }
-    .btn-primary:hover { box-shadow: 0 4px 20px rgba(249,115,22,0.45); }
+    .btn-primary:hover {
+      background: rgba(0,230,118,0.08);
+      box-shadow: 0 0 22px rgba(0,230,118,0.38), inset 0 0 16px rgba(0,230,118,0.08);
+    }
     .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
-    .btn-ghost:hover { color: var(--text); border-color: rgba(249,115,22,0.4); background: rgba(249,115,22,0.06); }
-    .btn-danger { background: rgba(248,113,113,.1); color: var(--red); border: 1px solid rgba(248,113,113,.18); }
+    .btn-ghost:hover { color: var(--text); border-color: rgba(0,230,118,0.35); background: rgba(0,230,118,0.05); }
+    .btn-danger { background: rgba(255,82,82,.1); color: var(--red); border: 1px solid rgba(255,82,82,.18); }
     .btn-share {
-      background: linear-gradient(135deg, #f97316, #fbbf24);
-      color: #fff; display: flex; align-items: center; gap: 6px;
-      box-shadow: 0 2px 12px rgba(249,115,22,0.3);
+      background: transparent;
+      color: var(--mint); display: flex; align-items: center; gap: 6px;
+      border: 1px solid var(--mint);
+      box-shadow: 0 0 12px rgba(100,255,218,0.2);
       font-weight: 700;
+      letter-spacing: 0.04em;
     }
-    .btn-share:hover { box-shadow: 0 4px 20px rgba(249,115,22,0.45); }
+    .btn-share:hover { background: rgba(100,255,218,0.08); box-shadow: 0 0 22px rgba(100,255,218,0.35); }
     .btn-sm { padding: 5px 12px; font-size: 12px; }
     .btn-xs { padding: 3px 8px; font-size: 11px; }
 
@@ -188,11 +234,12 @@
       position: relative; transition: color .2s;
       white-space: nowrap; letter-spacing: 0.03em;
     }
-    .tab-btn.active { color: var(--accent); }
+    .tab-btn.active { color: var(--accent); text-shadow: 0 0 8px rgba(0,230,118,0.4); }
     .tab-btn.active::after {
       content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
       width: 28px; height: 2.5px; border-radius: 2px 2px 0 0;
-      background: linear-gradient(90deg, #f97316, #fbbf24);
+      background: linear-gradient(90deg, #00e676, #64ffda);
+      box-shadow: 0 0 8px rgba(0,230,118,0.4);
     }
 
     /* ── Main ── */
@@ -207,7 +254,7 @@
       box-shadow: 0 2px 16px rgba(0,0,0,0.2);
     }
     .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-    .card-title { font-size: 14px; font-weight: 800; letter-spacing: -0.01em; }
+    .card-title { font-size: 13px; font-weight: 800; letter-spacing: 0.06em; font-family: 'Orbitron', monospace; color: var(--text); }
     .card-sub { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
 
     /* ── Form ── */
@@ -220,7 +267,7 @@
       padding: 9px 12px; font-family: inherit; outline: none;
       transition: border-color .2s, box-shadow .2s; width: 100%;
     }
-    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(249,115,22,0.1); }
+    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,230,118,0.12); }
     select option { background: var(--surface); }
 
     /* ── Toggle ── */
@@ -231,7 +278,7 @@
     .toggle input { opacity: 0; width: 0; height: 0; }
     .toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 999px; cursor: pointer; transition: background .2s; }
     .toggle-slider::before { content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%; background: #fff; top: 3px; left: 3px; transition: transform .2s; }
-    .toggle input:checked + .toggle-slider { background: linear-gradient(135deg, #f97316, #ea580c); }
+    .toggle input:checked + .toggle-slider { background: linear-gradient(135deg, #00e676, #00b050); box-shadow: 0 0 8px rgba(0,230,118,0.3); }
     .toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
 
     /* ── Roster ── */
@@ -241,14 +288,14 @@
       padding: 12px 14px; display: flex; align-items: center; gap: 10px;
       transition: border-color .2s;
     }
-    .roster-item:hover { border-color: rgba(249,115,22,0.25); }
+    .roster-item:hover { border-color: rgba(0,230,118,0.35); box-shadow: 0 0 12px rgba(0,230,118,0.08); }
     .roster-num { font-size: 16px; font-weight: 800; color: var(--accent); min-width: 28px; text-align: center; font-family: 'JetBrains Mono', monospace; }
     .roster-info { flex: 1; min-width: 0; }
     .roster-name { font-size: 14px; font-weight: 700; }
     .roster-pos { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
     .pos-chip {
       font-size: 10px; padding: 2px 8px; border-radius: 999px;
-      background: rgba(249,115,22,.08); border: 1px solid rgba(249,115,22,.2);
+      background: rgba(0,230,118,.06); border: 1px solid rgba(0,230,118,.2);
       color: var(--accent); font-weight: 700;
     }
     .roster-actions { display: flex; gap: 5px; flex-shrink: 0; }
@@ -261,8 +308,8 @@
       transition: all .2s; background: var(--surface); color: var(--muted); user-select: none;
     }
     .pos-toggle.on {
-      background: rgba(249,115,22,.12); border-color: var(--accent); color: var(--accent);
-      box-shadow: 0 0 8px rgba(249,115,22,0.1);
+      background: rgba(0,230,118,.1); border-color: var(--accent); color: var(--accent);
+      box-shadow: 0 0 8px rgba(0,230,118,0.15);
     }
 
     /* ── Order ── */
@@ -275,15 +322,15 @@
       padding: 10px 12px; display: grid; grid-template-columns: 16px 32px 1fr 100px 28px;
       gap: 8px; align-items: center; transition: all .2s;
     }
-    .order-slot.filled { border-color: rgba(249,115,22,.25); background: rgba(249,115,22,.03); }
+    .order-slot.filled { border-color: rgba(0,230,118,.25); background: rgba(0,230,118,.03); border-left: 3px solid rgba(0,230,118,.5); }
     .order-slot.dragging { opacity: 0.35; }
-    .order-slot.drag-over { border-color: var(--accent) !important; background: rgba(249,115,22,.08); box-shadow: 0 0 12px rgba(249,115,22,0.15); }
+    .order-slot.drag-over { border-color: var(--accent) !important; background: rgba(0,230,118,.06); box-shadow: 0 0 14px rgba(0,230,118,0.2); }
     .drag-handle { cursor: grab; color: var(--muted); font-size: 13px; display: flex; align-items: center; justify-content: center; touch-action: none; user-select: none; }
     .drag-handle:active { cursor: grabbing; }
     .slot-num { font-size: 20px; font-weight: 900; color: var(--yellow); text-align: center; font-family: 'JetBrains Mono', monospace; }
     .slot-player select, .slot-pos select { width: 100%; background: var(--card); }
     .guest-input { width: 100%; margin-top: 5px; font-size: 13px; background: var(--card); border: 1px dashed var(--accent); border-radius: 8px; color: var(--text); padding: 6px 10px; font-family: inherit; outline: none; }
-    .guest-input:focus { border-style: solid; box-shadow: 0 0 0 3px rgba(249,115,22,0.1); }
+    .guest-input:focus { border-style: solid; box-shadow: 0 0 0 3px rgba(0,230,118,0.1); }
     .slot-clear button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 15px; padding: 3px; border-radius: 5px; transition: color .15s; }
     .slot-clear button:hover { color: var(--red); }
 
@@ -295,7 +342,7 @@
       background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
       padding: 6px 12px; font-size: 12px; cursor: pointer; transition: all .2s;
     }
-    .saved-chip:hover { border-color: rgba(249,115,22,0.4); background: rgba(249,115,22,0.06); }
+    .saved-chip:hover { border-color: rgba(0,230,118,0.4); background: rgba(0,230,118,0.06); }
     .chip-del { color: var(--muted); font-size: 10px; }
     .chip-del:hover { color: var(--red); }
 
@@ -306,7 +353,7 @@
       padding: 12px 14px; display: grid; grid-template-columns: 28px 1fr auto;
       gap: 8px; align-items: center; transition: border-color .2s;
     }
-    .pitcher-row:hover { border-color: rgba(249,115,22,0.25); }
+    .pitcher-row:hover { border-color: rgba(0,230,118,0.3); box-shadow: 0 0 10px rgba(0,230,118,0.07); }
     .pitcher-order { font-size: 20px; font-weight: 900; color: var(--accent); text-align: center; font-family: 'JetBrains Mono', monospace; }
     .pitcher-actions { display: flex; gap: 5px; }
 
@@ -320,9 +367,9 @@
       cursor: pointer; transition: all .15s; background: var(--surface);
       position: relative;
     }
-    .gantt-cell:hover { background: rgba(249,115,22,0.08); border-color: var(--accent); }
-    .gantt-cell.filled { background: linear-gradient(135deg, #f97316, #ea580c); border-color: #f97316; }
-    .gantt-cell.pending { background: rgba(249,115,22,.2); border-color: var(--accent); border-style: dashed; }
+    .gantt-cell:hover { background: rgba(0,230,118,0.08); border-color: var(--accent); }
+    .gantt-cell.filled { background: linear-gradient(135deg, #00e676, #00b050); border-color: #00e676; box-shadow: 0 0 6px rgba(0,230,118,0.3); }
+    .gantt-cell.pending { background: rgba(0,230,118,.12); border-color: var(--accent); border-style: dashed; }
     .gantt-cell.filled .inning-num { color: rgba(255,255,255,.8); }
     .inning-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--muted); pointer-events: none; font-family: 'JetBrains Mono', monospace; }
 
@@ -331,8 +378,8 @@
     .extra-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: rgba(110,231,183,.1); border: 1px solid rgba(110,231,183,.2); color: var(--mint); white-space: nowrap; }
 
     /* ── Field SVG ── */
-    .field-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; }
-    .field-title { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 12px; }
+    .field-wrap { background: var(--surface); border: 1px solid var(--accent); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; box-shadow: 0 0 20px rgba(0,230,118,0.08); }
+    .field-title { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px; font-family: 'Orbitron', monospace; text-shadow: 0 0 6px rgba(0,230,118,0.4); }
     #field-svg { width: 100%; max-width: 400px; display: block; margin: 0 auto; }
 
     /* ── Print ── */
@@ -343,7 +390,7 @@
     .print-table th { font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: .06em; text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
     .print-table td { padding: 10px 10px; font-size: 13px; border-bottom: 1px solid rgba(42,31,53,0.6); }
     .print-table tr:last-child td { border-bottom: none; }
-    .print-table tr:hover td { background: rgba(249,115,22,0.03); }
+    .print-table tr:hover td { background: rgba(0,230,118,0.03); }
     .t-order { font-weight: 900; color: var(--yellow); text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 15px; }
     .t-num { color: var(--accent); font-weight: 700; font-family: 'JetBrains Mono', monospace; }
     .section-label { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin: 16px 0 8px; }
@@ -360,7 +407,7 @@
     .theme-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
     .theme-opt { border: 2px solid transparent; border-radius: 12px; padding: 10px 6px; cursor: pointer; text-align: center; transition: all .2s; background: var(--surface); }
     .theme-opt:hover { border-color: var(--muted); }
-    .theme-opt.selected { border-color: var(--accent); box-shadow: 0 0 8px rgba(249,115,22,0.2); }
+    .theme-opt.selected { border-color: var(--accent); box-shadow: 0 0 10px rgba(0,230,118,0.25); }
     .theme-swatch { display: flex; gap: 4px; justify-content: center; margin-bottom: 6px; }
     .swatch-circle { width: 18px; height: 18px; border-radius: 50%; }
     .theme-name { font-size: 11px; font-weight: 700; color: var(--muted); }
@@ -370,11 +417,12 @@
     .tut-step { display: flex; gap: 14px; align-items: flex-start; }
     .step-num {
       width: 30px; height: 30px; border-radius: 50%;
-      background: linear-gradient(135deg, #f97316, #ea580c);
-      color: #fff; font-size: 13px; font-weight: 800;
+      background: transparent;
+      border: 1.5px solid var(--accent);
+      color: var(--accent); font-size: 12px; font-weight: 800;
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-      box-shadow: 0 2px 8px rgba(249,115,22,0.3);
-      font-family: 'JetBrains Mono', monospace;
+      box-shadow: 0 0 10px rgba(0,230,118,0.25);
+      font-family: 'Orbitron', monospace;
     }
     .step-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
     .step-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
@@ -411,7 +459,10 @@
 <header>
   <div class="header-left">
     <a href="/" class="header-back" style="display:inline-flex;align-items:center;gap:5px;"><svg viewBox="0 0 120 120" width="20" height="20" style="border-radius:5px;"><defs><linearGradient id="hbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1220"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><linearGradient id="hco" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/></linearGradient></defs><rect width="120" height="120" rx="26" fill="url(#hbg)"/><circle cx="60" cy="48" r="14" fill="url(#hco)"/><path d="M60 26 L62 42 L60 48 L58 42Z" fill="#fb923c" opacity=".85"/><circle cx="84" cy="30" r="3.5" fill="#fb923c" opacity=".6"/><circle cx="34" cy="68" r="3" fill="#fbbf24" opacity=".5"/><circle cx="88" cy="62" r="2.5" fill="#6ee7b7" opacity=".45"/></svg>Somirai Lab</a>
-    <div class="header-title">スタメンメーカー</div>
+    <div class="header-title">
+      <span class="header-title-main">TACTICIAN</span>
+      <span class="header-title-sub">スタメンメーカー</span>
+    </div>
   </div>
   <div class="header-right">
     <button class="btn-icon" onclick="openTutorial()" aria-label="使い方">
@@ -584,30 +635,49 @@
     <div class="field-wrap">
       <div class="field-title">守備配置図</div>
       <svg id="field-svg" viewBox="0 0 400 370" xmlns="http://www.w3.org/2000/svg">
-        <!-- Outfield grass -->
-        <path d="M 200,345 L 18,152 Q 200,22 382,152 Z" fill="#2d5a1e"/>
-        <!-- Inner outfield (lighter) -->
-        <path d="M 200,345 L 35,163 Q 200,40 365,163 Z" fill="#35692a"/>
-        <!-- Infield dirt -->
-        <path d="M 200,345 L 308,250 L 200,158 L 92,250 Z" fill="#8b6914" opacity=".9"/>
+        <defs>
+          <radialGradient id="fieldGrad" cx="50%" cy="65%" r="60%">
+            <stop offset="0%" stop-color="rgba(0,80,40,0.6)"/>
+            <stop offset="100%" stop-color="rgba(0,20,10,0.8)"/>
+          </radialGradient>
+          <filter id="glowFilter">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Background -->
+        <rect width="400" height="370" fill="#020805" rx="8"/>
+        <!-- Grid overlay -->
+        <line x1="0" y1="100" x2="400" y2="100" stroke="rgba(0,230,118,0.06)" stroke-width="1"/>
+        <line x1="0" y1="200" x2="400" y2="200" stroke="rgba(0,230,118,0.06)" stroke-width="1"/>
+        <line x1="0" y1="300" x2="400" y2="300" stroke="rgba(0,230,118,0.06)" stroke-width="1"/>
+        <line x1="100" y1="0" x2="100" y2="370" stroke="rgba(0,230,118,0.06)" stroke-width="1"/>
+        <line x1="200" y1="0" x2="200" y2="370" stroke="rgba(0,230,118,0.06)" stroke-width="1"/>
+        <line x1="300" y1="0" x2="300" y2="370" stroke="rgba(0,230,118,0.06)" stroke-width="1"/>
+        <!-- Outfield area -->
+        <path d="M 200,345 L 18,152 Q 200,22 382,152 Z" fill="url(#fieldGrad)"/>
+        <!-- Inner outfield -->
+        <path d="M 200,345 L 35,163 Q 200,40 365,163 Z" fill="rgba(0,100,50,0.3)"/>
+        <!-- Infield diamond -->
+        <path d="M 200,345 L 308,250 L 200,158 L 92,250 Z" fill="rgba(0,60,30,0.4)" stroke="rgba(0,230,118,0.15)" stroke-width="0.5"/>
         <!-- Pitcher's mound -->
-        <circle cx="200" cy="236" r="18" fill="#9b7520"/>
+        <circle cx="200" cy="236" r="18" fill="rgba(0,200,100,0.12)" stroke="rgba(0,230,118,0.25)" stroke-width="1"/>
         <!-- Foul lines -->
-        <line x1="200" y1="345" x2="18" y2="152" stroke="white" stroke-width="1.5" opacity=".5"/>
-        <line x1="200" y1="345" x2="382" y2="152" stroke="white" stroke-width="1.5" opacity=".5"/>
-        <!-- Diamond baselines -->
-        <line x1="200" y1="345" x2="308" y2="250" stroke="white" stroke-width="2"/>
-        <line x1="308" y1="250" x2="200" y2="158" stroke="white" stroke-width="2"/>
-        <line x1="200" y1="158" x2="92"  y2="250" stroke="white" stroke-width="2"/>
-        <line x1="92"  y1="250" x2="200" y2="345" stroke="white" stroke-width="2"/>
+        <line x1="200" y1="345" x2="18" y2="152" stroke="rgba(0,230,118,0.4)" stroke-width="1.5"/>
+        <line x1="200" y1="345" x2="382" y2="152" stroke="rgba(0,230,118,0.4)" stroke-width="1.5"/>
+        <!-- Diamond baselines (glowing) -->
+        <line x1="200" y1="345" x2="308" y2="250" stroke="#00e676" stroke-width="1.5" opacity=".7" filter="url(#glowFilter)"/>
+        <line x1="308" y1="250" x2="200" y2="158" stroke="#00e676" stroke-width="1.5" opacity=".7" filter="url(#glowFilter)"/>
+        <line x1="200" y1="158" x2="92"  y2="250" stroke="#00e676" stroke-width="1.5" opacity=".7" filter="url(#glowFilter)"/>
+        <line x1="92"  y1="250" x2="200" y2="345" stroke="#00e676" stroke-width="1.5" opacity=".7" filter="url(#glowFilter)"/>
         <!-- Bases -->
-        <rect x="299" y="242" width="18" height="18" rx="2" fill="white" transform="rotate(45,308,251)"/>
-        <rect x="191" y="150" width="18" height="18" rx="2" fill="white" transform="rotate(45,200,159)"/>
-        <rect x="83"  y="242" width="18" height="18" rx="2" fill="white" transform="rotate(45,92,251)"/>
+        <rect x="299" y="242" width="18" height="18" rx="2" fill="rgba(0,230,118,0.15)" stroke="#00e676" stroke-width="1.5" transform="rotate(45,308,251)" filter="url(#glowFilter)"/>
+        <rect x="191" y="150" width="18" height="18" rx="2" fill="rgba(0,230,118,0.15)" stroke="#00e676" stroke-width="1.5" transform="rotate(45,200,159)" filter="url(#glowFilter)"/>
+        <rect x="83"  y="242" width="18" height="18" rx="2" fill="rgba(0,230,118,0.15)" stroke="#00e676" stroke-width="1.5" transform="rotate(45,92,251)" filter="url(#glowFilter)"/>
         <!-- Home plate -->
-        <polygon points="200,356 211,347 211,338 189,338 189,347" fill="white"/>
+        <polygon points="200,356 211,347 211,338 189,338 189,347" fill="rgba(100,255,218,0.2)" stroke="#64ffda" stroke-width="1.5" filter="url(#glowFilter)"/>
         <!-- Pitcher rubber -->
-        <rect x="192" y="232" width="16" height="5" rx="2" fill="white" opacity=".8"/>
+        <rect x="192" y="232" width="16" height="5" rx="2" fill="rgba(0,230,118,0.3)" stroke="rgba(0,230,118,0.5)" stroke-width="1"/>
         <!-- Player labels (dynamic) -->
         <g id="field-labels"></g>
       </svg>
@@ -722,14 +792,14 @@
 const POSITIONS = ['投','捕','一','二','三','遊','左','中','右','DH'];
 
 const THEMES = {
-  dark:    { name:'Dark',    bg:'#0e0a14', surface:'#1a1220', card:'#151020', border:'#2a1f35', accent:'#f97316', text:'#f1ede8', muted:'#8a7e94', yellow:'#fbbf24' },
-  navy:    { name:'Navy',    bg:'#0f172a', surface:'#1e293b', card:'#1a2540', border:'#334155', accent:'#fbbf24', text:'#e2e8f0', muted:'#64748b', yellow:'#fbbf24' },
-  purple:  { name:'Purple',  bg:'#1a1025', surface:'#241535', card:'#20112f', border:'#3d2558', accent:'#e9a0ff', text:'#ede9f6', muted:'#7a6890', yellow:'#e9a0ff' },
-  light:   { name:'Light',   bg:'#f8f6f3', surface:'#ffffff', card:'#f1ede8', border:'#e0dbd4', accent:'#f97316', text:'#1a1220', muted:'#7a7068', yellow:'#f97316' },
-  beige:   { name:'Beige',   bg:'#faf7f2', surface:'#ffffff', card:'#f2ede4', border:'#e6ddd1', accent:'#d97706', text:'#2d2a24', muted:'#a89e93', yellow:'#d97706' },
-  pink:    { name:'Pink',    bg:'#fdf2f8', surface:'#ffffff', card:'#fce7f3', border:'#f9a8d4', accent:'#ec4899', text:'#3b0764', muted:'#be87e7', yellow:'#ec4899' },
-  skyblue: { name:'Sky',     bg:'#f0f9ff', surface:'#ffffff', card:'#e0f2fe', border:'#bae6fd', accent:'#0ea5e9', text:'#0c4a6e', muted:'#7dd3fc', yellow:'#0ea5e9' },
-  mint:    { name:'Mint',    bg:'#f0fdf4', surface:'#ffffff', card:'#dcfce7', border:'#bbf7d0', accent:'#22c55e', text:'#14532d', muted:'#86efac', yellow:'#22c55e' },
+  dark:    { name:'TACTICIAN', bg:'#020805', surface:'#061009', card:'#04080d', border:'#0d3320', accent:'#00e676', text:'#c8f0d8', muted:'#3d6e52', yellow:'#64ffda' },
+  navy:    { name:'Navy',      bg:'#0f172a', surface:'#1e293b', card:'#1a2540', border:'#334155', accent:'#fbbf24', text:'#e2e8f0', muted:'#64748b', yellow:'#fbbf24' },
+  purple:  { name:'Purple',    bg:'#1a1025', surface:'#241535', card:'#20112f', border:'#3d2558', accent:'#e9a0ff', text:'#ede9f6', muted:'#7a6890', yellow:'#e9a0ff' },
+  light:   { name:'Light',     bg:'#f8f6f3', surface:'#ffffff', card:'#f1ede8', border:'#e0dbd4', accent:'#059669', text:'#1a1220', muted:'#7a7068', yellow:'#059669' },
+  beige:   { name:'Beige',     bg:'#faf7f2', surface:'#ffffff', card:'#f2ede4', border:'#e6ddd1', accent:'#d97706', text:'#2d2a24', muted:'#a89e93', yellow:'#d97706' },
+  pink:    { name:'Pink',      bg:'#fdf2f8', surface:'#ffffff', card:'#fce7f3', border:'#f9a8d4', accent:'#ec4899', text:'#3b0764', muted:'#be87e7', yellow:'#ec4899' },
+  skyblue: { name:'Sky',       bg:'#f0f9ff', surface:'#ffffff', card:'#e0f2fe', border:'#bae6fd', accent:'#0ea5e9', text:'#0c4a6e', muted:'#7dd3fc', yellow:'#0ea5e9' },
+  mint:    { name:'Mint',      bg:'#f0fdf4', surface:'#ffffff', card:'#dcfce7', border:'#bbf7d0', accent:'#22c55e', text:'#14532d', muted:'#86efac', yellow:'#22c55e' },
 };
 
 // 守備位置の座標 (SVG viewBox 0 0 400 370)
@@ -1562,19 +1632,19 @@ if (!localStorage.getItem('sm_tutorial_done')) {
     var b = document.createElement('div');
     b.id = 'ck-banner';
     b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#1a1220;color:#d4c4a8;font-size:13px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9999;border-top:1px solid rgba(251,191,36,.15)';
-    b.innerHTML = '<span>本サイトはGoogle AdSense・Google AnalyticsのためにCookieを使用しています。詳細は<a href="/privacy.html" style="color:#fbbf24">プライバシーポリシー</a>をご覧ください。</span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:#f97316;color:#fff;border:none;border-radius:6px;padding:6px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">OK</button>';
+    b.innerHTML = '<span>本サイトはGoogle AdSense・Google AnalyticsのためにCookieを使用しています。詳細は<a href="/privacy.html" style="color:#00e676">プライバシーポリシー</a>をご覧ください。</span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:transparent;color:#00e676;border:1px solid #00e676;border-radius:6px;padding:6px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">OK</button>';
     document.body.appendChild(b);
   })();
 </script>
 <!-- ── アプリ説明（AdSense審査・SEO用テキストコンテンツ） ── -->
-<section aria-label="アプリ説明" style="padding:20px 16px;border-top:1px solid #2a1f35;background:#1a1220;">
-  <h2 style="font-size:14px;font-weight:700;color:#f97316;margin-bottom:10px;">スタメンメーカーとは</h2>
-  <p style="font-size:12px;color:#8a7e94;line-height:1.8;margin-bottom:12px;">
+<section aria-label="アプリ説明" style="padding:20px 16px;border-top:1px solid #0d3320;background:#020805;">
+  <h2 style="font-size:14px;font-weight:700;color:#00e676;margin-bottom:10px;font-family:'Orbitron',monospace;letter-spacing:0.08em;">スタメンメーカーとは</h2>
+  <p style="font-size:12px;color:#3d6e52;line-height:1.8;margin-bottom:12px;">
     草野球・軟式野球向けの無料スタメン作成ツールです。選手の登録から打順・守備ポジション・投手ローテーションまで
     一画面でまとめて管理できます。印刷用スタメン表の生成やSNSシェアにも対応。アプリのインストール不要でブラウザだけで使えます。
   </p>
-  <h3 style="font-size:13px;font-weight:700;color:#f1ede8;margin-bottom:8px;">主な機能</h3>
-  <ul style="font-size:12px;color:#8a7e94;line-height:2;padding-left:0;list-style:none;">
+  <h3 style="font-size:13px;font-weight:700;color:#c8f0d8;margin-bottom:8px;">主な機能</h3>
+  <ul style="font-size:12px;color:#3d6e52;line-height:2;padding-left:0;list-style:none;">
     <li>👥 選手名・背番号・ポジション・投打をまとめて登録・管理</li>
     <li>📋 ドラッグ操作で直感的に打順・ポジションを設定</li>
     <li>⚾ DH制（指名打者）に対応</li>
@@ -1586,17 +1656,17 @@ if (!localStorage.getItem('sm_tutorial_done')) {
   </ul>
 </section>
 
-<section aria-label="関連ツール" style="background:#0e0a14;border-top:1px solid #2a1f35;padding:20px 12px 12px;text-align:center;">
-  <p style="font-size:11px;color:#8a7e94;margin:0 0 12px;letter-spacing:.05em;font-weight:700;">Somirai Lab の他のツール</p>
+<section aria-label="関連ツール" style="background:#020805;border-top:1px solid #0d3320;padding:20px 12px 12px;text-align:center;">
+  <p style="font-size:11px;color:#3d6e52;margin:0 0 12px;letter-spacing:.05em;font-weight:700;">Somirai Lab の他のツール</p>
   <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
-    <a href="https://somirai.jp/batting-stats/" style="display:inline-flex;align-items:center;gap:5px;background:#231a2e;color:#f1f5f9;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(249,115,22,.2);">⚾ 打撃成績トラッカー</a>
-    <a href="https://somirai.jp/habit/"         style="display:inline-flex;align-items:center;gap:5px;background:#231a2e;color:#f1f5f9;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(249,115,22,.2);">🔥 習慣クエスト</a>
-    <a href="https://somirai.jp/write/"         style="display:inline-flex;align-items:center;gap:5px;background:#231a2e;color:#f1f5f9;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(249,115,22,.2);">✏️ Write Quest</a>
-    <a href="https://somirai.jp/savings/"       style="display:inline-flex;align-items:center;gap:5px;background:#231a2e;color:#f1f5f9;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(249,115,22,.2);">💰 節約クエスト</a>
+    <a href="https://somirai.jp/batting-stats/" style="display:inline-flex;align-items:center;gap:5px;background:#04080d;color:#c8f0d8;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(0,230,118,.2);">⚾ 打撃成績トラッカー</a>
+    <a href="https://somirai.jp/habit/"         style="display:inline-flex;align-items:center;gap:5px;background:#04080d;color:#c8f0d8;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(0,230,118,.2);">🔥 習慣クエスト</a>
+    <a href="https://somirai.jp/write/"         style="display:inline-flex;align-items:center;gap:5px;background:#04080d;color:#c8f0d8;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(0,230,118,.2);">✏️ Write Quest</a>
+    <a href="https://somirai.jp/savings/"       style="display:inline-flex;align-items:center;gap:5px;background:#04080d;color:#c8f0d8;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(0,230,118,.2);">💰 節約クエスト</a>
   </div>
 </section>
-<footer style="text-align:center;padding:16px;font-size:11px;color:#8a7e94;background:#0e0a14;border-top:1px solid #2a1f35;">
-  <div>© 2026 <a href="/" style="color:#f97316;text-decoration:none;font-weight:700;">Somirai Lab</a></div>
+<footer style="text-align:center;padding:16px;font-size:11px;color:#3d6e52;background:#020805;border-top:1px solid #0d3320;">
+  <div>© 2026 <a href="/" style="color:#00e676;text-decoration:none;font-weight:700;">Somirai Lab</a></div>
   <div style="margin-top:4px;"><a href="/privacy.html" style="color:#94a3b8;text-decoration:underline;">プライバシーポリシー</a></div>
 </footer>
 </body>
