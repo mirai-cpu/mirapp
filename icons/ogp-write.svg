@@ -1,59 +1,60 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
   <defs>
-    <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1a1220"/>
-      <stop offset="100%" stop-color="#0f172a"/>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#080c10"/>
+      <stop offset="100%" stop-color="#0f1a24"/>
     </linearGradient>
-    <linearGradient id="obG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fb923c"/>
-      <stop offset="100%" stop-color="#6ee7b7"/>
+    <linearGradient id="ag" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00e5c8"/>
+      <stop offset="100%" stop-color="#00ffdc"/>
     </linearGradient>
-    <radialGradient id="glR" cx="30%" cy="50%" r="45%">
-      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.06"/>
-      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+    <radialGradient id="glow" cx="30%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00e5c8" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#00e5c8" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
-  <rect width="1200" height="630" fill="url(#bgG)"/>
-  <ellipse cx="350" cy="315" rx="400" ry="320" fill="url(#glR)"/>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <ellipse cx="360" cy="315" rx="500" ry="380" fill="url(#glow)"/>
 
-  <rect x="0" y="0" width="1200" height="3" fill="url(#obG)"/>
-  <rect x="0" y="627" width="1200" height="3" fill="url(#obG)" opacity="0.4"/>
+  <!-- Top accent bar -->
+  <rect x="0" y="0" width="1200" height="3" fill="url(#ag)"/>
 
-  <!-- Spark icon -->
-  <g transform="translate(100, 280)">
-    <circle cx="0" cy="0" r="18" fill="#f97316"/>
-    <path d="M0 -28 L3 -8 L0 0 L-3 -8Z" fill="#fb923c" opacity=".85"/>
-    <circle cx="28" cy="-22" r="4" fill="#fb923c" opacity=".5"/>
-    <circle cx="-24" cy="18" r="3" fill="#fbbf24" opacity=".4"/>
-    <circle cx="30" cy="14" r="2.5" fill="#6ee7b7" opacity=".35"/>
-  </g>
+  <!-- Manuscript lines -->
+  <line x1="88" y1="210" x2="860" y2="210" stroke="#00e5c8" stroke-width="0.5" stroke-opacity="0.1"/>
+  <line x1="88" y1="250" x2="860" y2="250" stroke="#00e5c8" stroke-width="0.5" stroke-opacity="0.07"/>
+  <line x1="88" y1="490" x2="860" y2="490" stroke="#00e5c8" stroke-width="0.5" stroke-opacity="0.08"/>
+  <line x1="88" y1="530" x2="860" y2="530" stroke="#00e5c8" stroke-width="0.5" stroke-opacity="0.05"/>
 
-  <!-- Pen icon (SVG drawn) -->
-  <g transform="translate(600, 155)">
-    <g transform="rotate(30)">
-      <rect x="-8" y="-55" width="16" height="80" rx="3" fill="#fbbf24" opacity=".7"/>
-      <polygon points="0,32 -8,25 8,25" fill="#fb923c" opacity=".8"/>
-      <rect x="-8" y="-55" width="16" height="12" rx="3" fill="#ea580c" opacity=".5"/>
-    </g>
-    <!-- Writing lines -->
-    <g transform="translate(-55, 50)">
-      <rect x="0" y="0" width="60" height="5" rx="2.5" fill="#fb923c" opacity=".4"/>
-      <rect x="0" y="14" width="48" height="5" rx="2.5" fill="#fbbf24" opacity=".35"/>
-      <rect x="0" y="28" width="54" height="5" rx="2.5" fill="#6ee7b7" opacity=".3"/>
-    </g>
-  </g>
+  <!-- Left vertical accent -->
+  <line x1="88" y1="88" x2="88" y2="542" stroke="#00e5c8" stroke-width="2" stroke-opacity="0.3"/>
+  <circle cx="88" cy="88" r="5" fill="#00e5c8" opacity="0.4"/>
+  <circle cx="88" cy="542" r="3" fill="#00e5c8" opacity="0.15"/>
 
-  <text x="600" y="330" text-anchor="middle" font-family="'DM Sans','Hiragino Sans','Noto Sans JP',sans-serif" font-size="64" font-weight="800" fill="#f1f5f9" letter-spacing="-1">Write Quest</text>
-  <text x="600" y="400" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="24" fill="#94a3b8" letter-spacing="1">書くたびにレベルアップ！ゲーム感覚メモ</text>
-  <text x="600" y="470" text-anchor="middle" font-family="'DM Sans','Helvetica Neue',sans-serif" font-size="22" fill="#fb923c" font-weight="700" letter-spacing="0.5">Somirai Lab</text>
+  <!-- App name shadow -->
+  <text x="126" y="280" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-size="148" fill="#00e5c8" opacity="0.07">Codex</text>
+  <!-- App name main -->
+  <text x="126" y="275" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-size="140" fill="#00e5c8">Codex</text>
 
-  <g transform="translate(600, 510)">
-    <rect x="-200" y="0" width="110" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
-    <text x="-145" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fb923c" font-weight="600">無料</text>
-    <rect x="-75" y="0" width="150" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
-    <text x="0" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fbbf24" font-weight="600">メモ・ToDo</text>
-    <rect x="90" y="0" width="110" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
-    <text x="145" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#6ee7b7" font-weight="600">色分け対応</text>
-  </g>
+  <!-- Label -->
+  <text x="130" y="326" font-family="'Courier New',monospace" font-size="16" fill="#1e5060" letter-spacing="0.26em">WRITE QUEST · MEMO &amp; TODO</text>
+
+  <!-- Divider -->
+  <line x1="130" y1="358" x2="780" y2="358" stroke="#00e5c8" stroke-width="1" stroke-opacity="0.18"/>
+
+  <!-- Description -->
+  <text x="130" y="408" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="30" fill="#6ab8b8">メモ・ToDoをひとつに。カレンダー連携・XP成長システム付き。</text>
+
+  <!-- Feature chips -->
+  <rect x="130" y="445" width="82" height="32" rx="4" fill="none" stroke="#00e5c8" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="171" y="467" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#00e5c8" font-weight="600">無料</text>
+  <rect x="226" y="445" width="130" height="32" rx="4" fill="none" stroke="#00e5c8" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="291" y="467" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#2a6870">カレンダー表示</text>
+  <rect x="370" y="445" width="100" height="32" rx="4" fill="none" stroke="#00e5c8" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="420" y="467" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#2a6870">色分けタグ</text>
+  <rect x="484" y="445" width="100" height="32" rx="4" fill="none" stroke="#00e5c8" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="534" y="467" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#2a6870">SNS共有</text>
+
+  <!-- Somirai Lab -->
+  <text x="1100" y="600" text-anchor="end" font-family="'Helvetica Neue','Arial',sans-serif" font-size="15" fill="#1c3840" letter-spacing="0.12em">Somirai Lab</text>
 </svg>

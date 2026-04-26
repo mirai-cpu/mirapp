@@ -1,77 +1,83 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
   <defs>
-    <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1a1220"/>
-      <stop offset="100%" stop-color="#0f172a"/>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#030510"/>
+      <stop offset="100%" stop-color="#080e28"/>
     </linearGradient>
-    <linearGradient id="coG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f97316"/>
-      <stop offset="100%" stop-color="#ea580c"/>
+    <linearGradient id="ag" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffd700"/>
+      <stop offset="50%" stop-color="#ffab00"/>
+      <stop offset="100%" stop-color="#64ffda"/>
     </linearGradient>
-    <linearGradient id="obG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fb923c"/>
-      <stop offset="100%" stop-color="#6ee7b7"/>
+    <linearGradient id="ag2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffd700"/>
+      <stop offset="100%" stop-color="#ffab00"/>
     </linearGradient>
-    <radialGradient id="glR" cx="30%" cy="50%" r="45%">
-      <stop offset="0%" stop-color="#f97316" stop-opacity="0.08"/>
-      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+    <radialGradient id="glow" cx="30%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#ffd700" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#ffd700" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="75%" cy="55%" r="40%">
+      <stop offset="0%" stop-color="#64ffda" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#64ffda" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
-  <rect width="1200" height="630" fill="url(#bgG)"/>
-  <ellipse cx="350" cy="315" rx="400" ry="320" fill="url(#glR)"/>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <ellipse cx="360" cy="290" rx="480" ry="350" fill="url(#glow)"/>
+  <ellipse cx="900" cy="380" rx="360" ry="260" fill="url(#glow2)"/>
 
-  <rect x="0" y="0" width="1200" height="3" fill="url(#obG)"/>
-  <rect x="0" y="627" width="1200" height="3" fill="url(#obG)" opacity="0.4"/>
+  <!-- Top accent bar (holographic) -->
+  <rect x="0" y="0" width="1200" height="4" fill="url(#ag)"/>
+  <rect x="0" y="626" width="1200" height="4" fill="#ffd700" opacity="0.15"/>
 
-  <!-- Spark icon -->
-  <g transform="translate(100, 280)">
-    <circle cx="0" cy="0" r="18" fill="#f97316"/>
-    <path d="M0 -28 L3 -8 L0 0 L-3 -8Z" fill="#fb923c" opacity=".85"/>
-    <circle cx="28" cy="-22" r="4" fill="#fb923c" opacity=".5"/>
-    <circle cx="-24" cy="18" r="3" fill="#fbbf24" opacity=".4"/>
-    <circle cx="30" cy="14" r="2.5" fill="#6ee7b7" opacity=".35"/>
-  </g>
+  <!-- Left vertical accent -->
+  <rect x="88" y="80" width="3" height="470" fill="url(#ag2)"/>
 
-  <!-- Baseball icon (SVG drawn) -->
-  <g transform="translate(600, 175)">
-    <circle cx="0" cy="0" r="55" fill="#f97316" opacity=".8"/>
-    <circle cx="0" cy="0" r="50" fill="none" stroke="#fbbf24" stroke-width="2" opacity=".5"/>
-    <!-- Stitching -->
-    <path d="M-20 -45 C-10 -30, -10 -15, -18 0 C-10 15, -10 30, -20 45" fill="none" stroke="#fff" stroke-width="2.5" opacity=".6" stroke-linecap="round"/>
-    <path d="M20 -45 C10 -30, 10 -15, 18 0 C10 15, 10 30, 20 45" fill="none" stroke="#fff" stroke-width="2.5" opacity=".6" stroke-linecap="round"/>
-    <!-- Stitch marks -->
-    <g stroke="#fff" stroke-width="1.5" opacity=".4">
-      <line x1="-18" y1="-38" x2="-10" y2="-34"/>
-      <line x1="-14" y1="-26" x2="-6" y2="-22"/>
-      <line x1="-14" y1="-14" x2="-6" y2="-10"/>
-      <line x1="-16" y1="0" x2="-8" y2="4"/>
-      <line x1="-14" y1="14" x2="-6" y2="10"/>
-      <line x1="-14" y1="26" x2="-6" y2="22"/>
-      <line x1="-18" y1="38" x2="-10" y2="34"/>
-      <line x1="18" y1="-38" x2="10" y2="-34"/>
-      <line x1="14" y1="-26" x2="6" y2="-22"/>
-      <line x1="14" y1="-14" x2="6" y2="-10"/>
-      <line x1="16" y1="0" x2="8" y2="4"/>
-      <line x1="14" y1="14" x2="6" y2="10"/>
-      <line x1="14" y1="26" x2="6" y2="22"/>
-      <line x1="18" y1="38" x2="10" y2="34"/>
-    </g>
-  </g>
+  <!-- App name shadow -->
+  <text x="130" y="280" font-family="'Arial Black','Impact',sans-serif" font-size="148" font-weight="900" fill="#ffd700" opacity="0.07" letter-spacing="0.08em">PLAYCARD</text>
+  <!-- App name main -->
+  <text x="130" y="275" font-family="'Arial Black','Impact',sans-serif" font-size="130" font-weight="900" fill="url(#ag2)" letter-spacing="0.06em">PLAYCARD</text>
 
-  <!-- Tool name -->
-  <text x="600" y="330" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="64" font-weight="800" fill="#f1f5f9" letter-spacing="-1">打撃成績トラッカー</text>
+  <!-- Category label -->
+  <text x="130" y="318" font-family="'Courier New',monospace" font-size="16" fill="#3a4f70" letter-spacing="0.24em">BATTING STATS TRACKER</text>
 
-  <text x="600" y="400" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="24" fill="#94a3b8" letter-spacing="1">打率・OPS・スプレーチャートを記録・分析</text>
+  <!-- Divider -->
+  <line x1="130" y1="348" x2="810" y2="348" stroke="#ffd700" stroke-width="1" stroke-opacity="0.2"/>
 
-  <text x="600" y="470" text-anchor="middle" font-family="'DM Sans','Helvetica Neue',sans-serif" font-size="22" fill="#fb923c" font-weight="700" letter-spacing="0.5">Somirai Lab</text>
+  <!-- Stats display (baseball card style) -->
+  <text x="130" y="396" font-family="'Courier New',monospace" font-size="34" fill="#ffd700" letter-spacing="0.04em">.320</text>
+  <text x="130" y="418" font-family="'Courier New',monospace" font-size="12" fill="#3a4f70" letter-spacing="0.12em">AVG</text>
+  <text x="235" y="396" font-family="'Courier New',monospace" font-size="34" fill="#ffd700" letter-spacing="0.04em" opacity="0.8">.395</text>
+  <text x="235" y="418" font-family="'Courier New',monospace" font-size="12" fill="#3a4f70" letter-spacing="0.12em">OBP</text>
+  <text x="340" y="396" font-family="'Courier New',monospace" font-size="34" fill="#ffd700" letter-spacing="0.04em" opacity="0.7">.490</text>
+  <text x="340" y="418" font-family="'Courier New',monospace" font-size="12" fill="#3a4f70" letter-spacing="0.12em">SLG</text>
+  <text x="446" y="396" font-family="'Courier New',monospace" font-size="34" fill="#64ffda" letter-spacing="0.04em">.885</text>
+  <text x="446" y="418" font-family="'Courier New',monospace" font-size="12" fill="#3a4f70" letter-spacing="0.12em">OPS</text>
 
-  <g transform="translate(600, 510)">
-    <rect x="-200" y="0" width="110" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
-    <text x="-145" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fb923c" font-weight="600">無料</text>
-    <rect x="-75" y="0" width="150" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
-    <text x="0" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fbbf24" font-weight="600">登録不要</text>
-    <rect x="90" y="0" width="110" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
-    <text x="145" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#6ee7b7" font-weight="600">PWA対応</text>
+  <!-- Description -->
+  <text x="130" y="460" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="27" fill="#6080a0">打率・OPS・長打率など試合ごとに記録・分析。グラフ&amp;CSV出力付き。</text>
+
+  <!-- Feature chips -->
+  <rect x="130" y="495" width="82" height="32" rx="4" fill="none" stroke="#ffd700" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="171" y="517" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#ffd700" font-weight="600">無料</text>
+  <rect x="226" y="495" width="115" height="32" rx="4" fill="none" stroke="#ffd700" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="283" y="517" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#3a5075">グラフ表示</text>
+  <rect x="355" y="495" width="130" height="32" rx="4" fill="none" stroke="#ffd700" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="420" y="517" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#3a5075">CSV出力対応</text>
+  <rect x="499" y="495" width="130" height="32" rx="4" fill="none" stroke="#64ffda" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="564" y="517" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#2a6860">複数選手対応</text>
+
+  <!-- Somirai Lab -->
+  <text x="1100" y="600" text-anchor="end" font-family="'Helvetica Neue','Arial',sans-serif" font-size="15" fill="#1e2840" letter-spacing="0.12em">Somirai Lab</text>
+
+  <!-- Right decorative: baseball diamond -->
+  <g transform="translate(1000, 240)" opacity="0.12">
+    <polygon points="100,0 180,80 100,160 20,80" fill="none" stroke="#ffd700" stroke-width="2"/>
+    <circle cx="100" cy="80" r="8" fill="#ffd700" opacity="0.5"/>
+    <circle cx="100" cy="0" r="5" fill="#ffd700"/>
+    <circle cx="180" cy="80" r="5" fill="#ffd700"/>
+    <circle cx="20" cy="80" r="5" fill="#ffd700"/>
+    <circle cx="100" cy="160" r="5" fill="#64ffda"/>
   </g>
 </svg>

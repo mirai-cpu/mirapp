@@ -1,52 +1,68 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
   <defs>
-    <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1a1220"/>
-      <stop offset="100%" stop-color="#0f172a"/>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0L0 0 0 40" fill="none" stroke="rgba(255,69,0,0.07)" stroke-width="0.6"/>
+    </pattern>
+    <linearGradient id="ag" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff4500"/>
+      <stop offset="100%" stop-color="#ff6a00"/>
     </linearGradient>
-    <linearGradient id="obG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fb923c"/>
-      <stop offset="100%" stop-color="#6ee7b7"/>
-    </linearGradient>
-    <radialGradient id="glR" cx="30%" cy="50%" r="45%">
-      <stop offset="0%" stop-color="#10b981" stop-opacity="0.08"/>
-      <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+    <radialGradient id="glow" cx="35%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#ff4500" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ff4500" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
-  <rect width="1200" height="630" fill="url(#bgG)"/>
-  <ellipse cx="350" cy="315" rx="400" ry="320" fill="url(#glR)"/>
+  <!-- BG -->
+  <rect width="1200" height="630" fill="#000000"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <ellipse cx="420" cy="315" rx="480" ry="350" fill="url(#glow)"/>
 
-  <rect x="0" y="0" width="1200" height="3" fill="url(#obG)"/>
-  <rect x="0" y="627" width="1200" height="3" fill="url(#obG)" opacity="0.4"/>
+  <!-- Top + bottom accent bars -->
+  <rect x="0" y="0" width="1200" height="4" fill="url(#ag)"/>
+  <rect x="0" y="626" width="1200" height="4" fill="#ff4500" opacity="0.2"/>
 
-  <!-- Spark icon -->
-  <g transform="translate(100, 280)">
-    <circle cx="0" cy="0" r="18" fill="#f97316"/>
-    <path d="M0 -28 L3 -8 L0 0 L-3 -8Z" fill="#fb923c" opacity=".85"/>
-    <circle cx="28" cy="-22" r="4" fill="#fb923c" opacity=".5"/>
-    <circle cx="-24" cy="18" r="3" fill="#fbbf24" opacity=".4"/>
-    <circle cx="30" cy="14" r="2.5" fill="#6ee7b7" opacity=".35"/>
-  </g>
+  <!-- Left vertical accent -->
+  <rect x="88" y="80" width="3" height="470" fill="url(#ag)"/>
 
-  <!-- Flame icon (SVG drawn) -->
-  <g transform="translate(600, 160)">
-    <path d="M0 70 C-25 55, -55 30, -55 -10 C-55 -35, -38 -48, -25 -40 C-30 -55, -18 -70, 0 -65 C18 -70, 30 -55, 25 -40 C38 -48, 55 -35, 55 -10 C55 30, 25 55, 0 70Z" fill="#f97316" opacity=".6"/>
-    <path d="M0 65 C-15 55, -35 35, -35 5 C-35 -15, -15 -25, 0 -12 C15 -25, 35 -15, 35 5 C35 35, 15 55, 0 65Z" fill="#fb923c" opacity=".5"/>
-    <path d="M0 58 C-10 50, -22 35, -22 15 C-22 0, -8 -8, 0 2 C8 -8, 22 0, 22 15 C22 35, 10 50, 0 58Z" fill="#fbbf24" opacity=".6"/>
-    <text x="0" y="40" text-anchor="middle" font-family="'DM Sans',system-ui" font-size="36" font-weight="900" fill="#fff" opacity=".8">7</text>
-  </g>
+  <!-- App name — shadow layer -->
+  <text x="130" y="270" font-family="Impact,'Arial Black',sans-serif" font-size="156" font-weight="900" fill="#ff4500" opacity="0.1" letter-spacing="0.06em">FORGE</text>
+  <!-- App name — main -->
+  <text x="130" y="265" font-family="Impact,'Arial Black',sans-serif" font-size="140" font-weight="900" fill="#ff4500" letter-spacing="0.06em" filter="url(#f)">FORGE</text>
 
-  <text x="600" y="330" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="64" font-weight="800" fill="#f1f5f9" letter-spacing="-1">習慣トラッカー</text>
-  <text x="600" y="400" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="24" fill="#94a3b8" letter-spacing="1">レベルアップ・バッジ・連続記録で継続サポート</text>
-  <text x="600" y="470" text-anchor="middle" font-family="'DM Sans','Helvetica Neue',sans-serif" font-size="22" fill="#fb923c" font-weight="700" letter-spacing="0.5">Somirai Lab</text>
+  <!-- Category label -->
+  <text x="130" y="315" font-family="'Courier New',monospace" font-size="18" fill="#4a4640" letter-spacing="0.28em">HABIT TRACKER</text>
 
-  <g transform="translate(600, 510)">
-    <rect x="-230" y="0" width="120" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
-    <text x="-170" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fb923c" font-weight="600">無料</text>
-    <rect x="-95" y="0" width="190" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
-    <text x="0" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fbbf24" font-weight="600">ゲーミフィケーション</text>
-    <rect x="110" y="0" width="120" height="36" rx="18" fill="#1a1220" stroke="#f97316" stroke-width="1" stroke-opacity=".3"/>
-    <text x="170" y="24" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#6ee7b7" font-weight="600">PWA対応</text>
+  <!-- Divider line -->
+  <line x1="130" y1="345" x2="780" y2="345" stroke="#ff4500" stroke-width="1" stroke-opacity="0.3"/>
+
+  <!-- Description -->
+  <text x="130" y="395" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="30" fill="#d4cec8">習慣を毎日鍛え上げる。レベルアップ・連続記録・バッジ収集。</text>
+
+  <!-- Feature chips -->
+  <rect x="130" y="430" width="82" height="32" rx="4" fill="none" stroke="#ff4500" stroke-width="1" stroke-opacity="0.6"/>
+  <text x="171" y="452" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#ff4500" font-weight="600">無料</text>
+
+  <rect x="226" y="430" width="106" height="32" rx="4" fill="none" stroke="#ff4500" stroke-width="1" stroke-opacity="0.35"/>
+  <text x="279" y="452" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#6a6560">PWA対応</text>
+
+  <rect x="346" y="430" width="168" height="32" rx="4" fill="none" stroke="#ff4500" stroke-width="1" stroke-opacity="0.35"/>
+  <text x="430" y="452" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#6a6560">ゲーミフィケーション</text>
+
+  <rect x="528" y="430" width="120" height="32" rx="4" fill="none" stroke="#ff4500" stroke-width="1" stroke-opacity="0.35"/>
+  <text x="588" y="452" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#6a6560">登録不要</text>
+
+  <!-- XP bar decoration -->
+  <text x="130" y="510" font-family="'Courier New',monospace" font-size="12" fill="#2a2520" letter-spacing="0.08em">XP ────────────────────────────</text>
+  <rect x="130" y="518" width="580" height="2" rx="1" fill="#1a1510"/>
+  <rect x="130" y="518" width="364" height="2" rx="1" fill="#ff4500" opacity="0.6"/>
+
+  <!-- Somirai Lab -->
+  <text x="1100" y="600" text-anchor="end" font-family="'Helvetica Neue','Arial',sans-serif" font-size="15" fill="#2a2520" letter-spacing="0.12em">Somirai Lab</text>
+
+  <!-- Right decorative: angular bracket / forge icon -->
+  <g transform="translate(1000, 200)" opacity="0.12">
+    <polygon points="0,0 140,0 200,60 200,200 60,200 0,140" fill="none" stroke="#ff4500" stroke-width="2"/>
+    <text x="100" y="130" text-anchor="middle" font-family="Impact,sans-serif" font-size="72" fill="#ff4500">⚡</text>
   </g>
 </svg>

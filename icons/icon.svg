@@ -1,35 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1a1220"/>
-      <stop offset="100%" stop-color="#0f172a"/>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1a"/>
+      <stop offset="100%" stop-color="#080c14"/>
     </linearGradient>
-    <linearGradient id="spG" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="ray" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#f97316"/>
-      <stop offset="45%" stop-color="#fbbf24"/>
-      <stop offset="100%" stop-color="#6ee7b7"/>
+      <stop offset="40%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#34d399"/>
     </linearGradient>
-    <linearGradient id="coG" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="arc" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#f97316"/>
-      <stop offset="100%" stop-color="#ea580c"/>
-    </linearGradient>
-    <linearGradient id="obG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fb923c"/>
-      <stop offset="100%" stop-color="#6ee7b7"/>
+      <stop offset="100%" stop-color="#34d399"/>
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="96" fill="url(#bgG)"/>
-  <circle cx="256" cy="210" r="180" fill="#f97316" opacity="0.05"/>
-  <ellipse cx="256" cy="210" rx="150" ry="150" fill="none" stroke="url(#obG)" stroke-width="3.5" opacity="0.35" stroke-dasharray="12 16"/>
-  <path d="M256 78 C296 140, 340 170, 288 240 C274 268, 238 268, 224 240 C172 170, 216 140, 256 78Z" fill="url(#spG)" opacity="0.2"/>
-  <circle cx="256" cy="195" r="56" fill="url(#coG)"/>
-  <circle cx="248" cy="175" r="20" fill="#fff" opacity="0.25"/>
-  <path d="M256 105 L266 145 L256 195 L246 145 Z" fill="#fb923c" opacity="0.9"/>
-  <path d="M176 195 L236 201 L256 195 L236 189 Z" fill="#fbbf24" opacity="0.7"/>
-  <path d="M336 195 L276 201 L256 195 L276 189 Z" fill="#fbbf24" opacity="0.7"/>
-  <path d="M256 285 L266 220 L256 195 L246 220 Z" fill="#fbbf24" opacity="0.5"/>
-  <circle cx="360" cy="118" r="14" fill="#fb923c" opacity="0.7"/>
-  <circle cx="142" cy="290" r="12" fill="#fbbf24" opacity="0.55"/>
-  <circle cx="378" cy="266" r="10" fill="#6ee7b7" opacity="0.5"/>
-  <text x="256" y="430" text-anchor="middle" font-family="'DM Sans','Helvetica Neue',system-ui" font-size="56" font-weight="800" fill="#94a3b8" letter-spacing="0.08em">SOMIRAI</text>
+
+  <!-- Background with rounded corners -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!-- Subtle grid -->
+  <rect width="512" height="512" rx="112" fill="none" stroke="#ffffff" stroke-width="0" opacity="0"/>
+
+  <!-- Horizon arc — stylized sunrise -->
+  <path d="M 96 320 A 160 160 0 0 1 416 320" fill="none" stroke="url(#arc)" stroke-width="8" stroke-linecap="round" opacity="0.9"/>
+
+  <!-- Sun rays -->
+  <line x1="256" y1="320" x2="256" y2="130" stroke="url(#ray)" stroke-width="7" stroke-linecap="round"/>
+  <line x1="256" y1="320" x2="174" y2="148" stroke="url(#ray)" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+  <line x1="256" y1="320" x2="338" y2="148" stroke="url(#ray)" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+  <line x1="256" y1="320" x2="112" y2="200" stroke="url(#ray)" stroke-width="3.5" stroke-linecap="round" opacity="0.45"/>
+  <line x1="256" y1="320" x2="400" y2="200" stroke="url(#ray)" stroke-width="3.5" stroke-linecap="round" opacity="0.45"/>
+
+  <!-- Sun center glow circle -->
+  <circle cx="256" cy="320" r="22" fill="#f97316" opacity="0.9"/>
+  <circle cx="256" cy="320" r="14" fill="#fbbf24"/>
+
+  <!-- Wordmark "S" letterform hint -->
+  <text x="256" y="438" text-anchor="middle" font-family="'Helvetica Neue','Arial',sans-serif" font-size="52" font-weight="800" fill="#334155" letter-spacing="0.15em">SOMIRAI</text>
 </svg>
