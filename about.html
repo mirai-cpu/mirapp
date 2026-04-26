@@ -5,50 +5,76 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Somirai Lab について — 野球成績管理・TEMPER・家計簿アプリなど、登録不要の無料Webツール集を個人開発しています。">
   <title>About — Somirai Lab</title>
-
   <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#f97316">
+  <meta name="theme-color" content="#ff6428">
   <link rel="canonical" href="https://somirai.jp/about.html">
-
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://somirai.jp/about.html">
   <meta property="og:title" content="About — Somirai Lab">
   <meta property="og:description" content="野球成績管理・TEMPER・家計簿アプリなど、登録不要の無料Webツール集を個人開発しています。">
   <meta property="og:locale" content="ja_JP">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9485428408605916" crossorigin="anonymous"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-902VNDKEE9');
-  </script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --dark:    #1a1220;
-      --dark2:   #231a2e;
-      --accent:  #f97316;
-      --accent2: #fbbf24;
-      --text:    #f1f5f9;
-      --textSec: #94a3b8;
-      --border:  rgba(255,255,255,.08);
-      --radius:  16px;
+      --bg:       #0a0a0b;
+      --surface:  #111114;
+      --surface2: #18181c;
+      --border:   #222228;
+      --border2:  #2e2e38;
+      --text:     #f2f2f4;
+      --textSec:  #9898a8;
+      --textMut:  #505060;
+      --accent:   #ff6428;
+      --accentDim: rgba(255,100,40,.12);
+      --radius:   16px;
+      --mono:     'JetBrains Mono', monospace;
     }
 
     html { scroll-behavior: smooth; }
+
     body {
-      background: var(--dark);
+      background: var(--bg);
       color: var(--text);
-      font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', system-ui, sans-serif;
-      line-height: 1.8;
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      line-height: 1.7;
       min-height: 100vh;
       overflow-x: hidden;
+    }
+
+    h1, h2, h3 { font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif; }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, #2e2e3c 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 0;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 30%, black 30%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 30%, black 30%, transparent 100%);
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23g)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.032;
+      pointer-events: none;
+      z-index: 0;
     }
 
     /* ── Nav ── */
@@ -56,12 +82,12 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(26,18,32,.9);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255,255,255,.06);
-      padding: 0 24px;
-      height: 60px;
+      background: rgba(10,10,11,.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 56px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -72,237 +98,248 @@
       gap: 10px;
       text-decoration: none;
     }
-    .nav-logo-mark {
-      width: 32px; height: 32px;
-      border-radius: 8px;
-      flex-shrink: 0;
+    .nav-logo-mark { width: 28px; height: 28px; border-radius: 7px; flex-shrink: 0; overflow: hidden; }
+    .nav-logo-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px; font-weight: 700; letter-spacing: -.02em; color: var(--text);
+    }
+    .nav-right { display: flex; gap: 2px; align-items: center; }
+    .nav-right a {
+      color: var(--textSec); text-decoration: none; font-size: 13px; font-weight: 500;
+      padding: 6px 12px; border-radius: 8px; transition: color .15s, background .15s;
+    }
+    .nav-right a:hover, .nav-right a.active { color: var(--text); background: var(--surface2); }
+
+    /* page header glow */
+    .page-header {
+      position: relative;
+      z-index: 1;
+      padding: 100px 32px 72px;
+      max-width: 1080px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--border);
       overflow: hidden;
     }
-    .nav-logo-name {
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: -.01em;
-      color: #f1f5f9;
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -60px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255,100,40,.09) 0%, rgba(255,140,60,.03) 45%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
     }
-    .nav-links { display: flex; gap: 4px; align-items: center; }
-    .nav-links a {
-      color: #94a3b8;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 6px 12px;
-      border-radius: 8px;
-      transition: color .15s, background .15s;
+    .page-header::after {
+      content: '';
+      position: absolute;
+      bottom: -60px;
+      left: -80px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(80,80,180,.07) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
     }
-    .nav-links a:hover,
-    .nav-links a.active { color: #f1f5f9; background: rgba(249,115,22,.1); }
-
-    /* ── Page header ── */
-    .page-header {
-      background: linear-gradient(135deg, var(--dark2) 0%, var(--dark) 100%);
-      border-bottom: 1px solid rgba(249,115,22,.15);
-      padding: 56px 24px 48px;
-      text-align: center;
+    .page-header > * { position: relative; z-index: 1; }
+    .page-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px; font-weight: 600; letter-spacing: .12em;
+      color: var(--accent); text-transform: uppercase;
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 28px;
     }
-    .page-header-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: rgba(249,115,22,.12);
-      border: 1px solid rgba(249,115,22,.25);
-      border-radius: 999px;
-      padding: 5px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--accent2);
-      margin-bottom: 20px;
-      letter-spacing: .04em;
-    }
-    .page-header h1 {
-      font-size: clamp(26px, 5vw, 40px);
-      font-weight: 900;
-      letter-spacing: -.02em;
-      color: #f1f5f9;
-      margin-bottom: 12px;
-    }
-    .page-header p {
-      font-size: 15px;
-      color: var(--textSec);
-      max-width: 520px;
-      margin: 0 auto;
-    }
-
-    /* ── Main content ── */
-    .content-wrap {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 56px 24px 80px;
-    }
-
-    .section {
-      margin-bottom: 52px;
-    }
-
-    .section-tag {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .08em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      opacity: .85;
-    }
-    .section h2 {
-      font-size: 20px;
-      font-weight: 800;
-      color: #f1f5f9;
-      margin-bottom: 16px;
-      letter-spacing: -.01em;
-      line-height: 1.4;
-    }
-    .section h2::before {
+    .page-eyebrow::before {
       content: '';
       display: inline-block;
-      width: 4px;
-      height: 1em;
-      background: var(--accent);
-      border-radius: 2px;
-      margin-right: 10px;
-      vertical-align: middle;
+      width: 20px; height: 1px; background: var(--accent);
+    }
+    .page-h1 {
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 700; letter-spacing: -.04em; line-height: 1.05;
+      color: var(--text); margin-bottom: 20px;
+    }
+    .page-h1 em { color: var(--accent); font-style: normal; }
+    .page-sub {
+      font-size: 15px; color: var(--textSec); line-height: 1.8;
+      max-width: 560px;
+    }
+
+    /* ── Content ── */
+    .content-wrap {
       position: relative;
-      top: -1px;
+      z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 80px 32px 100px;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 80px;
+      align-items: start;
     }
-    .section p {
-      font-size: 15px;
-      color: #b0bec5;
-      line-height: 1.9;
-      margin-bottom: 14px;
+
+    /* ── Sidebar TOC ── */
+    .toc {
+      position: sticky;
+      top: 80px;
     }
-    .section p:last-child { margin-bottom: 0; }
+    .toc-label {
+      font-family: var(--mono);
+      font-size: 10px; font-weight: 600; letter-spacing: .12em;
+      color: var(--textMut); text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .toc-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .toc-list a {
+      font-size: 13px; color: var(--textSec); text-decoration: none;
+      padding: 6px 10px; border-radius: 6px; display: block;
+      transition: color .15s, background .15s;
+      border-left: 2px solid transparent;
+    }
+    .toc-list a:hover { color: var(--text); background: var(--surface); border-left-color: var(--border2); }
+    .toc-list a.active { color: var(--accent); border-left-color: var(--accent); }
+
+    /* ── Article ── */
+    .article { display: flex; flex-direction: column; gap: 72px; }
+
+    .section-block { scroll-margin-top: 80px; }
+
+    .section-num {
+      font-family: var(--mono);
+      font-size: 10px; font-weight: 600; letter-spacing: .1em;
+      color: var(--accent); text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .section-h2 {
+      font-size: 24px; font-weight: 700; letter-spacing: -.02em;
+      color: var(--text); margin-bottom: 20px; line-height: 1.3;
+    }
+    .section-h2::after {
+      content: '';
+      display: block;
+      width: 32px; height: 2px;
+      background: var(--accent);
+      margin-top: 12px;
+    }
+
+    .prose p {
+      font-size: 14px; color: var(--textSec); line-height: 1.95;
+      margin-bottom: 16px;
+    }
+    .prose p:last-child { margin-bottom: 0; }
 
     /* ── Tool list ── */
-    .tool-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-top: 8px;
-    }
+    .tool-list { display: flex; flex-direction: column; gap: 1px; margin-top: 4px; }
     .tool-item {
-      background: var(--dark2);
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
       border-radius: 12px;
-      padding: 18px 20px;
+      padding: 24px 24px;
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 12px;
+      transition: border-color .15s;
+    }
+    .tool-item:hover { border-color: var(--border2); }
+    .tool-item-num {
+      font-family: var(--mono);
+      font-size: 11px; color: var(--textMut); padding-top: 2px;
     }
     .tool-item-name {
-      font-size: 15px;
-      font-weight: 700;
-      color: #f1f5f9;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px; font-weight: 700; letter-spacing: -.01em;
+      color: var(--text); margin-bottom: 6px;
     }
-    .tool-item-name span {
-      font-size: 18px;
-    }
-    .tool-item p {
-      font-size: 14px;
-      color: var(--textSec);
-      line-height: 1.75;
-      margin: 0;
-    }
+    .tool-item p { font-size: 13px; color: var(--textSec); line-height: 1.8; }
 
-    /* ── Feature chips ── */
-    .feature-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 8px;
+    /* ── Philosophy chips ── */
+    .phil-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 4px;
     }
-    .chip {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      background: rgba(249,115,22,.08);
-      border: 1px solid rgba(249,115,22,.18);
-      border-radius: 999px;
-      padding: 7px 16px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #f1a06e;
+    .phil-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
     }
-    .chip-icon { font-size: 15px; }
-
-    /* ── Divider ── */
-    .divider {
-      border: none;
-      border-top: 1px solid rgba(255,255,255,.06);
-      margin: 48px 0;
+    .phil-card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px; font-weight: 700; color: var(--text);
+      margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
     }
+    .phil-card-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0;
+    }
+    .phil-card p { font-size: 12.5px; color: var(--textSec); line-height: 1.75; }
 
     /* ── Info card ── */
     .info-card {
-      background: var(--dark2);
-      border: 1px solid rgba(251,191,36,.15);
-      border-top: 2px solid var(--accent2);
-      border-radius: var(--radius);
-      padding: 28px 28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
     }
-    .info-card-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #f1f5f9;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .info-card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px; font-weight: 600; color: var(--textSec);
+      letter-spacing: .04em; text-transform: uppercase;
+      font-family: var(--mono);
     }
-    .info-card dl {
+    .info-card dl { padding: 8px 0; }
+    .info-row {
       display: grid;
-      grid-template-columns: 100px 1fr;
-      gap: 10px 16px;
+      grid-template-columns: 120px 1fr;
+      gap: 12px;
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--border);
     }
-    .info-card dt {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--accent2);
-      padding-top: 2px;
+    .info-row:last-child { border-bottom: none; }
+    .info-dt {
+      font-family: var(--mono);
+      font-size: 11px; font-weight: 600; letter-spacing: .06em;
+      color: var(--textMut); text-transform: uppercase; padding-top: 1px;
     }
-    .info-card dd {
-      font-size: 14px;
-      color: var(--textSec);
-      line-height: 1.7;
-    }
-    .info-card dd a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    .info-card dd a:hover { text-decoration: underline; }
+    .info-dd { font-size: 13px; color: var(--textSec); line-height: 1.7; }
+    .info-dd a { color: var(--accent); text-decoration: none; }
+    .info-dd a:hover { text-decoration: underline; }
 
     /* ── Footer ── */
     footer {
-      border-top: 1px solid rgba(251,191,36,.15);
-      background: var(--dark);
-      text-align: center;
-      padding: 40px 24px;
-      color: #94a3b8;
-      font-size: 12px;
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      padding: 40px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
     }
-    footer a { color: #94a3b8; text-decoration: none; transition: color .15s; }
-    footer a:hover { color: var(--accent); }
-    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap; }
-    .footer-brand { font-weight: 700; font-size: 13px; color: var(--accent); }
+    .footer-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -.01em;
+    }
+    .footer-copy { font-family: var(--mono); font-size: 11px; color: var(--textMut); margin-top: 4px; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: var(--textSec); text-decoration: none; transition: color .15s; }
+    .footer-links a:hover { color: var(--text); }
 
     /* ── Responsive ── */
-    @media (max-width: 720px) {
-      .nav-links { display: none; }
-      .page-header { padding: 40px 20px 36px; }
-      .content-wrap { padding: 36px 20px 60px; }
-      .info-card dl { grid-template-columns: 1fr; gap: 4px; }
-      .info-card dt { margin-bottom: 0; }
-      .info-card dd { margin-bottom: 10px; }
+    @media (max-width: 900px) {
+      .content-wrap { grid-template-columns: 1fr; gap: 48px; padding: 56px 20px 80px; }
+      .toc { position: static; display: none; }
+      .page-header { padding: 72px 20px 56px; }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 0 20px; }
+      .nav-right a:not(:last-child) { display: none; }
+      .phil-grid { grid-template-columns: 1fr; }
+      footer { padding: 32px 20px; flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -311,10 +348,24 @@
   <!-- Nav -->
   <nav>
     <a href="/" class="nav-logo">
-      <svg class="nav-logo-mark" viewBox="0 0 120 120" width="32" height="32"><defs><linearGradient id="nlG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1220"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><linearGradient id="ncG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/></linearGradient><linearGradient id="noG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fb923c"/><stop offset="100%" stop-color="#6ee7b7"/></linearGradient></defs><rect width="120" height="120" rx="26" fill="url(#nlG)"/><ellipse cx="60" cy="52" rx="36" ry="36" fill="none" stroke="url(#noG)" stroke-width="1.8" opacity=".3" stroke-dasharray="5 7"/><circle cx="60" cy="48" r="14" fill="url(#ncG)"/><circle cx="57" cy="43" r="5" fill="#fff" opacity=".22"/><path d="M60 26 L62 42 L60 48 L58 42Z" fill="#fb923c" opacity=".85"/><path d="M42 48 L55 49.5 L60 48 L55 46.5Z" fill="#fbbf24" opacity=".65"/><path d="M78 48 L65 49.5 L60 48 L65 46.5Z" fill="#fbbf24" opacity=".65"/><circle cx="84" cy="30" r="3.5" fill="#fb923c" opacity=".6"/><circle cx="34" cy="68" r="3" fill="#fbbf24" opacity=".5"/><circle cx="88" cy="62" r="2.5" fill="#6ee7b7" opacity=".45"/></svg>
+      <svg class="nav-logo-mark" viewBox="0 0 120 120" width="28" height="28">
+        <defs>
+          <linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#111114"/><stop offset="100%" stop-color="#0a0a0b"/></linearGradient>
+          <linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff6428"/><stop offset="100%" stop-color="#e84410"/></linearGradient>
+        </defs>
+        <rect width="120" height="120" rx="24" fill="url(#n1)"/>
+        <rect x="16" y="16" width="88" height="88" rx="14" fill="none" stroke="#ff6428" stroke-width="1.5" opacity=".15"/>
+        <circle cx="60" cy="52" r="18" fill="url(#n2)"/>
+        <circle cx="56" cy="47" r="6" fill="#fff" opacity=".2"/>
+        <path d="M60 28 L63 46 L60 52 L57 46Z" fill="#ffb088" opacity=".7"/>
+        <path d="M36 52 L52 54 L60 52 L52 50Z" fill="#ffb088" opacity=".55"/>
+        <path d="M84 52 L68 54 L60 52 L68 50Z" fill="#ffb088" opacity=".55"/>
+        <circle cx="88" cy="30" r="3" fill="#ff6428" opacity=".5"/>
+        <circle cx="32" cy="72" r="2.5" fill="#ff6428" opacity=".35"/>
+      </svg>
       <span class="nav-logo-name">Somirai Lab</span>
     </a>
-    <div class="nav-links">
+    <div class="nav-right">
       <a href="/#tools">ツール</a>
       <a href="/about.html" class="active">About</a>
       <a href="/privacy.html">プライバシー</a>
@@ -323,134 +374,190 @@
 
   <!-- Page header -->
   <div class="page-header">
-    <div class="page-header-label">About Somirai Lab</div>
-    <h1>Somirai Lab について</h1>
-    <p>「自分が使いたいものを作る」という想いからはじまった、個人開発の無料Webツール集です。</p>
+    <div class="page-eyebrow">About Somirai Lab</div>
+    <h1 class="page-h1">個人開発の<br><em>Webツール集。</em></h1>
+    <p class="page-sub">「自分が使いたいものを作る」という想いからはじまった、登録不要・ブラウザだけで完結する無料ツールのコレクションです。</p>
   </div>
 
   <!-- Content -->
   <div class="content-wrap">
 
-    <!-- Section 1: 目的・背景 -->
-    <div class="section">
-      <span class="section-tag">Background</span>
-      <h2>サイトの目的と、作りはじめた背景</h2>
-      <p>
-        Somirai Lab は、個人開発者が「自分自身が使いたいと思ったツール」を少しずつ積み上げてきたWebサービスです。きっかけは単純で、「野球の打撃成績をシンプルに管理したい」「習慣を楽しく続けたい」「支出の記録をもっとカジュアルにしたい」という日常の小さな不満でした。
-      </p>
-      <p>
-        市販のアプリは高機能すぎたり、アカウント登録が必要だったり、スマホ専用だったりと、ちょっと使いにくいことが多い。だったら、登録不要・ブラウザだけで完結する、シンプルで使いやすい無料Webツールを自分で作ってしまおう——そんな発想からこのサイトは生まれました。
-      </p>
-      <p>
-        個人開発ならではの「自分が本当に欲しい機能だけを入れる」というこだわりで、UIのシンプルさと使いやすさを最優先にしています。画面を開いた瞬間から直感的に操作でき、余計なステップを踏まずにすぐ記録・確認できることを意識して設計しています。
-      </p>
-    </div>
+    <!-- TOC -->
+    <aside class="toc">
+      <div class="toc-label">On this page</div>
+      <ul class="toc-list">
+        <li><a href="#background" class="active">背景・目的</a></li>
+        <li><a href="#tools">各ツールへの想い</a></li>
+        <li><a href="#philosophy">こだわり</a></li>
+        <li><a href="#roadmap">今後の展望</a></li>
+        <li><a href="#info">運営者情報</a></li>
+      </ul>
+    </aside>
 
-    <hr class="divider">
+    <!-- Article -->
+    <div class="article">
 
-    <!-- Section 2: 各ツールへの想い -->
-    <div class="section">
-      <span class="section-tag">Tools</span>
-      <h2>各ツールへの想い</h2>
-      <div class="tool-list">
-        <div class="tool-item">
-          <div class="tool-item-name"><span>⚾</span> LUMBER</div>
-          <p>野球の打撃成績を手軽に記録・管理できるツールです。打率や出塁率、長打率、OPS などを自動計算し、スプレーチャートで打球方向の傾向も可視化できます。試合ごとの打席結果をその場でサクッと入力できるよう設計しており、少年野球から社会人野球まで幅広く使えます。紙のスコアブックより手軽に、専用アプリよりシンプルに使える「ちょうどいい」野球成績管理ツールを目指しました。</p>
-        </div>
-        <div class="tool-item">
-          <div class="tool-item-name"><span>✅</span> TEMPER</div>
-          <p>毎日の習慣を記録・可視化するTEMPERです。「三日坊主で終わってしまう」という経験から、続けることそのものが楽しくなる仕組みを取り入れました。レベルアップ・バッジ獲得・連続記録（ストリーク）など、ゲームのような達成感が習慣化をサポートします。朝のルーティン管理から読書・運動の記録まで、生活のあらゆる場面で使える習慣管理ツールです。</p>
-        </div>
-        <div class="tool-item">
-          <div class="tool-item-name"><span>✏️</span> MARGINALIA</div>
-          <p>書くことを習慣にするためのタイムライン型メモツールです。日記・アイデアメモ・ToDo 管理など、書くたびにレベルアップしていくゲーム感覚の仕掛けが、書く習慣を楽しく続けさせてくれます。色分けやタグ付けで整理しやすく、シンプルなUIで思考の邪魔をしません。「毎日少しでも書き続けたい」という人のために作りました。</p>
-        </div>
-        <div class="tool-item">
-          <div class="tool-item-name"><span>💰</span> KURA</div>
-          <p>支出を5秒で記録してRPG風に見える化できる家計簿アプリです。「今月の節約レベル」がゲームのステータスのように上がっていく体験を作ることで、お金の管理を億劫に感じさせない設計にしました。複雑な家計管理ソフトではなく、「ざっくり支出を把握して節約意識を高めたい」という人にちょうどいい、ゲーミフィケーション家計簿を目指しています。登録不要でブラウザだけで使えるのも大きな特徴です。</p>
-        </div>
-        <div class="tool-item">
-          <div class="tool-item-name"><span>📋</span> スタメンメーカー</div>
-          <p>監督目線でスタメンを組めるツールです。打順・守備位置・投手陣を自由に設定し、球場図でビジュアル確認できます。作成したスタメンはLINEやXにシェアすることも可能。チームの試合前の準備や、野球ゲーム・観戦の予想スタメン作りなど、幅広い場面で活用できます。野球ファンが「あったらいいな」と思うツールをシンプルに実現しました。</p>
+      <div class="section-block" id="background">
+        <div class="section-num">01 — Background</div>
+        <h2 class="section-h2">サイトの目的と、作りはじめた背景</h2>
+        <div class="prose">
+          <p>Somirai Lab は、個人開発者が「自分自身が使いたいと思ったツール」を少しずつ積み上げてきたWebサービスです。きっかけは単純で、「野球の打撃成績をシンプルに管理したい」「習慣を楽しく続けたい」「支出の記録をもっとカジュアルにしたい」という日常の小さな不満でした。</p>
+          <p>市販のアプリは高機能すぎたり、アカウント登録が必要だったり、スマホ専用だったりと、ちょっと使いにくいことが多い。だったら、登録不要・ブラウザだけで完結する、シンプルで使いやすい無料Webツールを自分で作ってしまおう——そんな発想からこのサイトは生まれました。</p>
+          <p>「自分が本当に欲しい機能だけを入れる」というこだわりで、UIのシンプルさと使いやすさを最優先にしています。画面を開いた瞬間から直感的に操作でき、余計なステップを踏まずにすぐ記録・確認できることを意識して設計しています。</p>
         </div>
       </div>
-    </div>
 
-    <hr class="divider">
-
-    <!-- Section 3: こだわり -->
-    <div class="section">
-      <span class="section-tag">Philosophy</span>
-      <h2>こだわっていること</h2>
-      <p>
-        Somirai Lab のすべてのツールは、いくつかの共通したこだわりを持っています。まず最も大切にしているのは「登録不要・すぐ使える」という点です。メールアドレスの入力もパスワードの設定も不要で、URLを開いた瞬間から使いはじめられます。使ってみたいと思ったときのハードルを限りなく下げることで、「ちょっと試してみよう」が気軽にできるようにしました。
-      </p>
-      <p>
-        次に「プライバシー重視のブラウザ保存」です。各ツールに入力したデータは、すべてお使いの端末のブラウザ（localStorage）に保存されます。外部サーバーには一切送信されないため、個人の記録や支出・習慣などのセンシティブな情報が外部に流出する心配がありません。ユーザーのデータはユーザー自身のものという考え方を大切にしています。
-      </p>
-      <p>
-        また、主要ツールはPWA（プログレッシブウェブアプリ）に対応しており、スマートフォンのホーム画面に追加すれば、ネイティブアプリのような感覚で使えます。インターネット環境が不安定な場所でも使いやすいよう、オフライン対応も意識して設計しています。
-      </p>
-      <div class="feature-chips">
-        <div class="chip"><span class="chip-icon">🚀</span> 登録不要・即使える</div>
-        <div class="chip"><span class="chip-icon">🔒</span> データはブラウザ内保存</div>
-        <div class="chip"><span class="chip-icon">📱</span> PWA対応</div>
-        <div class="chip"><span class="chip-icon">0円</span> 完全無料</div>
+      <div class="section-block" id="tools">
+        <div class="section-num">02 — Tools</div>
+        <h2 class="section-h2">各ツールへの想い</h2>
+        <div class="tool-list">
+          <div class="tool-item">
+            <div class="tool-item-num">01</div>
+            <div>
+              <div class="tool-item-name">LUMBER</div>
+              <p>野球の打撃成績を手軽に記録・管理できるツールです。打率や出塁率、長打率、OPS などを自動計算し、スプレーチャートで打球方向の傾向も可視化できます。紙のスコアブックより手軽に、専用アプリよりシンプルに使える「ちょうどいい」野球成績管理ツールを目指しました。</p>
+            </div>
+          </div>
+          <div class="tool-item">
+            <div class="tool-item-num">02</div>
+            <div>
+              <div class="tool-item-name">TEMPER</div>
+              <p>毎日の習慣を記録・可視化するツールです。「三日坊主で終わってしまう」という経験から、続けることそのものが楽しくなる仕組みを取り入れました。レベルアップ・バッジ獲得・連続記録（ストリーク）など、ゲームのような達成感が習慣化をサポートします。</p>
+            </div>
+          </div>
+          <div class="tool-item">
+            <div class="tool-item-num">03</div>
+            <div>
+              <div class="tool-item-name">MARGINALIA</div>
+              <p>書くことを習慣にするためのタイムライン型メモツールです。書くたびにレベルアップしていくゲーム感覚の仕掛けが、書く習慣を楽しく続けさせてくれます。色分けやタグ付けで整理しやすく、シンプルなUIで思考の邪魔をしません。</p>
+            </div>
+          </div>
+          <div class="tool-item">
+            <div class="tool-item-num">04</div>
+            <div>
+              <div class="tool-item-name">KURA</div>
+              <p>支出を5秒で記録してRPG風に見える化できる家計簿アプリです。「今月の節約レベル」がゲームのステータスのように上がっていく体験を作ることで、お金の管理を億劫に感じさせない設計にしました。</p>
+            </div>
+          </div>
+          <div class="tool-item">
+            <div class="tool-item-num">05</div>
+            <div>
+              <div class="tool-item-name">スタメンメーカー</div>
+              <p>監督目線でスタメンを組めるツールです。打順・守備位置・投手陣を自由に設定し、球場図でビジュアル確認できます。作成したスタメンはLINEやXにシェアすることも可能。野球ファンが「あったらいいな」と思うツールをシンプルに実現しました。</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <hr class="divider">
-
-    <!-- Section 4: 今後の展望 -->
-    <div class="section">
-      <span class="section-tag">Roadmap</span>
-      <h2>今後の展望</h2>
-      <p>
-        現在公開中のツールに加え、新たなWebツールの開発・追加を継続的に進めています。近日公開予定のツールとして「ライフコンパス」があります。仕事・健康・お金・人間関係など6ジャンルを10段階評価してレーダーチャートで人生のバランスを可視化し、月次で記録することで自分自身の成長を確認できるセルフリフレクションツールです。
-      </p>
-      <p>
-        既存ツールの機能改善も並行して進めています。LUMBERへのチーム管理機能追加、TEMPERへのグラフ分析機能強化、MARGINALIA の検索・フィルター機能改善など、実際に使ってみてのフィードバックをもとにアップデートを重ねています。
-      </p>
-      <p>
-        「こんな機能があったらいいな」「こんなツールが欲しい」というご意見・ご要望があれば、ぜひお気軽にご連絡ください。個人開発なので大規模な開発はすぐには難しいかもしれませんが、ユーザーの声を一番の参考にしながら、少しずつ改善を続けていきます。
-      </p>
-    </div>
-
-    <hr class="divider">
-
-    <!-- Section 5: 運営者情報 -->
-    <div class="section">
-      <span class="section-tag">About</span>
-      <h2>運営者情報</h2>
-      <div class="info-card">
-        <div class="info-card-title">🌟 Somirai Lab</div>
-        <dl>
-          <dt>サービス名</dt>
-          <dd>Somirai Lab（ソミライラボ）</dd>
-          <dt>URL</dt>
-          <dd><a href="https://somirai.jp/" target="_blank" rel="noopener">https://somirai.jp/</a></dd>
-          <dt>運営形態</dt>
-          <dd>個人開発・個人運営</dd>
-          <dt>開設</dt>
-          <dd>2026年</dd>
-          <dt>お問い合わせ</dt>
-          <dd><a href="/contact.html">お問い合わせページ</a>よりご連絡ください。バグ報告・機能リクエスト・ご意見など、どなたでもお気軽にどうぞ。</dd>
-        </dl>
+      <div class="section-block" id="philosophy">
+        <div class="section-num">03 — Philosophy</div>
+        <h2 class="section-h2">こだわっていること</h2>
+        <div class="prose">
+          <p>Somirai Lab のすべてのツールは、いくつかの共通したこだわりを持っています。まず最も大切にしているのは「登録不要・すぐ使える」という点です。URLを開いた瞬間から使いはじめられます。</p>
+        </div>
+        <div class="phil-grid">
+          <div class="phil-card">
+            <div class="phil-card-title"><span class="phil-card-dot"></span>登録不要・即使える</div>
+            <p>メールアドレスの入力もパスワードの設定も不要。「ちょっと試してみよう」が気軽にできます。</p>
+          </div>
+          <div class="phil-card">
+            <div class="phil-card-title"><span class="phil-card-dot"></span>プライバシー重視</div>
+            <p>各ツールのデータはすべてブラウザ（localStorage）に保存。外部サーバーには一切送信されません。</p>
+          </div>
+          <div class="phil-card">
+            <div class="phil-card-title"><span class="phil-card-dot"></span>PWA対応</div>
+            <p>主要ツールはホーム画面に追加可能。ネイティブアプリのような感覚でオフラインでも利用できます。</p>
+          </div>
+          <div class="phil-card">
+            <div class="phil-card-title"><span class="phil-card-dot"></span>完全無料</div>
+            <p>すべてのツールが無料で使えます。課金プランや広告による体験の妨害はありません。</p>
+          </div>
+        </div>
       </div>
-    </div>
 
+      <div class="section-block" id="roadmap">
+        <div class="section-num">04 — Roadmap</div>
+        <h2 class="section-h2">今後の展望</h2>
+        <div class="prose">
+          <p>現在公開中のツールに加え、新たなWebツールの開発・追加を継続的に進めています。近日公開予定のツールとして「ライフコンパス」があります。仕事・健康・お金・人間関係など6ジャンルを10段階評価してレーダーチャートで人生のバランスを可視化し、月次で記録することで自分自身の成長を確認できるセルフリフレクションツールです。</p>
+          <p>既存ツールの機能改善も並行して進めています。LUMBERへのチーム管理機能追加、TEMPERへのグラフ分析機能強化、MARGINALIA の検索・フィルター機能改善など、実際に使ってみてのフィードバックをもとにアップデートを重ねています。</p>
+          <p>「こんな機能があったらいいな」「こんなツールが欲しい」というご意見・ご要望があれば、ぜひ<a href="/contact.html" style="color:var(--accent)">お気軽にご連絡ください</a>。</p>
+        </div>
+      </div>
+
+      <div class="section-block" id="info">
+        <div class="section-num">05 — Info</div>
+        <h2 class="section-h2">運営者情報</h2>
+        <div class="info-card">
+          <div class="info-card-header">Somirai Lab</div>
+          <dl>
+            <div class="info-row">
+              <dt class="info-dt">サービス名</dt>
+              <dd class="info-dd">Somirai Lab（ソミライラボ）</dd>
+            </div>
+            <div class="info-row">
+              <dt class="info-dt">URL</dt>
+              <dd class="info-dd"><a href="https://somirai.jp/" target="_blank" rel="noopener">https://somirai.jp/</a></dd>
+            </div>
+            <div class="info-row">
+              <dt class="info-dt">運営形態</dt>
+              <dd class="info-dd">個人開発・個人運営</dd>
+            </div>
+            <div class="info-row">
+              <dt class="info-dt">開設</dt>
+              <dd class="info-dd">2026年</dd>
+            </div>
+            <div class="info-row">
+              <dt class="info-dt">お問い合わせ</dt>
+              <dd class="info-dd"><a href="/contact.html">お問い合わせページ</a>よりご連絡ください。バグ報告・機能リクエスト・ご意見など、どなたでもお気軽にどうぞ。</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <!-- Footer -->
   <footer>
+    <div>
+      <div class="footer-brand">Somirai Lab</div>
+      <div class="footer-copy">© 2026 Somirai Lab. All rights reserved.</div>
+    </div>
     <div class="footer-links">
       <a href="/">ツール一覧</a>
       <a href="/about.html">About</a>
       <a href="/contact.html">お問い合わせ</a>
       <a href="/privacy.html">プライバシーポリシー</a>
     </div>
-    <p>© 2026 <span class="footer-brand">Somirai Lab</span></p>
   </footer>
+
+  <script>
+    // TOC active state on scroll
+    const sections = document.querySelectorAll('.section-block');
+    const links = document.querySelectorAll('.toc-list a');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'));
+          const link = document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
+          if (link) link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+  <script>
+    (function(){
+      if(localStorage.getItem('cookie_ok')) return;
+      var b = document.createElement('div');
+      b.id = 'ck-banner';
+      b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#111114;color:#9898a8;font-size:12px;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9999;border-top:1px solid #222228;font-family:system-ui,sans-serif';
+      b.innerHTML = '<span>本サイトはGoogle AdSense・Google AnalyticsのためにCookieを使用しています。詳細は<a href="/privacy.html" style="color:#ff6428">プライバシーポリシー</a>をご覧ください。</span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:#ff6428;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0">OK</button>';
+      document.body.appendChild(b);
+    })();
+  </script>
 
 </body>
 </html>
