@@ -1,0 +1,24 @@
+{
+  "_note": "アドセンス管理画面のデータを手動で更新してください（毎月1回程度）",
+  "updatedAt": "2026-04-26",
+  "currentMonth": {
+    "revenue": 0,
+    "pageRPM": 0,
+    "impressions": 0,
+    "clicks": 0,
+    "ctr": 0
+  },
+  "lastMonth": {
+    "revenue": 0,
+    "pageRPM": 0,
+    "impressions": 0,
+    "clicks": 0,
+    "ctr": 0
+  },
+  "last30days": {
+    "revenue": 0,
+    "pageRPM": 0,
+    "impressions": 0,
+    "clicks": 0
+  }
+}

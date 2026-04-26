@@ -1,5 +1,5 @@
 {
-  "meta.title":       "My Batting Stats - Baseball Hitting Tracker",
+  "meta.title":       "LUMBER - Baseball Hitting Tracker",
   "meta.description": "Record and analyze your personal baseball batting stats. Visualize with AVG, OPS, and spray charts.",
 
   "app.title": "Batting Stats",
@@ -180,7 +180,7 @@
   "pwa.bannerClose": "Close",
 
   "footer.privacy":   "Privacy Policy",
-  "footer.copyright": "© 2026 My Batting Stats",
+  "footer.copyright": "© 2026 LUMBER",
 
   "history.noData":            "No at-bat data yet",
   "history.edit":              "Edit",

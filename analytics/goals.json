@@ -1,0 +1,85 @@
+{
+  "_note": "目標値はここを直接編集してください。yoroshiku.js がこのファイルを参照します。",
+  "updatedAt": "2026-04-26",
+  "vision": "2027年4月末までに月5〜6万円のストック収益（アドセンス＋note＋アフィリエイト）を達成",
+  "currentPhase": "Q1",
+  "roadmap": {
+    "Q1": {
+      "label": "2026年4〜7月",
+      "theme": "アドセンス審査通過 + SEO・SNS基盤作り",
+      "milestones": [
+        "アドセンス審査を通過する",
+        "SEO記事を3本以上公開する",
+        "Xフォロワー300人達成"
+      ],
+      "monthly": {
+        "pv": 2000,
+        "sessions": 1200,
+        "organicClicks": 100,
+        "adsenseRevenue": 0,
+        "noteRevenue": 0,
+        "affiliateRevenue": 0,
+        "xFollowers": 300
+      }
+    },
+    "Q2": {
+      "label": "2026年8〜10月",
+      "theme": "アドセンス収益化 + note有料記事1本目",
+      "milestones": [
+        "月間PV 8,000達成",
+        "note有料記事を1本公開",
+        "月収1〜2万円達成"
+      ],
+      "monthly": {
+        "pv": 8000,
+        "sessions": 5000,
+        "organicClicks": 400,
+        "adsenseRevenue": 5000,
+        "noteRevenue": 10000,
+        "affiliateRevenue": 5000,
+        "xFollowers": 600
+      }
+    },
+    "Q3": {
+      "label": "2026年11月〜2027年1月",
+      "theme": "SEO × SNS複合加速",
+      "milestones": [
+        "月間PV 20,000達成",
+        "月収3〜4万円達成",
+        "Xフォロワー1,000人達成"
+      ],
+      "monthly": {
+        "pv": 20000,
+        "sessions": 12000,
+        "organicClicks": 1000,
+        "adsenseRevenue": 15000,
+        "noteRevenue": 15000,
+        "affiliateRevenue": 10000,
+        "xFollowers": 1000
+      }
+    },
+    "Q4": {
+      "label": "2027年2〜4月",
+      "theme": "達成・安定化",
+      "milestones": [
+        "月間PV 50,000達成",
+        "月収5〜6万円達成",
+        "安定収益の確立"
+      ],
+      "monthly": {
+        "pv": 50000,
+        "sessions": 30000,
+        "organicClicks": 2500,
+        "adsenseRevenue": 20000,
+        "noteRevenue": 20000,
+        "affiliateRevenue": 15000,
+        "xFollowers": 2000
+      }
+    }
+  },
+  "kpi": {
+    "avgSessionDurationSec": 120,
+    "bounceRateMax": 0.7,
+    "scAvgPositionTarget": 20
+  }
+}

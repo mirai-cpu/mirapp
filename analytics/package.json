@@ -4,14 +4,18 @@
   "private": true,
   "description": "Somirai Lab analytics scripts — GA4 + X API",
   "scripts": {
+    "yoroshiku": "node yoroshiku.js 30",
     "report": "node report.js 30",
     "report7": "node report.js 7",
     "ga4": "node fetch-ga4.js",
-    "x": "node fetch-x.js"
+    "x": "node fetch-x.js",
+    "sc": "node fetch-searchconsole.js",
+    "adsense": "node fetch-adsense.js"
   },
   "dependencies": {
     "@google-analytics/data": "^4.8.0",
     "crypto": "^1.0.1",
+    "googleapis": "^171.4.0",
     "oauth-1.0a": "^2.2.6"
   }
 }

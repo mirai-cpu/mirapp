@@ -34,7 +34,7 @@
   --glow-teal:   0 0 20px rgba(100,255,218,0.12);
 }
 
-/* ── Dark Theme (same as root — PLAYCARD is always dark) ── */
+/* ── Dark Theme ─────────────────────────── */
 [data-theme="dark"] {
   --bg:        #050912;
   --surface:   #0a1028;
@@ -123,12 +123,7 @@ html, body {
   font-size: 24px;
   font-weight: 400;
   letter-spacing: 0.1em;
-  background: linear-gradient(90deg, #ffd700, #ffab00, #64ffda, #ffd700);
-  background-size: 300% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: holoShimmer 4s linear infinite;
+  color: var(--accent);
   line-height: 1;
 }
 .app-title-sub {
@@ -165,6 +160,59 @@ html, body {
 .btn-help:active { background: var(--accent-bg); color: var(--accent); border-color: var(--accent); }
 
 .header-right { display: flex; gap: 6px; align-items: center; }
+
+/* ── Color Theme Picker ───────────────────── */
+.color-picker-wrap {
+  position: relative;
+}
+.btn-color {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-color:active { background: var(--accent-bg); border-color: var(--accent); }
+.btn-color-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  transition: background 0.2s;
+}
+.color-palette {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
+  width: 128px;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+.color-palette.open { display: flex; }
+.palette-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+}
+.palette-swatch:hover { transform: scale(1.15); }
+.palette-swatch.active { border-color: #fff; transform: scale(1.1); }
 
 /* ── Tab Bar ──────────────────────────────── */
 .tab-bar {

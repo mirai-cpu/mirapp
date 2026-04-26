@@ -1,5 +1,5 @@
 {
-  "meta.title":       "My Batting Stats - 野球打撃成績トラッカー",
+  "meta.title":       "LUMBER - 野球打撃成績トラッカー",
   "meta.description": "野球の個人打撃成績を記録・分析するWebツール。打率・OPS・スプレーチャートで成績を可視化。",
 
   "app.title": "打撃成績",
@@ -180,7 +180,7 @@
   "pwa.bannerClose": "閉じる",
 
   "footer.privacy":   "プライバシーポリシー",
-  "footer.copyright": "© 2026 My Batting Stats",
+  "footer.copyright": "© 2026 LUMBER",
 
   "history.noData":            "打席データがありません",
   "history.edit":              "編集",

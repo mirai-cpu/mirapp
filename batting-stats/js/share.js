@@ -195,7 +195,7 @@ const Share = (() => {
       const file = new File([_lastBlob], 'batting-stats.png', { type: 'image/png' });
       if (navigator.canShare?.({ files: [file] })) {
         try {
-          await navigator.share({ files: [file], text, title: 'My Batting Stats' });
+          await navigator.share({ files: [file], text, title: 'LUMBER' });
           return;  // 成功したらここで終了
         } catch (e) {
           if (e.name === 'AbortError') return;  // ユーザーがキャンセル
@@ -265,7 +265,7 @@ const Share = (() => {
       if (!blob) { onDownload(); return; }
       const file = new File([blob], 'batting-stats.png', { type: 'image/png' });
       if (navigator.canShare?.({ files: [file] })) {
-        try { await navigator.share({ files: [file], title: 'My Batting Stats' }); }
+        try { await navigator.share({ files: [file], title: 'LUMBER' }); }
         catch (_) { /* user cancelled */ }
       } else {
         onDownload();
@@ -471,7 +471,7 @@ const Share = (() => {
     ctx.fillStyle = 'rgba(255,255,255,0.35)';
     ctx.font      = font(20, 700);
     ctx.textAlign = 'left';
-    ctx.fillText('My Batting Stats', 60, footerDivY + 36);
+    ctx.fillText('LUMBER', 60, footerDivY + 36);
 
     ctx.fillStyle = 'rgba(255,255,255,0.25)';
     ctx.font      = font(17);

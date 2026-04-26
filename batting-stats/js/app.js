@@ -45,6 +45,51 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (sun)  sun.style.display  = isDark ? 'block' : 'none';
   }
 
+  // ── Color theme ────────────────────────────────────────────────
+  const COLOR_THEMES = {
+    '#ffd700': { accentBg: 'rgba(255,215,0,0.1)',    glow: '0 0 24px rgba(255,215,0,0.2)' },
+    '#64ffda': { accentBg: 'rgba(100,255,218,0.1)',  glow: '0 0 24px rgba(100,255,218,0.2)' },
+    '#60a5fa': { accentBg: 'rgba(96,165,250,0.1)',   glow: '0 0 24px rgba(96,165,250,0.2)' },
+    '#f472b6': { accentBg: 'rgba(244,114,182,0.1)',  glow: '0 0 24px rgba(244,114,182,0.2)' },
+    '#a78bfa': { accentBg: 'rgba(167,139,250,0.1)',  glow: '0 0 24px rgba(167,139,250,0.2)' },
+    '#34d399': { accentBg: 'rgba(52,211,153,0.1)',   glow: '0 0 24px rgba(52,211,153,0.2)' },
+    '#fb923c': { accentBg: 'rgba(251,146,60,0.1)',   glow: '0 0 24px rgba(251,146,60,0.2)' },
+    '#f87171': { accentBg: 'rgba(248,113,113,0.1)',  glow: '0 0 24px rgba(248,113,113,0.2)' },
+  };
+
+  const colorBtn     = document.getElementById('btn-color');
+  const colorPalette = document.getElementById('color-palette');
+  const colorDot     = document.getElementById('color-dot');
+  const savedColor   = localStorage.getItem('accentColor') || '#ffd700';
+  applyColor(savedColor);
+
+  colorBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    colorPalette.classList.toggle('open');
+  });
+
+  document.addEventListener('click', () => colorPalette.classList.remove('open'));
+
+  colorPalette.addEventListener('click', (e) => {
+    const swatch = e.target.closest('.palette-swatch');
+    if (!swatch) return;
+    applyColor(swatch.dataset.color);
+    localStorage.setItem('accentColor', swatch.dataset.color);
+    colorPalette.classList.remove('open');
+  });
+
+  function applyColor(color) {
+    const theme = COLOR_THEMES[color] || COLOR_THEMES['#ffd700'];
+    const root = document.documentElement;
+    root.style.setProperty('--accent',     color);
+    root.style.setProperty('--accent-bg',  theme.accentBg);
+    root.style.setProperty('--glow-gold',  theme.glow);
+    if (colorDot) colorDot.style.background = color;
+    document.querySelectorAll('.palette-swatch').forEach(s =>
+      s.classList.toggle('active', s.dataset.color === color)
+    );
+  }
+
   // ── Language toggle ────────────────────────────────────────────
   const langBtn = document.getElementById('lang-toggle');
   updateLangBtn();
