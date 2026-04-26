@@ -32,12 +32,12 @@
   <circle cx="88" cy="542" r="3" fill="#00e5c8" opacity="0.15"/>
 
   <!-- App name shadow -->
-  <text x="126" y="280" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-size="148" fill="#00e5c8" opacity="0.07">Codex</text>
+  <text x="126" y="275" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-size="82" fill="#00e5c8" opacity="0.07">MARGINALIA</text>
   <!-- App name main -->
-  <text x="126" y="275" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-size="140" fill="#00e5c8">Codex</text>
+  <text x="126" y="271" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-size="78" fill="#00e5c8">MARGINALIA</text>
 
   <!-- Label -->
-  <text x="130" y="326" font-family="'Courier New',monospace" font-size="16" fill="#1e5060" letter-spacing="0.26em">WRITE QUEST · MEMO &amp; TODO</text>
+  <text x="130" y="326" font-family="'Courier New',monospace" font-size="16" fill="#1e5060" letter-spacing="0.26em">MEMO &amp; TODO MANAGER</text>
 
   <!-- Divider -->
   <line x1="130" y1="358" x2="780" y2="358" stroke="#00e5c8" stroke-width="1" stroke-opacity="0.18"/>

@@ -26,9 +26,9 @@
   <rect x="88" y="80" width="3" height="470" fill="url(#ag)"/>
 
   <!-- App name — shadow layer -->
-  <text x="130" y="270" font-family="Impact,'Arial Black',sans-serif" font-size="156" font-weight="900" fill="#ff4500" opacity="0.1" letter-spacing="0.06em">FORGE</text>
+  <text x="130" y="270" font-family="Impact,'Arial Black',sans-serif" font-size="156" font-weight="900" fill="#ff4500" opacity="0.1" letter-spacing="0.06em">TEMPER</text>
   <!-- App name — main -->
-  <text x="130" y="265" font-family="Impact,'Arial Black',sans-serif" font-size="140" font-weight="900" fill="#ff4500" letter-spacing="0.06em" filter="url(#f)">FORGE</text>
+  <text x="130" y="265" font-family="Impact,'Arial Black',sans-serif" font-size="140" font-weight="900" fill="#ff4500" letter-spacing="0.06em" filter="url(#f)">TEMPER</text>
 
   <!-- Category label -->
   <text x="130" y="315" font-family="'Courier New',monospace" font-size="18" fill="#4a4640" letter-spacing="0.28em">HABIT TRACKER</text>
