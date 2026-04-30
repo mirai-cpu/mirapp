@@ -223,9 +223,7 @@ body {
 }
 .color-palette {
   display: none;
-  position: absolute;
-  top: calc(100% + 6px);
-  right: 0;
+  position: fixed;
   background: var(--surface);
   border: 1px solid var(--border-2);
   border-radius: 12px;
@@ -233,7 +231,7 @@ body {
   gap: 8px;
   flex-wrap: wrap;
   width: 128px;
-  z-index: 100;
+  z-index: 300;
   box-shadow: 0 8px 32px rgba(0,0,0,.6);
 }
 .color-palette.open { display: flex; }

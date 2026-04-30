@@ -24,26 +24,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     btn.addEventListener('click', () => switchTab(btn.dataset.tab))
   );
 
-  // ── Theme toggle ───────────────────────────────────────────────
-  const themeBtn = document.getElementById('theme-toggle');
-  const savedTheme = localStorage.getItem('theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  updateThemeBtn();
-
-  themeBtn.addEventListener('click', () => {
-    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    updateThemeBtn();
-  });
-
-  function updateThemeBtn() {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const moon = document.getElementById('theme-icon-moon');
-    const sun  = document.getElementById('theme-icon-sun');
-    if (moon) moon.style.display = isDark ? 'none' : 'block';
-    if (sun)  sun.style.display  = isDark ? 'block' : 'none';
-  }
+  // ── Always dark mode ───────────────────────────────────────────
+  document.documentElement.setAttribute('data-theme', 'dark');
 
   // ── Color theme ────────────────────────────────────────────────
   const COLOR_THEMES = {
@@ -65,6 +47,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   colorBtn.addEventListener('click', (e) => {
     e.stopPropagation();
+    const rect = colorBtn.getBoundingClientRect();
+    colorPalette.style.top  = (rect.bottom + 6) + 'px';
+    colorPalette.style.right = (window.innerWidth - rect.right) + 'px';
     colorPalette.classList.toggle('open');
   });
 
