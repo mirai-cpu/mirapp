@@ -1,6 +1,6 @@
 {
-  "name": "KURA",
-  "short_name": "KURA",
+  "name": "節約クエスト",
+  "short_name": "節約クエスト",
   "description": "支出をRPG風に記録してレベルアップ！登録不要・無料の家計簿アプリ。",
   "start_url": "/savings/",
   "display": "standalone",
