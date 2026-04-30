@@ -6,7 +6,7 @@
 /* ── Reset & Tokens ───────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
 
 :root {
   --bg:          #070810;
@@ -154,12 +154,13 @@ body {
   line-height: 1;
 }
 .app-title-main {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -.02em;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: .12em;
   color: var(--accent);
   line-height: 1;
+  text-shadow: 0 0 18px color-mix(in srgb, var(--accent) 40%, transparent);
 }
 .app-title-sub {
   font-family: var(--mono);

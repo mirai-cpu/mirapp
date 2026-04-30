@@ -11,7 +11,7 @@
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,600&family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Orbitron:wght@700;900&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,600&family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="manifest" href="/order-maker/manifest.json">
   <link rel="apple-touch-icon" href="/order-maker/icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -174,9 +174,9 @@
       display: flex; flex-direction: column; gap: 0;
     }
     .header-title-main {
-      font-size: 15px; font-weight: 900; letter-spacing: 0.14em;
-      color: var(--accent); font-family: 'Orbitron', monospace;
-      text-shadow: 0 0 14px rgba(0,230,118,0.6), 0 0 28px rgba(0,230,118,0.2);
+      font-size: 22px; font-weight: 400; letter-spacing: 0.1em;
+      color: var(--accent); font-family: 'Anton', sans-serif;
+      text-shadow: 0 0 14px rgba(0,230,118,0.5), 0 0 28px rgba(0,230,118,0.15);
       line-height: 1;
     }
     .header-title-sub {
@@ -184,7 +184,15 @@
       color: var(--muted); text-transform: uppercase;
       line-height: 1.4; font-family: 'JetBrains Mono', monospace;
     }
-    .header-right { display: flex; gap: 6px; }
+    .header-right { display: flex; gap: 6px; align-items: center; }
+    .btn-color { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 0; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; flex-shrink: 0; }
+    .btn-color:active { background: rgba(0,230,118,.08); }
+    .btn-color-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 1.5px solid rgba(255,255,255,.2); transition: background .2s; display: block; }
+    .color-palette { display: none; position: fixed; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px; gap: 8px; flex-wrap: wrap; width: 128px; z-index: 300; box-shadow: 0 8px 32px rgba(0,0,0,.6); }
+    .color-palette.open { display: flex; }
+    .palette-swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: transform .15s, border-color .15s; }
+    .palette-swatch:hover { transform: scale(1.15); }
+    .palette-swatch.active { border-color: #fff; transform: scale(1.1); }
     .btn-icon {
       width: 36px; height: 36px; border-radius: 10px;
       background: rgba(0,230,118,0.04); border: 1px solid var(--border);
@@ -482,6 +490,21 @@
     </div>
   </div>
   <div class="header-right">
+    <div style="position:relative;">
+      <button class="btn-color" id="om-btn-color" aria-label="テーマカラー変更">
+        <span class="btn-color-dot" id="om-color-dot"></span>
+      </button>
+      <div class="color-palette" id="om-color-palette">
+        <span class="palette-swatch" data-color="#00e676" style="background:#00e676"></span>
+        <span class="palette-swatch" data-color="#ffd700" style="background:#ffd700"></span>
+        <span class="palette-swatch" data-color="#60a5fa" style="background:#60a5fa"></span>
+        <span class="palette-swatch" data-color="#f472b6" style="background:#f472b6"></span>
+        <span class="palette-swatch" data-color="#a78bfa" style="background:#a78bfa"></span>
+        <span class="palette-swatch" data-color="#fb923c" style="background:#fb923c"></span>
+        <span class="palette-swatch" data-color="#34d399" style="background:#34d399"></span>
+        <span class="palette-swatch" data-color="#f87171" style="background:#f87171"></span>
+      </div>
+    </div>
     <button class="btn-icon" onclick="openTutorial()" aria-label="使い方">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
     </button>
@@ -1712,6 +1735,50 @@ if (!localStorage.getItem('sm_tutorial_done')) {
     }
     sf.appendChild(frag);
   })();
+</script>
+<script>
+(function(){
+  var COLOR_MAP = {
+    '#00e676':'rgba(0,230,118,0.1)',
+    '#ffd700':'rgba(255,215,0,0.1)',
+    '#60a5fa':'rgba(96,165,250,0.1)',
+    '#f472b6':'rgba(244,114,182,0.1)',
+    '#a78bfa':'rgba(167,139,250,0.1)',
+    '#fb923c':'rgba(251,146,60,0.1)',
+    '#34d399':'rgba(52,211,153,0.1)',
+    '#f87171':'rgba(248,113,113,0.1)',
+  };
+  var btn = document.getElementById('om-btn-color');
+  var palette = document.getElementById('om-color-palette');
+  var dot = document.getElementById('om-color-dot');
+  var saved = localStorage.getItem('om-accentColor') || '#00e676';
+  applyColor(saved);
+
+  btn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var rect = btn.getBoundingClientRect();
+    palette.style.top  = (rect.bottom + 6) + 'px';
+    palette.style.right = (window.innerWidth - rect.right) + 'px';
+    palette.classList.toggle('open');
+  });
+  document.addEventListener('click', function(){ palette.classList.remove('open'); });
+  palette.addEventListener('click', function(e){
+    var sw = e.target.closest('.palette-swatch');
+    if (!sw) return;
+    applyColor(sw.dataset.color);
+    localStorage.setItem('om-accentColor', sw.dataset.color);
+    palette.classList.remove('open');
+  });
+
+  function applyColor(c){
+    document.documentElement.style.setProperty('--accent', c);
+    document.documentElement.style.setProperty('--accent-soft', COLOR_MAP[c] || 'rgba(0,230,118,0.1)');
+    if(dot) dot.style.background = c;
+    document.querySelectorAll('#om-color-palette .palette-swatch').forEach(function(s){
+      s.classList.toggle('active', s.dataset.color === c);
+    });
+  }
+})();
 </script>
 </body>
 </html>
