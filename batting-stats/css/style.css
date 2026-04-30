@@ -1447,3 +1447,15 @@ textarea { resize: vertical; min-height: 64px; }
   .modal { border-radius: 16px; max-height: 80vh; }
   .pwa-banner { left: 50%; right: auto; transform: translateX(-50%); width: 560px; border-radius: var(--radius) var(--radius) 0 0; }
 }
+
+#starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+@keyframes starTwinkle {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0.08; transform: scale(0.55); }
+}
+@keyframes shootStar {
+  0%   { transform: translate(0,0) rotate(22deg); opacity: 0; }
+  3%   { opacity: 1; }
+  9%   { opacity: 0; transform: translate(100vw,45vw) rotate(22deg); }
+  100% { transform: translate(100vw,45vw) rotate(22deg); opacity: 0; }
+}

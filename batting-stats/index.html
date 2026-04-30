@@ -79,6 +79,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <div id="starfield" aria-hidden="true"></div>
 
   <!-- ── Header ── -->
   <header class="app-header">
@@ -703,6 +704,30 @@
       b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#050912;color:#5a6fa0;font-size:13px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9999;border-top:1px solid rgba(255,215,0,.15)';
       b.innerHTML = '<span>本サイトはGoogle AdSense・Google AnalyticsのためにCookieを使用しています。詳細は<a href="/privacy.html" style="color:#ffd700">プライバシーポリシー</a>をご覧ください。</span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:transparent;color:#ffd700;border:1px solid #ffd700;border-radius:6px;padding:6px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">OK</button>';
       document.body.appendChild(b);
+    })();
+  </script>
+
+  <script>
+    (function(){
+      function rand(s){var x=Math.sin(s*127.1+311.7)*43758.5453;return x-Math.floor(x);}
+      var sf=document.getElementById('starfield');
+      var frag=document.createDocumentFragment();
+      for(var i=0;i<108;i++){
+        var x=rand(i*3+1)*100,y=rand(i*7+2)*100,size=0.6+rand(i*11+3)*1.8;
+        var op=0.18+rand(i*13+4)*0.72,dur=1.8+rand(i*17+5)*3.8,del=rand(i*19+6)*11;
+        var r=rand(i*23+7),col=r<0.11?'#ffd88a':r<0.25?'#c5d8ff':'#fff';
+        var el=document.createElement('div');
+        el.style.cssText='position:absolute;border-radius:50%;left:'+x+'%;top:'+y+'%;width:'+size+'px;height:'+size+'px;background:'+col+';opacity:'+op+';'+(size>1.5?'box-shadow:0 0 '+(size*2)+'px '+col+';':'')+'animation:starTwinkle '+dur+'s ease-in-out '+del+'s infinite alternate;';
+        frag.appendChild(el);
+      }
+      for(var j=0;j<5;j++){
+        var sx=5+rand(j*31+1)*40,sy=rand(j*37+2)*55,len=70+rand(j*41+3)*80;
+        var cyc=10+rand(j*43+4)*8,sd=j*3+rand(j*47+5)*2;
+        var sh=document.createElement('div');
+        sh.style.cssText='position:absolute;height:1px;left:'+sx+'%;top:'+sy+'%;width:'+len+'px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.95) 40%,rgba(200,220,255,0.6) 80%,transparent);transform:rotate(22deg);transform-origin:left center;animation:shootStar '+cyc+'s linear '+sd+'s infinite;';
+        frag.appendChild(sh);
+      }
+      sf.appendChild(frag);
     })();
   </script>
 
