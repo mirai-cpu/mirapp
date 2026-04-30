@@ -664,6 +664,19 @@
     .hero-ghost { animation: fadeUp .8s ease both; }
     .stats-strip { animation: fadeUp .6s .1s ease both; opacity: 0; animation-fill-mode: forwards; }
 
+    @keyframes starTwinkle {
+      from { opacity: 1; transform: scale(1); }
+      to   { opacity: 0.08; transform: scale(0.55); }
+    }
+    @keyframes shootStar {
+      0%   { transform: translate(0, 0) rotate(22deg); opacity: 0; }
+      3%   { opacity: 1; }
+      9%   { opacity: 0; transform: translate(100vw, 45vw) rotate(22deg); }
+      100% { transform: translate(100vw, 45vw) rotate(22deg); opacity: 0; }
+    }
+
+    #starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+
     /* ── Responsive ── */
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
@@ -693,6 +706,8 @@
   </style>
 </head>
 <body>
+
+  <div id="starfield" aria-hidden="true"></div>
 
   <!-- Nav -->
   <nav>
@@ -932,6 +947,36 @@
       <a href="/contact.html">お問い合わせ</a>
     </div>
   </footer>
+
+  <script>
+    (function(){
+      function rand(s){var x=Math.sin(s*127.1+311.7)*43758.5453;return x-Math.floor(x);}
+      var sf=document.getElementById('starfield');
+      var frag=document.createDocumentFragment();
+      for(var i=0;i<108;i++){
+        var x=rand(i*3+1)*100,y=rand(i*7+2)*100;
+        var size=0.6+rand(i*11+3)*1.8;
+        var op=0.18+rand(i*13+4)*0.72;
+        var dur=1.8+rand(i*17+5)*3.8;
+        var del=rand(i*19+6)*11;
+        var r=rand(i*23+7);
+        var col=r<0.11?'#ffd88a':r<0.25?'#c5d8ff':'#fff';
+        var el=document.createElement('div');
+        el.style.cssText='position:absolute;border-radius:50%;left:'+x+'%;top:'+y+'%;width:'+size+'px;height:'+size+'px;background:'+col+';opacity:'+op+';'+(size>1.5?'box-shadow:0 0 '+(size*2)+'px '+col+';':'')+'animation:starTwinkle '+dur+'s ease-in-out '+del+'s infinite alternate;';
+        frag.appendChild(el);
+      }
+      for(var j=0;j<5;j++){
+        var sx=5+rand(j*31+1)*40,sy=rand(j*37+2)*55;
+        var len=70+rand(j*41+3)*80;
+        var cyc=10+rand(j*43+4)*8;
+        var sd=j*3+rand(j*47+5)*2;
+        var sh=document.createElement('div');
+        sh.style.cssText='position:absolute;height:1px;left:'+sx+'%;top:'+sy+'%;width:'+len+'px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.95) 40%,rgba(200,220,255,0.6) 80%,transparent);transform:rotate(22deg);transform-origin:left center;animation:shootStar '+cyc+'s linear '+sd+'s infinite;';
+        frag.appendChild(sh);
+      }
+      sf.appendChild(frag);
+    })();
+  </script>
 
   <script>
     (function(){
