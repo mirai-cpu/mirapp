@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>習慣化を続けるコツ｜ゲーム感覚で毎日の習慣を記録する無料アプリを使ってみた | Somirai Lab</title>
+  <meta name="description" content="習慣化が続かない理由と3つのコツを解説。ゲーム感覚でXP獲得・レベルアップできる無料習慣トラッカー「TEMPER」の使い方も紹介。登録不要でブラウザだけで使えます。">
+  <meta name="keywords" content="習慣化 アプリ 無料,習慣 続けるコツ,習慣トラッカー 無料,習慣管理 アプリ,三日坊主 克服">
+  <link rel="canonical" href="https://somirai.jp/blog/habit-app-temper.html">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <!-- OGP -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://somirai.jp/blog/habit-app-temper.html">
+  <meta property="og:title" content="習慣化を続けるコツ｜ゲーム感覚で毎日の習慣を記録する無料アプリを使ってみた">
+  <meta property="og:description" content="習慣化が続かない理由と3つのコツを解説。ゲーム感覚でXP獲得・レベルアップできる無料習慣トラッカー「TEMPER」の使い方も紹介。">
+  <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- 構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "習慣化を続けるコツ｜ゲーム感覚で毎日の習慣を記録する無料アプリを使ってみた",
+    "description": "習慣化が続かない理由と3つのコツを解説。ゲーム感覚でXP獲得・レベルアップできる無料習慣トラッカー「TEMPER」の使い方も紹介。",
+    "datePublished": "2026-05-01",
+    "dateModified": "2026-05-01",
+    "author": {
+      "@type": "Organization",
+      "name": "Somirai Lab",
+      "url": "https://somirai.jp/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Somirai Lab",
+      "url": "https://somirai.jp/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://somirai.jp/blog/habit-app-temper.html"
+    }
+  }
+  </script>
+
+  <!-- Google Tag Manager -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9485428408605916" crossorigin="anonymous"></script>
+
+  <!-- フォント -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0b;
+      --surface:   #111114;
+      --surface2:  #18181c;
+      --border:    #222228;
+      --text:      #e2e8f0;
+      --text-sec:  #94a3b8;
+      --text-mut:  #475569;
+      --accent:    #ff6428;
+      --accent-soft: rgba(255, 100, 40, 0.12);
+      --radius:    16px;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ヘッダー */
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .site-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .site-logo span { color: var(--accent); }
+    .header-nav {
+      margin-left: auto;
+      display: flex;
+      gap: 16px;
+    }
+    .header-nav a {
+      color: var(--text-sec);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+    .header-nav a:hover { color: var(--text); }
+
+    /* パンくず */
+    .breadcrumb {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      font-size: 0.8rem;
+      color: var(--text-mut);
+    }
+    .breadcrumb a {
+      color: var(--text-mut);
+      text-decoration: none;
+    }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 6px; }
+
+    /* メインレイアウト */
+    .page-wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* 記事ヘッダー */
+    .article-header {
+      padding: 32px 0 40px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+    .article-category {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+    .article-title {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--text-mut);
+    }
+    .article-meta time { display: flex; align-items: center; gap: 6px; }
+
+    /* 本文スタイル */
+    .article-body {
+      font-size: 1rem;
+      line-height: 1.9;
+    }
+
+    .article-body h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 56px 0 20px;
+      padding-left: 16px;
+      border-left: 3px solid var(--accent);
+      line-height: 1.4;
+    }
+    .article-body h2:first-of-type { margin-top: 0; }
+
+    .article-body h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 36px 0 12px;
+    }
+
+    .article-body p {
+      color: var(--text-sec);
+      margin-bottom: 20px;
+    }
+
+    .article-body p strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .article-body ul, .article-body ol {
+      margin: 0 0 20px 0;
+      padding-left: 0;
+      list-style: none;
+    }
+    .article-body ul li, .article-body ol li {
+      color: var(--text-sec);
+      padding: 6px 0 6px 24px;
+      position: relative;
+    }
+    .article-body ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 14px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .article-body ol {
+      counter-reset: ol-counter;
+    }
+    .article-body ol li {
+      counter-increment: ol-counter;
+    }
+    .article-body ol li::before {
+      content: counter(ol-counter);
+      position: absolute;
+      left: 0;
+      top: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-soft);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ポイントボックス */
+    .point-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin: 28px 0;
+    }
+    .point-box .box-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .point-box p {
+      margin-bottom: 0;
+    }
+    .point-box ul { margin-bottom: 0; }
+
+    /* 強調ボックス */
+    .highlight-box {
+      background: var(--accent-soft);
+      border: 1px solid rgba(255, 100, 40, 0.25);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+    .highlight-box p {
+      margin-bottom: 0;
+      color: var(--text);
+    }
+
+    /* ツール紹介カード */
+    .tool-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin: 36px 0;
+    }
+    .tool-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .tool-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--accent-soft);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .tool-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .tool-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.1);
+      border: 1px solid rgba(74, 222, 128, 0.2);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .tool-desc {
+      color: var(--text-sec);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .tool-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .tool-feature {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.85rem;
+      color: var(--text-sec);
+    }
+    .tool-feature strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 12px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .cta-btn:hover { opacity: 0.85; }
+
+    /* ステップ */
+    .step-list {
+      counter-reset: step-counter;
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px;
+    }
+    .step-list li {
+      counter-increment: step-counter;
+      position: relative;
+      padding: 0 0 28px 52px;
+      color: var(--text-sec);
+    }
+    .step-list li::before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-list li::after {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 32px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+    .step-list li:last-child::after { display: none; }
+    .step-list li strong {
+      display: block;
+      color: var(--text);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    /* フッター */
+    .site-footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-mut);
+      margin-top: 80px;
+    }
+    .site-footer a {
+      color: var(--text-mut);
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    .site-footer a:hover { color: var(--text); }
+    .site-footer .footer-links { margin-bottom: 16px; }
+
+    /* レスポンシブ */
+    @media (max-width: 600px) {
+      .page-wrapper { padding: 0 16px 60px; }
+      .article-header { padding: 24px 0 32px; }
+      .tool-features { grid-template-columns: 1fr 1fr; }
+      .step-list li { padding-left: 44px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header class="site-header">
+  <a href="https://somirai.jp/" class="site-logo">Somirai<span>.</span>jp</a>
+  <nav class="header-nav">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/habit/">TEMPER</a>
+    <a href="https://somirai.jp/blog/">ブログ</a>
+  </nav>
+</header>
+
+<!-- パンくず -->
+<nav class="breadcrumb" aria-label="パンくずリスト">
+  <a href="https://somirai.jp/">ホーム</a>
+  <span>›</span>
+  <a href="https://somirai.jp/blog/">ブログ</a>
+  <span>›</span>
+  習慣化を続けるコツ
+</nav>
+
+<!-- メインコンテンツ -->
+<main class="page-wrapper">
+  <article>
+
+    <!-- 記事ヘッダー -->
+    <header class="article-header">
+      <div class="article-category">習慣管理</div>
+      <h1 class="article-title">習慣化を続けるコツ｜ゲーム感覚で毎日の習慣を記録する無料アプリを使ってみた</h1>
+      <div class="article-meta">
+        <time datetime="2026-05-01">2026年5月1日</time>
+        <span>約2,300字 · 読了約5分</span>
+      </div>
+    </header>
+
+    <!-- AdSense（記事上） -->
+
+    <!-- 本文 -->
+    <div class="article-body">
+
+      <p>「今年こそ毎日運動する」「英語を1日30分勉強する」――そう決意したのに、気づけば3日で終わっていた。そんな経験はないでしょうか。</p>
+
+      <p>習慣化は多くの人が挑戦し、多くの人が途中で諦めてきたテーマです。意志力の問題だと思われがちですが、実は<strong>続けられない理由には明確なパターン</strong>があります。そのパターンさえ知ってしまえば、誰でも習慣を積み上げることができます。</p>
+
+      <p>この記事では、習慣化が難しい本当の理由と、科学的な知見にもとづいた「続けるための3つのコツ」を解説します。さらに後半では、ゲーム感覚で習慣を記録できる無料ブラウザツール <strong>TEMPER</strong> の使い方もご紹介します。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>なぜ習慣化はこんなに難しいのか</h2>
+
+      <p>習慣化に失敗する原因は、「意志力が弱い」からではありません。人間の脳は本質的に、<strong>新しい行動を続けることを「コスト」として認識する</strong>ように設計されています。</p>
+
+      <p>脳科学の観点では、習慣とは「手続き記憶」と呼ばれる長期記憶の一種です。ある行動が習慣として定着するには、同じ文脈で繰り返すことで神経回路を強化する必要があります。研究者によれば、この定着には平均で<strong>66日程度</strong>かかるとされています（Phillippa Lally らの研究より）。</p>
+
+      <p>つまり「3日坊主」は意志が弱いのではなく、脳の自然な反応なのです。問題は仕組みを知らずに、純粋な根性だけで乗り越えようとすること。仕組みを整えれば、習慣化は誰にでも可能です。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>習慣化を続けるための3つのコツ</h2>
+
+      <h3>1. 「小さすぎる」くらい小さく始める</h3>
+
+      <p>目標を大きく設定しすぎることが、挫折の最大の原因のひとつです。「毎日1時間ジョギング」ではなく、「靴を履いて玄関を出るだけでOK」というレベルまで落とします。</p>
+
+      <p>行動科学者 BJ Fogg が提唱する「タイニーハビット」の考え方では、<strong>行動のハードルを極限まで下げることで、脳の抵抗を最小化</strong>できるとされています。まず「やる」という行動自体を習慣にし、量は後から自然に増やします。</p>
+
+      <div class="point-box">
+        <div class="box-label">実践例</div>
+        <ul>
+          <li>英語学習 → 「アプリを開くだけでいい」からスタート</li>
+          <li>読書 → 「1ページだけ読む」で十分</li>
+          <li>筋トレ → 「腕立て1回だけOK」と決める</li>
+        </ul>
+      </div>
+
+      <h3>2. 記録して「見える化」する</h3>
+
+      <p>継続の最大の敵は「サボったことが見えにくい」ことです。カレンダーに印をつける、アプリで記録するなど、<strong>行動を可視化するだけで継続率が大きく上がります</strong>。</p>
+
+      <p>これは心理学でいう「進捗効果（Progress Principle）」に基づいています。自分の成長が見えると内発的動機が高まり、「次もやろう」という気持ちが自然に生まれるのです。</p>
+
+      <h3>3. 「連続記録（ストリーク）」を意識する</h3>
+
+      <p>習慣管理アプリで広く採用されている「ストリーク機能」は、単純でありながら強力です。「もう10日も続いている、ここで止めたくない」という心理が、行動を後押しします。</p>
+
+      <p>ただし注意点もあります。1日ミスをしたときに「もうダメだ」と全部やめてしまうのは典型的な失敗パターンです。<strong>「ストリークが切れても、翌日からリスタートすればいい」</strong>というマインドセットをあらかじめ持っておくことが大切です。</p>
+
+      <div class="highlight-box">
+        <p>まとめると、習慣化のコツは「小さく始める」「見える化する」「ストリークを育てる」の3点です。この3つを同時に叶えてくれるツールが次に紹介する TEMPER です。</p>
+      </div>
+
+      <!-- AdSense（記事中） -->
+
+      <!-- ===== h2 ===== -->
+      <h2>無料習慣トラッカー「TEMPER」とは</h2>
+
+      <!-- ツール紹介カード -->
+      <div class="tool-card">
+        <div class="tool-card-header">
+          <div class="tool-icon">T</div>
+          <div>
+            <div class="tool-name">TEMPER — 習慣トラッカー</div>
+            <div class="tool-badge">無料 · 登録不要 · ブラウザのみ</div>
+          </div>
+        </div>
+        <p class="tool-desc">
+          毎日の習慣を記録するたびに XP（経験値）を獲得してレベルアップ。バッジ収集・連続記録（ストリーク）でゲーム感覚で継続できる習慣トラッカーです。アカウント登録なし、インストール不要でブラウザだけで使えます。
+        </p>
+        <div class="tool-features">
+          <div class="tool-feature">
+            <strong>XPとレベルアップ</strong>
+            記録するたびに経験値獲得
+          </div>
+          <div class="tool-feature">
+            <strong>バッジ収集</strong>
+            達成に応じて解除される報酬
+          </div>
+          <div class="tool-feature">
+            <strong>ストリーク機能</strong>
+            連続記録を視覚化
+          </div>
+          <div class="tool-feature">
+            <strong>統計表示</strong>
+            週・月単位のグラフ確認
+          </div>
+          <div class="tool-feature">
+            <strong>テーマ変更</strong>
+            好みのカラーに変更可能
+          </div>
+          <div class="tool-feature">
+            <strong>データ書き出し</strong>
+            記録をエクスポート可能
+          </div>
+        </div>
+        <a href="https://somirai.jp/habit/" class="cta-btn" target="_blank" rel="noopener">
+          TEMPER を無料で使ってみる
+        </a>
+      </div>
+
+      <p>TEMPER は Somirai Lab が開発した無料の習慣トラッカーです。シンプルなUI の中に「続けたくなる仕掛け」が随所に盛り込まれているのが特徴です。</p>
+
+      <p>一般的な習慣トラッカーは「記録できたかどうか」を確認する機能だけを持ちます。しかし TEMPER は記録という行動に対してゲームらしいフィードバック（XP・レベル・バッジ）を返すことで、<strong>「今日もやろう」という気持ちを自然に引き出す</strong>設計になっています。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>TEMPERの使い方：4ステップで始める</h2>
+
+      <ol class="step-list">
+        <li>
+          <strong>ブラウザで開く</strong>
+          <a href="https://somirai.jp/habit/" target="_blank" rel="noopener">https://somirai.jp/habit/</a> にアクセスするだけで使えます。アカウント登録・アプリインストールは不要です。
+        </li>
+        <li>
+          <strong>習慣を追加する</strong>
+          「+ 習慣を追加」ボタンから記録したい習慣を入力します。「朝のストレッチ」「読書30分」「水2L飲む」など、具体的な名前をつけましょう。まずは1〜3個からスタートするのがおすすめです。
+        </li>
+        <li>
+          <strong>毎日チェックする</strong>
+          できた習慣をタップするとXPが加算されます。連続記録が伸びるとストリークが表示され、達成条件を満たすとバッジが解除されます。このフィードバックが継続のモチベーションになります。
+        </li>
+        <li>
+          <strong>統計で振り返る</strong>
+          週・月単位の達成状況をグラフで確認できます。「先週は週3回しかできなかった」「今月は達成率80%だった」など、自分のペースを客観的に把握することで次の行動につながります。
+        </li>
+      </ol>
+
+      <div class="point-box">
+        <div class="box-label">使い始めのコツ</div>
+        <ul>
+          <li>習慣は最初から5個以上登録しない（管理しきれなくなる）</li>
+          <li>毎日チェックする時間を固定する（朝起きたら・寝る前など）</li>
+          <li>ストリークが切れても自分を責めずに翌日リスタート</li>
+        </ul>
+      </div>
+
+      <!-- ===== h2 ===== -->
+      <h2>TEMPERがおすすめな人</h2>
+
+      <p>TEMPER は次のような方に特に向いています。</p>
+
+      <ul>
+        <li>習慣化アプリを使ったことはあるが、飽きてしまった経験がある</li>
+        <li>ゲームが好きで、達成感や報酬に動機づけられやすい</li>
+        <li>アカウント登録が面倒で、すぐに使いたい</li>
+        <li>スマートフォンアプリより、パソコン・ブラウザで管理したい</li>
+        <li>記録を続けながら自分の習慣パターンを可視化したい</li>
+      </ul>
+
+      <p>逆に、チームで進捗を共有したい場合や、詳細なタスク管理と連携したい場合には、専用のプロジェクト管理ツールを組み合わせる方法も検討してみてください。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>まとめ</h2>
+
+      <p>習慣化が続かないのは意志力の問題ではなく、<strong>脳の仕組みと仕組み化の設計の問題</strong>です。</p>
+
+      <p>今回紹介した3つのコツ（小さく始める・見える化する・ストリークを育てる）を意識するだけで、挫折しにくい環境を自分で作ることができます。そしてその3つを手軽に実践できる場所として、TEMPER は有力な選択肢のひとつです。</p>
+
+      <p>登録不要・完全無料で今すぐ使えるので、「とりあえず1つだけ記録してみる」という気軽なスタートで試してみてください。習慣化の第一歩は、仕組みを整えることから始まります。</p>
+
+      <div class="tool-card" style="margin-top: 40px;">
+        <div class="tool-card-header">
+          <div class="tool-icon">T</div>
+          <div>
+            <div class="tool-name">TEMPER — 無料習慣トラッカー</div>
+            <div class="tool-badge">登録不要 · 無料 · ブラウザのみ</div>
+          </div>
+        </div>
+        <p class="tool-desc">ゲーム感覚でXP獲得・レベルアップ。バッジ収集・ストリーク機能で「続けたくなる」習慣トラッカー。</p>
+        <a href="https://somirai.jp/habit/" class="cta-btn" target="_blank" rel="noopener">
+          今すぐ無料で使ってみる
+        </a>
+      </div>
+
+      <!-- AdSense（記事下） -->
+
+    </div>
+    <!-- /article-body -->
+
+  </article>
+</main>
+
+<!-- フッター -->
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/about.html">このサイトについて</a>
+    <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    <a href="https://somirai.jp/contact.html">お問い合わせ</a>
+  </div>
+  <p>&#169; 2026 Somirai Lab</p>
+</footer>
+
+</body>
+</html>
