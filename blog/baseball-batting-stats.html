@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>野球のスコアブック・打撃成績を無料でブラウザ管理する方法｜LUMBER（打撃成績トラッカー）の使い方 | Somirai Lab</title>
+  <meta name="description" content="草野球・少年野球の打撃成績をノートやExcelで管理している方へ。登録不要・無料のブラウザツール「LUMBER」なら打率・OPS・出塁率を自動計算。使い方を4ステップで解説します。">
+  <meta name="keywords" content="野球 打撃成績 記録 無料,草野球 スコア管理,打率 管理 ツール,打撃成績 アプリ,野球 成績 ブラウザ,OPS 計算 無料,少年野球 記録 管理,社会人野球 成績管理">
+  <link rel="canonical" href="https://somirai.jp/blog/baseball-batting-stats.html">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <!-- OGP -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://somirai.jp/blog/baseball-batting-stats.html">
+  <meta property="og:title" content="野球のスコアブック・打撃成績を無料でブラウザ管理する方法｜LUMBERの使い方">
+  <meta property="og:description" content="草野球・少年野球の打撃成績をノートやExcelで管理している方へ。登録不要・無料のブラウザツール「LUMBER」なら打率・OPS・出塁率を自動計算。使い方を4ステップで解説します。">
+  <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- 構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "野球のスコアブック・打撃成績を無料でブラウザ管理する方法｜LUMBER（打撃成績トラッカー）の使い方",
+    "description": "草野球・少年野球の打撃成績をノートやExcelで管理している方へ。登録不要・無料のブラウザツール「LUMBER」なら打率・OPS・出塁率を自動計算。使い方を4ステップで解説します。",
+    "datePublished": "2026-05-05",
+    "dateModified": "2026-05-05",
+    "author": {
+      "@type": "Organization",
+      "name": "Somirai Lab",
+      "url": "https://somirai.jp/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Somirai Lab",
+      "url": "https://somirai.jp/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://somirai.jp/blog/baseball-batting-stats.html"
+    }
+  }
+  </script>
+
+  <!-- Google Tag Manager -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9485428408605916" crossorigin="anonymous"></script>
+
+  <!-- フォント -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0b;
+      --surface:   #111114;
+      --surface2:  #18181c;
+      --border:    #222228;
+      --text:      #e2e8f0;
+      --text-sec:  #94a3b8;
+      --text-mut:  #475569;
+      --accent:    #ff6428;
+      --accent-soft: rgba(255, 100, 40, 0.12);
+      --radius:    16px;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ヘッダー */
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .site-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .site-logo span { color: var(--accent); }
+    .header-nav {
+      margin-left: auto;
+      display: flex;
+      gap: 16px;
+    }
+    .header-nav a {
+      color: var(--text-sec);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+    .header-nav a:hover { color: var(--text); }
+
+    /* パンくず */
+    .breadcrumb {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      font-size: 0.8rem;
+      color: var(--text-mut);
+    }
+    .breadcrumb a {
+      color: var(--text-mut);
+      text-decoration: none;
+    }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 6px; }
+
+    /* メインレイアウト */
+    .page-wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* 記事ヘッダー */
+    .article-header {
+      padding: 32px 0 40px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+    .article-category {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+    .article-title {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--text-mut);
+    }
+    .article-meta time { display: flex; align-items: center; gap: 6px; }
+
+    /* 本文スタイル */
+    .article-body {
+      font-size: 1rem;
+      line-height: 1.9;
+    }
+
+    .article-body h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 56px 0 20px;
+      padding-left: 16px;
+      border-left: 3px solid var(--accent);
+      line-height: 1.4;
+    }
+    .article-body h2:first-of-type { margin-top: 0; }
+
+    .article-body h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 36px 0 12px;
+    }
+
+    .article-body p {
+      color: var(--text-sec);
+      margin-bottom: 20px;
+    }
+
+    .article-body p strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .article-body ul, .article-body ol {
+      margin: 0 0 20px 0;
+      padding-left: 0;
+      list-style: none;
+    }
+    .article-body ul li, .article-body ol li {
+      color: var(--text-sec);
+      padding: 6px 0 6px 24px;
+      position: relative;
+    }
+    .article-body ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 14px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .article-body ol {
+      counter-reset: ol-counter;
+    }
+    .article-body ol li {
+      counter-increment: ol-counter;
+    }
+    .article-body ol li::before {
+      content: counter(ol-counter);
+      position: absolute;
+      left: 0;
+      top: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-soft);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ポイントボックス */
+    .point-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin: 28px 0;
+    }
+    .point-box .box-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .point-box p {
+      margin-bottom: 0;
+    }
+    .point-box ul { margin-bottom: 0; }
+
+    /* 強調ボックス */
+    .highlight-box {
+      background: var(--accent-soft);
+      border: 1px solid rgba(255, 100, 40, 0.25);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+    .highlight-box p {
+      margin-bottom: 0;
+      color: var(--text);
+    }
+
+    /* ツール紹介カード */
+    .tool-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin: 36px 0;
+    }
+    .tool-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .tool-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--accent-soft);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .tool-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .tool-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.1);
+      border: 1px solid rgba(74, 222, 128, 0.2);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .tool-desc {
+      color: var(--text-sec);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .tool-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .tool-feature {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.85rem;
+      color: var(--text-sec);
+    }
+    .tool-feature strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 12px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .cta-btn:hover { opacity: 0.85; }
+
+    /* ステップ */
+    .step-list {
+      counter-reset: step-counter;
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px;
+    }
+    .step-list li {
+      counter-increment: step-counter;
+      position: relative;
+      padding: 0 0 28px 52px;
+      color: var(--text-sec);
+    }
+    .step-list li::before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-list li::after {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 32px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+    .step-list li:last-child::after { display: none; }
+    .step-list li strong {
+      display: block;
+      color: var(--text);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    /* 指標テーブル */
+    .stat-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0 28px;
+      font-size: 0.9rem;
+    }
+    .stat-table th {
+      background: var(--surface2);
+      color: var(--accent);
+      font-weight: 700;
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-sec);
+      vertical-align: top;
+    }
+    .stat-table td:first-child {
+      color: var(--text);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .stat-table tr:last-child td { border-bottom: none; }
+    .stat-table tr:hover td { background: var(--surface); }
+
+    /* フッター */
+    .site-footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-mut);
+      margin-top: 80px;
+    }
+    .site-footer a {
+      color: var(--text-mut);
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    .site-footer a:hover { color: var(--text); }
+    .site-footer .footer-links { margin-bottom: 16px; }
+
+    /* レスポンシブ */
+    @media (max-width: 600px) {
+      .page-wrapper { padding: 0 16px 60px; }
+      .article-header { padding: 24px 0 32px; }
+      .tool-features { grid-template-columns: 1fr 1fr; }
+      .step-list li { padding-left: 44px; }
+      .stat-table { font-size: 0.82rem; }
+      .stat-table th, .stat-table td { padding: 10px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header class="site-header">
+  <a href="https://somirai.jp/" class="site-logo">Somirai<span>.</span>jp</a>
+  <nav class="header-nav">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/batting-stats/">LUMBER</a>
+    <a href="https://somirai.jp/blog/">ブログ</a>
+  </nav>
+</header>
+
+<!-- パンくず -->
+<nav class="breadcrumb" aria-label="パンくずリスト">
+  <a href="https://somirai.jp/">ホーム</a>
+  <span>›</span>
+  <a href="https://somirai.jp/blog/">ブログ</a>
+  <span>›</span>
+  野球の打撃成績を無料で管理する方法
+</nav>
+
+<!-- メインコンテンツ -->
+<main class="page-wrapper">
+  <article>
+
+    <!-- 記事ヘッダー -->
+    <header class="article-header">
+      <div class="article-category">野球・スポーツ</div>
+      <h1 class="article-title">野球のスコアブック・打撃成績を無料でブラウザ管理する方法｜LUMBER（打撃成績トラッカー）の使い方</h1>
+      <div class="article-meta">
+        <time datetime="2026-05-05">2026年5月5日</time>
+        <span>約2,600字 · 読了約6分</span>
+      </div>
+    </header>
+
+    <!-- AdSense（記事上） -->
+
+    <!-- 本文 -->
+    <div class="article-body">
+
+      <p>シーズンが始まって試合を重ねているのに、自分の打率すら正確に把握できていない――草野球や少年野球のチームでは、よくある話です。試合後にスコアブックを見返しても、打率を計算するのが面倒で放置してしまう。そもそもスコアシートが手書きのままで、どこかに紙が消えてしまった、という経験はないでしょうか。</p>
+
+      <p>この記事では、ノートや Excel に頼らずに<strong>ブラウザだけで打撃成績を記録・管理できる無料ツール「LUMBER」</strong>を紹介します。アカウント登録不要、インストール不要で、試合結果を入力するだけで打率・OPS・出塁率などを自動計算してくれます。</p>
+
+      <p>使い方を4ステップで解説するので、野球の統計に詳しくない方でもすぐに使い始められます。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>野球の打撃成績、ちゃんと記録していますか？</h2>
+
+      <h3>草野球チームでよくある記録の悩み</h3>
+
+      <p>社会人の草野球チームや少年野球のチームでは、打撃成績の記録方法がアナログのままになりがちです。試合ごとにスコアブックに書き込むものの、シーズン通算の打率を計算しようとすると、電卓を叩いて手計算するはめになります。</p>
+
+      <p>Excel でまとめているチームもありますが、入力・計算式の管理・メンバーへの共有と、運用コストが意外と高い。しかも担当者が変わると引き継ぎが難しくなります。</p>
+
+      <div class="point-box">
+        <div class="box-label">よくある記録の悩み</div>
+        <ul>
+          <li>紙のスコアシートがどこかへ行ってしまう</li>
+          <li>打率の計算が毎回手間で結局やらなくなる</li>
+          <li>Excel 管理は関数が複雑でメンバーが触れない</li>
+          <li>スマホアプリは登録が必要で使い始めるまでが長い</li>
+          <li>シーズン終わりにデータが残らず「あの選手の通算打率は？」がわからない</li>
+        </ul>
+      </div>
+
+      <p>記録する仕組みが整っていないと、データが蓄積されません。データがなければ「自分はどこが弱いのか」もわからない。せっかく練習しているのに、課題を数字で把握できないのはもったいないことです。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>打撃成績を記録するメリット</h2>
+
+      <h3>打率・出塁率・長打率などで弱点が見える</h3>
+
+      <p>打撃成績を数字で記録すると、感覚ではなく<strong>データに基づいて自分の課題を把握</strong>できます。たとえば打率は低くないのに得点に絡めないと感じているなら、出塁率が低い可能性があります。長打率が打率と大きく変わらない場合は、長打力の不足が数字に出ています。</p>
+
+      <p>感覚で「最近調子が悪い気がする」と悩むより、「直近10試合の打率が.180まで落ちた」と把握できると、練習の方向性も定まります。</p>
+
+      <h3>モチベーション維持につながる</h3>
+
+      <p>記録を続けるもうひとつの効果が、モチベーションの維持です。打率が3割を超えた週、ヒットを連続で打てた試合、OPS が過去最高を更新したシーズン。こうした「見える成長」が次の試合への意欲を高めます。</p>
+
+      <p>スポーツ心理学では、<strong>自分の進捗が可視化されると内発的動機が高まる</strong>ことが知られています。成績記録は単なるデータ管理ではなく、プレーヤーとしての成長を実感するための仕組みでもあります。</p>
+
+      <h3>チーム内での客観的な評価になる</h3>
+
+      <p>草野球では「あの人は打っているイメージがある」という印象論で打順が決まりがちです。しかし実際に成績を記録してみると、印象と数字が一致しないことは珍しくありません。成績データがあれば、監督や仲間との会話も客観的な根拠にもとづいたものになります。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>無料で使える打撃成績管理ツール「LUMBER」とは</h2>
+
+      <!-- ツール紹介カード -->
+      <div class="tool-card">
+        <div class="tool-card-header">
+          <div class="tool-icon">L</div>
+          <div>
+            <div class="tool-name">LUMBER — 打撃成績トラッカー</div>
+            <div class="tool-badge">無料 · 登録不要 · ブラウザのみ</div>
+          </div>
+        </div>
+        <p class="tool-desc">
+          打席結果を入力するだけで打率・出塁率・長打率・OPS を自動計算する打撃成績トラッカーです。チーム・選手ごとに管理でき、試合単位の記録からシーズン通算成績まで一覧で確認できます。アカウント登録なし、インストール不要でブラウザだけで動作します。
+        </p>
+        <div class="tool-features">
+          <div class="tool-feature">
+            <strong>打率 自動計算</strong>
+            安打数 ÷ 打数を即時表示
+          </div>
+          <div class="tool-feature">
+            <strong>OPS 表示</strong>
+            出塁率 + 長打率を自動算出
+          </div>
+          <div class="tool-feature">
+            <strong>選手別管理</strong>
+            複数選手をまとめて記録
+          </div>
+          <div class="tool-feature">
+            <strong>試合別記録</strong>
+            1試合ごとの打席結果を入力
+          </div>
+          <div class="tool-feature">
+            <strong>通算成績確認</strong>
+            シーズン全体の集計に対応
+          </div>
+          <div class="tool-feature">
+            <strong>登録不要</strong>
+            開いてすぐ使い始められる
+          </div>
+        </div>
+        <a href="https://somirai.jp/batting-stats/" class="cta-btn" target="_blank" rel="noopener">
+          LUMBER を無料で使ってみる
+        </a>
+      </div>
+
+      <p>LUMBER は Somirai Lab が開発した、草野球・少年野球・社会人野球向けの打撃成績管理ツールです。打率や OPS といった統計を、自分で計算式を組まなくても自動で出してくれるのが最大の特徴です。</p>
+
+      <p>スマートフォンアプリと違い、アカウント登録やアプリインストールが不要なため、<strong>チームのメンバーに URL を送るだけで全員が使い始められます</strong>。スコアをつける担当者が変わっても、引き継ぎコストがほぼゼロというのも運用しやすいポイントです。</p>
+
+      <!-- AdSense（記事中） -->
+
+      <!-- ===== h2 ===== -->
+      <h2>LUMBERの使い方：4ステップ</h2>
+
+      <ol class="step-list">
+        <li>
+          <strong>ブラウザで開く</strong>
+          <a href="https://somirai.jp/batting-stats/" target="_blank" rel="noopener">https://somirai.jp/batting-stats/</a> にアクセスします。スマートフォンでもパソコンでも使えます。アカウント登録・ログインは一切不要で、ページを開いた瞬間から使い始められます。
+        </li>
+        <li>
+          <strong>選手・チームを登録する</strong>
+          画面の指示に従ってチーム名と選手名を入力します。登録した選手はリスト形式で表示され、複数の選手をまとめて管理できます。少年野球のコーチが全選手を一括で管理したり、個人が自分だけを登録したりと、用途に合わせて使えます。
+        </li>
+        <li>
+          <strong>試合ごとに打席結果を入力する</strong>
+          試合日と打席結果（安打・二塁打・三塁打・本塁打・四球・死球・凡退など）を選択して記録します。スコアシートを見ながらまとめて入力するのが一般的です。試合直後に入力する習慣をつけると、記録漏れが防げます。
+        </li>
+        <li>
+          <strong>打率・OPS・長打率などの統計を確認する</strong>
+          入力が完了すると、打率（AVG）・出塁率（OBP）・長打率（SLG）・OPS が自動で計算・表示されます。試合単位でも、通算でも確認できるため、「今シーズンの調子はどうか」を数値で把握できます。
+        </li>
+      </ol>
+
+      <div class="highlight-box">
+        <p>試合後10分で入力できます。スコアシートを手元に置いて打席結果を順番に入力するだけで、シーズン通算の打撃成績が自動でまとまります。</p>
+      </div>
+
+      <!-- ===== h2 ===== -->
+      <h2>LUMBERで確認できる主な打撃成績指標</h2>
+
+      <p>野球の統計指標には様々なものがありますが、LUMBER では特に重要な4つの指標を確認できます。それぞれの意味と、数字をどう読むかを簡単に解説します。</p>
+
+      <table class="stat-table">
+        <thead>
+          <tr>
+            <th>指標</th>
+            <th>計算方法</th>
+            <th>読み方・目安</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>打率（AVG）</td>
+            <td>安打数 ÷ 打数</td>
+            <td>草野球では.250（4打数1安打）を超えれば合格ライン。.300を超えると好打者の目安。</td>
+          </tr>
+          <tr>
+            <td>出塁率（OBP）</td>
+            <td>（安打 + 四球 + 死球）÷（打数 + 四球 + 死球 + 犠飛）</td>
+            <td>打率より低くなることはない。四球を選べる選手は出塁率が打率より高くなる。.330以上を目指したい。</td>
+          </tr>
+          <tr>
+            <td>長打率（SLG）</td>
+            <td>塁打数 ÷ 打数</td>
+            <td>シングルヒットばかりの選手は打率に近い数値になる。二塁打・本塁打が多い選手は打率より大幅に高くなる。</td>
+          </tr>
+          <tr>
+            <td>OPS</td>
+            <td>出塁率 + 長打率</td>
+            <td>打者の総合評価指標。プロでは.800以上が一流の目安。草野球では.700を超えると攻撃の中心選手と言える。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>各指標の読み方と改善のヒント</h3>
+
+      <p><strong>打率が低いが出塁率が高い選手</strong>は、四球を選ぶ能力が高いということです。出塁さえできれば得点機会を作れるため、得点につながる貢献度は打率だけではわかりません。</p>
+
+      <p><strong>打率はそこそこなのに OPS が低い選手</strong>は、ほぼシングルヒットのみで長打がない可能性があります。スイングの形を見直して、長打を意識した打撃を練習するきっかけになります。</p>
+
+      <p><strong>OPS を改善したいなら</strong>、まず四球を積極的に選ぶ意識を持つことが手っ取り早い方法です。出塁率が上がると OPS は自然に改善します。打率を上げるより四球を選ぶほうが技術的にも短期間で取り組みやすい面があります。</p>
+
+      <div class="point-box">
+        <div class="box-label">記録を活かす使い方</div>
+        <ul>
+          <li>月1回、シーズン通算の OPS を確認して前月と比較する</li>
+          <li>打率が下がった時期の打席内容（凡退の種類）を振り返る</li>
+          <li>出塁率と打率の差が大きい選手は「選球眼が良い」と評価できる</li>
+          <li>チーム全体の成績を並べて、打順の参考にする</li>
+        </ul>
+      </div>
+
+      <!-- ===== h2 ===== -->
+      <h2>こんな人におすすめ</h2>
+
+      <p>LUMBER は次のような方に特に向いています。</p>
+
+      <ul>
+        <li>草野球チームのスコア担当で、毎試合の成績を楽にまとめたい</li>
+        <li>少年野球のコーチ・親御さんで、選手全員の成績を一括管理したい</li>
+        <li>自分の打撃成績を記録して、シーズンを通じた傾向を把握したい</li>
+        <li>アプリのアカウント登録が面倒で、すぐに使い始めたい</li>
+        <li>Excel の計算式を自分で組むのが難しいと感じている</li>
+        <li>打率だけでなく OPS などの指標も確認してみたい</li>
+      </ul>
+
+      <p>逆に、プロ野球の詳細なセイバーメトリクス分析（wRC+ や FIP など）が必要な方には、より専門的なデータ分析ツールが適しています。LUMBER はあくまで草野球・アマチュア野球の日常的な成績管理を手軽に行うことを目的に設計されています。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>まとめ</h2>
+
+      <p>野球の打撃成績を記録することは、プレーヤーとしての成長を数字で確認するための第一歩です。感覚だけに頼らず、<strong>データにもとづいて自分の課題を把握できると、練習の質も変わります</strong>。</p>
+
+      <p>LUMBER は登録不要・完全無料でブラウザから使えるため、「とりあえず今シーズンだけ試してみる」という始め方ができます。難しい設定は一切ありません。打席結果を入力するだけで、打率・OPS・出塁率・長打率がすぐに確認できます。</p>
+
+      <p>草野球チームのスコア担当の方も、自分だけの成績を記録したい個人の方も、ぜひ一度使ってみてください。データが積み上がるにつれて、野球の見方が少し変わるかもしれません。</p>
+
+      <div class="tool-card" style="margin-top: 40px;">
+        <div class="tool-card-header">
+          <div class="tool-icon">L</div>
+          <div>
+            <div class="tool-name">LUMBER — 無料打撃成績トラッカー</div>
+            <div class="tool-badge">登録不要 · 無料 · ブラウザのみ</div>
+          </div>
+        </div>
+        <p class="tool-desc">打席結果を入力するだけで打率・OPS・出塁率・長打率を自動計算。草野球・少年野球・社会人野球の成績管理に。</p>
+        <a href="https://somirai.jp/batting-stats/" class="cta-btn" target="_blank" rel="noopener">
+          今すぐ無料で使ってみる
+        </a>
+      </div>
+
+      <!-- AdSense（記事下） -->
+
+    </div>
+    <!-- /article-body -->
+
+  </article>
+</main>
+
+<!-- フッター -->
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/about.html">このサイトについて</a>
+    <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    <a href="https://somirai.jp/contact.html">お問い合わせ</a>
+  </div>
+  <p>&#169; 2026 Somirai Lab</p>
+</footer>
+
+</body>
+</html>

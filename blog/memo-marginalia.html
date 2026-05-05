@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>メモアプリを断捨離する｜ブラウザだけで使える無料メモ・TODOツール「MARGINALIA」の使い方 | Somirai Lab</title>
+  <meta name="description" content="Notion・Obsidian・Evernoteが多すぎて使いこなせない人へ。登録不要・インストール不要でブラウザだけで使える無料メモ・TODOツール「MARGINALIA」の使い方と活用例を解説します。">
+  <meta name="keywords" content="メモアプリ 無料 ブラウザ,TODO 管理 ツール,シンプル メモ アプリ 不要,メモ断捨離,ローカル メモ,Notion 代替 シンプル">
+  <link rel="canonical" href="https://somirai.jp/blog/memo-marginalia.html">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <!-- OGP -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://somirai.jp/blog/memo-marginalia.html">
+  <meta property="og:title" content="メモアプリを断捨離する｜ブラウザだけで使える無料メモ・TODOツール「MARGINALIA」の使い方">
+  <meta property="og:description" content="Notion・Obsidian・Evernoteが多すぎて使いこなせない人へ。登録不要・インストール不要でブラウザだけで使える無料メモ・TODOツール「MARGINALIA」の使い方と活用例を解説します。">
+  <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- 構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "メモアプリを断捨離する｜ブラウザだけで使える無料メモ・TODOツール「MARGINALIA」の使い方",
+    "description": "Notion・Obsidian・Evernoteが多すぎて使いこなせない人へ。登録不要・インストール不要でブラウザだけで使える無料メモ・TODOツール「MARGINALIA」の使い方と活用例を解説します。",
+    "datePublished": "2026-05-05",
+    "dateModified": "2026-05-05",
+    "author": {
+      "@type": "Organization",
+      "name": "Somirai Lab",
+      "url": "https://somirai.jp/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Somirai Lab",
+      "url": "https://somirai.jp/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://somirai.jp/blog/memo-marginalia.html"
+    }
+  }
+  </script>
+
+  <!-- Google Tag Manager -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9485428408605916" crossorigin="anonymous"></script>
+
+  <!-- フォント -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0b;
+      --surface:   #111114;
+      --surface2:  #18181c;
+      --border:    #222228;
+      --text:      #e2e8f0;
+      --text-sec:  #94a3b8;
+      --text-mut:  #475569;
+      --accent:    #ff6428;
+      --accent-soft: rgba(255, 100, 40, 0.12);
+      --radius:    16px;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ヘッダー */
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .site-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .site-logo span { color: var(--accent); }
+    .header-nav {
+      margin-left: auto;
+      display: flex;
+      gap: 16px;
+    }
+    .header-nav a {
+      color: var(--text-sec);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+    .header-nav a:hover { color: var(--text); }
+
+    /* パンくず */
+    .breadcrumb {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      font-size: 0.8rem;
+      color: var(--text-mut);
+    }
+    .breadcrumb a {
+      color: var(--text-mut);
+      text-decoration: none;
+    }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 6px; }
+
+    /* メインレイアウト */
+    .page-wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* 記事ヘッダー */
+    .article-header {
+      padding: 32px 0 40px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+    .article-category {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+    .article-title {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--text-mut);
+    }
+    .article-meta time { display: flex; align-items: center; gap: 6px; }
+
+    /* 本文スタイル */
+    .article-body {
+      font-size: 1rem;
+      line-height: 1.9;
+    }
+
+    .article-body h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 56px 0 20px;
+      padding-left: 16px;
+      border-left: 3px solid var(--accent);
+      line-height: 1.4;
+    }
+    .article-body h2:first-of-type { margin-top: 0; }
+
+    .article-body h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 36px 0 12px;
+    }
+
+    .article-body p {
+      color: var(--text-sec);
+      margin-bottom: 20px;
+    }
+
+    .article-body p strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .article-body ul, .article-body ol {
+      margin: 0 0 20px 0;
+      padding-left: 0;
+      list-style: none;
+    }
+    .article-body ul li, .article-body ol li {
+      color: var(--text-sec);
+      padding: 6px 0 6px 24px;
+      position: relative;
+    }
+    .article-body ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 14px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .article-body ol {
+      counter-reset: ol-counter;
+    }
+    .article-body ol li {
+      counter-increment: ol-counter;
+    }
+    .article-body ol li::before {
+      content: counter(ol-counter);
+      position: absolute;
+      left: 0;
+      top: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-soft);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ポイントボックス */
+    .point-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin: 28px 0;
+    }
+    .point-box .box-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .point-box p {
+      margin-bottom: 0;
+    }
+    .point-box ul { margin-bottom: 0; }
+
+    /* 強調ボックス */
+    .highlight-box {
+      background: var(--accent-soft);
+      border: 1px solid rgba(255, 100, 40, 0.25);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+    .highlight-box p {
+      margin-bottom: 0;
+      color: var(--text);
+    }
+
+    /* ツール紹介カード */
+    .tool-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin: 36px 0;
+    }
+    .tool-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .tool-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--accent-soft);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .tool-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .tool-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.1);
+      border: 1px solid rgba(74, 222, 128, 0.2);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .tool-desc {
+      color: var(--text-sec);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .tool-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .tool-feature {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.85rem;
+      color: var(--text-sec);
+    }
+    .tool-feature strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 12px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .cta-btn:hover { opacity: 0.85; }
+
+    /* ステップ */
+    .step-list {
+      counter-reset: step-counter;
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px;
+    }
+    .step-list li {
+      counter-increment: step-counter;
+      position: relative;
+      padding: 0 0 28px 52px;
+      color: var(--text-sec);
+    }
+    .step-list li::before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-list li::after {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 32px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+    .step-list li:last-child::after { display: none; }
+    .step-list li strong {
+      display: block;
+      color: var(--text);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    /* フッター */
+    .site-footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-mut);
+      margin-top: 80px;
+    }
+    .site-footer a {
+      color: var(--text-mut);
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    .site-footer a:hover { color: var(--text); }
+    .site-footer .footer-links { margin-bottom: 16px; }
+
+    /* レスポンシブ */
+    @media (max-width: 600px) {
+      .page-wrapper { padding: 0 16px 60px; }
+      .article-header { padding: 24px 0 32px; }
+      .tool-features { grid-template-columns: 1fr 1fr; }
+      .step-list li { padding-left: 44px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header class="site-header">
+  <a href="https://somirai.jp/" class="site-logo">Somirai<span>.</span>jp</a>
+  <nav class="header-nav">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/write/">MARGINALIA</a>
+    <a href="https://somirai.jp/blog/">ブログ</a>
+  </nav>
+</header>
+
+<!-- パンくず -->
+<nav class="breadcrumb" aria-label="パンくずリスト">
+  <a href="https://somirai.jp/">ホーム</a>
+  <span>›</span>
+  <a href="https://somirai.jp/blog/">ブログ</a>
+  <span>›</span>
+  メモアプリを断捨離する
+</nav>
+
+<!-- メインコンテンツ -->
+<main class="page-wrapper">
+  <article>
+
+    <!-- 記事ヘッダー -->
+    <header class="article-header">
+      <div class="article-category">メモ・生産性</div>
+      <h1 class="article-title">メモアプリを断捨離する｜ブラウザだけで使える無料メモ・TODOツール「MARGINALIA」の使い方</h1>
+      <div class="article-meta">
+        <time datetime="2026-05-05">2026年5月5日</time>
+        <span>約2,500字 · 読了約6分</span>
+      </div>
+    </header>
+
+    <!-- AdSense（記事上） -->
+
+    <!-- 本文 -->
+    <div class="article-body">
+
+      <p>スマートフォンのメモアプリ、パソコンのデスクトップ付箋、Notion のワークスペース、Obsidian のvault、それからブラウザのブックマーク――気づけば「書き留める場所」がいくつもできあがっていませんか。</p>
+
+      <p>あちこちに分散したメモは、探せない・更新されない・使われないまま溜まっていく一方です。結局「あのメモどこに書いたっけ」と毎回探すことになり、メモ本来の目的である「忘れないために書く」ことがまったく機能しなくなります。</p>
+
+      <p>この記事では、<strong>アプリを増やすのではなく減らすことで情報管理をシンプルにする</strong>考え方と、そのための選択肢として「ブラウザだけで使える無料メモ・TODOツール MARGINALIA」を紹介します。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>あなたのメモアプリ、何個使っていますか？</h2>
+
+      <h3>メモアプリ多すぎ問題</h3>
+
+      <p>ここ数年で高機能メモツールが一気に普及しました。Notion・Obsidian・Evernote・Roam Research・Logseq・Bear・Todoist・Microsoft To Do――それぞれが「最高の生産性ツール」として紹介され、試しては放置するサイクルを繰り返してきた人も多いはずです。</p>
+
+      <p>問題はツールの質ではありません。<strong>「どこに書くか」の判断コストが毎回発生すること</strong>が問題なのです。Notion に書くべきか、メモ帳に書くべきか、その判断をしている時間は、本来メモの内容を考える時間に使われるべきです。</p>
+
+      <ul>
+        <li>Notion：プロジェクト管理に使っているが、ふとしたメモも混ざっている</li>
+        <li>Obsidian：知識の整理に使おうとしたが、設定が複雑で挫折した</li>
+        <li>Evernote：昔から使っているが、最近は有料プランが高くて更新していない</li>
+        <li>スマホのメモ帳：すぐ書けるが、あとで探せない</li>
+        <li>Todoistや付箋アプリ：TODOだけ別管理しているが、メモとの連携がない</li>
+      </ul>
+
+      <h3>「とりあえず書ける場所」が複数あることで生まれる混乱</h3>
+
+      <p>複数のツールに情報が分散すると、<strong>検索に時間がかかる・情報の新鮮さがわからない・どこが「正」なのかわからなくなる</strong>という三重苦が発生します。</p>
+
+      <p>これは意志の問題でも管理能力の問題でもありません。ツールを増やすほど認知負荷が上がるという、情報管理の構造的な問題です。解決策は「使いこなせるツールを1本に絞ること」です。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>シンプルなメモツールを選ぶべき理由</h2>
+
+      <h3>起動が速い・入力がシンプル = 続く</h3>
+
+      <p>メモが習慣になるかどうかは、ツールを開くまでの摩擦の大きさで決まります。アカウントへのログイン・アプリの起動・ワークスペースの選択――ステップが多いほど「面倒だからあとで」が発動します。</p>
+
+      <p>ブラウザのタブを開いてすぐ書ける環境は、この摩擦をほぼゼロにします。メモは「書こうと思ったときに即座に書ける」ことが続く条件の第一です。</p>
+
+      <h3>機能が少ないほど「使いこなせた感」が得やすい</h3>
+
+      <p>Notion や Obsidian は確かに高機能ですが、それが逆効果になることがあります。機能が多いと「まだ設定が終わっていない」「もっとうまく使えるはずなのに」という感覚が続き、ツール自体を使うことへの心理的ハードルが上がります。</p>
+
+      <p><strong>シンプルなツールは「全部の機能を把握できた」という達成感が早い段階で得られます。</strong>これが継続的な利用につながります。</p>
+
+      <h3>データがローカル保存 = プライバシー安心</h3>
+
+      <p>クラウド型のメモサービスは、ログインが必要で、データが外部サーバーに保存されます。仕事のメモ・個人的なアイデア・日記的な内容を書くには、プライバシーが気になる場面もあります。</p>
+
+      <p>ローカル保存型のツールであれば、書いた内容は自分のブラウザの中だけに存在します。アカウント不要・データを外に送らない安心感は、使い続けるための精神的な余裕を生みます。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>ブラウザで使える無料メモ・TODOツール「MARGINALIA」とは</h2>
+
+      <!-- ツール紹介カード -->
+      <div class="tool-card">
+        <div class="tool-card-header">
+          <div class="tool-icon">M</div>
+          <div>
+            <div class="tool-name">MARGINALIA — メモ・TODOツール</div>
+            <div class="tool-badge">無料 · 登録不要 · ブラウザのみ</div>
+          </div>
+        </div>
+        <p class="tool-desc">
+          書き留めたいことをすぐに書ける、ブラウザだけで動作する無料メモ・TODOツールです。アカウント登録不要・アプリインストール不要。書いたデータはブラウザのローカルに保存されるため、外部サーバーには送信されません。
+        </p>
+        <div class="tool-features">
+          <div class="tool-feature">
+            <strong>登録不要</strong>
+            アカウントなしで即使用可能
+          </div>
+          <div class="tool-feature">
+            <strong>インストール不要</strong>
+            ブラウザだけで完結
+          </div>
+          <div class="tool-feature">
+            <strong>メモ機能</strong>
+            自由なテキストを素早く記録
+          </div>
+          <div class="tool-feature">
+            <strong>TODO機能</strong>
+            タスクの追加・完了管理
+          </div>
+          <div class="tool-feature">
+            <strong>ローカル保存</strong>
+            データは端末内のみに存在
+          </div>
+          <div class="tool-feature">
+            <strong>完全無料</strong>
+            課金プランなし
+          </div>
+        </div>
+        <a href="https://somirai.jp/write/" class="cta-btn" target="_blank" rel="noopener">
+          MARGINALIAを無料で使ってみる
+        </a>
+      </div>
+
+      <p>MARGINALIA は Somirai Lab が開発した、「余白（margin）にちょっと書き留める」というコンセプトのメモ・TODOツールです。本の余白に走り書きするように、思いついた瞬間にすぐ書けることを最優先に設計しています。</p>
+
+      <p>Notion や Obsidian のような「情報を体系的に整理するツール」ではなく、<strong>「考えをこぼさないための受け皿」として機能する</strong>のが MARGINALIA の立ち位置です。ふとした気づき・買い物リスト・今日やること・読書中のメモ――そういった軽いアウトプットに最適化されています。</p>
+
+      <!-- AdSense（記事中） -->
+
+      <!-- ===== h2 ===== -->
+      <h2>MARGINALIAの使い方：3ステップ</h2>
+
+      <ol class="step-list">
+        <li>
+          <strong>ブラウザで開く</strong>
+          <a href="https://somirai.jp/write/" target="_blank" rel="noopener">https://somirai.jp/write/</a> にアクセスするだけで使い始められます。メールアドレスの入力も、アプリのダウンロードも一切不要です。パソコンでもスマートフォンでもそのまま動作します。
+        </li>
+        <li>
+          <strong>メモを書く・TODOを追加する</strong>
+          テキストエリアにそのまま書き始めるか、TODOとして追加します。操作説明を読む必要がないくらいシンプルなUIなので、開いた瞬間に使い方がわかります。「書くことに集中できる」状態をそのまま維持できます。
+        </li>
+        <li>
+          <strong>必要に応じて整理する</strong>
+          書いたメモはそのまま残しておくか、タグや区切りを使って分類できます。ただし「整理しなければ使えない」という設計ではなく、まず書くことが先、整理は後でいい、という考え方でデザインされています。
+        </li>
+      </ol>
+
+      <div class="point-box">
+        <div class="box-label">使い始めのコツ</div>
+        <ul>
+          <li>最初の1週間は「整理しない」と決めて、とにかく書くことだけを習慣にする</li>
+          <li>ブラウザのブックマークバーに登録しておくと、1クリックで開ける</li>
+          <li>毎朝・毎晩の決まったタイミングに開く習慣をつけると定着しやすい</li>
+        </ul>
+      </div>
+
+      <!-- ===== h2 ===== -->
+      <h2>MARGINALIAがおすすめな使い方</h2>
+
+      <h3>アイデアのスクラッチパッドとして</h3>
+
+      <p>何かを思いついたとき、まず形にならなくても書いてしまう場所が必要です。MARGINALIA はその「いちばん最初の書き出し」に適しています。整理されていなくていい、文章になっていなくていい、とにかく言葉として出す場所として機能します。</p>
+
+      <p>アイデアは「いつか書こう」と思っていると消えます。<strong>思った瞬間に開いて書ける速さが、アイデアを失わないための最大の武器</strong>です。</p>
+
+      <h3>日々のTODOリストとして</h3>
+
+      <p>朝、今日やることを3〜5個書き出す。夜、できたものに印をつける。このシンプルなサイクルに、余計な機能は必要ありません。優先度・期限・プロジェクト分類……そういった細かい設定をするより、まず書いて、終わったら消す。MARGINALIA はそのサイクルに集中できます。</p>
+
+      <p>タスク管理ツールが続かない理由のひとつは「管理すること自体に時間がかかること」です。MARGINALIA のシンプルさは、そこへの答えでもあります。</p>
+
+      <h3>読書・作業メモとして</h3>
+
+      <p>本を読みながら、動画を見ながら、会議の最中に――気になったことをすぐ書き留めるサブウィンドウとして使えます。ブラウザの別タブに開いておくだけで、いつでも書き込める状態になります。</p>
+
+      <p>Notion に書こうとするとページを探すところから始まります。MARGINALIA ならタブを切り替えて即書ける。この差が、メモを取る習慣が続くかどうかを分けます。</p>
+
+      <div class="highlight-box">
+        <p>MARGINALIA は「高機能なツールを使いこなせていない」と感じている人へのアンチテーゼです。メモは仕組みが複雑なほど使われなくなります。シンプルさこそが、最も続く設計です。</p>
+      </div>
+
+      <!-- ===== h2 ===== -->
+      <h2>こんな人におすすめ</h2>
+
+      <p>MARGINALIA は次のような方に特に向いています。</p>
+
+      <ul>
+        <li>Notion や Obsidian を導入したが、複雑すぎて使いこなせていない</li>
+        <li>メモアプリをいくつも試してきたが、どれも長続きしなかった</li>
+        <li>クラウドにデータを預けることに抵抗がある</li>
+        <li>サブスクリプション費用をかけずにメモ環境を整えたい</li>
+        <li>スマートフォンアプリよりもブラウザで完結させたい</li>
+        <li>アカウント登録の手間なくすぐ使い始めたい</li>
+        <li>仕事・勉強・日常のメモをひとつの場所にまとめたい</li>
+      </ul>
+
+      <p>逆に、チームでリアルタイム共同編集をしたい場合や、長期にわたる知識ベースを構築したい場合は、Notion や Obsidian のような高機能ツールと組み合わせる方法も検討してください。MARGINALIA はその「書き出しの場」として使い、整理が必要なものだけ移動するという運用も有効です。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>まとめ</h2>
+
+      <p>メモアプリが増える一方で、実際に使われているのは1〜2個だけ、という状況は珍しくありません。問題はツールの性能ではなく、<strong>「どこに書くか」という判断コストが習慣を妨げていること</strong>です。</p>
+
+      <p>解決策はシンプルです。「ここに書く」と決めた一つの場所を用意して、余計な選択肢を持たない。MARGINALIA はその「一つの場所」として機能するよう設計されたツールです。</p>
+
+      <p>登録不要・完全無料でいますぐ使えます。「とりあえず今日のTODOを3つだけ書いてみる」という気軽な一歩から始めてみてください。メモ習慣は、道具を減らすことで意外なほど簡単に身につきます。</p>
+
+      <div class="tool-card" style="margin-top: 40px;">
+        <div class="tool-card-header">
+          <div class="tool-icon">M</div>
+          <div>
+            <div class="tool-name">MARGINALIA — 無料メモ・TODOツール</div>
+            <div class="tool-badge">登録不要 · 無料 · ブラウザのみ</div>
+          </div>
+        </div>
+        <p class="tool-desc">ブラウザを開くだけで使える無料メモ・TODOツール。アカウント不要、インストール不要。書いたデータはローカルに保存されます。</p>
+        <a href="https://somirai.jp/write/" class="cta-btn" target="_blank" rel="noopener">
+          今すぐ無料で使ってみる
+        </a>
+      </div>
+
+      <!-- AdSense（記事下） -->
+
+    </div>
+    <!-- /article-body -->
+
+  </article>
+</main>
+
+<!-- フッター -->
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/about.html">このサイトについて</a>
+    <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    <a href="https://somirai.jp/contact.html">お問い合わせ</a>
+  </div>
+  <p>&#169; 2026 Somirai Lab</p>
+</footer>
+
+</body>
+</html>

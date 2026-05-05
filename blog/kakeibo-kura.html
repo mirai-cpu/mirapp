@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>家計簿アプリをインストールしない節約管理術｜ブラウザだけで使える無料ツール「KURA」の使い方 | Somirai Lab</title>
+  <meta name="description" content="家計簿アプリが続かない人へ。インストール不要・登録不要のブラウザ家計簿ツール「KURA」を使えば、シンプルに支出を管理できます。3ステップの使い方と節約を続けるコツを解説。">
+  <meta name="keywords" content="家計簿 無料 ブラウザ,節約 管理 ツール,家計管理 アプリ 不要,家計簿 インストール不要,支出管理 ブラウザ,無料 家計簿 登録不要,節約 続けるコツ">
+  <link rel="canonical" href="https://somirai.jp/blog/kakeibo-kura.html">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <!-- OGP -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://somirai.jp/blog/kakeibo-kura.html">
+  <meta property="og:title" content="家計簿アプリをインストールしない節約管理術｜ブラウザだけで使える無料ツール「KURA」の使い方">
+  <meta property="og:description" content="家計簿アプリが続かない人へ。インストール不要・登録不要のブラウザ家計簿ツール「KURA」で、シンプルに支出を管理する3ステップを紹介。">
+  <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- 構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "家計簿アプリをインストールしない節約管理術｜ブラウザだけで使える無料ツール「KURA」の使い方",
+    "description": "家計簿アプリが続かない人へ。インストール不要・登録不要のブラウザ家計簿ツール「KURA」で、シンプルに支出を管理する3ステップを紹介。",
+    "datePublished": "2026-05-05",
+    "dateModified": "2026-05-05",
+    "author": {
+      "@type": "Organization",
+      "name": "Somirai Lab",
+      "url": "https://somirai.jp/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Somirai Lab",
+      "url": "https://somirai.jp/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://somirai.jp/blog/kakeibo-kura.html"
+    }
+  }
+  </script>
+
+  <!-- Google Tag Manager -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9485428408605916" crossorigin="anonymous"></script>
+
+  <!-- フォント -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0b;
+      --surface:   #111114;
+      --surface2:  #18181c;
+      --border:    #222228;
+      --text:      #e2e8f0;
+      --text-sec:  #94a3b8;
+      --text-mut:  #475569;
+      --accent:    #ff6428;
+      --accent-soft: rgba(255, 100, 40, 0.12);
+      --radius:    16px;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ヘッダー */
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .site-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .site-logo span { color: var(--accent); }
+    .header-nav {
+      margin-left: auto;
+      display: flex;
+      gap: 16px;
+    }
+    .header-nav a {
+      color: var(--text-sec);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+    .header-nav a:hover { color: var(--text); }
+
+    /* パンくず */
+    .breadcrumb {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      font-size: 0.8rem;
+      color: var(--text-mut);
+    }
+    .breadcrumb a {
+      color: var(--text-mut);
+      text-decoration: none;
+    }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 6px; }
+
+    /* メインレイアウト */
+    .page-wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* 記事ヘッダー */
+    .article-header {
+      padding: 32px 0 40px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+    .article-category {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+    .article-title {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--text-mut);
+    }
+    .article-meta time { display: flex; align-items: center; gap: 6px; }
+
+    /* 本文スタイル */
+    .article-body {
+      font-size: 1rem;
+      line-height: 1.9;
+    }
+
+    .article-body h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 56px 0 20px;
+      padding-left: 16px;
+      border-left: 3px solid var(--accent);
+      line-height: 1.4;
+    }
+    .article-body h2:first-of-type { margin-top: 0; }
+
+    .article-body h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 36px 0 12px;
+    }
+
+    .article-body p {
+      color: var(--text-sec);
+      margin-bottom: 20px;
+    }
+
+    .article-body p strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .article-body ul, .article-body ol {
+      margin: 0 0 20px 0;
+      padding-left: 0;
+      list-style: none;
+    }
+    .article-body ul li, .article-body ol li {
+      color: var(--text-sec);
+      padding: 6px 0 6px 24px;
+      position: relative;
+    }
+    .article-body ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 14px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .article-body ol {
+      counter-reset: ol-counter;
+    }
+    .article-body ol li {
+      counter-increment: ol-counter;
+    }
+    .article-body ol li::before {
+      content: counter(ol-counter);
+      position: absolute;
+      left: 0;
+      top: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-soft);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ポイントボックス */
+    .point-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin: 28px 0;
+    }
+    .point-box .box-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .point-box p {
+      margin-bottom: 0;
+    }
+    .point-box ul { margin-bottom: 0; }
+
+    /* 強調ボックス */
+    .highlight-box {
+      background: var(--accent-soft);
+      border: 1px solid rgba(255, 100, 40, 0.25);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+    .highlight-box p {
+      margin-bottom: 0;
+      color: var(--text);
+    }
+
+    /* ツール紹介カード */
+    .tool-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin: 36px 0;
+    }
+    .tool-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .tool-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--accent-soft);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .tool-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .tool-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.1);
+      border: 1px solid rgba(74, 222, 128, 0.2);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .tool-desc {
+      color: var(--text-sec);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .tool-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .tool-feature {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.85rem;
+      color: var(--text-sec);
+    }
+    .tool-feature strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 12px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .cta-btn:hover { opacity: 0.85; }
+
+    /* ステップ */
+    .step-list {
+      counter-reset: step-counter;
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px;
+    }
+    .step-list li {
+      counter-increment: step-counter;
+      position: relative;
+      padding: 0 0 28px 52px;
+      color: var(--text-sec);
+    }
+    .step-list li::before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-list li::after {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 32px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+    .step-list li:last-child::after { display: none; }
+    .step-list li strong {
+      display: block;
+      color: var(--text);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    /* 比較テーブル */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 28px 0;
+      font-size: 0.9rem;
+    }
+    .compare-table th {
+      background: var(--surface2);
+      color: var(--text);
+      font-weight: 700;
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 2px solid var(--border);
+    }
+    .compare-table th:first-child { border-radius: 10px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 10px 0 0; }
+    .compare-table td {
+      padding: 11px 16px;
+      color: var(--text-sec);
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    .compare-check { color: #4ade80; font-weight: 700; }
+    .compare-cross { color: var(--text-mut); }
+
+    /* フッター */
+    .site-footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-mut);
+      margin-top: 80px;
+    }
+    .site-footer a {
+      color: var(--text-mut);
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    .site-footer a:hover { color: var(--text); }
+    .site-footer .footer-links { margin-bottom: 16px; }
+
+    /* レスポンシブ */
+    @media (max-width: 600px) {
+      .page-wrapper { padding: 0 16px 60px; }
+      .article-header { padding: 24px 0 32px; }
+      .tool-features { grid-template-columns: 1fr 1fr; }
+      .step-list li { padding-left: 44px; }
+      .compare-table { font-size: 0.8rem; }
+      .compare-table th, .compare-table td { padding: 9px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header class="site-header">
+  <a href="https://somirai.jp/" class="site-logo">Somirai<span>.</span>jp</a>
+  <nav class="header-nav">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/savings/">KURA</a>
+    <a href="https://somirai.jp/blog/">ブログ</a>
+  </nav>
+</header>
+
+<!-- パンくず -->
+<nav class="breadcrumb" aria-label="パンくずリスト">
+  <a href="https://somirai.jp/">ホーム</a>
+  <span>›</span>
+  <a href="https://somirai.jp/blog/">ブログ</a>
+  <span>›</span>
+  家計簿アプリをインストールしない節約管理術
+</nav>
+
+<!-- メインコンテンツ -->
+<main class="page-wrapper">
+  <article>
+
+    <!-- 記事ヘッダー -->
+    <header class="article-header">
+      <div class="article-category">家計・節約</div>
+      <h1 class="article-title">家計簿アプリをインストールしない節約管理術｜ブラウザだけで使える無料ツール「KURA」の使い方</h1>
+      <div class="article-meta">
+        <time datetime="2026-05-05">2026年5月5日</time>
+        <span>約2,500字 · 読了約6分</span>
+      </div>
+    </header>
+
+    <!-- AdSense（記事上） -->
+
+    <!-- 本文 -->
+    <div class="article-body">
+
+      <p>「今月こそ節約する」と決意して家計簿アプリをダウンロードしたのに、気づけば2週間で使わなくなっていた。そんな経験はないでしょうか。</p>
+
+      <p>実際、家計簿アプリの継続率は低く、「入力が面倒」「アプリが多すぎて選べない」「個人情報を登録したくない」といった理由で挫折する人が後を絶ちません。しかし本当に問題なのは、<strong>ツール選びの段階でつまずいていること</strong>かもしれません。</p>
+
+      <p>この記事では、家計管理が続かない原因を整理したうえで、<strong>インストール不要・登録不要でブラウザだけで使える無料家計簿ツール「KURA」</strong>の使い方を紹介します。シンプルに支出を管理したい20〜40代の方に、ぜひ参考にしていただければと思います。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>家計簿アプリ、続いていますか？</h2>
+
+      <p>家計管理に関する調査では、家計簿を「続けている」と答える人は全体の3割程度にとどまります。残りの7割は「試したことはある」か「まったく使っていない」という状況です。</p>
+
+      <p>家計簿が続かない理由には、いくつかの典型的なパターンがあります。</p>
+
+      <h3>入力が面倒で続かない</h3>
+
+      <p>スーパーのレシートを見ながら品目ごとに入力し、カテゴリを選んで…という作業は、最初の数日こそ丁寧にできても、疲れてくると「後でまとめて入力しよう」と後回しになります。そして気づくと1週間分の記録が抜けていて、「もういいや」となるのが典型的な挫折パターンです。</p>
+
+      <h3>アプリが多すぎて選べない・使いこなせない</h3>
+
+      <p>「家計簿 アプリ」で検索すると、数十種類のアプリが表示されます。機能が充実しているほど設定項目も増え、「使い方をマスターしてから本格運用しよう」と思っているうちに熱が冷めてしまうことがあります。</p>
+
+      <h3>プライバシーへの不安</h3>
+
+      <p>銀行口座との連携や会員登録を求めるアプリは多いですが、<strong>金融情報を外部サービスに預けることへの抵抗感</strong>を持つ人も少なくありません。「個人情報が漏れたら」「広告に使われたら」という懸念が、使い始めのハードルを上げています。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>家計簿を続けるための3つのポイント</h2>
+
+      <p>家計管理が続く人には、共通した行動パターンがあります。細かく記録することよりも、<strong>「続けられる仕組みを先に作ること」</strong>を重視しているのが特徴です。</p>
+
+      <h3>記録の手間を最小化する</h3>
+
+      <p>家計管理において「正確さ」よりも大切なのは「継続性」です。細かい品目ごとの記録は理想的ですが、続かなければ意味がありません。まずは「食費・光熱費・その他」といった大まかなカテゴリで記録するだけでも、支出の全体像は十分に把握できます。</p>
+
+      <p>記録にかかる時間は、できれば<strong>1回あたり1〜2分以内</strong>が目安です。それ以上かかるようであれば、記録の粒度を落とすことを考えてみてください。</p>
+
+      <h3>カテゴリをシンプルにする</h3>
+
+      <p>「食費」「住居費」「光熱費」「通信費」「交際費」「その他」の6カテゴリもあれば、ほとんどの支出は分類できます。カテゴリが多すぎると「これはどこに入れればいいか」という判断コストが増え、記録が面倒になります。</p>
+
+      <div class="point-box">
+        <div class="box-label">シンプルなカテゴリ例</div>
+        <ul>
+          <li>食費（外食・スーパー・コンビニ）</li>
+          <li>固定費（家賃・保険・サブスク）</li>
+          <li>光熱費・通信費</li>
+          <li>日用品・衣服</li>
+          <li>娯楽・交際費</li>
+          <li>その他</li>
+        </ul>
+      </div>
+
+      <h3>振り返りを習慣にする</h3>
+
+      <p>記録は「データを貯めること」が目的ではなく、<strong>「振り返って行動を変えること」が目的</strong>です。月末に5分だけグラフを見る時間を設けるだけで、「先月は外食が多かったな」「サブスクを整理しよう」という気づきが生まれます。</p>
+
+      <p>振り返りの頻度は週1回か月1回で十分です。毎日チェックしようとすると負担が増えて続かなくなります。</p>
+
+      <div class="highlight-box">
+        <p>家計管理のコツをまとめると「記録は最小限に・カテゴリはシンプルに・振り返りは月1回」の3点です。この3つを手軽に実践できるのが、次に紹介するブラウザ家計簿ツール「KURA」です。</p>
+      </div>
+
+      <!-- AdSense（記事中） -->
+
+      <!-- ===== h2 ===== -->
+      <h2>ブラウザで使える無料家計簿ツール「KURA」とは</h2>
+
+      <!-- ツール紹介カード -->
+      <div class="tool-card">
+        <div class="tool-card-header">
+          <div class="tool-icon">K</div>
+          <div>
+            <div class="tool-name">KURA — ブラウザ家計簿ツール</div>
+            <div class="tool-badge">無料 · 登録不要 · ブラウザのみ</div>
+          </div>
+        </div>
+        <p class="tool-desc">
+          インストール不要・アカウント登録不要で、ブラウザを開くだけで使えるシンプルな家計簿ツールです。入力したデータはお使いのデバイス内（ローカルストレージ）に保存されるため、外部サーバーに個人情報が送られることはありません。
+        </p>
+        <div class="tool-features">
+          <div class="tool-feature">
+            <strong>収支の記録</strong>
+            収入・支出をカテゴリ別に入力
+          </div>
+          <div class="tool-feature">
+            <strong>カテゴリ集計</strong>
+            支出を項目別にグラフで確認
+          </div>
+          <div class="tool-feature">
+            <strong>月別推移</strong>
+            過去の月との比較が一目で分かる
+          </div>
+          <div class="tool-feature">
+            <strong>データ保護</strong>
+            ローカル保存でプライバシー安心
+          </div>
+          <div class="tool-feature">
+            <strong>エクスポート</strong>
+            記録データを書き出し可能
+          </div>
+          <div class="tool-feature">
+            <strong>登録不要</strong>
+            メアドもパスワードも不要
+          </div>
+        </div>
+        <a href="https://somirai.jp/savings/" class="cta-btn" target="_blank" rel="noopener">
+          KURAを無料で使ってみる
+        </a>
+      </div>
+
+      <p>KURAはSomirai Labが開発した無料のブラウザ家計簿ツールです。「家計簿アプリをインストールしたくない」「会員登録なしで今すぐ使いたい」という声に応えて設計されました。</p>
+
+      <p>最大の特徴は、<strong>データがすべてブラウザのローカルストレージに保存される</strong>ことです。入力した収支データは外部のサーバーに送信されないため、金融情報のプライバシーを守りながら使えます。</p>
+
+      <h3>一般的な家計簿アプリとの違い</h3>
+
+      <p>市販の家計簿アプリと比べて、KURAがどう違うのかを整理しました。</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th>一般的な家計簿アプリ</th>
+            <th>KURA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>インストール</td>
+            <td class="compare-cross">必要</td>
+            <td class="compare-check">不要（ブラウザのみ）</td>
+          </tr>
+          <tr>
+            <td>会員登録</td>
+            <td class="compare-cross">必要なことが多い</td>
+            <td class="compare-check">不要</td>
+          </tr>
+          <tr>
+            <td>データ保存先</td>
+            <td class="compare-cross">外部サーバー</td>
+            <td class="compare-check">デバイス内（ローカル）</td>
+          </tr>
+          <tr>
+            <td>料金</td>
+            <td class="compare-cross">無料〜月額課金</td>
+            <td class="compare-check">完全無料</td>
+          </tr>
+          <tr>
+            <td>使い始めまでの時間</td>
+            <td class="compare-cross">数分〜数十分</td>
+            <td class="compare-check">数秒（URLを開くだけ）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ===== h2 ===== -->
+      <h2>KURAの使い方：3ステップ</h2>
+
+      <p>KURAは難しい操作が一切ありません。次の3ステップで、今日から家計管理を始められます。</p>
+
+      <ol class="step-list">
+        <li>
+          <strong>ブラウザで開く</strong>
+          <a href="https://somirai.jp/savings/" target="_blank" rel="noopener">https://somirai.jp/savings/</a> にアクセスするだけで使えます。スマートフォンでもパソコンでも動作します。アプリストアを開く必要も、メールアドレスを入力する必要もありません。ブックマークしておくと次回からすぐにアクセスできます。
+        </li>
+        <li>
+          <strong>収入・支出を入力する</strong>
+          画面の入力フォームから日付・カテゴリ・金額・メモを入力します。カテゴリはあらかじめ用意されているものを使えばOKです。「今月の家賃を固定費で記録」「スーパーで3,200円使った」といった形で、気づいたタイミングで入力するだけです。レシートを見ながら数分で記録できます。
+        </li>
+        <li>
+          <strong>グラフ・集計で振り返る</strong>
+          入力した記録は自動的にグラフ・集計に反映されます。「今月の食費は合計いくら」「先月と比べて光熱費が増えた」といった情報が一目でわかります。月末に5分だけ確認するだけで、支出のクセが見えてきます。
+        </li>
+      </ol>
+
+      <div class="point-box">
+        <div class="box-label">使い始めのコツ</div>
+        <ul>
+          <li>最初の週はカテゴリを気にせず「とにかく金額だけ入力」から始める</li>
+          <li>URLをスマホのホーム画面に追加するとアプリ感覚で使える</li>
+          <li>月末に1回だけグラフを見る時間を予定に入れておく</li>
+          <li>入力を忘れた日があっても気にせず翌日から再開する</li>
+        </ul>
+      </div>
+
+      <!-- ===== h2 ===== -->
+      <h2>KURAで管理できること</h2>
+
+      <p>KURAでは、日々の記録をもとにさまざまな角度から支出を確認できます。</p>
+
+      <h3>支出カテゴリ別の集計</h3>
+
+      <p>食費・固定費・光熱費など、カテゴリごとの支出合計をグラフで確認できます。「食費が予算を超えている」「サブスクが思ったより多い」といった気づきが、具体的な節約行動につながります。</p>
+
+      <h3>月別の推移グラフ</h3>
+
+      <p>月をまたいで記録を続けると、支出の月別推移が可視化されます。「3月は引越しで特別支出が多かった」「夏は電気代が上がる」といったパターンを把握することで、先手を打った節約計画が立てられます。</p>
+
+      <h3>データのエクスポート機能</h3>
+
+      <p>記録したデータはファイルとして書き出すことができます。スプレッドシートと組み合わせて詳細な分析をしたい場合や、バックアップとして保存しておきたい場合に活用できます。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>こんな人におすすめ</h2>
+
+      <p>KURAは次のような方に特に向いています。</p>
+
+      <ul>
+        <li>家計簿アプリを試したことはあるが、途中で挫折した経験がある</li>
+        <li>銀行口座の連携やアカウント登録をしたくない</li>
+        <li>スマートフォンのストレージを節約したい</li>
+        <li>パソコンのブラウザで家計を管理したい</li>
+        <li>シンプルな画面で直感的に使いたい</li>
+        <li>まず「試してみてから続けるか判断」したい</li>
+      </ul>
+
+      <p>逆に、家族全員でリアルタイムに家計を共有したい場合や、銀行・クレジットカードの明細を自動取り込みしたい場合には、口座連携に対応した専用アプリを別途検討することをおすすめします。KURAはあくまで「自分で入力して管理する」シンプルスタイルに特化しています。</p>
+
+      <!-- ===== h2 ===== -->
+      <h2>まとめ</h2>
+
+      <p>家計簿が続かない原因は「意志力の問題」ではなく、<strong>ツールの使いにくさと記録の手間にあります</strong>。アプリのインストール・会員登録・複雑な設定といったハードルが、始める前から気力を奪っているケースは少なくありません。</p>
+
+      <p>ブラウザ家計簿ツール「KURA」は、そのハードルをゼロにすることを目指して作られました。URLを開くだけ・入力するだけ・グラフで見るだけ。この3ステップを繰り返すだけで、支出のクセが見えてきます。</p>
+
+      <p>「完璧な家計管理」より「続く家計管理」の方が、長い目で見ると節約効果は大きくなります。まずは今日の支出を1件だけ入力してみるところから始めてみてください。</p>
+
+      <div class="tool-card" style="margin-top: 40px;">
+        <div class="tool-card-header">
+          <div class="tool-icon">K</div>
+          <div>
+            <div class="tool-name">KURA — 無料ブラウザ家計簿ツール</div>
+            <div class="tool-badge">登録不要 · 無料 · ブラウザのみ</div>
+          </div>
+        </div>
+        <p class="tool-desc">インストール不要・登録不要。ブラウザを開くだけで今すぐ使える無料の家計簿ツール。データはローカル保存なのでプライバシーも安心です。</p>
+        <a href="https://somirai.jp/savings/" class="cta-btn" target="_blank" rel="noopener">
+          今すぐ無料で使ってみる
+        </a>
+      </div>
+
+      <!-- AdSense（記事下） -->
+
+    </div>
+    <!-- /article-body -->
+
+  </article>
+</main>
+
+<!-- フッター -->
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/about.html">このサイトについて</a>
+    <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    <a href="https://somirai.jp/contact.html">お問い合わせ</a>
+  </div>
+  <p>&#169; 2026 Somirai Lab</p>
+</footer>
+
+</body>
+</html>
