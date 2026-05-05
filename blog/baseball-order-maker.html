@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>野球のオーダー表を無料で簡単作成｜スタメン・打順・守備ポジションを一画面で管理する方法 | Somirai Lab</title>
+  <meta name="description" content="草野球・軟式野球のスタメン作成に困っていませんか？打順・守備ポジション・投手ローテを一画面で管理できる無料ツール「スタメンメーカー」の使い方を解説。登録不要でブラウザだけで使えます。">
+  <meta name="keywords" content="野球 オーダー表 無料,スタメン作成 アプリ,草野球 打順 管理,野球 守備 ポジション 管理,野球オーダー作成 無料">
+  <link rel="canonical" href="https://somirai.jp/blog/baseball-order-maker.html">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://somirai.jp/blog/baseball-order-maker.html">
+  <meta property="og:title" content="野球のオーダー表を無料で簡単作成｜スタメン・打順・守備ポジションを一画面で管理する方法">
+  <meta property="og:description" content="草野球・軟式野球のスタメン作成に困っていませんか？打順・守備・投手ローテを無料で管理できるブラウザツールの使い方を解説。">
+  <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "野球のオーダー表を無料で簡単作成｜スタメン・打順・守備ポジションを一画面で管理する方法",
+    "description": "草野球・軟式野球のスタメン作成に困っていませんか？打順・守備・投手ローテを無料で管理できるブラウザツールの使い方を解説。",
+    "datePublished": "2026-05-05",
+    "dateModified": "2026-05-05",
+    "author": { "@type": "Organization", "name": "Somirai Lab", "url": "https://somirai.jp/" },
+    "publisher": { "@type": "Organization", "name": "Somirai Lab", "url": "https://somirai.jp/" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://somirai.jp/blog/baseball-order-maker.html" }
+  }
+  </script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9485428408605916" crossorigin="anonymous"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0b; --surface: #111114; --surface2: #18181c;
+      --border: #222228; --text: #e2e8f0; --text-sec: #94a3b8;
+      --text-mut: #475569; --accent: #ff6428; --accent-soft: rgba(255,100,40,0.12);
+      --radius: 16px;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+
+    .site-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+    .site-logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
+    .site-logo span { color: var(--accent); }
+    .header-nav { margin-left: auto; display: flex; gap: 16px; }
+    .header-nav a { color: var(--text-sec); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+    .header-nav a:hover { color: var(--text); }
+
+    .breadcrumb { max-width: 860px; margin: 0 auto; padding: 12px 24px; font-size: 0.8rem; color: var(--text-mut); }
+    .breadcrumb a { color: var(--text-mut); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 6px; }
+
+    .page-wrapper { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .article-header { padding: 32px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+    .article-category { display: inline-block; background: var(--accent-soft); color: var(--accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 16px; }
+    .article-title { font-family: 'Noto Sans JP', sans-serif; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; margin-bottom: 20px; }
+    .article-meta { display: flex; align-items: center; gap: 16px; font-size: 0.85rem; color: var(--text-mut); }
+
+    .article-body { font-size: 1rem; line-height: 1.9; }
+    .article-body h2 { font-size: 1.4rem; font-weight: 700; color: var(--text); margin: 56px 0 20px; padding-left: 16px; border-left: 3px solid var(--accent); line-height: 1.4; }
+    .article-body h2:first-of-type { margin-top: 0; }
+    .article-body h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin: 36px 0 12px; }
+    .article-body p { color: var(--text-sec); margin-bottom: 20px; }
+    .article-body p strong { color: var(--text); font-weight: 700; }
+    .article-body ul, .article-body ol { margin: 0 0 20px 0; padding-left: 0; list-style: none; }
+    .article-body ul li, .article-body ol li { color: var(--text-sec); padding: 6px 0 6px 24px; position: relative; }
+    .article-body ul li::before { content: ''; position: absolute; left: 0; top: 14px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .article-body ol { counter-reset: ol-counter; }
+    .article-body ol li { counter-increment: ol-counter; }
+    .article-body ol li::before { content: counter(ol-counter); position: absolute; left: 0; top: 6px; font-size: 0.75rem; font-weight: 700; color: var(--accent); background: var(--accent-soft); width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    .point-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin: 28px 0; }
+    .point-box .box-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
+    .point-box p { margin-bottom: 0; }
+    .point-box ul { margin-bottom: 0; }
+
+    .highlight-box { background: var(--accent-soft); border: 1px solid rgba(255,100,40,0.25); border-radius: var(--radius); padding: 20px 24px; margin: 28px 0; }
+    .highlight-box p { margin-bottom: 0; color: var(--text); }
+
+    .tool-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin: 36px 0; }
+    .tool-card-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+    .tool-icon { width: 48px; height: 48px; background: var(--accent-soft); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .tool-name { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .tool-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; font-weight: 700; color: #4ade80; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); padding: 3px 8px; border-radius: 6px; }
+    .tool-desc { color: var(--text-sec); font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
+    .tool-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 24px; }
+    .tool-feature { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 0.85rem; color: var(--text-sec); }
+    .tool-feature strong { display: block; color: var(--text); font-size: 0.8rem; margin-bottom: 3px; }
+    .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.95rem; padding: 12px 28px; border-radius: 999px; text-decoration: none; transition: opacity 0.2s; }
+    .cta-btn:hover { opacity: 0.85; }
+
+    .step-list { counter-reset: step-counter; list-style: none; padding: 0; margin: 0 0 28px; }
+    .step-list li { counter-increment: step-counter; position: relative; padding: 0 0 28px 52px; color: var(--text-sec); }
+    .step-list li::before { content: counter(step-counter); position: absolute; left: 0; top: 0; width: 32px; height: 32px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.85rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .step-list li::after { content: ''; position: absolute; left: 15px; top: 32px; bottom: 0; width: 2px; background: var(--border); }
+    .step-list li:last-child::after { display: none; }
+    .step-list li strong { display: block; color: var(--text); font-weight: 700; margin-bottom: 6px; }
+
+    .trouble-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0; }
+    .trouble-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+    .trouble-card .label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    .trouble-card.before .label { color: #ef4444; }
+    .trouble-card.after .label { color: #22c55e; }
+    .trouble-card p { font-size: 0.88rem; color: var(--text-sec); margin-bottom: 0; }
+
+    .site-footer { background: var(--surface); border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 0.85rem; color: var(--text-mut); margin-top: 80px; }
+    .site-footer a { color: var(--text-mut); text-decoration: none; margin: 0 10px; }
+    .site-footer a:hover { color: var(--text); }
+    .site-footer .footer-links { margin-bottom: 16px; }
+
+    @media (max-width: 600px) {
+      .page-wrapper { padding: 0 16px 60px; }
+      .article-header { padding: 24px 0 32px; }
+      .tool-features { grid-template-columns: 1fr 1fr; }
+      .trouble-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="https://somirai.jp/" class="site-logo">Somirai<span>.</span>jp</a>
+  <nav class="header-nav">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/order-maker/">スタメンメーカー</a>
+    <a href="https://somirai.jp/blog/">ブログ</a>
+  </nav>
+</header>
+
+<nav class="breadcrumb" aria-label="パンくずリスト">
+  <a href="https://somirai.jp/">ホーム</a>
+  <span>›</span>
+  <a href="https://somirai.jp/blog/">ブログ</a>
+  <span>›</span>
+  野球のオーダー表を無料で簡単作成
+</nav>
+
+<main class="page-wrapper">
+  <article>
+
+    <header class="article-header">
+      <div class="article-category">野球・スポーツ</div>
+      <h1 class="article-title">野球のオーダー表を無料で簡単作成｜スタメン・打順・守備ポジションを一画面で管理する方法</h1>
+      <div class="article-meta">
+        <time datetime="2026-05-05">2026年5月5日</time>
+        <span>約2,600字 · 読了約6分</span>
+      </div>
+    </header>
+
+    <div class="article-body">
+
+      <p>「今日のスタメン、誰をどこに入れるか決まらない」「試合直前にLINEでオーダーをバラバラに送り合って混乱した」――草野球チームのマネージャーや主将なら、一度は経験があるのではないでしょうか。</p>
+
+      <p>試合のたびにExcelでオーダー表を作り直す、手書きのメモが毎回どこかに消える、守備ポジションが被っていることに直前まで気づかない。こうした「スタメン管理のプチ地獄」は、ちょっとしたツールを使うだけで一気に解決できます。</p>
+
+      <p>この記事では、草野球・軟式野球のスタメン管理でよくある悩みと、ブラウザだけで無料で使えるオーダー表作成ツール「<strong>スタメンメーカー（TACTICIAN）</strong>」の使い方を解説します。</p>
+
+      <h2>草野球のスタメン管理でよくある悩み</h2>
+
+      <p>草野球チームのスタメン管理は、見た目よりずっと手間がかかります。よくある課題を整理してみましょう。</p>
+
+      <div class="trouble-grid">
+        <div class="trouble-card before">
+          <div class="label">よくある悩み</div>
+          <p>毎回Excelでオーダー表を作り直すのが面倒</p>
+        </div>
+        <div class="trouble-card before">
+          <div class="label">よくある悩み</div>
+          <p>「このポジション誰が守れるっけ？」を毎回確認しないといけない</p>
+        </div>
+        <div class="trouble-card before">
+          <div class="label">よくある悩み</div>
+          <p>LINEに打順をテキストで送るだけで守備配置が伝わらない</p>
+        </div>
+        <div class="trouble-card before">
+          <div class="label">よくある悩み</div>
+          <p>投手ローテを別のメモで管理していて情報が散乱している</p>
+        </div>
+      </div>
+
+      <p>これらはすべて、<strong>「選手情報」「打順」「守備配置」「投手ローテ」がバラバラの場所で管理されていること</strong>が原因です。一つのツールにまとめることで、試合前の準備時間を大きく短縮できます。</p>
+
+      <h2>無料スタメン作成ツール「スタメンメーカー」とは</h2>
+
+      <div class="tool-card">
+        <div class="tool-card-header">
+          <div class="tool-icon">📋</div>
+          <div>
+            <div class="tool-name">スタメンメーカー（TACTICIAN）</div>
+            <div class="tool-badge">無料 · 登録不要 · ブラウザのみ</div>
+          </div>
+        </div>
+        <p class="tool-desc">
+          草野球・軟式野球向けの無料スタメン作成ツール。選手の登録から守備可能ポジション・打順・守備配置・投手ローテまでを一画面で管理できます。スタメン表の印刷・シェア機能付き。アカウント登録なし、インストール不要でブラウザだけで使えます。
+        </p>
+        <div class="tool-features">
+          <div class="tool-feature">
+            <strong>選手・ポジション管理</strong>
+            守備可能ポジションを選手ごとに登録
+          </div>
+          <div class="tool-feature">
+            <strong>打順・守備設定</strong>
+            ドラッグで直感的に並び替え
+          </div>
+          <div class="tool-feature">
+            <strong>DH制対応</strong>
+            指名打者ルールにも対応
+          </div>
+          <div class="tool-feature">
+            <strong>投手ローテ管理</strong>
+            登板予定を一元管理
+          </div>
+          <div class="tool-feature">
+            <strong>印刷・シェア</strong>
+            LINE・X・メールで即共有
+          </div>
+          <div class="tool-feature">
+            <strong>データ保存</strong>
+            JSONでエクスポート・インポート
+          </div>
+        </div>
+        <a href="https://somirai.jp/order-maker/" class="cta-btn" target="_blank" rel="noopener">
+          スタメンメーカーを無料で使ってみる
+        </a>
+      </div>
+
+      <p>スタメンメーカーは Somirai Lab が開発した無料のブラウザツールです。インストール不要でスマートフォンからもアクセスでき、試合会場でも即座に使えます。データはブラウザのローカルストレージに保存されるため、外部に情報が送信されることもありません。</p>
+
+      <h2>スタメンメーカーの使い方：4ステップ</h2>
+
+      <ol class="step-list">
+        <li>
+          <strong>選手を登録する</strong>
+          「選手」タブから背番号・名前・守備可能ポジションを入力します。守備可能ポジションを登録しておくことで、「誰がどこを守れるか」を後から確認する手間がなくなります。一度登録すれば、次の試合からも使い回せます。
+        </li>
+        <li>
+          <strong>打順と守備を設定する</strong>
+          「打順・守備」タブで1番から9番の打順を決め、それぞれの守備ポジションを割り当てます。各ポジションに何人入っているかがリアルタイムで表示されるため、守備の重複をその場で確認できます。DH制を使用する場合も切り替えひとつで対応できます。
+        </li>
+        <li>
+          <strong>投手ローテを管理する</strong>
+          「投手ローテ」タブで先発・中継ぎの登板計画を管理します。シーズンを通じてどの投手がどの試合に登板したかを記録しておくことで、登板過多を防いだり、疲労を考慮したローテーション計画が立てやすくなります。
+        </li>
+        <li>
+          <strong>スタメン表を共有・印刷する</strong>
+          「スタメン表」タブに守備配置図と打順が一覧表示されます。「シェアする」ボタンを押すと、LINEやX・メールなど各アプリに共有できます。印刷ボタンから紙のオーダー表として出力することも可能です。
+        </li>
+      </ol>
+
+      <div class="point-box">
+        <div class="box-label">使い始めのコツ</div>
+        <ul>
+          <li>初回はチームの全メンバーを登録してしまうと、次の試合から「出席者のみ打順に入れる」だけで完結する</li>
+          <li>守備可能ポジションを複数登録しておくと「今日は外野が足りない」ときの代替案がすぐ見える</li>
+          <li>試合後にJSONでデータをエクスポートしておくとバックアップになる</li>
+        </ul>
+      </div>
+
+      <h2>「オーダー表をLINEで送る」文化をアップデートする</h2>
+
+      <p>草野球チームでよく見られるのが、試合前日に主将が打順テキストをLINEグループに送るスタイルです。「1番 ライト 田中、2番 セカンド 山田……」というやり取りは確かにシンプルですが、いくつかの問題があります。</p>
+
+      <ul>
+        <li>守備配置図がなく、ポジション被りに気づきにくい</li>
+        <li>変更があると「さっきの修正版」のメッセージが埋もれて混乱する</li>
+        <li>当日参加できなかったメンバーへの共有が手間</li>
+        <li>翌シーズンに見返したいとき、LINEのログを遡るしかない</li>
+      </ul>
+
+      <p>スタメンメーカーのシェア機能を使えば、<strong>守備配置図つきのオーダー表をワンタップでLINEに送れます</strong>。受け取った側は一目でポジションと打順がわかるため、「自分は何番でどこを守るのか」を確認する手間がなくなります。</p>
+
+      <div class="highlight-box">
+        <p>テキストベースのオーダー共有から、守備配置図つきのビジュアル共有へ。試合前の「確認LINEの往復」がなくなるだけで、主将・マネージャーの負担は大きく減ります。</p>
+      </div>
+
+      <h2>スタメンメーカーがおすすめな人</h2>
+
+      <ul>
+        <li>草野球・軟式野球チームの主将・マネージャーで、毎試合スタメン管理に時間がかかっている</li>
+        <li>Excelや手書きでオーダー表を作っているが、もっとシンプルにしたい</li>
+        <li>選手ごとの守備可能ポジションを一元管理しておきたい</li>
+        <li>スタメンをLINEやXでチームにすぐ共有したい</li>
+        <li>少年野球・中学野球チームの指導者で、登録情報を整理しておきたい</li>
+      </ul>
+
+      <h2>まとめ</h2>
+
+      <p>草野球のスタメン管理は「なんとなく」こなせてしまうため、改善の優先度が低くなりがちです。しかし、試合前の準備に毎回30分以上かかっているなら、ツールを一本切り替えるだけでその時間をほぼゼロにできます。</p>
+
+      <p>スタメンメーカーはブラウザを開くだけで今すぐ使えます。まずはチームの選手を登録するだけでも試してみてください。次の試合から「オーダー表どこだっけ？」という問いかけがなくなります。</p>
+
+      <div class="tool-card" style="margin-top: 40px;">
+        <div class="tool-card-header">
+          <div class="tool-icon">📋</div>
+          <div>
+            <div class="tool-name">スタメンメーカー — 無料オーダー表作成ツール</div>
+            <div class="tool-badge">登録不要 · 無料 · ブラウザのみ</div>
+          </div>
+        </div>
+        <p class="tool-desc">打順・守備・投手ローテを一画面で管理。守備配置図つきのスタメン表をLINEやXで即共有できる、草野球向け無料ブラウザツール。</p>
+        <a href="https://somirai.jp/order-maker/" class="cta-btn" target="_blank" rel="noopener">
+          今すぐ無料で使ってみる
+        </a>
+      </div>
+
+    </div>
+    <!-- /article-body -->
+
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/about.html">このサイトについて</a>
+    <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    <a href="https://somirai.jp/contact.html">お問い合わせ</a>
+  </div>
+  <p>&#169; 2026 Somirai Lab</p>
+</footer>
+
+</body>
+</html>
