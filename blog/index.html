@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ブログ — Somirai Lab</title>
+  <meta name="description" content="Somirai Lab のブログ。習慣化・家計管理・野球成績・メモ術など、日常をちょっと豊かにするTipsを発信しています。">
+  <link rel="canonical" href="https://somirai.jp/blog/">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://somirai.jp/blog/">
+  <meta property="og:title" content="ブログ — Somirai Lab">
+  <meta property="og:description" content="習慣化・家計管理・野球成績・メモ術など、日常をちょっと豊かにするTipsを発信。">
+  <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9485428408605916" crossorigin="anonymous"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0b; --surface: #111114; --surface2: #18181c;
+      --border: #222228; --text: #e2e8f0; --text-sec: #94a3b8;
+      --text-mut: #475569; --accent: #ff6428; --accent-soft: rgba(255,100,40,0.12);
+      --radius: 16px;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+
+    .site-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+    .site-logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
+    .site-logo span { color: var(--accent); }
+    .header-nav { margin-left: auto; display: flex; gap: 16px; }
+    .header-nav a { color: var(--text-sec); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+    .header-nav a:hover, .header-nav a.active { color: var(--text); }
+
+    .page-wrapper { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    .page-heading { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+    .page-sub { color: var(--text-sec); font-size: 0.95rem; margin-bottom: 48px; }
+
+    .article-grid { display: grid; gap: 24px; }
+
+    .article-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .article-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+    .card-category {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+    .card-title { font-size: 1.15rem; font-weight: 700; color: var(--text); line-height: 1.5; margin-bottom: 10px; }
+    .card-desc { font-size: 0.9rem; color: var(--text-sec); line-height: 1.7; margin-bottom: 16px; }
+    .card-meta { display: flex; align-items: center; gap: 12px; font-size: 0.8rem; color: var(--text-mut); }
+    .card-read { margin-left: auto; color: var(--accent); font-size: 0.85rem; font-weight: 600; }
+
+    .site-footer { background: var(--surface); border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 0.85rem; color: var(--text-mut); margin-top: 80px; }
+    .site-footer a { color: var(--text-mut); text-decoration: none; margin: 0 10px; }
+    .site-footer a:hover { color: var(--text); }
+    .site-footer .footer-links { margin-bottom: 16px; }
+
+    @media (max-width: 600px) {
+      .page-wrapper { padding: 32px 16px 60px; }
+      .page-heading { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="https://somirai.jp/" class="site-logo">Somirai<span>.</span>jp</a>
+  <nav class="header-nav">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="/blog/" class="active">ブログ</a>
+    <a href="https://somirai.jp/about.html">About</a>
+  </nav>
+</header>
+
+<main class="page-wrapper">
+  <h1 class="page-heading">ブログ</h1>
+  <p class="page-sub">習慣化・家計管理・野球成績・メモ術など、日常をちょっと豊かにするTipsを発信しています。</p>
+
+  <div class="article-grid">
+
+    <a href="/blog/sanbikoboshi-kagaku.html" class="article-card">
+      <div class="card-category">習慣管理</div>
+      <div class="card-title">三日坊主を科学する：習慣化できない3つの本当の理由と、ゲームで解決する方法</div>
+      <div class="card-desc">意志力に頼る・完璧主義・フィードバック欠如。この3つの心理的罠を理解すれば、誰でも習慣を続けられる。ゲーミフィケーションで解決するTEMPERの活用法も解説。</div>
+      <div class="card-meta">
+        <time datetime="2026-05-04">2026年5月4日</time>
+        <span>約4,000字</span>
+        <span class="card-read">読む →</span>
+      </div>
+    </a>
+
+    <a href="/blog/habit-app-temper.html" class="article-card">
+      <div class="card-category">習慣管理</div>
+      <div class="card-title">習慣化を続けるコツ｜ゲーム感覚で毎日の習慣を記録する無料アプリを使ってみた</div>
+      <div class="card-desc">習慣化が続かない理由と3つのコツを解説。ゲーム感覚でXP獲得・レベルアップできる無料習慣トラッカー「TEMPER」の使い方も紹介。</div>
+      <div class="card-meta">
+        <time datetime="2026-05-01">2026年5月1日</time>
+        <span>約2,300字</span>
+        <span class="card-read">読む →</span>
+      </div>
+    </a>
+
+    <a href="/blog/baseball-batting-stats.html" class="article-card">
+      <div class="card-category">野球・スポーツ</div>
+      <div class="card-title">野球の打撃成績を無料で管理する方法｜ブラウザだけで使えるスタッツトラッカー「LUMBER」</div>
+      <div class="card-desc">草野球・社会人野球の打撃成績をブラウザだけで無料管理。打率・出塁率・OPSなどの指標を自動計算。登録不要で今すぐ使える打撃成績トラッカーの使い方を解説。</div>
+      <div class="card-meta">
+        <time datetime="2026-05-05">2026年5月5日</time>
+        <span>約4,000字</span>
+        <span class="card-read">読む →</span>
+      </div>
+    </a>
+
+    <a href="/blog/kakeibo-kura.html" class="article-card">
+      <div class="card-category">家計・節約</div>
+      <div class="card-title">家計簿アプリをインストールしない節約管理術｜ブラウザだけで使える無料ツール「KURA」</div>
+      <div class="card-desc">家計簿が続かない理由はシンプルで、入力が面倒すぎること。ブラウザのみで動くKURAなら、データはローカル保存でプライバシー安心。すぐ使えてすぐ続く家計管理術。</div>
+      <div class="card-meta">
+        <time datetime="2026-05-05">2026年5月5日</time>
+        <span>約3,800字</span>
+        <span class="card-read">読む →</span>
+      </div>
+    </a>
+
+    <a href="/blog/memo-marginalia.html" class="article-card">
+      <div class="card-category">メモ・生産性</div>
+      <div class="card-title">メモアプリを断捨離する：ブラウザだけで使える無料メモ・TODOツール「MARGINALIA」</div>
+      <div class="card-desc">Notion・Obsidian・Evernoteと渡り歩いてきた人へ。シンプルさこそが続く理由。登録不要・インストール不要で使えるブラウザメモツールMARGINALIAの活用法。</div>
+      <div class="card-meta">
+        <time datetime="2026-05-05">2026年5月5日</time>
+        <span>約4,100字</span>
+        <span class="card-read">読む →</span>
+      </div>
+    </a>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/about.html">このサイトについて</a>
+    <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    <a href="https://somirai.jp/contact.html">お問い合わせ</a>
+  </div>
+  <p>&#169; 2026 Somirai Lab</p>
+</footer>
+
+</body>
+</html>
