@@ -11,7 +11,7 @@
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Orbitron:wght@700;900&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,600&family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="manifest" href="/order-maker/manifest.json">
   <link rel="apple-touch-icon" href="/order-maker/icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -91,20 +91,30 @@
        ============================================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:      #020805;
-      --surface: #061009;
-      --card:    #04080d;
-      --border:  #0d3320;
-      --accent:  #00e676;
-      --text:    #c8f0d8;
-      --muted:   #3d6e52;
-      --green:   #00e676;
-      --red:     #ff5252;
-      --yellow:  #ffd740;
-      --mint:    #64ffda;
-      --radius:  14px;
-      --glow-green: 0 0 24px rgba(0,230,118,0.25);
-      --glow-teal:  0 0 20px rgba(100,255,218,0.15);
+      --bg:       #070810;
+      --surface:  #0d0f18;
+      --card:     #0d0f18;
+      --border:   #1c1f30;
+      --border-2: #252840;
+      --accent:   #00e676;
+      --text:     #eaecf4;
+      --muted:    #555878;
+      --green:    #00e676;
+      --red:      #ff5252;
+      --yellow:   #ffd740;
+      --mint:     #64ffda;
+      --radius:   14px;
+      --mono:     'JetBrains Mono', monospace;
+      --dot-color: #1e2035;
+      --field-bg:        #010e04;
+      --field-foul:      rgba(255,255,255,.55);
+      --field-line:      rgba(255,255,255,.85);
+      --field-base:      rgba(255,255,255,.92);
+      --field-base-str:  rgba(255,255,255,.5);
+      --field-rubber:    rgba(255,255,255,.7);
+      --field-label-bg:  rgba(1,16,5,.88);
+      --field-label-txt: #d8f5e0;
+      --field-pos-empty: rgba(0,0,0,.45);
     }
     @keyframes fadeSlideUp {
       from { opacity: 0; transform: translateY(10px); }
@@ -123,14 +133,6 @@
       0%, 100% { box-shadow: 0 0 8px rgba(0,230,118,0.2); }
       50%      { box-shadow: 0 0 20px rgba(0,230,118,0.5); }
     }
-    @keyframes scanline {
-      0%   { transform: translateY(-100%); opacity: 0.06; }
-      100% { transform: translateY(200vh);  opacity: 0.02; }
-    }
-    @keyframes holoPulse {
-      0%, 100% { box-shadow: 0 0 8px rgba(0,230,118,0.15), inset 0 0 8px rgba(0,230,118,0.03); }
-      50%      { box-shadow: 0 0 22px rgba(0,230,118,0.4), inset 0 0 14px rgba(0,230,118,0.07); }
-    }
     @keyframes terminalBlink {
       0%, 100% { opacity: 1; }
       50%      { opacity: 0; }
@@ -139,33 +141,38 @@
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg); color: var(--text);
-      font-family: 'Barlow Condensed','Noto Sans JP','Hiragino Sans',system-ui,sans-serif;
+      font-family: 'Space Grotesk','Noto Sans JP','Hiragino Sans',system-ui,sans-serif;
       min-height: 100vh; display: flex; flex-direction: column;
       -webkit-tap-highlight-color: transparent;
       background-image:
-        linear-gradient(rgba(0,230,118,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,230,118,0.02) 1px, transparent 1px),
-        linear-gradient(rgba(0,230,118,0.008) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,230,118,0.008) 1px, transparent 1px);
-      background-size: 44px 44px, 44px 44px, 8.8px 8.8px, 8.8px 8.8px;
+        radial-gradient(ellipse at 50% 0%, rgba(0,230,118,.06) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 90%, rgba(0,230,118,.03) 0%, transparent 40%);
     }
     body::before {
       content: '';
-      position: fixed; top: 0; left: 0; right: 0; height: 200vh;
-      background: linear-gradient(180deg, rgba(0,230,118,0.04) 0%, transparent 60%);
-      pointer-events: none; z-index: 0;
-      animation: scanline 10s linear infinite;
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: var(--dot-opacity, .5);
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: .028;
     }
 
     /* ── Header ── */
     header {
-      background: linear-gradient(180deg, rgba(2,8,5,0.98) 0%, rgba(3,10,6,0.97) 100%);
-      border-bottom: 1px solid rgba(0,230,118,0.5);
-      box-shadow: 0 0 30px rgba(0,230,118,0.08), 0 1px 0 rgba(0,230,118,0.3), inset 0 -1px 0 rgba(0,230,118,0.08);
-      padding: 0 16px; height: 56px;
+      background: rgba(7,8,16,.92);
+      border-bottom: 1px solid rgba(0,230,118,.12);
+      box-shadow: 0 1px 0 rgba(0,230,118,.12);
+      padding: 0 16px; height: 52px;
       display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 100;
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     }
     .header-left { display: flex; align-items: center; gap: 10px; }
     .header-back { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .15s; }
@@ -174,9 +181,9 @@
       display: flex; flex-direction: column; gap: 0;
     }
     .header-title-main {
-      font-size: 22px; font-weight: 400; letter-spacing: 0.1em;
-      color: var(--accent); font-family: 'Anton', sans-serif;
-      text-shadow: 0 0 14px rgba(0,230,118,0.5), 0 0 28px rgba(0,230,118,0.15);
+      font-size: 24px; font-weight: 400; letter-spacing: 0.12em;
+      color: var(--accent); font-family: 'Bebas Neue', sans-serif;
+      text-shadow: 0 0 14px rgba(0,230,118,0.4), 0 0 28px rgba(0,230,118,0.12);
       line-height: 1;
     }
     .header-title-sub {
@@ -188,11 +195,15 @@
     .btn-color { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 0; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; flex-shrink: 0; }
     .btn-color:active { background: rgba(0,230,118,.08); }
     .btn-color-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 1.5px solid rgba(255,255,255,.2); transition: background .2s; display: block; }
-    .color-palette { display: none; position: fixed; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px; gap: 8px; flex-wrap: wrap; width: 128px; z-index: 300; box-shadow: 0 8px 32px rgba(0,0,0,.6); }
+    .color-palette { display: none; position: fixed; background: var(--surface); border: 1px solid var(--border-2); border-radius: 12px; padding: 10px; gap: 8px; flex-wrap: wrap; width: 148px; z-index: 300; box-shadow: 0 8px 32px rgba(0,0,0,.6); }
     .color-palette.open { display: flex; }
+    .palette-label { font-size: 9px; font-weight: 700; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; width: 100%; line-height: 1; font-family: var(--mono); pointer-events: none; }
+    .palette-divider { width: 100%; height: 1px; background: var(--border-2); margin: 2px 0; }
     .palette-swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: transform .15s, border-color .15s; }
     .palette-swatch:hover { transform: scale(1.15); }
     .palette-swatch.active { border-color: #fff; transform: scale(1.1); }
+    .palette-swatch.bg-swatch { border-color: rgba(128,128,128,.4); }
+    .palette-swatch.bg-swatch.active { border-color: var(--accent); box-shadow: 0 0 6px rgba(0,230,118,.4); }
     .btn-icon {
       width: 36px; height: 36px; border-radius: 10px;
       background: rgba(0,230,118,0.04); border: 1px solid var(--border);
@@ -211,17 +222,17 @@
     }
     .btn:active { transform: scale(.97); }
     .btn-primary {
-      background: transparent;
+      background: rgba(0,230,118,.08);
       color: var(--accent);
-      border: 1px solid var(--accent);
-      box-shadow: 0 0 10px rgba(0,230,118,0.18), inset 0 0 10px rgba(0,230,118,0.04);
+      border: 1px solid rgba(0,230,118,.35);
       letter-spacing: 0.05em;
-      font-family: 'Orbitron', monospace;
-      font-size: 11px;
+      font-family: var(--mono);
+      font-size: 12px;
     }
     .btn-primary:hover {
-      background: rgba(0,230,118,0.08);
-      box-shadow: 0 0 22px rgba(0,230,118,0.38), inset 0 0 16px rgba(0,230,118,0.08);
+      background: rgba(0,230,118,.14);
+      border-color: rgba(0,230,118,.6);
+      box-shadow: 0 0 14px rgba(0,230,118,.18);
     }
     .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
     .btn-ghost:hover { color: var(--text); border-color: rgba(0,230,118,0.35); background: rgba(0,230,118,0.05); }
@@ -239,13 +250,13 @@
     .btn-xs { padding: 3px 8px; font-size: 11px; }
 
     /* ── Tab Nav ── */
-    .tab-nav { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); overflow-x: auto; }
+    .tab-nav { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); overflow-x: auto; position: sticky; top: 52px; z-index: 90; }
     .tab-btn {
       flex: 1; min-width: 72px; padding: 14px 6px;
       background: none; border: none; color: var(--muted);
-      font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
+      font-size: 11px; font-weight: 700; cursor: pointer; font-family: var(--mono);
       position: relative; transition: color .2s;
-      white-space: nowrap; letter-spacing: 0.03em;
+      white-space: nowrap; letter-spacing: 0.06em; text-transform: uppercase;
     }
     .tab-btn.active { color: var(--accent); text-shadow: 0 0 8px rgba(0,230,118,0.4); }
     .tab-btn.active::after {
@@ -256,18 +267,18 @@
     }
 
     /* ── Main ── */
-    main { flex: 1; max-width: 720px; width: 100%; margin: 0 auto; padding: 16px 14px 100px; }
+    main { flex: 1; max-width: 720px; width: 100%; margin: 0 auto; padding: 16px 14px 100px; position: relative; z-index: 1; }
     .section { display: none; }
     .section.active { display: block; }
 
     /* ── Card ── */
     .card {
-      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--surface); border: 1px solid var(--border-2); border-radius: var(--radius);
       padding: 18px; margin-bottom: 14px;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.25);
     }
     .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-    .card-title { font-size: 13px; font-weight: 800; letter-spacing: 0.1em; font-family: 'Barlow Condensed', 'Orbitron', monospace; color: var(--text); text-transform: uppercase; }
+    .card-title { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; font-family: var(--mono); color: var(--text); text-transform: uppercase; }
     .card-sub { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
 
     /* ── Form ── */
@@ -391,12 +402,12 @@
     .extra-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: rgba(110,231,183,.1); border: 1px solid rgba(110,231,183,.2); color: var(--mint); white-space: nowrap; }
 
     /* ── Field SVG ── */
-    .field-wrap { background: var(--surface); border: 1px solid var(--accent); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; box-shadow: 0 0 20px rgba(0,230,118,0.08); }
-    .field-title { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px; font-family: 'Orbitron', monospace; text-shadow: 0 0 6px rgba(0,230,118,0.4); }
+    .field-wrap { background: var(--field-bg); border: 1px solid rgba(0,230,118,0.4); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; box-shadow: 0 0 24px rgba(0,230,118,0.1); }
+    .field-title { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px; font-family: var(--mono); text-shadow: 0 0 6px rgba(0,230,118,0.3); }
     #field-svg { width: 100%; max-width: 400px; display: block; margin: 0 auto; }
 
     /* ── Print ── */
-    .print-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: 0 2px 16px rgba(0,0,0,0.2); }
+    .print-card { background: var(--surface); border: 1px solid var(--border-2); border-radius: var(--radius); padding: 20px; box-shadow: 0 2px 16px rgba(0,0,0,0.2); }
     .print-title { font-size: 22px; font-weight: 900; margin-bottom: 4px; }
     .print-meta { font-size: 12px; color: var(--muted); margin-bottom: 16px; font-family: 'JetBrains Mono', monospace; }
     .print-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
@@ -412,7 +423,7 @@
     /* ── Theme Modal ── */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 20px; backdrop-filter: blur(4px); }
     .modal-overlay.hidden { display: none; }
-    .modal { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+    .modal { background: var(--surface); border: 1px solid var(--border-2); border-radius: 16px; padding: 24px; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
     .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
     .modal-title { font-size: 18px; font-weight: 800; }
     .modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 4px; transition: color .15s; }
@@ -435,7 +446,7 @@
       color: var(--accent); font-size: 12px; font-weight: 800;
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
       box-shadow: 0 0 10px rgba(0,230,118,0.25);
-      font-family: 'Orbitron', monospace;
+      font-family: var(--mono);
     }
     .step-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
     .step-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
@@ -495,6 +506,7 @@
         <span class="btn-color-dot" id="om-color-dot"></span>
       </button>
       <div class="color-palette" id="om-color-palette">
+        <span class="palette-label">ACCENT</span>
         <span class="palette-swatch" data-color="#00e676" style="background:#00e676"></span>
         <span class="palette-swatch" data-color="#ffd700" style="background:#ffd700"></span>
         <span class="palette-swatch" data-color="#60a5fa" style="background:#60a5fa"></span>
@@ -503,6 +515,12 @@
         <span class="palette-swatch" data-color="#fb923c" style="background:#fb923c"></span>
         <span class="palette-swatch" data-color="#34d399" style="background:#34d399"></span>
         <span class="palette-swatch" data-color="#f87171" style="background:#f87171"></span>
+        <div class="palette-divider"></div>
+        <span class="palette-label">BG</span>
+        <span class="palette-swatch bg-swatch" data-bg="dark"  style="background:#070810" title="ダーク"></span>
+        <span class="palette-swatch bg-swatch" data-bg="black" style="background:#080808" title="ブラック"></span>
+        <span class="palette-swatch bg-swatch" data-bg="light" style="background:#f5f4f0" title="ライト"></span>
+        <span class="palette-swatch bg-swatch" data-bg="white" style="background:#ffffff"  title="ホワイト"></span>
       </div>
     </div>
     <button class="btn-icon" onclick="openTutorial()" aria-label="使い方">
@@ -673,48 +691,61 @@
       <div class="field-title">守備配置図</div>
       <svg id="field-svg" viewBox="0 0 400 370" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <radialGradient id="fieldGrad" cx="50%" cy="65%" r="60%">
-            <stop offset="0%" stop-color="rgba(0,80,40,0.6)"/>
-            <stop offset="100%" stop-color="rgba(0,20,10,0.8)"/>
+          <!-- 外野エリア：緑草グラデーション -->
+          <radialGradient id="fieldGrad" cx="50%" cy="70%" r="60%">
+            <stop offset="0%"   stop-color="#1e6b30"/>
+            <stop offset="45%"  stop-color="#0e4018"/>
+            <stop offset="100%" stop-color="#051a08"/>
+          </radialGradient>
+          <!-- 内野ダート：土の色グラデーション -->
+          <radialGradient id="infieldGrad" cx="50%" cy="45%" r="60%">
+            <stop offset="0%"   stop-color="#7a4018"/>
+            <stop offset="55%"  stop-color="#4e2508"/>
+            <stop offset="100%" stop-color="#2c1204"/>
+          </radialGradient>
+          <!-- 外野交互縞模様 -->
+          <radialGradient id="stripGrad" cx="50%" cy="70%" r="55%">
+            <stop offset="0%"   stop-color="rgba(255,255,255,0.04)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
           </radialGradient>
           <filter id="glowFilter">
             <feGaussianBlur stdDeviation="2" result="blur"/>
             <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
+          <filter id="softGlow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
         </defs>
-        <!-- Background -->
-        <rect width="400" height="370" fill="#020805" rx="8"/>
-        <!-- Grid overlay -->
-        <line x1="0" y1="100" x2="400" y2="100" stroke="rgba(0,230,118,0.06)" stroke-width="1"/>
-        <line x1="0" y1="200" x2="400" y2="200" stroke="rgba(0,230,118,0.06)" stroke-width="1"/>
-        <line x1="0" y1="300" x2="400" y2="300" stroke="rgba(0,230,118,0.06)" stroke-width="1"/>
-        <line x1="100" y1="0" x2="100" y2="370" stroke="rgba(0,230,118,0.06)" stroke-width="1"/>
-        <line x1="200" y1="0" x2="200" y2="370" stroke="rgba(0,230,118,0.06)" stroke-width="1"/>
-        <line x1="300" y1="0" x2="300" y2="370" stroke="rgba(0,230,118,0.06)" stroke-width="1"/>
-        <!-- Outfield area -->
+        <!-- Background：ダークグリーン -->
+        <rect width="400" height="370" style="fill:var(--field-bg)" rx="8"/>
+        <!-- 外野グラス -->
         <path d="M 200,345 L 18,152 Q 200,22 382,152 Z" fill="url(#fieldGrad)"/>
-        <!-- Inner outfield -->
-        <path d="M 200,345 L 35,163 Q 200,40 365,163 Z" fill="rgba(0,100,50,0.3)"/>
-        <!-- Infield diamond -->
-        <path d="M 200,345 L 308,250 L 200,158 L 92,250 Z" fill="rgba(0,60,30,0.4)" stroke="rgba(0,230,118,0.15)" stroke-width="0.5"/>
-        <!-- Pitcher's mound -->
-        <circle cx="200" cy="236" r="18" fill="rgba(0,200,100,0.12)" stroke="rgba(0,230,118,0.25)" stroke-width="1"/>
-        <!-- Foul lines -->
-        <line x1="200" y1="345" x2="18" y2="152" stroke="rgba(0,230,118,0.4)" stroke-width="1.5"/>
-        <line x1="200" y1="345" x2="382" y2="152" stroke="rgba(0,230,118,0.4)" stroke-width="1.5"/>
-        <!-- Diamond baselines (glowing) -->
-        <line x1="200" y1="345" x2="308" y2="250" stroke="#00e676" stroke-width="1.5" opacity=".7" filter="url(#glowFilter)"/>
-        <line x1="308" y1="250" x2="200" y2="158" stroke="#00e676" stroke-width="1.5" opacity=".7" filter="url(#glowFilter)"/>
-        <line x1="200" y1="158" x2="92"  y2="250" stroke="#00e676" stroke-width="1.5" opacity=".7" filter="url(#glowFilter)"/>
-        <line x1="92"  y1="250" x2="200" y2="345" stroke="#00e676" stroke-width="1.5" opacity=".7" filter="url(#glowFilter)"/>
-        <!-- Bases -->
-        <rect x="299" y="242" width="18" height="18" rx="2" fill="rgba(0,230,118,0.15)" stroke="#00e676" stroke-width="1.5" transform="rotate(45,308,251)" filter="url(#glowFilter)"/>
-        <rect x="191" y="150" width="18" height="18" rx="2" fill="rgba(0,230,118,0.15)" stroke="#00e676" stroke-width="1.5" transform="rotate(45,200,159)" filter="url(#glowFilter)"/>
-        <rect x="83"  y="242" width="18" height="18" rx="2" fill="rgba(0,230,118,0.15)" stroke="#00e676" stroke-width="1.5" transform="rotate(45,92,251)" filter="url(#glowFilter)"/>
-        <!-- Home plate -->
-        <polygon points="200,356 211,347 211,338 189,338 189,347" fill="rgba(100,255,218,0.2)" stroke="#64ffda" stroke-width="1.5" filter="url(#glowFilter)"/>
-        <!-- Pitcher rubber -->
-        <rect x="192" y="232" width="16" height="5" rx="2" fill="rgba(0,230,118,0.3)" stroke="rgba(0,230,118,0.5)" stroke-width="1"/>
+        <!-- 外野縞ハイライト -->
+        <path d="M 200,345 L 18,152 Q 200,22 382,152 Z" fill="url(#stripGrad)"/>
+        <!-- 内野ダートエリア（楕円） -->
+        <ellipse cx="200" cy="265" rx="95" ry="80" fill="url(#infieldGrad)" opacity=".95"/>
+        <!-- 内野ダイヤモンド（ベースパス：やや暗い土） -->
+        <path d="M 200,345 L 308,250 L 200,158 L 92,250 Z" fill="#3a1b06" opacity=".85"/>
+        <!-- ピッチャーズマウンド（少し明るい粘土色） -->
+        <circle cx="200" cy="236" r="22" fill="#5c2e0e" stroke="rgba(180,120,60,0.25)" stroke-width="1"/>
+        <circle cx="200" cy="236" r="14" fill="#6e3812"/>
+        <!-- ファウルライン -->
+        <line x1="200" y1="345" x2="18"  y2="152" style="stroke:var(--field-foul)" stroke-width="1.5"/>
+        <line x1="200" y1="345" x2="382" y2="152" style="stroke:var(--field-foul)" stroke-width="1.5"/>
+        <!-- ベースライン（グロー付き） -->
+        <line x1="200" y1="345" x2="308" y2="250" style="stroke:var(--field-line)" stroke-width="1.8" filter="url(#glowFilter)"/>
+        <line x1="308" y1="250" x2="200" y2="158" style="stroke:var(--field-line)" stroke-width="1.8" filter="url(#glowFilter)"/>
+        <line x1="200" y1="158" x2="92"  y2="250" style="stroke:var(--field-line)" stroke-width="1.8" filter="url(#glowFilter)"/>
+        <line x1="92"  y1="250" x2="200" y2="345" style="stroke:var(--field-line)" stroke-width="1.8" filter="url(#glowFilter)"/>
+        <!-- ベース（白） -->
+        <rect x="299" y="242" width="18" height="18" rx="2" style="fill:var(--field-base);stroke:var(--field-base-str)" stroke-width="1" transform="rotate(45,308,251)" filter="url(#glowFilter)"/>
+        <rect x="191" y="150" width="18" height="18" rx="2" style="fill:var(--field-base);stroke:var(--field-base-str)" stroke-width="1" transform="rotate(45,200,159)" filter="url(#glowFilter)"/>
+        <rect x="83"  y="242" width="18" height="18" rx="2" style="fill:var(--field-base);stroke:var(--field-base-str)" stroke-width="1" transform="rotate(45,92,251)"  filter="url(#glowFilter)"/>
+        <!-- ホームベース -->
+        <polygon points="200,356 211,347 211,338 189,338 189,347" style="fill:var(--field-base);stroke:var(--field-line)" stroke-width="1" filter="url(#glowFilter)"/>
+        <!-- ピッチャーズラバー -->
+        <rect x="192" y="232" width="16" height="5" rx="2" style="fill:var(--field-rubber);stroke:var(--field-base-str)" stroke-width="1"/>
         <!-- Player labels (dynamic) -->
         <g id="field-labels"></g>
       </svg>
@@ -829,7 +860,7 @@
 const POSITIONS = ['投','捕','一','二','三','遊','左','中','右','DH'];
 
 const THEMES = {
-  dark:    { name:'TACTICIAN', bg:'#020805', surface:'#061009', card:'#04080d', border:'#0d3320', accent:'#00e676', text:'#c8f0d8', muted:'#3d6e52', yellow:'#64ffda' },
+  dark:    { name:'TACTICIAN', bg:'#070810', surface:'#0d0f18', card:'#0d0f18', border:'#1c1f30', border2:'#252840', accent:'#00e676', text:'#eaecf4', muted:'#555878', yellow:'#64ffda' },
   navy:    { name:'Navy',      bg:'#0f172a', surface:'#1e293b', card:'#1a2540', border:'#334155', accent:'#fbbf24', text:'#e2e8f0', muted:'#64748b', yellow:'#fbbf24' },
   purple:  { name:'Purple',    bg:'#1a1025', surface:'#241535', card:'#20112f', border:'#3d2558', accent:'#e9a0ff', text:'#ede9f6', muted:'#7a6890', yellow:'#e9a0ff' },
   light:   { name:'Light',     bg:'#f8f6f3', surface:'#ffffff', card:'#f1ede8', border:'#e0dbd4', accent:'#059669', text:'#1a1220', muted:'#7a7068', yellow:'#059669' },
@@ -838,6 +869,75 @@ const THEMES = {
   skyblue: { name:'Sky',       bg:'#f0f9ff', surface:'#ffffff', card:'#e0f2fe', border:'#bae6fd', accent:'#0ea5e9', text:'#0c4a6e', muted:'#7dd3fc', yellow:'#0ea5e9' },
   mint:    { name:'Mint',      bg:'#f0fdf4', surface:'#ffffff', card:'#dcfce7', border:'#bbf7d0', accent:'#22c55e', text:'#14532d', muted:'#86efac', yellow:'#22c55e' },
 };
+
+// ── Bg Presets ──────────────────────
+const BG_PRESETS = {
+  dark:  {
+    bg: '#070810', surface: '#0d0f18', card: '#0d0f18', border: '#1c1f30', border2: '#252840', text: '#eaecf4', muted: '#555878', dotColor: '#1e2035', dotOpacity: '.5',
+    fieldBg: '#010e04', fieldFoul: 'rgba(255,255,255,.55)', fieldLine: 'rgba(255,255,255,.85)', fieldBase: 'rgba(255,255,255,.92)', fieldBaseStr: 'rgba(255,255,255,.5)', fieldRubber: 'rgba(255,255,255,.7)', fieldLabelBg: 'rgba(1,16,5,.88)', fieldLabelTxt: '#d8f5e0', fieldPosEmpty: 'rgba(0,0,0,.45)',
+    fieldGrad: ['#1e6b30','#0e4018','#051a08'], infieldGrad: ['#7a4018','#4e2508','#2c1204'],
+  },
+  black: {
+    bg: '#080808', surface: '#141414', card: '#141414', border: '#262626', border2: '#303030', text: '#f0f0f0', muted: '#666666', dotColor: '#1e1e1e', dotOpacity: '.5',
+    fieldBg: '#010202', fieldFoul: 'rgba(255,255,255,.5)', fieldLine: 'rgba(255,255,255,.82)', fieldBase: 'rgba(255,255,255,.92)', fieldBaseStr: 'rgba(255,255,255,.5)', fieldRubber: 'rgba(255,255,255,.7)', fieldLabelBg: 'rgba(1,4,1,.88)', fieldLabelTxt: '#d8f5e0', fieldPosEmpty: 'rgba(0,0,0,.45)',
+    fieldGrad: ['#1a6028','#0c3814','#041506'], infieldGrad: ['#6e380e','#442008','#261002'],
+  },
+  light: {
+    bg: '#f5f4f0', surface: '#ffffff', card: '#ffffff', border: '#e4e0da', border2: '#d0cbc4', text: '#1a1814', muted: '#8a8480', dotColor: '#c8c4be', dotOpacity: '.6',
+    fieldBg: '#e4f2e6', fieldFoul: 'rgba(0,0,0,.38)', fieldLine: 'rgba(0,0,0,.62)', fieldBase: 'rgba(255,255,255,.96)', fieldBaseStr: 'rgba(0,0,0,.3)', fieldRubber: 'rgba(255,255,255,.9)', fieldLabelBg: 'rgba(228,242,230,.92)', fieldLabelTxt: '#1a4a22', fieldPosEmpty: 'rgba(255,255,255,.65)',
+    fieldGrad: ['#4caf72','#2e7d4a','#1a5030'], infieldGrad: ['#c47840','#a05818','#7a3c0a'],
+  },
+  white: {
+    bg: '#ffffff', surface: '#f5f5f5', card: '#f5f5f5', border: '#e0e0e0', border2: '#d0d0d0', text: '#111111', muted: '#888888', dotColor: '#d0d0d0', dotOpacity: '.55',
+    fieldBg: '#f0faf0', fieldFoul: 'rgba(0,0,0,.35)', fieldLine: 'rgba(0,0,0,.6)', fieldBase: 'rgba(255,255,255,.98)', fieldBaseStr: 'rgba(0,0,0,.28)', fieldRubber: 'rgba(255,255,255,.95)', fieldLabelBg: 'rgba(240,250,240,.94)', fieldLabelTxt: '#1a4a22', fieldPosEmpty: 'rgba(255,255,255,.7)',
+    fieldGrad: ['#56b87c','#369056','#206040'], infieldGrad: ['#d08a50','#a86428','#804412'],
+  },
+};
+
+function applyBg(key) {
+  const p = BG_PRESETS[key] || BG_PRESETS.dark;
+  const r = document.documentElement.style;
+  r.setProperty('--bg',        p.bg);
+  r.setProperty('--surface',   p.surface);
+  r.setProperty('--card',      p.card);
+  r.setProperty('--border',    p.border);
+  r.setProperty('--border-2',  p.border2);
+  r.setProperty('--text',      p.text);
+  r.setProperty('--muted',     p.muted);
+  r.setProperty('--dot-color',   p.dotColor);
+  r.setProperty('--dot-opacity', p.dotOpacity || '.5');
+  // フィールド色
+  r.setProperty('--field-bg',        p.fieldBg);
+  r.setProperty('--field-foul',      p.fieldFoul);
+  r.setProperty('--field-line',      p.fieldLine);
+  r.setProperty('--field-base',      p.fieldBase);
+  r.setProperty('--field-base-str',  p.fieldBaseStr);
+  r.setProperty('--field-rubber',    p.fieldRubber);
+  r.setProperty('--field-label-bg',  p.fieldLabelBg);
+  r.setProperty('--field-label-txt', p.fieldLabelTxt);
+  r.setProperty('--field-pos-empty', p.fieldPosEmpty);
+  // SVGグラデーション更新
+  var fg = document.querySelectorAll('#fieldGrad stop');
+  if (fg.length >= 3 && p.fieldGrad) {
+    fg[0].setAttribute('stop-color', p.fieldGrad[0]);
+    fg[1].setAttribute('stop-color', p.fieldGrad[1]);
+    fg[2].setAttribute('stop-color', p.fieldGrad[2]);
+  }
+  var ig = document.querySelectorAll('#infieldGrad stop');
+  if (ig.length >= 3 && p.infieldGrad) {
+    ig[0].setAttribute('stop-color', p.infieldGrad[0]);
+    ig[1].setAttribute('stop-color', p.infieldGrad[1]);
+    ig[2].setAttribute('stop-color', p.infieldGrad[2]);
+  }
+  localStorage.setItem('om-bgPreset', key);
+  document.querySelectorAll('#om-color-palette .bg-swatch').forEach(function(s) {
+    s.classList.toggle('active', s.dataset.bg === key);
+  });
+  // 印刷タブ表示中なら配置図を再描画
+  if (document.getElementById('sec-print') && document.getElementById('sec-print').classList.contains('active')) {
+    renderField();
+  }
+}
 
 // 守備位置の座標 (SVG viewBox 0 0 400 370)
 const FIELD_POS = {
@@ -877,14 +977,15 @@ function saveAll() {
 function applyTheme(key) {
   const t = THEMES[key] || THEMES.dark;
   const r = document.documentElement.style;
-  r.setProperty('--bg',      t.bg);
-  r.setProperty('--surface', t.surface);
-  r.setProperty('--card',    t.card);
-  r.setProperty('--border',  t.border);
-  r.setProperty('--accent',  t.accent);
-  r.setProperty('--text',    t.text);
-  r.setProperty('--muted',   t.muted);
-  r.setProperty('--yellow',  t.yellow);
+  r.setProperty('--bg',       t.bg);
+  r.setProperty('--surface',  t.surface);
+  r.setProperty('--card',     t.card);
+  r.setProperty('--border',   t.border);
+  r.setProperty('--border-2', t.border2 || t.border);
+  r.setProperty('--accent',   t.accent);
+  r.setProperty('--text',     t.text);
+  r.setProperty('--muted',    t.muted);
+  r.setProperty('--yellow',   t.yellow);
   theme = key;
   saveAll();
 }
@@ -1288,25 +1389,28 @@ function renderField() {
     if (name) posMap[slot.pos] = name;
   });
 
-  const t = THEMES[theme] || THEMES.dark;
+  const cs = getComputedStyle(document.documentElement);
+  const accent        = cs.getPropertyValue('--accent').trim()          || '#00e676';
+  const fieldLabelBg  = cs.getPropertyValue('--field-label-bg').trim()  || 'rgba(1,16,5,.88)';
+  const fieldLabelText= cs.getPropertyValue('--field-label-txt').trim() || '#d8f5e0';
+  const fieldPosEmpty = cs.getPropertyValue('--field-pos-empty').trim() || 'rgba(0,0,0,.45)';
 
   const labels = Object.entries(FIELD_POS).map(([pos, {x, y}]) => {
     const name = posMap[pos] ? trim(posMap[pos], 5) : null;
     const hasPlayer = !!name;
-    const player = hasPlayer ? { name } : null; // 互換用
     const w = hasPlayer ? 76 : 28;
     const h = hasPlayer ? 36 : 22;
     return `
       <g>
         <rect x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" rx="6"
-          fill="${hasPlayer ? t.card : 'rgba(0,0,0,0.35)'}"
-          stroke="${hasPlayer ? t.accent : 'rgba(255,255,255,0.15)'}"
+          fill="${hasPlayer ? fieldLabelBg : fieldPosEmpty}"
+          stroke="${hasPlayer ? accent : 'rgba(255,255,255,0.18)'}"
           stroke-width="${hasPlayer?1.5:1}"/>
         <text x="${x}" y="${y-(hasPlayer?5:1)}" text-anchor="middle"
-          font-size="9" font-weight="800" fill="${t.accent}"
+          font-size="9" font-weight="800" fill="${accent}"
           font-family="system-ui,sans-serif">${pos}</text>
         ${hasPlayer?`<text x="${x}" y="${y+11}" text-anchor="middle"
-          font-size="11" font-weight="700" fill="${t.text}"
+          font-size="11" font-weight="700" fill="${fieldLabelText}"
           font-family="system-ui,sans-serif">${esc(name)}</text>`:''}
       </g>`;
   }).join('');
@@ -1317,11 +1421,11 @@ function renderField() {
   const dhSlots = order.filter(s => s?.pos === 'DH');
   if (dhSlots.length) {
     dhBadge.style.display = 'block';
-    dhBadge.innerHTML = dhSlots.map((s, idx) => {
+    dhBadge.innerHTML = dhSlots.map((s) => {
       const dname = slotDisplayName(s) || '未設定';
-      return `<span style="display:inline-flex;align-items:center;gap:8px;background:${t.card};border:1.5px solid ${t.accent};border-radius:8px;padding:6px 14px;font-size:13px;margin:3px">
-        <span style="font-weight:800;color:${t.accent}">DH</span>
-        <span style="font-weight:600;color:${t.text}">${esc(dname)}</span>
+      return `<span style="display:inline-flex;align-items:center;gap:8px;background:var(--field-label-bg);border:1.5px solid ${accent};border-radius:8px;padding:6px 14px;font-size:13px;margin:3px">
+        <span style="font-weight:800;color:${accent}">DH</span>
+        <span style="font-weight:600;color:var(--field-label-txt)">${esc(dname)}</span>
       </span>`;
     }).join('');
   } else {
@@ -1555,7 +1659,7 @@ function showToast(msg, isErr=false) {
 }
 
 // ── Init ─────────────────────────────
-applyTheme(theme);
+applyBg(localStorage.getItem('om-bgPreset') || 'dark');
 document.getElementById('dh-toggle').checked = isDH;
 buildPosGrid('add-pos-grid', addPosSel);
 renderRoster();
@@ -1674,14 +1778,14 @@ if (!localStorage.getItem('sm_tutorial_done')) {
   })();
 </script>
 <!-- ── アプリ説明（AdSense審査・SEO用テキストコンテンツ） ── -->
-<section aria-label="アプリ説明" style="padding:20px 16px;border-top:1px solid #0d3320;background:#020805;">
-  <h2 style="font-size:14px;font-weight:700;color:#00e676;margin-bottom:10px;font-family:'Orbitron',monospace;letter-spacing:0.08em;">スタメンメーカーとは</h2>
-  <p style="font-size:12px;color:#3d6e52;line-height:1.8;margin-bottom:12px;">
+<section aria-label="アプリ説明" style="padding:20px 16px;border-top:1px solid #1c1f30;background:#070810;position:relative;z-index:1;">
+  <h2 style="font-size:14px;font-weight:700;color:#00e676;margin-bottom:10px;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;">スタメンメーカーとは</h2>
+  <p style="font-size:12px;color:#555878;line-height:1.8;margin-bottom:12px;">
     草野球・軟式野球向けの無料スタメン作成ツールです。選手の登録から打順・守備ポジション・投手ローテーションまで
     一画面でまとめて管理できます。印刷用スタメン表の生成やSNSシェアにも対応。アプリのインストール不要でブラウザだけで使えます。
   </p>
-  <h3 style="font-size:13px;font-weight:700;color:#c8f0d8;margin-bottom:8px;">主な機能</h3>
-  <ul style="font-size:12px;color:#3d6e52;line-height:2;padding-left:0;list-style:none;">
+  <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin-bottom:8px;">主な機能</h3>
+  <ul style="font-size:12px;color:#555878;line-height:2;padding-left:0;list-style:none;">
     <li>👥 選手名・背番号・ポジション・投打をまとめて登録・管理</li>
     <li>📋 ドラッグ操作で直感的に打順・ポジションを設定</li>
     <li>⚾ DH制（指名打者）に対応</li>
@@ -1693,20 +1797,20 @@ if (!localStorage.getItem('sm_tutorial_done')) {
   </ul>
 </section>
 
-<section aria-label="関連ツール" style="background:#020805;border-top:1px solid #0d3320;padding:20px 12px 12px;text-align:center;">
-  <p style="font-size:11px;color:#3d6e52;margin:0 0 12px;letter-spacing:.05em;font-weight:700;">Somirai Lab の他のツール</p>
+<section aria-label="関連ツール" style="background:#070810;border-top:1px solid #1c1f30;padding:20px 12px 12px;text-align:center;position:relative;z-index:1;">
+  <p style="font-size:11px;color:#555878;margin:0 0 12px;letter-spacing:.05em;font-weight:700;">Somirai Lab の他のツール</p>
   <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
-    <a href="https://somirai.jp/batting-stats/" style="display:inline-flex;align-items:center;gap:5px;background:#04080d;color:#c8f0d8;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(0,230,118,.2);">⚾ LUMBER</a>
-    <a href="https://somirai.jp/habit/"         style="display:inline-flex;align-items:center;gap:5px;background:#04080d;color:#c8f0d8;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(0,230,118,.2);">🔥 TEMPER</a>
-    <a href="https://somirai.jp/write/"         style="display:inline-flex;align-items:center;gap:5px;background:#04080d;color:#c8f0d8;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(0,230,118,.2);">✏️ MARGINALIA</a>
-    <a href="https://somirai.jp/savings/"       style="display:inline-flex;align-items:center;gap:5px;background:#04080d;color:#c8f0d8;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid rgba(0,230,118,.2);">💰 KURA</a>
+    <a href="https://somirai.jp/batting-stats/" style="display:inline-flex;align-items:center;gap:5px;background:#0d0f18;color:#eaecf4;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid #252840;">⚾ LUMBER</a>
+    <a href="https://somirai.jp/habit/"         style="display:inline-flex;align-items:center;gap:5px;background:#0d0f18;color:#eaecf4;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid #252840;">🔥 TEMPER</a>
+    <a href="https://somirai.jp/write/"         style="display:inline-flex;align-items:center;gap:5px;background:#0d0f18;color:#eaecf4;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid #252840;">✏️ MARGINALIA</a>
+    <a href="https://somirai.jp/savings/"       style="display:inline-flex;align-items:center;gap:5px;background:#0d0f18;color:#eaecf4;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid #252840;">💰 KURA</a>
   </div>
 </section>
-<footer style="text-align:center;padding:16px;font-size:11px;color:#3d6e52;background:#020805;border-top:1px solid #0d3320;">
+<footer style="text-align:center;padding:16px;font-size:11px;color:#555878;background:#070810;border-top:1px solid #1c1f30;position:relative;z-index:1;">
   <div>© 2026 <a href="/" style="color:#00e676;text-decoration:none;font-weight:700;">Somirai Lab</a></div>
   <div style="margin-top:4px;display:flex;justify-content:center;gap:12px;">
-    <a href="guide.html" style="color:#94a3b8;text-decoration:underline;">使い方ガイド</a>
-    <a href="/privacy.html" style="color:#94a3b8;text-decoration:underline;">プライバシーポリシー</a>
+    <a href="guide.html" style="color:#555878;text-decoration:underline;">使い方ガイド</a>
+    <a href="/privacy.html" style="color:#555878;text-decoration:underline;">プライバシーポリシー</a>
   </div>
 </footer>
 
@@ -1762,8 +1866,12 @@ if (!localStorage.getItem('sm_tutorial_done')) {
   palette.addEventListener('click', function(e){
     var sw = e.target.closest('.palette-swatch');
     if (!sw) return;
-    applyColor(sw.dataset.color);
-    localStorage.setItem('om-accentColor', sw.dataset.color);
+    if (sw.dataset.color) {
+      applyColor(sw.dataset.color);
+      localStorage.setItem('om-accentColor', sw.dataset.color);
+    } else if (sw.dataset.bg) {
+      applyBg(sw.dataset.bg);
+    }
     palette.classList.remove('open');
   });
 
@@ -1771,7 +1879,7 @@ if (!localStorage.getItem('sm_tutorial_done')) {
     document.documentElement.style.setProperty('--accent', c);
     document.documentElement.style.setProperty('--accent-soft', COLOR_MAP[c] || 'rgba(0,230,118,0.1)');
     if(dot) dot.style.background = c;
-    document.querySelectorAll('#om-color-palette .palette-swatch').forEach(function(s){
+    document.querySelectorAll('#om-color-palette .palette-swatch[data-color]').forEach(function(s){
       s.classList.toggle('active', s.dataset.color === c);
     });
   }
