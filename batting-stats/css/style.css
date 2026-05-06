@@ -236,6 +236,11 @@ body {
   box-shadow: 0 8px 32px rgba(0,0,0,.6);
 }
 .color-palette.open { display: flex; }
+.palette-divider { width: 100%; height: 1px; background: rgba(255,255,255,.1); margin: 2px 0; }
+.palette-label { width: 100%; font-size: 9px; font-weight: 700; color: #666; letter-spacing: .1em; text-transform: uppercase; pointer-events: none; }
+.star-toggle-row { width: 100%; display: flex; gap: 6px; }
+.star-toggle-btn { flex: 1; padding: 5px 4px; border-radius: 7px; font-size: 10px; font-weight: 700; background: transparent; border: 1.5px solid rgba(255,255,255,.12); color: #666; cursor: pointer; letter-spacing: .04em; transition: background .15s, border-color .15s, color .15s; }
+.star-toggle-btn.active { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.45); color: #fff; }
 .palette-swatch {
   width: 28px;
   height: 28px;

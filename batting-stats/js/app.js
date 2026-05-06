@@ -75,6 +75,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     );
   }
 
+  // ── Stars toggle ───────────────────────────────────────────────
+  const starfield = document.getElementById('starfield');
+  const starOnBtn  = document.getElementById('star-on');
+  const starOffBtn = document.getElementById('star-off');
+
+  function applyStars(show) {
+    if (starfield) starfield.style.display = show ? '' : 'none';
+    localStorage.setItem('bs-showStars', show ? 'true' : 'false');
+    if (starOnBtn)  starOnBtn.classList.toggle('active', show);
+    if (starOffBtn) starOffBtn.classList.toggle('active', !show);
+  }
+  applyStars(localStorage.getItem('bs-showStars') !== 'false');
+
+  if (starOnBtn)  starOnBtn.addEventListener('click',  (e) => { e.stopPropagation(); applyStars(true);  colorPalette.classList.remove('open'); });
+  if (starOffBtn) starOffBtn.addEventListener('click', (e) => { e.stopPropagation(); applyStars(false); colorPalette.classList.remove('open'); });
+
   // ── Language toggle ────────────────────────────────────────────
   const langBtn = document.getElementById('lang-toggle');
   updateLangBtn();

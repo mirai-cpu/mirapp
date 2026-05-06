@@ -204,6 +204,8 @@
     .palette-swatch.active { border-color: #fff; transform: scale(1.1); }
     .palette-swatch.bg-swatch { border-color: rgba(128,128,128,.4); }
     .palette-swatch.bg-swatch.active { border-color: var(--accent); box-shadow: 0 0 6px rgba(0,230,118,.4); }
+    .star-toggle-btn { flex: 1; padding: 5px 4px; border-radius: 7px; font-size: 10px; font-weight: 700; background: transparent; border: 1.5px solid rgba(255,255,255,.12); color: var(--muted); cursor: pointer; letter-spacing: .04em; transition: background .15s, border-color .15s, color .15s; font-family: var(--mono); }
+    .star-toggle-btn.active { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.4); color: var(--text); }
     .btn-icon {
       width: 36px; height: 36px; border-radius: 10px;
       background: rgba(0,230,118,0.04); border: 1px solid var(--border);
@@ -521,6 +523,12 @@
         <span class="palette-swatch bg-swatch" data-bg="black" style="background:#080808" title="ブラック"></span>
         <span class="palette-swatch bg-swatch" data-bg="light" style="background:#f5f4f0" title="ライト"></span>
         <span class="palette-swatch bg-swatch" data-bg="white" style="background:#ffffff"  title="ホワイト"></span>
+        <div class="palette-divider"></div>
+        <span class="palette-label">STARS</span>
+        <div style="width:100%;display:flex;gap:6px">
+          <button class="star-toggle-btn" id="om-star-on">✦ ON</button>
+          <button class="star-toggle-btn" id="om-star-off">✦ OFF</button>
+        </div>
       </div>
     </div>
     <button class="btn-icon" onclick="openTutorial()" aria-label="使い方">
@@ -1883,6 +1891,20 @@ if (!localStorage.getItem('sm_tutorial_done')) {
       s.classList.toggle('active', s.dataset.color === c);
     });
   }
+
+  // Stars toggle
+  var omStarfield = document.getElementById('starfield');
+  var omStarOn  = document.getElementById('om-star-on');
+  var omStarOff = document.getElementById('om-star-off');
+  function applyStars(show){
+    if(omStarfield) omStarfield.style.display = show ? '' : 'none';
+    localStorage.setItem('om-showStars', show ? 'true' : 'false');
+    if(omStarOn)  omStarOn.classList.toggle('active', show);
+    if(omStarOff) omStarOff.classList.toggle('active', !show);
+  }
+  applyStars(localStorage.getItem('om-showStars') !== 'false');
+  if(omStarOn)  omStarOn.addEventListener('click',  function(e){ e.stopPropagation(); applyStars(true);  palette.classList.remove('open'); });
+  if(omStarOff) omStarOff.addEventListener('click', function(e){ e.stopPropagation(); applyStars(false); palette.classList.remove('open'); });
 })();
 </script>
 </body>
