@@ -126,8 +126,6 @@ body {
   padding: 0 20px;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  position: sticky;
-  z-index: 20;
 }
 
 /* back link override */
