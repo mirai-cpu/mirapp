@@ -1,6 +1,6 @@
 {
   "_note": "目標値はここを直接編集してください。yoroshiku.js がこのファイルを参照します。",
-  "updatedAt": "2026-04-26",
+  "updatedAt": "2026-05-11",
   "vision": "2027年4月末までに月5〜6万円のストック収益（アドセンス＋note＋アフィリエイト）を達成",
   "currentPhase": "Q1",
   "roadmap": {
@@ -10,7 +10,7 @@
       "milestones": [
         "アドセンス審査を通過する",
         "SEO記事を3本以上公開する",
-        "Xフォロワー300人達成"
+        "Xフォロワー500人達成"
       ],
       "monthly": {
         "pv": 2000,
@@ -19,7 +19,7 @@
         "adsenseRevenue": 0,
         "noteRevenue": 0,
         "affiliateRevenue": 0,
-        "xFollowers": 300
+        "xFollowers": 500
       }
     },
     "Q2": {

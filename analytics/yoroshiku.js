@@ -1,7 +1,7 @@
 /**
  * yoroshiku.js
  * 「よろしく」コマンド — GA4 + X + Search Console + AdSense を統合分析
- * ロードマップ対比・PDCA・今週のTODOを出力する
+ * ロードマップ対比・PDCA・施策効果トラッキング・今週のTODOを出力する
  * 使用: node yoroshiku.js [days=30]
  */
 
@@ -12,7 +12,36 @@ const config = require('./config.json');
 const goals = require('./goals.json');
 const https = require('https');
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
 const OAuth = require('oauth-1.0a');
+
+// ── スナップショット ──────────────────────────────────────────
+const SNAPSHOTS_FILE = path.join(__dirname, 'snapshots.json');
+const INTERVENTIONS_FILE = path.join(__dirname, 'interventions.json');
+
+function loadSnapshots() {
+  try { return JSON.parse(fs.readFileSync(SNAPSHOTS_FILE, 'utf8')); } catch { return []; }
+}
+
+function saveSnapshot(snapshot) {
+  const snaps = loadSnapshots();
+  const today = new Date().toISOString().split('T')[0];
+  // 同日のスナップショットは上書き
+  const idx = snaps.findIndex(s => s.date === today);
+  if (idx >= 0) snaps[idx] = snapshot; else snaps.push(snapshot);
+  // 最新90件のみ保持
+  const sorted = snaps.sort((a, b) => a.date.localeCompare(b.date)).slice(-90);
+  fs.writeFileSync(SNAPSHOTS_FILE, JSON.stringify(sorted, null, 2));
+}
+
+function loadInterventions() {
+  try { return JSON.parse(fs.readFileSync(INTERVENTIONS_FILE, 'utf8')); } catch { return []; }
+}
+
+function daysBetween(dateStr1, dateStr2) {
+  return Math.round((new Date(dateStr2) - new Date(dateStr1)) / 86400000);
+}
 
 const days = parseInt(process.argv[2] || '30', 10);
 const LINE = '='.repeat(64);
@@ -200,7 +229,7 @@ async function main() {
   // Q1フェーズ固有チェック
   if (phase === 'Q1') {
     if (!ads || ads.last30days.revenue === 0)
-      issues.push('アドセンス未審査 — Q1最優先ミッション。審査通過に向けてコンテンツを増やす');
+      issues.push('アドセンス審査中 — 承認通知を待ちながら、記事追加・SNS強化で流入を伸ばしておく');
   }
 
   if (xd) {
@@ -245,16 +274,119 @@ async function main() {
     console.log(`  ${marker} ${q}（${qd.label}）: 月収目標 ${totalTarget.toLocaleString()}円 — ${qd.theme}`);
   });
 
+  // ── スナップショット保存 ─────────────────────────────────
+  const todayISO = new Date().toISOString().split('T')[0];
+  const bounceRates = {};
+  const avgDurations = {};
+  if (ga) {
+    ga.pages.forEach(p => {
+      const key = p.pagePath.replace(/\//g, '').replace(/-/g, '_') || 'top';
+      bounceRates[key] = p.bounceRate;
+      avgDurations[key] = p.averageSessionDuration;
+    });
+  }
+  const organicSessions = ga ? (ga.sources.find(s => s.sessionDefaultChannelGroup === 'Organic Search')?.sessions || 0) : null;
+  saveSnapshot({
+    date: todayISO,
+    days,
+    pv: totalPV,
+    sessions: totalSessions,
+    organicSessions,
+    followers,
+    impressions: gsc?.totalImpressions || null,
+    clicks: scClicks,
+    avgPosition: gsc?.avgPosition || null,
+    bounceRates,
+    avgDurations,
+  });
+
+  // ── 5. 施策効果トラッキング ──────────────────────────────
+  console.log(`\n${SEP}`);
+  console.log('  5. 施策効果トラッキング');
+  console.log(SEP);
+
+  const interventions = loadInterventions();
+  const snapshots = loadSnapshots();
+
+  if (interventions.length === 0) {
+    console.log('  施策ログなし（interventions.json に記録してください）');
+  } else {
+    // 直近90日以内の施策を表示
+    const recent = interventions
+      .filter(iv => daysBetween(iv.date, todayISO) <= 90)
+      .sort((a, b) => b.date.localeCompare(a.date));
+
+    recent.forEach(iv => {
+      const elapsed = daysBetween(iv.date, todayISO);
+      const elapsedStr = elapsed === 0 ? '今日' : `${elapsed}日前`;
+      console.log(`\n  [${ iv.id }] ${ iv.type } — ${ iv.title }`);
+      console.log(`  実施: ${ iv.date }（${ elapsedStr }） 対象: ${ iv.tools.join(', ') }`);
+      console.log(`  仮説: ${ iv.hypothesis }`);
+
+      // 施策前後のスナップショットを探す
+      const beforeSnaps = snapshots.filter(s => s.date <= iv.date);
+      const afterSnaps  = snapshots.filter(s => s.date > iv.date);
+      const before = beforeSnaps[beforeSnaps.length - 1]; // 直前
+      const after  = afterSnaps[afterSnaps.length - 1];   // 直後（最新）
+
+      if (!before) {
+        console.log('  効果: ベースライン未計測（施策前のスナップショットなし）');
+        return;
+      }
+      if (!after) {
+        console.log('  効果: 計測中（施策後データ蓄積待ち）');
+        return;
+      }
+
+      const daysAfter = daysBetween(iv.date, after.date);
+      console.log(`  効果（施策から${ daysAfter }日後）:`);
+
+      // 直帰率の変化
+      iv.tools.forEach(tool => {
+        const pathKey = tool.replace(/-/g, '_');
+        // pathKeyのマッチングを柔軟に
+        const findRate = (snap) => {
+          const keys = Object.keys(snap.bounceRates || {});
+          const matched = keys.find(k => k.includes(pathKey) || pathKey.includes(k));
+          return matched ? snap.bounceRates[matched] : null;
+        };
+        const bBefore = findRate(before);
+        const bAfter  = findRate(after);
+        if (bBefore !== null && bAfter !== null) {
+          const delta = Math.round((bAfter - bBefore) * 100);
+          const sign  = delta < 0 ? '▼' : delta > 0 ? '▲' : '━';
+          const eval_ = delta < -5 ? '✅ 改善' : delta > 5 ? '❌ 悪化' : '━ 変化なし';
+          console.log(`    直帰率（${ tool }）: ${ Math.round(bBefore * 100) }% → ${ Math.round(bAfter * 100) }%  ${ sign }${ Math.abs(delta) }pt  ${ eval_ }`);
+        }
+      });
+
+      // オーガニック流入の変化（SEO記事施策）
+      if (iv.type === 'SEO記事' && before.organicSessions !== null && after.organicSessions !== null) {
+        const delta = after.organicSessions - before.organicSessions;
+        const sign  = delta > 0 ? '▲' : delta < 0 ? '▼' : '━';
+        const eval_ = delta > 10 ? '✅ 流入増加' : delta > 0 ? '━ 微増' : delta < 0 ? '❌ 減少' : '━ 変化なし';
+        console.log(`    オーガニック流入: ${ before.organicSessions } → ${ after.organicSessions }  ${ sign }${ Math.abs(delta) }  ${ eval_ }`);
+      }
+
+      // 検索表示回数の変化
+      if (before.impressions !== null && after.impressions !== null) {
+        const delta = after.impressions - before.impressions;
+        const sign  = delta > 0 ? '▲' : delta < 0 ? '▼' : '━';
+        console.log(`    検索表示回数: ${ before.impressions } → ${ after.impressions }  ${ sign }${ Math.abs(delta) }`);
+      }
+    });
+  }
+
   console.log(`\n${LINE}\n`);
 }
 
 function generateTodos({ ga, gsc, ads, xd, totalPV, scClicks, followers, phase, monthly }) {
   const todos = [];
 
-  // Q1固有: アドセンス審査通過が最優先
+  // Q1固有: アドセンス審査中
   if (phase === 'Q1') {
     if (!ads || ads.last30days.revenue === 0) {
-      todos.push('【最優先】アドセンス審査通過 → プライバシーポリシー・お問い合わせページを設置＆記事を5本以上に増やす');
+      todos.push('【審査中】アドセンス承認待ち → 承認後すぐ広告が出るよう設置済みのまま維持。その間に記事追加・SNS流入強化で承認後の収益を最大化する');
     }
   }
 

@@ -1,0 +1,50 @@
+[
+  {
+    "date": "2026-05-09",
+    "days": 7,
+    "pv": 170,
+    "sessions": 114,
+    "organicSessions": 95,
+    "followers": 320,
+    "impressions": 182,
+    "clicks": 30,
+    "avgPosition": 6.4,
+    "bounceRates": {
+      "order_maker": 0.45,
+      "top": 0.48,
+      "habit": 0.33,
+      "write": 0.5,
+      "batting_stats": 0,
+      "blog": 0,
+      "bloghabit_app_temper.html": 0,
+      "blogsanbikoboshi_kagaku.html": 0.5,
+      "savings": 0,
+      "about.html": 0
+    },
+    "avgDurations": {
+      "order_maker": 379.39,
+      "top": 25.47,
+      "habit": 39.24,
+      "write": 58.94,
+      "batting_stats": 53.51,
+      "blog": 29.93,
+      "bloghabit_app_temper.html": 5.62,
+      "blogsanbikoboshi_kagaku.html": 11.33,
+      "savings": 6.5,
+      "about.html": 2.71
+    }
+  },
+  {
+    "date": "2026-05-11",
+    "days": 30,
+    "pv": null,
+    "sessions": null,
+    "organicSessions": null,
+    "followers": 331,
+    "impressions": null,
+    "clicks": null,
+    "avgPosition": null,
+    "bounceRates": {},
+    "avgDurations": {}
+  }
+]

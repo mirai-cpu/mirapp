@@ -1,0 +1,42 @@
+[
+  {
+    "id": "INT-001",
+    "date": "2026-05-09",
+    "tools": ["write"],
+    "type": "UX改善",
+    "title": "MARGINALIAチュートリアル2ステップ化",
+    "detail": "初回訪問モーダルにStep2を追加。プロンプトチップ（今日の出来事/やること/アイデア）からワンタップで入力補助し、モーダル内で最初のメモを書いて送信できるクイックスタートUXを実装。",
+    "hypothesis": "「何を書けばいいか分からない」離脱を防ぎ、直帰率を改善する",
+    "metrics": ["bounceRate_write", "avgDuration_write"]
+  },
+  {
+    "id": "INT-002",
+    "date": "2026-05-09",
+    "tools": ["habit"],
+    "type": "UX改善",
+    "title": "TEMPERチュートリアル5→2ステップ化＋習慣選択",
+    "detail": "5ステップモーダルを廃止し2ステップに。Step2でプリセット習慣6つをタップ選択してそのままスタートできるよう変更。",
+    "hypothesis": "長いモーダルによる離脱を防ぎ、初回から習慣が登録された状態でスタートさせることで直帰率を改善する",
+    "metrics": ["bounceRate_habit", "avgDuration_habit"]
+  },
+  {
+    "id": "INT-003",
+    "date": "2026-05-09",
+    "tools": ["blog"],
+    "type": "SEO記事",
+    "title": "「野球の打順の組み方」記事を新規公開",
+    "detail": "「野球 打順 組み方」「草野球 打順 決め方」「打順メーカー 無料」「クリーンナップ 選び方」を狙った5,500字記事。1〜9番の役割・失敗パターン5選・FAQ6問・スタメンメーカーへのCTA3箇所。",
+    "hypothesis": "「打順 組み方」系キーワードでの検索表示回数・クリックを増やし、order-makerへの流入を増やす",
+    "metrics": ["organicSessions", "impressions", "clicks_order_maker"]
+  },
+  {
+    "id": "INT-004",
+    "date": "2026-05-11",
+    "tools": ["blog"],
+    "type": "SEO記事",
+    "title": "「野球スタメン表の書き方」記事を新規公開",
+    "detail": "「野球 スタメン表」「スタメン表 テンプレート 無料」「野球 スタメン 作り方」「草野球 スタメン表 書き方」を狙った5,800字記事。ポジション番号早見表・手書き手順・よくあるミス5選・FAQ5問・スタメンメーカーへのCTA3箇所。現在のSearch Console平均順位は9.7位。",
+    "hypothesis": "「スタメン表」系キーワードで3〜5位を取り、order-makerへのオーガニック流入を増やす",
+    "metrics": ["organicSessions", "impressions", "clicks_order_maker", "avgPosition_stamen"]
+  }
+]
