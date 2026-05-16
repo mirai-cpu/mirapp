@@ -686,15 +686,6 @@ textarea { resize: vertical; min-height: 64px; }
   opacity: .7;
   border-radius: 3px 0 0 3px;
 }
-.stat-card::after {
-  content: '';
-  position: absolute;
-  top: -40px; right: -40px;
-  width: 80px; height: 80px;
-  border-radius: 50%;
-  background: var(--card-accent);
-  opacity: .04;
-}
 
 .stat-value {
   display: block;
@@ -1080,7 +1071,7 @@ textarea { resize: vertical; min-height: 64px; }
 }
 
 /* ── Batter type ──────────────────────────── */
-.diag-type-name { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; text-align: center; color: var(--accent); margin-bottom: 6px; letter-spacing: -.02em; }
+.diag-type-name { font-family: 'Barlow', sans-serif; font-size: 20px; font-weight: 700; text-align: center; color: var(--accent); margin-bottom: 6px; letter-spacing: -.02em; }
 .diag-desc { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 12px; }
 .chart-wrap-radar { position: relative; height: 200px; max-width: 280px; margin: 0 auto; }
 
@@ -1110,7 +1101,7 @@ textarea { resize: vertical; min-height: 64px; }
   gap: 16px;
   border-top: 1px solid rgba(255,215,0,.3);
 }
-.modal-title { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; text-align: center; letter-spacing: -.01em; }
+.modal-title { font-family: 'Barlow', sans-serif; font-size: 17px; font-weight: 700; text-align: center; letter-spacing: -.01em; }
 .modal-body { display: flex; flex-direction: column; gap: 14px; }
 .modal-actions { display: flex; gap: 10px; }
 .modal-close-btn { width: 100%; }
@@ -1403,7 +1394,7 @@ textarea { resize: vertical; min-height: 64px; }
 .tutorial-modal { padding: 28px 20px 28px; gap: 20px; }
 .tutorial-slide { text-align: center; min-height: 200px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .tutorial-icon { font-size: 52px; line-height: 1; }
-.tutorial-title { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; color: var(--text); line-height: 1.4; letter-spacing: -.01em; }
+.tutorial-title { font-family: 'Barlow', sans-serif; font-size: 17px; font-weight: 700; color: var(--text); line-height: 1.4; letter-spacing: -.01em; }
 .tutorial-body { font-size: 14px; color: var(--muted); line-height: 1.7; text-align: left; }
 .tutorial-body strong { color: var(--text); font-weight: 600; }
 .tutorial-dots { display: flex; justify-content: center; gap: 8px; }
