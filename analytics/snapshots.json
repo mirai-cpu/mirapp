@@ -46,5 +46,42 @@
     "avgPosition": null,
     "bounceRates": {},
     "avgDurations": {}
+  },
+  {
+    "date": "2026-05-16",
+    "days": 30,
+    "pv": 799,
+    "sessions": 575,
+    "organicSessions": 445,
+    "followers": 373,
+    "impressions": 780,
+    "clicks": 111,
+    "avgPosition": 5.8,
+    "bounceRates": {
+      "order_maker": 0.54,
+      "habit": 0.44,
+      "top": 0.47,
+      "write": 0.59,
+      "batting_stats": 0.22,
+      "savings": 0.11,
+      "bloghabit_app_temper.html": 0,
+      "about.html": 0.5,
+      "blog": 0,
+      "blogsanbikoboshi_kagaku.html": 0.5,
+      "contact.html": 0
+    },
+    "avgDurations": {
+      "order_maker": 208.39,
+      "habit": 90.31,
+      "top": 79.98,
+      "write": 77.67,
+      "batting_stats": 214.99,
+      "savings": 54.99,
+      "bloghabit_app_temper.html": 18.78,
+      "about.html": 1.36,
+      "blog": 29.93,
+      "blogsanbikoboshi_kagaku.html": 11.33,
+      "contact.html": 25.8
+    }
   }
 ]

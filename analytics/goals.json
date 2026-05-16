@@ -1,6 +1,6 @@
 {
   "_note": "目標値はここを直接編集してください。yoroshiku.js がこのファイルを参照します。",
-  "updatedAt": "2026-05-11",
+  "updatedAt": "2026-05-16",
   "vision": "2027年4月末までに月5〜6万円のストック収益（アドセンス＋note＋アフィリエイト）を達成",
   "currentPhase": "Q1",
   "roadmap": {
@@ -20,6 +20,24 @@
         "noteRevenue": 0,
         "affiliateRevenue": 0,
         "xFollowers": 500
+      },
+      "monthlyMilestones": {
+        "2026-05": {
+          "pv": 1000,
+          "xFollowers": 400,
+          "bounceRateMax": { "write": 0.50, "habit": 0.35 },
+          "qualitative": ["直帰率を元水準に戻す（MARGINALIA 50%以下・TEMPER 35%以下）"]
+        },
+        "2026-06": {
+          "pv": 1500,
+          "xFollowers": 450,
+          "qualitative": ["アドセンス承認・記事3本目公開"]
+        },
+        "2026-07": {
+          "pv": 2000,
+          "xFollowers": 500,
+          "qualitative": ["Q1完了・広告収益スタート"]
+        }
       }
     },
     "Q2": {
@@ -38,6 +56,23 @@
         "noteRevenue": 10000,
         "affiliateRevenue": 5000,
         "xFollowers": 600
+      },
+      "monthlyMilestones": {
+        "2026-08": {
+          "pv": 3500,
+          "xFollowers": 530,
+          "qualitative": ["アドセンス収益 2,000円"]
+        },
+        "2026-09": {
+          "pv": 5500,
+          "xFollowers": 570,
+          "qualitative": ["note有料記事1本目公開", "月収 5,000円"]
+        },
+        "2026-10": {
+          "pv": 8000,
+          "xFollowers": 600,
+          "qualitative": ["月収1〜2万円・Q2完了"]
+        }
       }
     },
     "Q3": {
@@ -56,6 +91,23 @@
         "noteRevenue": 15000,
         "affiliateRevenue": 10000,
         "xFollowers": 1000
+      },
+      "monthlyMilestones": {
+        "2026-11": {
+          "pv": 12000,
+          "xFollowers": 700,
+          "qualitative": ["月収 2万円"]
+        },
+        "2026-12": {
+          "pv": 16000,
+          "xFollowers": 850,
+          "qualitative": ["月収 3万円"]
+        },
+        "2027-01": {
+          "pv": 20000,
+          "xFollowers": 1000,
+          "qualitative": ["Q3完了"]
+        }
       }
     },
     "Q4": {
@@ -74,6 +126,23 @@
         "noteRevenue": 20000,
         "affiliateRevenue": 15000,
         "xFollowers": 2000
+      },
+      "monthlyMilestones": {
+        "2027-02": {
+          "pv": 30000,
+          "xFollowers": 1200,
+          "qualitative": ["月収 4万円"]
+        },
+        "2027-03": {
+          "pv": 40000,
+          "xFollowers": 1600,
+          "qualitative": ["月収 5万円"]
+        },
+        "2027-04": {
+          "pv": 50000,
+          "xFollowers": 2000,
+          "qualitative": ["ビジョン達成・月収5〜6万円"]
+        }
       }
     }
   },
@@ -81,5 +150,64 @@
     "avgSessionDurationSec": 120,
     "bounceRateMax": 0.7,
     "scAvgPositionTarget": 20
+  },
+  "analysis": {
+    "pv": {
+      "label": "ページビュー",
+      "positiveFactors": [
+        "SEO記事公開 → オーガニック流入増（1記事あたり+50〜150PV/月が目安）",
+        "X投稿バズり → SNS流入スパイク（いいね100超で+200〜500PV見込み）",
+        "上位表示キーワード増加 → CTR向上でクリック数増"
+      ],
+      "negativeFactors": [
+        "直帰率上昇 → 滞在が浅くリピート率が低下する",
+        "SNS流入が少ない（週1本未満の投稿ペース）",
+        "記事本数不足（上位表示できるキーワードが少ない）",
+        "CTR低下（タイトル・メタディスクリプションの最適化不足）"
+      ],
+      "paceNote": "現ペースから月間2,000PVへはSEO記事2本追加 + X週2本投稿の両方が必要"
+    },
+    "xFollowers": {
+      "label": "Xフォロワー",
+      "positiveFactors": [
+        "Tips系・AIツール紹介投稿（週2本以上）でコンスタントに増加",
+        "スクリーンショット付きの実演投稿は保存・リポストされやすい",
+        "バズった投稿をシリーズ化して流れを維持する"
+      ],
+      "negativeFactors": [
+        "投稿頻度が週1本未満になると伸びが鈍化する",
+        "告知・宣伝系投稿の比率が高いと価値提供ゼロに見える",
+        "エンゲージメント率が低い（いいね・リプライが少ない）"
+      ],
+      "paceNote": "残り127人を2.5ヶ月で達成するには月50人増（週12人増）のペースが必要"
+    },
+    "bounceRate": {
+      "label": "直帰率",
+      "positiveFactors": [
+        "ファーストビューに価値・使い方が明確に伝わる設計",
+        "内部リンク（関連ツール・記事）で回遊を促す",
+        "ページ読み込み速度が速い（3秒以内）"
+      ],
+      "negativeFactors": [
+        "チュートリアルUX変更が裏目（2ステップ化で直帰率悪化を確認済み）",
+        "検索意図とページコンテンツのミスマッチ",
+        "モバイル最適化不足・初回訪問時のCTA・誘導が弱い"
+      ],
+      "paceNote": "MARGINALIA +9pt・TEMPER +11pt悪化。チュートリアル改修が逆効果の可能性が高く早急な原因究明が必要"
+    },
+    "organicClicks": {
+      "label": "オーガニッククリック",
+      "positiveFactors": [
+        "記事数増加 → 表示回数増 → クリック増",
+        "1〜3位獲得でCTRが大幅向上（4位以下の3〜10倍）",
+        "タイトルに数字・具体的な言葉を入れるとCTR向上"
+      ],
+      "negativeFactors": [
+        "4〜10位圏内のまま1位を取れないとCTRが低いまま",
+        "競合が上位を独占しているキーワードを狙っている",
+        "メタディスクリプションが魅力的でない"
+      ],
+      "paceNote": "SCクリックは目標超過。ただし表示回数780回はまだ少なく、記事増加で伸びしろは大きい"
+    }
   }
 }

@@ -194,9 +194,67 @@ async function main() {
     }
   }
 
-  // ── 2. PDCA 分析 ────────────────────────────────────────
+  // ── 2. 今月のマイルストーン ──────────────────────────────
+  const nowYM = new Date().toISOString().slice(0, 7);
+  const monthMS = phaseData.monthlyMilestones?.[nowYM];
+
+  const findBounceRate = (tool) => {
+    if (!ga) return null;
+    const toolKey = tool.replace(/-/g, '_');
+    const page = ga.pages.find(p => {
+      const k = (p.pagePath || '').replace(/\//g, '').replace(/-/g, '_') || 'top';
+      return k === toolKey || k.startsWith(toolKey);
+    });
+    return page ? page.bounceRate : null;
+  };
+
+  if (monthMS) {
+    const monthLabel = new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long' });
+    console.log(`\n${SEP}`);
+    console.log(`  2. 今月のマイルストーン進捗（${monthLabel}）  ※直近${days}日間データ`);
+    console.log(SEP);
+
+    if (monthMS.pv !== undefined && totalPV !== null) {
+      const p = pct(totalPV, monthMS.pv);
+      console.log(`  PV          ${totalPV.toLocaleString()}PV / 今月目標 ${monthMS.pv.toLocaleString()}PV  [${status(p)}] ${bar(p)}`);
+    }
+    if (monthMS.xFollowers !== undefined && followers !== null) {
+      const p = pct(followers, monthMS.xFollowers);
+      console.log(`  Xフォロワー  ${followers.toLocaleString()}人 / 今月目標 ${monthMS.xFollowers.toLocaleString()}人 [${status(p)}] ${bar(p)}`);
+    }
+    if (monthMS.bounceRateMax) {
+      Object.entries(monthMS.bounceRateMax).forEach(([tool, maxRate]) => {
+        const br = findBounceRate(tool);
+        if (br !== null) {
+          const actual = Math.round(br * 100);
+          const target = Math.round(maxRate * 100);
+          const ok = br <= maxRate;
+          console.log(`  直帰率(${tool.padEnd(6)}) ${actual}% / 目標 ${target}%以下  [${ok ? '達成' : '遅れ'}]`);
+        }
+      });
+    }
+    if (monthMS.qualitative?.length) {
+      console.log('  定性マイルストーン:');
+      monthMS.qualitative.forEach(q => console.log(`    ・${q}`));
+    }
+
+    const nextDate = new Date();
+    nextDate.setMonth(nextDate.getMonth() + 1);
+    const nextYM = nextDate.toISOString().slice(0, 7);
+    const nextMonthMS = phaseData.monthlyMilestones?.[nextYM];
+    if (nextMonthMS) {
+      const nextLabel = nextDate.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long' });
+      const items = [];
+      if (nextMonthMS.pv) items.push(`PV ${nextMonthMS.pv.toLocaleString()}`);
+      if (nextMonthMS.xFollowers) items.push(`Xフォロワー ${nextMonthMS.xFollowers.toLocaleString()}人`);
+      console.log(`\n  来月（${nextLabel}）の目標: ${items.join(' / ')}`);
+      nextMonthMS.qualitative?.forEach(q => console.log(`    ・${q}`));
+    }
+  }
+
+  // ── 3. PDCA 分析 ────────────────────────────────────────
   console.log(`\n${SEP}`);
-  console.log('  2. PDCA 分析');
+  console.log('  3. PDCA 分析');
   console.log(SEP);
 
   // Check
@@ -241,6 +299,30 @@ async function main() {
   wins.forEach(w   => console.log(`  ✅ ${w}`));
   issues.forEach(i => console.log(`  ⚠️  ${i}`));
 
+  // 不達成・遅れの要因分析
+  const analysisData = goals.analysis || {};
+  const underperforming = [];
+  if (totalPV !== null && pct(totalPV, monthMS?.pv || monthly.pv) < 80) underperforming.push('pv');
+  if (followers !== null && pct(followers, monthMS?.xFollowers || monthly.xFollowers) < 90) underperforming.push('xFollowers');
+  const hasBounceIssue = monthMS?.bounceRateMax && Object.entries(monthMS.bounceRateMax).some(([tool, maxRate]) => {
+    const br = findBounceRate(tool);
+    return br !== null && br > maxRate;
+  });
+  if (hasBounceIssue) underperforming.push('bounceRate');
+
+  if (underperforming.length > 0) {
+    console.log('\n  【不達成・遅れの要因分析】');
+    underperforming.forEach(kpi => {
+      const a = analysisData[kpi];
+      if (!a) return;
+      console.log(`\n  ◆ ${a.label}の遅れ要因:`);
+      a.negativeFactors.slice(0, 3).forEach(f => console.log(`    × ${f}`));
+      if (a.paceNote) console.log(`    → ${a.paceNote}`);
+      console.log(`  ◆ 改善のカギ:`);
+      a.positiveFactors.slice(0, 2).forEach(f => console.log(`    ✓ ${f}`));
+    });
+  }
+
   // Act
   console.log('\n  【Act — 改善アクション & TODO】');
   const todos = generateTodos({ ga, gsc, ads, xd, totalPV, scClicks, followers, phase, monthly });
@@ -258,13 +340,13 @@ async function main() {
 
   // ── 3. 今週のTODO ──────────────────────────────────────
   console.log(`\n${SEP}`);
-  console.log('  3. 今週のTODO（優先順）');
+  console.log('  4. 今週のTODO（優先順）');
   console.log(SEP);
   todos.slice(0, 5).forEach((t, i) => console.log(`  □ ${i + 1}. ${t}`));
 
   // ── 収益ロードマップ ────────────────────────────────────
   console.log(`\n${SEP}`);
-  console.log('  4. 収益ロードマップ進捗');
+  console.log('  5. 収益ロードマップ進捗');
   console.log(SEP);
   PHASE_ORDER.forEach(q => {
     const qd = goals.roadmap[q];
@@ -302,7 +384,7 @@ async function main() {
 
   // ── 5. 施策効果トラッキング ──────────────────────────────
   console.log(`\n${SEP}`);
-  console.log('  5. 施策効果トラッキング');
+  console.log('  6. 施策効果トラッキング');
   console.log(SEP);
 
   const interventions = loadInterventions();
