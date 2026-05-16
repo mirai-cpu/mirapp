@@ -39,11 +39,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     '#f87171': { accentBg: 'rgba(248,113,113,0.1)',  glow: '0 0 24px rgba(248,113,113,0.2)' },
   };
 
+  const BG_THEMES = {
+    '#070810': { mode:'dark',  surface:'#0d0f18', border:'#1c1f30', border2:'#252840', text:'#eaecf4', muted:'#555878', surface2:'rgba(18,21,34,0.5)' },
+    '#000000': { mode:'dark',  surface:'#111111', border:'#1e1e1e', border2:'#282828', text:'#eaecf4', muted:'#555878', surface2:'rgba(255,255,255,0.04)' },
+    '#0f172a': { mode:'dark',  surface:'#1e293b', border:'#334155', border2:'#475569', text:'#f1f5f9', muted:'#64748b', surface2:'rgba(255,255,255,0.04)' },
+    '#0a0805': { mode:'dark',  surface:'#14110a', border:'#28221a', border2:'#352c20', text:'#f0e8d8', muted:'#6b5e48', surface2:'rgba(255,255,255,0.04)' },
+    '#1a0a0a': { mode:'dark',  surface:'#2a1414', border:'#3a1c1c', border2:'#4a2424', text:'#f8e8e8', muted:'#785555', surface2:'rgba(255,255,255,0.04)' },
+    '#ffffff': { mode:'light', surface:'#f1f5f9', border:'rgba(0,0,0,0.1)',  border2:'rgba(0,0,0,0.15)', text:'#0f172a', muted:'#64748b', surface2:'rgba(0,0,0,0.04)' },
+    '#f8f6f3': { mode:'light', surface:'#edeae6', border:'rgba(0,0,0,0.1)',  border2:'rgba(0,0,0,0.15)', text:'#1c1917', muted:'#78716c', surface2:'rgba(0,0,0,0.04)' },
+    '#faf7f2': { mode:'light', surface:'#efece5', border:'rgba(0,0,0,0.09)', border2:'rgba(0,0,0,0.13)', text:'#1c1917', muted:'#78716c', surface2:'rgba(0,0,0,0.04)' },
+    '#f0f9ff': { mode:'light', surface:'#e0f2fe', border:'rgba(0,0,0,0.1)',  border2:'rgba(0,0,0,0.15)', text:'#0c4a6e', muted:'#475569', surface2:'rgba(0,0,0,0.04)' },
+    '#f0fdf4': { mode:'light', surface:'#dcfce7', border:'rgba(0,0,0,0.1)',  border2:'rgba(0,0,0,0.15)', text:'#14532d', muted:'#475569', surface2:'rgba(0,0,0,0.04)' },
+  };
+
   const colorBtn     = document.getElementById('btn-color');
   const colorPalette = document.getElementById('color-palette');
   const colorDot     = document.getElementById('color-dot');
   const savedColor   = localStorage.getItem('accentColor') || '#ffd700';
   applyColor(savedColor);
+
+  const savedBg = localStorage.getItem('bs-bgColor') || '#070810';
+  applyBg(savedBg);
 
   colorBtn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -56,11 +72,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.addEventListener('click', () => colorPalette.classList.remove('open'));
 
   colorPalette.addEventListener('click', (e) => {
-    const swatch = e.target.closest('.palette-swatch');
-    if (!swatch) return;
-    applyColor(swatch.dataset.color);
-    localStorage.setItem('accentColor', swatch.dataset.color);
-    colorPalette.classList.remove('open');
+    const swatch   = e.target.closest('.palette-swatch');
+    const bgSwatch = e.target.closest('.bg-swatch');
+    if (swatch) {
+      applyColor(swatch.dataset.color);
+      localStorage.setItem('accentColor', swatch.dataset.color);
+      colorPalette.classList.remove('open');
+    } else if (bgSwatch) {
+      applyBg(bgSwatch.dataset.bg);
+      colorPalette.classList.remove('open');
+    }
   });
 
   function applyColor(color) {
@@ -73,6 +94,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('.palette-swatch').forEach(s =>
       s.classList.toggle('active', s.dataset.color === color)
     );
+  }
+
+  function applyBg(color) {
+    const theme = BG_THEMES[color] || BG_THEMES['#070810'];
+    const root  = document.documentElement;
+    root.setAttribute('data-theme', theme.mode);
+    root.style.setProperty('--bg',        color);
+    root.style.setProperty('--surface',   theme.surface);
+    root.style.setProperty('--border',    theme.border);
+    root.style.setProperty('--border-2',  theme.border2);
+    root.style.setProperty('--text',      theme.text);
+    root.style.setProperty('--muted',     theme.muted);
+    root.style.setProperty('--surface-2', theme.surface2);
+    // header/tabbar bg adapts to selected bg with slight opacity
+    const mix = theme.mode === 'light' ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.1)';
+    root.style.setProperty('--header-bg', `color-mix(in srgb, ${color} 92%, ${mix})`);
+    root.style.setProperty('--tabbar-bg', `color-mix(in srgb, ${color} 95%, ${mix})`);
+    localStorage.setItem('bs-bgColor', color);
+    document.querySelectorAll('.bg-swatch').forEach(s =>
+      s.classList.toggle('active', s.dataset.bg === color)
+    );
+    // stars are only visible in dark mode
+    const sf = document.getElementById('starfield');
+    if (sf && theme.mode === 'light') sf.style.display = 'none';
+    if (sf && theme.mode === 'dark')  sf.style.display = localStorage.getItem('bs-showStars') !== 'false' ? '' : 'none';
   }
 
   // ── Stars toggle ───────────────────────────────────────────────
