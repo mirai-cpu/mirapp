@@ -1,0 +1,60 @@
+{
+  "routines": [
+    {
+      "id": "weekly-x-batting",
+      "cadence": "weekly",
+      "priority": 1,
+      "title": "batting-stats をX投稿でプッシュする（スクリーンショット付き）",
+      "detail": "直帰率21%・滞在3分超 → 最もエンゲージメントが取れるツール。週2〜3本"
+    },
+    {
+      "id": "weekly-x-tips",
+      "cadence": "weekly",
+      "priority": 1,
+      "title": "ツール使い方 or 2択Tips投稿をXに1〜2本",
+      "detail": "バズりやすいTips形式 or 投票形式でフォロワー増加を狙う。TEMPERやMARGINALIAの使用シーンを見せる"
+    },
+    {
+      "id": "monthly-adsense-update",
+      "cadence": "monthly",
+      "priority": 2,
+      "title": "adsense-data.json にAdSense収益データを手動入力する",
+      "detail": "AdSense管理画面 → レポート → 直近30日の収益・RPM・クリック数をコピー。yoroshikuの精度が上がる"
+    },
+    {
+      "id": "monthly-sc-check",
+      "cadence": "monthly",
+      "priority": 2,
+      "title": "Search Consoleで4〜10位キーワードを確認し最適化する",
+      "detail": "タイトル・meta description・FAQ schemaを更新。order-maker「野球スタメン作成」の順位変化を必ず確認"
+    },
+    {
+      "id": "monthly-bounce-review",
+      "cadence": "monthly",
+      "priority": 3,
+      "title": "直帰率ワースト1ページのヒーロー画面を改修する",
+      "detail": "目標25%以下。現状ワースト: MARGINALIA(58%) → order-maker(53%) → TEMPER(42%)"
+    },
+    {
+      "id": "monthly-rpm-check",
+      "cadence": "monthly",
+      "priority": 3,
+      "title": "AdSenseでRPMが低いページを確認し広告枠を最適化する",
+      "detail": "RPMが低いページに広告枠を追加 or 配置変更。管理画面 → レポート → サイト別でページ比較"
+    },
+    {
+      "id": "quarterly-new-tool",
+      "cadence": "quarterly",
+      "priority": 4,
+      "title": "新ツール1本をリリースする",
+      "detail": "既存ユーザー（野球・習慣・メモ層）と親和性の高いもの。1ツール追加でAdSense収益が底上げされる"
+    },
+    {
+      "id": "quarterly-blog",
+      "cadence": "quarterly",
+      "priority": 4,
+      "title": "SEOブログ記事を1〜2本書く",
+      "detail": "ツール使い方・野球統計解説など。長期的な検索流入の積み上げになる。記事はnote or somirai.jp/blog/"
+    }
+  ]
+}

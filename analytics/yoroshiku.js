@@ -459,7 +459,73 @@ async function main() {
     });
   }
 
+  // ── ルーティンチェック ──────────────────────────────────────
+  console.log(`\n${SEP}`);
+  console.log('  7. ルーティンチェック（定期タスク）');
+  console.log(SEP);
+
+  const routineTasks = checkRoutine();
+  if (routineTasks.length === 0) {
+    console.log('  routine.json が見つかりません');
+  } else {
+    const weekly    = routineTasks.filter(r => r.cadence === 'weekly');
+    const monthly   = routineTasks.filter(r => r.cadence === 'monthly');
+    const quarterly = routineTasks.filter(r => r.cadence === 'quarterly');
+
+    if (weekly.length > 0) {
+      console.log('\n  【毎週やること】');
+      weekly.forEach(r => {
+        console.log(`  □ ${r.title}`);
+        console.log(`    └ ${r.detail}`);
+      });
+    }
+
+    if (monthly.length > 0) {
+      console.log(`\n  【${monthly[0].urgency}にやること】`);
+      monthly.forEach(r => {
+        console.log(`  □ [${r.urgency}] ${r.title}`);
+        console.log(`    └ ${r.detail}`);
+      });
+    }
+
+    if (quarterly.length > 0) {
+      console.log(`\n  【${quarterly[0].urgency}にやること】`);
+      quarterly.forEach(r => {
+        console.log(`  □ [${r.urgency}] ${r.title}`);
+        console.log(`    └ ${r.detail}`);
+      });
+    }
+  }
+
   console.log(`\n${LINE}\n`);
+}
+
+// ── ルーティンチェック ────────────────────────────────────────
+function checkRoutine() {
+  const routineFile = path.join(__dirname, 'routine.json');
+  let routines;
+  try { routines = JSON.parse(fs.readFileSync(routineFile, 'utf8')).routines; }
+  catch { return []; }
+
+  const now = new Date();
+  const dayOfMonth = now.getDate();
+  const month = now.getMonth() + 1;
+  const quarterStartMonths = [1, 4, 7, 10];
+
+  return routines
+    .filter(r => {
+      if (r.cadence === 'weekly')    return true;
+      if (r.cadence === 'monthly')   return dayOfMonth <= 10;
+      if (r.cadence === 'quarterly') return quarterStartMonths.includes(month) && dayOfMonth <= 21;
+      return false;
+    })
+    .map(r => {
+      let urgency = '毎週';
+      if (r.cadence === 'monthly')   urgency = `${month}月中`;
+      if (r.cadence === 'quarterly') urgency = `Q${Math.ceil(month / 3)}中`;
+      return { ...r, urgency };
+    })
+    .sort((a, b) => a.priority - b.priority);
 }
 
 function generateTodos({ ga, gsc, ads, xd, totalPV, scClicks, followers, phase, monthly }) {
