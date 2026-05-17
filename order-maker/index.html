@@ -827,6 +827,15 @@
       <button class="btn btn-ghost" onclick="window.print()">🖨️ 印刷</button>
       <button class="btn btn-ghost" onclick="switchTab('order')">← 戻る</button>
     </div>
+
+    <a href="https://somirai.jp/batting-stats/" style="display:flex;align-items:center;gap:12px;margin-top:16px;padding:12px 14px;background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.18);border-radius:8px;text-decoration:none;color:inherit;">
+      <span style="font-size:22px;flex-shrink:0;">⚾</span>
+      <div style="min-width:0;">
+        <div style="font-size:12px;font-weight:700;color:#eaecf4;margin-bottom:2px;">打撃成績もつけてみよう</div>
+        <div style="font-size:11px;color:#555878;line-height:1.4;">LUMBER — 選手ごとの打撃スタッツを無料で管理</div>
+      </div>
+      <span style="font-size:12px;color:#00e676;flex-shrink:0;margin-left:auto;">→</span>
+    </a>
   </section>
 
 </main>
@@ -1831,13 +1840,25 @@ if (!localStorage.getItem('sm_tutorial_done')) {
   </ul>
 </section>
 
-<section aria-label="関連ツール" style="background:#070810;border-top:1px solid #1c1f30;padding:20px 12px 12px;text-align:center;position:relative;z-index:1;">
-  <p style="font-size:11px;color:#555878;margin:0 0 12px;letter-spacing:.05em;font-weight:700;">Somirai Lab の他のツール</p>
-  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
-    <a href="https://somirai.jp/batting-stats/" style="display:inline-flex;align-items:center;gap:5px;background:#0d0f18;color:#eaecf4;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid #252840;">⚾ LUMBER</a>
-    <a href="https://somirai.jp/habit/"         style="display:inline-flex;align-items:center;gap:5px;background:#0d0f18;color:#eaecf4;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid #252840;">🔥 TEMPER</a>
-    <a href="https://somirai.jp/write/"         style="display:inline-flex;align-items:center;gap:5px;background:#0d0f18;color:#eaecf4;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid #252840;">✏️ MARGINALIA</a>
-    <a href="https://somirai.jp/savings/"       style="display:inline-flex;align-items:center;gap:5px;background:#0d0f18;color:#eaecf4;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;text-decoration:none;border:1px solid #252840;">💰 KURA</a>
+<section aria-label="関連ツール" style="background:#070810;border-top:1px solid #1c1f30;padding:28px 16px 20px;position:relative;z-index:1;">
+  <p style="font-size:10px;color:#555878;margin:0 0 16px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;text-align:center;">Somirai Lab の他のツール</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:480px;margin:0 auto;">
+    <a href="https://somirai.jp/batting-stats/" style="display:flex;flex-direction:column;gap:3px;background:#0d0f18;color:#eaecf4;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c2a3a;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c2a3a'">
+      <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">⚾ LUMBER</span>
+      <span style="font-size:10px;color:#555878;line-height:1.4;">打撃成績・チームスタッツ管理</span>
+    </a>
+    <a href="https://somirai.jp/habit/" style="display:flex;flex-direction:column;gap:3px;background:#0d0f18;color:#eaecf4;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c2a3a;transition:border-color .15s;" onmouseover="this.style.borderColor='#f97316'" onmouseout="this.style.borderColor='#1c2a3a'">
+      <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">🔥 TEMPER</span>
+      <span style="font-size:10px;color:#555878;line-height:1.4;">習慣トラッカー・ストリーク管理</span>
+    </a>
+    <a href="https://somirai.jp/write/" style="display:flex;flex-direction:column;gap:3px;background:#0d0f18;color:#eaecf4;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c2a3a;transition:border-color .15s;" onmouseover="this.style.borderColor='#f97316'" onmouseout="this.style.borderColor='#1c2a3a'">
+      <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">✏️ MARGINALIA</span>
+      <span style="font-size:10px;color:#555878;line-height:1.4;">メモ・ToDo管理・レベルアップ</span>
+    </a>
+    <a href="https://somirai.jp/savings/" style="display:flex;flex-direction:column;gap:3px;background:#0d0f18;color:#eaecf4;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c2a3a;transition:border-color .15s;" onmouseover="this.style.borderColor='#fbbf24'" onmouseout="this.style.borderColor='#1c2a3a'">
+      <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">💰 KURA</span>
+      <span style="font-size:10px;color:#555878;line-height:1.4;">家計簿・貯蓄管理</span>
+    </a>
   </div>
 </section>
 <footer style="text-align:center;padding:16px;font-size:11px;color:#555878;background:#070810;border-top:1px solid #1c1f30;position:relative;z-index:1;">
