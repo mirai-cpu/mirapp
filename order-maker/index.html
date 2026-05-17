@@ -499,7 +499,7 @@
     }
 
     @media print {
-      header, .tab-nav, .share-row, .field-wrap { display: none !important; }
+      header, .tab-bar, .share-row, .field-wrap, .no-print { display: none !important; }
       body { background: #fff; color: #000; }
       .print-card { border: none; padding: 0; background: none; box-shadow: none; }
       .print-table td, .print-table th { color: #000; border-color: #ccc; }
@@ -828,7 +828,7 @@
       <button class="btn btn-ghost" onclick="switchTab('order')">← 戻る</button>
     </div>
 
-    <a href="https://somirai.jp/batting-stats/" style="display:flex;align-items:center;gap:12px;margin-top:16px;padding:12px 14px;background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.18);border-radius:8px;text-decoration:none;color:inherit;">
+    <a href="https://somirai.jp/batting-stats/" class="no-print" style="display:flex;align-items:center;gap:12px;margin-top:16px;padding:12px 14px;background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.18);border-radius:8px;text-decoration:none;color:inherit;">
       <span style="font-size:22px;flex-shrink:0;">⚾</span>
       <div style="min-width:0;">
         <div style="font-size:12px;font-weight:700;color:#eaecf4;margin-bottom:2px;">打撃成績もつけてみよう</div>
