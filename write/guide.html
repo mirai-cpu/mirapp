@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MARGINALIA 使い方ガイド — 書くだけでレベルアップするメモアプリ | Somirai Lab</title>
+  <meta name="description" content="MARGINALIA（マルジナリア）の使い方ガイド。メモ投稿・ToDoビュー・カレンダー・バッジ収集・統計まで、書くだけでレベルアップする体験を完全解説します。">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://somirai.jp/write/guide.html">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, 'Hiragino Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #1a1410;
+      background: #f8f6f3;
+      padding: 24px 16px 80px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    a { color: #f97316; }
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 32px;
+      font-size: 13px;
+      color: #f97316;
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid #e0dbd4;
+      border-radius: 20px;
+      transition: background 0.2s;
+    }
+    .back:hover { background: rgba(249,115,22,0.08); }
+    .hero {
+      text-align: center;
+      margin-bottom: 48px;
+      padding: 40px 20px;
+      border: 1px solid #e0dbd4;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #fff8f5 0%, #f8f6f3 100%);
+    }
+    .hero-icon { font-size: 48px; margin-bottom: 12px; }
+    .hero-title {
+      font-family: 'Georgia', serif;
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #f97316;
+      text-shadow: 0 0 20px rgba(249,115,22,0.2);
+      margin-bottom: 4px;
+    }
+    .hero-sub {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #9c8c7e;
+      margin-bottom: 16px;
+    }
+    .hero-desc { font-size: 14px; color: #6b5e52; line-height: 1.7; max-width: 500px; margin: 0 auto; }
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #f97316;
+      margin: 40px 0 16px;
+      padding-left: 12px;
+      border-left: 3px solid #f97316;
+    }
+    h3 { font-size: 15px; font-weight: 700; color: #1a1410; margin: 24px 0 10px; }
+    p { color: #6b5e52; margin-bottom: 12px; }
+    .step-list { list-style: none; margin-bottom: 20px; }
+    .step-list li {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      padding: 14px 16px;
+      background: #ffffff;
+      border: 1px solid #e0dbd4;
+      border-radius: 12px;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #f97316;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-body { flex: 1; }
+    .step-title { font-weight: 700; color: #1a1410; margin-bottom: 4px; font-size: 14px; }
+    .step-desc { color: #9c8c7e; font-size: 13px; line-height: 1.6; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 500px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature-card {
+      padding: 16px;
+      background: #ffffff;
+      border: 1px solid #e0dbd4;
+      border-radius: 12px;
+    }
+    .feature-icon { font-size: 22px; margin-bottom: 6px; }
+    .feature-name { font-size: 13px; font-weight: 700; color: #1a1410; margin-bottom: 4px; }
+    .feature-desc { font-size: 12px; color: #9c8c7e; line-height: 1.5; }
+    .faq-item {
+      margin-bottom: 16px;
+      border: 1px solid #e0dbd4;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .faq-q { padding: 14px 16px; background: #ffffff; font-weight: 700; font-size: 14px; color: #1a1410; }
+    .faq-q::before { content: "Q. "; color: #f97316; }
+    .faq-a { padding: 12px 16px; font-size: 13px; color: #9c8c7e; line-height: 1.7; border-top: 1px solid #e0dbd4; background: #f1ede8; }
+    .faq-a::before { content: "A. "; color: #9c8c7e; font-weight: 700; }
+    .tip-box {
+      padding: 16px 18px;
+      background: rgba(249,115,22,0.06);
+      border: 1px solid rgba(249,115,22,0.2);
+      border-radius: 12px;
+      margin: 20px 0;
+      font-size: 13px;
+      color: #6b5e52;
+      line-height: 1.7;
+    }
+    .tip-box strong { color: #f97316; }
+    .footer-nav {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #e0dbd4;
+      text-align: center;
+      font-size: 12px;
+      color: #9c8c7e;
+    }
+    .footer-nav a { color: #9c8c7e; margin: 0 8px; }
+  </style>
+</head>
+<body>
+
+  <a href="/write/" class="back">← MARGINALIA に戻る</a>
+
+  <div class="hero">
+    <div class="hero-icon">✏️</div>
+    <div class="hero-title">MARGINALIA</div>
+    <div class="hero-sub">メモアプリ — 使い方ガイド</div>
+    <p class="hero-desc">書くだけでレベルアップするメモアプリ。メモ・日記・ToDoを自由に投稿して、連続記録やバッジ収集でモチベーションを維持できます。登録不要・完全無料。</p>
+  </div>
+
+  <h2>はじめ方（5分でスタート）</h2>
+
+  <ol class="step-list">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">最初のメモを書く</div>
+        <div class="step-desc">「投稿」タブの入力欄に何でも書いて送信ボタンをタップ。1文字でも大丈夫です。書いた瞬間にXPを獲得してレベルアップが始まります。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">バッジを確認する</div>
+        <div class="step-desc">「バッジ」タブで達成済みバッジを確認。連続記録を伸ばしたり、投稿数を積み重ねたりするとバッジがどんどん解除されていきます。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">統計を見る</div>
+        <div class="step-desc">「統計」タブで累計投稿数・累計文字数・最長連続日数をチェック。自分の書く習慣が数字で可視化されます。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">テーマをカスタマイズする</div>
+        <div class="step-desc">ヘッダーの ⚙️ アイコンからカラーテーマを変更できます。ライト・ダーク・カスタムカラーなど複数のテーマから好みのスタイルを選べます。</div>
+      </div>
+    </li>
+  </ol>
+
+  <h2>主な機能</h2>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">✏️</div>
+      <div class="feature-name">メモ・日記・ToDo投稿</div>
+      <div class="feature-desc">テキストを自由に投稿。日記・アイデアメモ・やることリストなど何でも書けます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <div class="feature-name">ToDoビュー</div>
+      <div class="feature-desc">投稿内のチェックリスト形式のテキストを一覧表示。タップしてチェック完了できます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📅</div>
+      <div class="feature-name">カレンダービュー</div>
+      <div class="feature-desc">日付ごとの投稿をカレンダー形式で確認。書いた日が一目でわかります。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔥</div>
+      <div class="feature-name">連続記録（ストリーク）</div>
+      <div class="feature-desc">毎日書き続けると連続記録が伸びます。途切れないように書く習慣が自然と身につきます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-name">XP・レベルアップ</div>
+      <div class="feature-desc">書くたびに経験値を獲得。レベルが上がるとランク称号が変わっていきます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏆</div>
+      <div class="feature-name">バッジ25種収集</div>
+      <div class="feature-desc">投稿数・連続日数・文字数などの条件を達成するとバッジが解除されます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-name">統計ビュー</div>
+      <div class="feature-desc">累計投稿数・文字数・連続日数をグラフで確認。書く習慣の成長が見えます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-name">プライベート保存</div>
+      <div class="feature-desc">データはすべてブラウザ内に保存。外部サーバーへの送信なし・完全無料。</div>
+    </div>
+  </div>
+
+  <h2>よくある質問（FAQ）</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">投稿した内容は他の人に見えますか？</div>
+    <div class="faq-a">いいえ、見えません。すべてのデータはお使いのブラウザ（localStorage）にのみ保存されます。外部サーバーへの送信は一切ありません。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">ToDoリストはどうやって使いますか？</div>
+    <div class="faq-a">投稿テキストの中に「- [ ] やること」の形式で書くと、ToDoビューにチェックリストとして表示されます。タップするとチェック完了状態になります。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">データのバックアップはできますか？</div>
+    <div class="faq-a">はい。設定メニューからエクスポート機能でデータをJSONファイルとして保存できます。機種変更や別ブラウザへの移行時はインポート機能で復元できます。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">PWAとして使えますか？</div>
+    <div class="faq-a">はい。スマートフォンのブラウザで「ホーム画面に追加」するとアプリのように起動できます。iPhoneはSafari、AndroidはChromeからホーム画面追加が可能です。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">テーマは何種類ありますか？</div>
+    <div class="faq-a">ライト・ダーク・ブルー・アンバー・パープルなど複数のプリセットテーマが用意されています。カスタムカラーで自分だけの配色にすることも可能です。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">ブラウザのキャッシュを削除するとデータが消えますか？</div>
+    <div class="faq-a">はい、localStorageのデータが消える場合があります。定期的にエクスポートでバックアップを取っておくことをおすすめします。</div>
+  </div>
+
+  <div class="tip-box">
+    <strong>活用のコツ：</strong>毎日1文でもいいので投稿する習慣をつけると連続記録が伸び、バッジが解除されてモチベーションが続きます。「今日やること」をToDoビューで書いてチェックする使い方や、寝る前に「今日の出来事」を一言書く日記としての使い方もおすすめです。
+  </div>
+
+  <div class="footer-nav">
+    <p>© 2026 MARGINALIA · 書くだけでレベルアップするメモアプリ — <a href="https://somirai.jp/">Somirai Lab</a></p>
+    <p style="margin-top:8px">
+      <a href="/write/">アプリを開く</a>
+    </p>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KURA 使い方ガイド — 無料家計簿アプリ | Somirai Lab</title>
+  <meta name="description" content="KURA（無料家計簿アプリ）の使い方ガイド。支出記録・月予算設定・カテゴリ別グラフ・節約バッジ収集まで、ゲーム感覚で続けられる家計管理を完全解説します。">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://somirai.jp/savings/guide.html">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, 'Hiragino Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #0f172a;
+      background: #f0fdf4;
+      padding: 24px 16px 80px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    a { color: #059669; }
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 32px;
+      font-size: 13px;
+      color: #059669;
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid rgba(5,150,105,0.25);
+      border-radius: 20px;
+      transition: background 0.2s;
+    }
+    .back:hover { background: rgba(5,150,105,0.08); }
+    .hero {
+      text-align: center;
+      margin-bottom: 48px;
+      padding: 40px 20px;
+      border: 1px solid rgba(5,150,105,0.15);
+      border-radius: 20px;
+      background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+    }
+    .hero-icon { font-size: 48px; margin-bottom: 12px; }
+    .hero-title {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: #059669;
+      text-shadow: 0 0 20px rgba(5,150,105,0.25);
+      margin-bottom: 4px;
+    }
+    .hero-sub {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 16px;
+    }
+    .hero-desc { font-size: 14px; color: #475569; line-height: 1.7; max-width: 500px; margin: 0 auto; }
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #059669;
+      margin: 40px 0 16px;
+      padding-left: 12px;
+      border-left: 3px solid #059669;
+    }
+    h3 { font-size: 15px; font-weight: 700; color: #0f172a; margin: 24px 0 10px; }
+    p { color: #475569; margin-bottom: 12px; }
+    .step-list { list-style: none; margin-bottom: 20px; }
+    .step-list li {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      padding: 14px 16px;
+      background: #ffffff;
+      border: 1px solid rgba(5,150,105,0.15);
+      border-radius: 12px;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #059669;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-body { flex: 1; }
+    .step-title { font-weight: 700; color: #0f172a; margin-bottom: 4px; font-size: 14px; }
+    .step-desc { color: #94a3b8; font-size: 13px; line-height: 1.6; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 500px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature-card {
+      padding: 16px;
+      background: #ffffff;
+      border: 1px solid rgba(5,150,105,0.15);
+      border-radius: 12px;
+    }
+    .feature-icon { font-size: 22px; margin-bottom: 6px; }
+    .feature-name { font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+    .feature-desc { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+    .category-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 13px;
+    }
+    .category-table th {
+      padding: 8px 12px;
+      text-align: left;
+      background: #dcfce7;
+      color: #059669;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(5,150,105,0.2);
+    }
+    .category-table td {
+      padding: 8px 12px;
+      color: #475569;
+      border-bottom: 1px solid rgba(5,150,105,0.1);
+    }
+    .category-table tr:nth-child(even) td { background: #f0fdf4; }
+    .faq-item {
+      margin-bottom: 16px;
+      border: 1px solid rgba(5,150,105,0.15);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .faq-q { padding: 14px 16px; background: #ffffff; font-weight: 700; font-size: 14px; color: #0f172a; }
+    .faq-q::before { content: "Q. "; color: #059669; }
+    .faq-a { padding: 12px 16px; font-size: 13px; color: #94a3b8; line-height: 1.7; border-top: 1px solid rgba(5,150,105,0.1); }
+    .faq-a::before { content: "A. "; color: #94a3b8; font-weight: 700; }
+    .tip-box {
+      padding: 16px 18px;
+      background: rgba(5,150,105,0.06);
+      border: 1px solid rgba(5,150,105,0.2);
+      border-radius: 12px;
+      margin: 20px 0;
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.7;
+    }
+    .tip-box strong { color: #059669; }
+    .footer-nav {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(5,150,105,0.15);
+      text-align: center;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .footer-nav a { color: #94a3b8; margin: 0 8px; }
+  </style>
+</head>
+<body>
+
+  <a href="/savings/" class="back">← KURA に戻る</a>
+
+  <div class="hero">
+    <div class="hero-icon">💰</div>
+    <div class="hero-title">KURA</div>
+    <div class="hero-sub">無料家計簿アプリ — 使い方ガイド</div>
+    <p class="hero-desc">支出を記録するたびにXPを獲得してレベルアップ。ゲーム感覚で楽しく続けられる家計管理アプリです。月予算設定・カテゴリ別グラフ・節約バッジ収集に対応。登録不要・完全無料。</p>
+  </div>
+
+  <h2>はじめ方（3分でスタート）</h2>
+
+  <ol class="step-list">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">支出を記録する</div>
+        <div class="step-desc">「記録」タブで金額・カテゴリ・メモを入力して保存。記録するたびにXPを獲得してレベルアップします。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">月予算を設定する</div>
+        <div class="step-desc">「設定」タブで月の総予算を入力。予算に対する使用割合が表示され、使いすぎ警告でオーバー前に気づけます。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">グラフで振り返る</div>
+        <div class="step-desc">「レポート」タブでカテゴリ別の支出グラフを確認。食費・交通費・娯楽費など、どこにお金を使っているかが一目でわかります。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">バッジを目指す</div>
+        <div class="step-desc">「バッジ」タブで節約目標バッジを確認。連続記録や予算達成でバッジが解除され、節約のモチベーションが続きます。</div>
+      </div>
+    </li>
+  </ol>
+
+  <h2>主な機能</h2>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-name">XP獲得・レベルアップ</div>
+      <div class="feature-desc">支出を記録するたびにXPを獲得。レベルが上がるほどランク称号が変わっていきます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-name">カテゴリ別グラフ</div>
+      <div class="feature-desc">食費・交通費・娯楽費などカテゴリ別に支出を可視化。月次レポートで収支を把握できます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <div class="feature-name">月予算管理</div>
+      <div class="feature-desc">月の予算を設定して達成度をトラッキング。使いすぎを事前に察知できます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏅</div>
+      <div class="feature-name">節約バッジ収集</div>
+      <div class="feature-desc">節約目標の達成や継続記録でバッジを獲得。コレクション要素で楽しく続けられます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📤</div>
+      <div class="feature-name">エクスポート・インポート</div>
+      <div class="feature-desc">データをJSONファイルで書き出し・読み込み。機種変更やバックアップに対応。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-name">ブラウザローカル保存</div>
+      <div class="feature-desc">データはすべてブラウザ内に保存。外部サーバーへの送信なし。プライバシーを守りながら使えます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📱</div>
+      <div class="feature-name">PWA対応</div>
+      <div class="feature-desc">ホーム画面に追加するとアプリのように起動できます。iPhoneでもAndroidでも対応。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🆓</div>
+      <div class="feature-name">登録不要・完全無料</div>
+      <div class="feature-desc">アカウント作成不要。今すぐブラウザを開くだけで家計管理を始められます。</div>
+    </div>
+  </div>
+
+  <h2>カテゴリ一覧</h2>
+
+  <p>支出を以下のカテゴリに分類して記録できます。</p>
+
+  <table class="category-table">
+    <thead>
+      <tr>
+        <th>アイコン</th>
+        <th>カテゴリ</th>
+        <th>用途例</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>🍜</td><td>食費</td><td>ランチ・夕食・コンビニ・カフェ</td></tr>
+      <tr><td>🚃</td><td>交通費</td><td>電車・バス・タクシー・駐車場</td></tr>
+      <tr><td>🛒</td><td>日用品</td><td>スーパー・ドラッグストア・消耗品</td></tr>
+      <tr><td>🎮</td><td>娯楽</td><td>映画・ゲーム・趣味・サブスク</td></tr>
+      <tr><td>👕</td><td>衣服</td><td>洋服・靴・アクセサリー</td></tr>
+      <tr><td>💊</td><td>医療</td><td>病院・薬局・健康用品</td></tr>
+      <tr><td>📚</td><td>教育</td><td>書籍・オンライン学習・資格</td></tr>
+      <tr><td>🏠</td><td>住居</td><td>家賃・光熱費・通信費・保険</td></tr>
+      <tr><td>➕</td><td>その他</td><td>上記に当てはまらない支出</td></tr>
+    </tbody>
+  </table>
+
+  <h2>よくある質問（FAQ）</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">KURAは無料で使えますか？</div>
+    <div class="faq-a">はい、完全無料です。アカウント登録も不要で、今すぐブラウザを開くだけで家計管理を始めることができます。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">収入も記録できますか？</div>
+    <div class="faq-a">現在は支出記録に特化しています。月予算と支出のバランスで収支を把握する設計になっています。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">データはどこに保存されますか？</div>
+    <div class="faq-a">すべてのデータはお使いのブラウザ（localStorage）にのみ保存されます。外部サーバーへの送信は一切ありません。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">スマホで使えますか？</div>
+    <div class="faq-a">はい、スマートフォン・タブレット・PCすべてのブラウザに対応しています。PWA対応のため、ホーム画面に追加してアプリのように使うことも可能です。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">月をまたいで記録できますか？</div>
+    <div class="faq-a">はい、記録は継続して蓄積されます。「レポート」タブで月ごとに切り替えて集計を確認できます。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">データのバックアップはできますか？</div>
+    <div class="faq-a">はい、エクスポート機能でJSONファイルとして保存できます。機種変更時や誤削除の備えに定期的なエクスポートをおすすめします。</div>
+  </div>
+
+  <div class="tip-box">
+    <strong>活用のコツ：</strong>レシートをもらった直後にその場で記録する習慣をつけると入力漏れが防げます。月末にレポートを見て「来月はこのカテゴリを減らす」と目標を1つ決めるだけで節約効果が出やすくなります。
+  </div>
+
+  <div class="footer-nav">
+    <p>© 2026 KURA · 無料家計簿アプリ — <a href="https://somirai.jp/">Somirai Lab</a></p>
+    <p style="margin-top:8px">
+      <a href="/savings/">アプリを開く</a>
+    </p>
+  </div>
+
+</body>
+</html>

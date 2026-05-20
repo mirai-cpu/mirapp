@@ -83,5 +83,79 @@
       "blogsanbikoboshi_kagaku.html": 11.33,
       "contact.html": 25.8
     }
+  },
+  {
+    "date": "2026-05-17",
+    "days": 30,
+    "pv": 830,
+    "sessions": 586,
+    "organicSessions": 461,
+    "followers": 379,
+    "impressions": 918,
+    "clicks": 126,
+    "avgPosition": 5.7,
+    "bounceRates": {
+      "order_maker": 0.54,
+      "habit": 0.42,
+      "top": 0.46,
+      "write": 0.58,
+      "batting_stats": 0.23,
+      "savings": 0.16,
+      "bloghabit_app_temper.html": 0,
+      "about.html": 0.67,
+      "blog": 0,
+      "blogsanbikoboshi_kagaku.html": 0.5,
+      "contact.html": 0
+    },
+    "avgDurations": {
+      "order_maker": 197.48,
+      "habit": 90.21,
+      "top": 60.38,
+      "write": 83.18,
+      "batting_stats": 198.34,
+      "savings": 53.04,
+      "bloghabit_app_temper.html": 18.78,
+      "about.html": 1.69,
+      "blog": 29.93,
+      "blogsanbikoboshi_kagaku.html": 11.33,
+      "contact.html": 25.8
+    }
+  },
+  {
+    "date": "2026-05-20",
+    "days": 30,
+    "pv": 842,
+    "sessions": 615,
+    "organicSessions": 505,
+    "followers": 384,
+    "impressions": 1259,
+    "clicks": 160,
+    "avgPosition": 5.5,
+    "bounceRates": {
+      "order_maker": 0.55,
+      "habit": 0.42,
+      "top": 0.49,
+      "write": 0.59,
+      "batting_stats": 0.14,
+      "savings": 0,
+      "bloghabit_app_temper.html": 0,
+      "about.html": 0.33,
+      "blog": 0,
+      "blogsanbikoboshi_kagaku.html": 0.5,
+      "contact.html": 0
+    },
+    "avgDurations": {
+      "order_maker": 201.43,
+      "habit": 64.55,
+      "top": 55.27,
+      "write": 84.49,
+      "batting_stats": 243.28,
+      "savings": 24.11,
+      "bloghabit_app_temper.html": 18.78,
+      "about.html": 9.9,
+      "blog": 29.93,
+      "blogsanbikoboshi_kagaku.html": 11.33,
+      "contact.html": 25.8
+    }
   }
 ]

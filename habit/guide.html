@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TEMPER 使い方ガイド — 習慣ゲーム化アプリ | Somirai Lab</title>
+  <meta name="description" content="TEMPER（習慣管理アプリ）の使い方ガイド。習慣登録・毎日チェック・ガントチャート・バッジ収集まで、ゲーム感覚で習慣を続けるための完全解説です。">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://somirai.jp/habit/guide.html">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, 'Hiragino Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #e2e8f0;
+      background: #0f172a;
+      padding: 24px 16px 80px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    a { color: #38bdf8; }
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 32px;
+      font-size: 13px;
+      color: #38bdf8;
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid #334155;
+      border-radius: 20px;
+      transition: background 0.2s;
+    }
+    .back:hover { background: rgba(56,189,248,0.08); }
+    .hero {
+      text-align: center;
+      margin-bottom: 48px;
+      padding: 40px 20px;
+      border: 1px solid #334155;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #162032 0%, #0f172a 100%);
+    }
+    .hero-icon { font-size: 48px; margin-bottom: 12px; }
+    .hero-title {
+      font-family: 'Arial Black', sans-serif;
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      color: #38bdf8;
+      text-shadow: 0 0 20px rgba(56,189,248,0.4);
+      margin-bottom: 4px;
+    }
+    .hero-sub {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #475569;
+      margin-bottom: 16px;
+    }
+    .hero-desc { font-size: 14px; color: #94a3b8; line-height: 1.7; max-width: 500px; margin: 0 auto; }
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #38bdf8;
+      margin: 40px 0 16px;
+      padding-left: 12px;
+      border-left: 3px solid #38bdf8;
+    }
+    h3 { font-size: 15px; font-weight: 700; color: #e2e8f0; margin: 24px 0 10px; }
+    p { color: #94a3b8; margin-bottom: 12px; }
+    .step-list { list-style: none; margin-bottom: 20px; }
+    .step-list li {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      padding: 14px 16px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #38bdf8;
+      color: #0f172a;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-body { flex: 1; }
+    .step-title { font-weight: 700; color: #e2e8f0; margin-bottom: 4px; font-size: 14px; }
+    .step-desc { color: #475569; font-size: 13px; line-height: 1.6; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 500px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature-card {
+      padding: 16px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+    }
+    .feature-icon { font-size: 22px; margin-bottom: 6px; }
+    .feature-name { font-size: 13px; font-weight: 700; color: #e2e8f0; margin-bottom: 4px; }
+    .feature-desc { font-size: 12px; color: #475569; line-height: 1.5; }
+    .faq-item {
+      margin-bottom: 16px;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .faq-q { padding: 14px 16px; background: #1e293b; font-weight: 700; font-size: 14px; color: #e2e8f0; }
+    .faq-q::before { content: "Q. "; color: #38bdf8; }
+    .faq-a { padding: 12px 16px; font-size: 13px; color: #475569; line-height: 1.7; border-top: 1px solid #334155; }
+    .faq-a::before { content: "A. "; color: #475569; font-weight: 700; }
+    .tip-box {
+      padding: 16px 18px;
+      background: rgba(56,189,248,0.06);
+      border: 1px solid rgba(56,189,248,0.2);
+      border-radius: 12px;
+      margin: 20px 0;
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.7;
+    }
+    .tip-box strong { color: #38bdf8; }
+    .footer-nav {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #334155;
+      text-align: center;
+      font-size: 12px;
+      color: #475569;
+    }
+    .footer-nav a { color: #475569; margin: 0 8px; }
+  </style>
+</head>
+<body>
+
+  <a href="/habit/" class="back">← TEMPER に戻る</a>
+
+  <div class="hero">
+    <div class="hero-icon">🔥</div>
+    <div class="hero-title">TEMPER</div>
+    <div class="hero-sub">習慣ゲーム化アプリ — 使い方ガイド</div>
+    <p class="hero-desc">習慣をゲーム化して毎日続けよう。チェックするたびにXPを獲得し、連続記録でバッジを解除。ガントチャートと週次レポートで継続を可視化します。登録不要・無料で使えます。</p>
+  </div>
+
+  <h2>はじめ方（5分でスタート）</h2>
+
+  <ol class="step-list">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">習慣を登録する</div>
+        <div class="step-desc">「習慣を追加」ボタンから習慣名・カテゴリ（健康・学習・生活など）・頻度（毎日・週n回など）を設定します。まずは1〜2個から始めるのがおすすめです。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">毎日チェックする</div>
+        <div class="step-desc">ダッシュボードで今日の習慣にチェックを入れます。チェックするたびにXPを獲得し、進捗リングが更新されます。全習慣をクリアするとその日の達成率100%！</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">ガントチャートで振り返る</div>
+        <div class="step-desc">「統計」タブを開くと連続記録・達成率・アクティビティヒートマップをガントチャートで確認できます。どの習慣が続いているか一目でわかります。</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">バッジを集める</div>
+        <div class="step-desc">「バッジ」タブで達成済みバッジを確認できます。連続記録・累計チェック数・カテゴリ達成などさまざまな条件でバッジが解除されます。50種すべてコンプリートを目指しましょう。</div>
+      </div>
+    </li>
+  </ol>
+
+  <h2>主な機能</h2>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">✅</div>
+      <div class="feature-name">習慣チェック</div>
+      <div class="feature-desc">毎日の習慣にチェックを入れるだけ。カテゴリ別に整理して管理できます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <div class="feature-name">進捗リング</div>
+      <div class="feature-desc">ドーナツチャート形式でその日の達成率をひと目で確認。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-name">ガントチャート</div>
+      <div class="feature-desc">週・月単位の継続状況を可視化。どの習慣が続いているか一目でわかります。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔥</div>
+      <div class="feature-name">連続記録（ストリーク）</div>
+      <div class="feature-desc">連続チェック日数を記録。記録が途切れると0からリスタート。継続意欲を高めます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-name">XP・レベルアップ</div>
+      <div class="feature-desc">チェックするたびに経験値を獲得してレベルアップ。ランク称号も変化します。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏆</div>
+      <div class="feature-name">バッジ50種</div>
+      <div class="feature-desc">連続記録・累計達成・カテゴリ制覇など多彩な条件でバッジを解除。コンプリートを目指そう。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📅</div>
+      <div class="feature-name">週次レポート</div>
+      <div class="feature-desc">先週の達成率とコメントを自動生成。振り返りとモチベーション維持に役立ちます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔔</div>
+      <div class="feature-name">プッシュ通知</div>
+      <div class="feature-desc">習慣ごとにリマインダー時刻を設定。チェック忘れを防ぎます（PWA対応端末のみ）。</div>
+    </div>
+  </div>
+
+  <h2>よくある質問（FAQ）</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">1日に何個まで習慣を登録できますか？</div>
+    <div class="faq-a">登録数に上限はありません。ただし、最初から多く登録しすぎると続けにくくなるため、まず1〜2個から始めることをおすすめします。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">通知はどうやって設定しますか？</div>
+    <div class="faq-a">習慣の編集画面からリマインダー時刻を設定できます。ブラウザの通知許可が必要です。PWAとしてホーム画面に追加すると通知が届きやすくなります。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">ガントチャートはどこで見られますか？</div>
+    <div class="faq-a">「統計」タブを開くとガントチャートとアクティビティヒートマップが表示されます。習慣ごとの継続状況を週・月単位で確認できます。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">データのバックアップはできますか？</div>
+    <div class="faq-a">設定メニューからエクスポート（JSON形式）でバックアップを取れます。別のブラウザや端末に移行する場合はエクスポート→インポートを行ってください。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">習慣を削除したら記録も消えますか？</div>
+    <div class="faq-a">はい、習慣を削除するとその習慣に紐づく過去の記録もすべて削除されます。削除前に必ずエクスポートでバックアップを取ることをおすすめします。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">PWAとして使えますか？</div>
+    <div class="faq-a">はい、スマートフォンのブラウザから「ホーム画面に追加」するとアプリのように起動できます。アプリストアからのインストールは不要です。iPhoneはSafari、AndroidはChromeからご利用ください。</div>
+  </div>
+
+  <div class="tip-box">
+    <strong>活用のコツ：</strong>最初から5個以上登録すると挫折しやすいです。まず1〜2個から始めて連続記録が7日を超えたら追加するのがおすすめ。週次レポートで先週の達成率を振り返る習慣をつけると長続きします。
+  </div>
+
+  <div class="footer-nav">
+    <p>© 2026 TEMPER · 習慣ゲーム化アプリ — <a href="https://somirai.jp/">Somirai Lab</a></p>
+    <p style="margin-top:8px">
+      <a href="/habit/privacy.html">プライバシーポリシー</a>
+      <a href="/habit/">アプリを開く</a>
+    </p>
+  </div>
+
+</body>
+</html>
