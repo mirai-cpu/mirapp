@@ -30,6 +30,16 @@
     "metrics": ["organicSessions", "impressions", "clicks_order_maker"]
   },
   {
+    "id": "INT-005",
+    "date": "2026-05-20",
+    "tools": ["write", "habit"],
+    "type": "UX改善",
+    "title": "MARGINALIA・TEMPERチュートリアルを1ステップに戻す",
+    "detail": "INT-001/002の2ステップ化で直帰率が各+9pt悪化したため、Step2を廃止して1クリックで即アプリ開始できる1ステップ構成に変更。CTAボタンのラベルも「さっそく始める→」に統一。",
+    "hypothesis": "2ステップ化が離脱の原因であるという仮説を検証する。直帰率をINT-001/002実施前（write:50%・habit:33%）の水準に戻す",
+    "metrics": ["bounceRate_write", "bounceRate_habit", "avgDuration_write", "avgDuration_habit"]
+  },
+  {
     "id": "INT-004",
     "date": "2026-05-11",
     "tools": ["blog"],

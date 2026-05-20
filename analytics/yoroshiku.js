@@ -15,6 +15,8 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const OAuth = require('oauth-1.0a');
+const ExcelJS = require('exceljs');
+const PptxGenJS = require('pptxgenjs');
 
 // ── スナップショット ──────────────────────────────────────────
 const SNAPSHOTS_FILE = path.join(__dirname, 'snapshots.json');
@@ -44,6 +46,7 @@ function daysBetween(dateStr1, dateStr2) {
 }
 
 const days = parseInt(process.argv[2] || '30', 10);
+const forcePpt = process.argv.includes('--ppt');
 const LINE = '='.repeat(64);
 const SEP = '-'.repeat(64);
 
@@ -217,10 +220,24 @@ async function main() {
     if (monthMS.pv !== undefined && totalPV !== null) {
       const p = pct(totalPV, monthMS.pv);
       console.log(`  PV          ${totalPV.toLocaleString()}PV / 今月目標 ${monthMS.pv.toLocaleString()}PV  [${status(p)}] ${bar(p)}`);
+      if (ga?.trend?.length > 0) {
+        const dailyAvg = totalPV / ga.trend.length;
+        const projectedPV = Math.round(dailyAvg * 30);
+        const paceRate = Math.round((projectedPV / monthMS.pv) * 100);
+        const paceSt = paceRate >= 100 ? '達成見込み' : paceRate >= 80 ? '惜しい' : '要加速';
+        console.log(`  └ ペース予測  1日平均${Math.round(dailyAvg)}PV → 月末予測 ${projectedPV.toLocaleString()}PV（目標比${paceRate}%）[${paceSt}]`);
+      }
     }
     if (monthMS.xFollowers !== undefined && followers !== null) {
       const p = pct(followers, monthMS.xFollowers);
       console.log(`  Xフォロワー  ${followers.toLocaleString()}人 / 今月目標 ${monthMS.xFollowers.toLocaleString()}人 [${status(p)}] ${bar(p)}`);
+      const now2 = new Date();
+      const endOfMonth = new Date(now2.getFullYear(), now2.getMonth() + 1, 0);
+      const remainingDays = Math.ceil((endOfMonth - now2) / 86400000);
+      const needed = monthMS.xFollowers - followers;
+      if (needed > 0 && remainingDays > 0) {
+        console.log(`  └ 残り${remainingDays}日、目標まであと${needed}人（1日${(needed / remainingDays).toFixed(1)}人ペースで達成）`);
+      }
     }
     if (monthMS.bounceRateMax) {
       Object.entries(monthMS.bounceRateMax).forEach(([tool, maxRate]) => {
@@ -498,6 +515,51 @@ async function main() {
   }
 
   console.log(`\n${LINE}\n`);
+
+  // ── Excel エクスポート ──────────────────────────────────────
+  await exportToExcel({
+    today,
+    phase,
+    phaseData,
+    nextPhaseData,
+    nextPhase,
+    rows,
+    ga,
+    gsc,
+    wins,
+    issues,
+    todos,
+    snapshots: loadSnapshots(),
+    interventions: loadInterventions(),
+    adsData: ads,
+    monthlyPvTarget: monthMS?.pv || phaseData.monthly.pv,
+  });
+
+  // ── PPT エクスポート（土曜日 or 月初のみ） ──────────────────
+  const nowDate = new Date();
+  const isSaturday = nowDate.getDay() === 6;
+  const isMonthStart = nowDate.getDate() === 1;
+  if (isSaturday || isMonthStart || forcePpt) {
+    const reason = isSaturday ? '土曜日' : isMonthStart ? '月初' : '手動';
+    await exportToPptx({
+      today,
+      phase,
+      phaseData,
+      nextPhaseData,
+      nextPhase,
+      rows,
+      gsc,
+      wins,
+      issues,
+      todos,
+      totalPV,
+      totalSessions,
+      followers,
+      adRevenue,
+      monthly,
+    });
+    console.log(`  ※ ${reason}のため PPT も出力しました`);
+  }
 }
 
 // ── ルーティンチェック ────────────────────────────────────────
@@ -577,6 +639,528 @@ function generateTodos({ ga, gsc, ads, xd, totalPV, scClicks, followers, phase, 
     todos.push('adsense-data.json にアドセンス管理画面の直近収益データを入力する');
 
   return todos;
+}
+
+// ── Excel エクスポート ────────────────────────────────────────
+async function exportToExcel({ today, phase, phaseData, nextPhaseData, nextPhase, rows, ga, gsc, wins, issues, todos, snapshots, interventions, adsData, monthlyPvTarget }) {
+  const wb = new ExcelJS.Workbook();
+  wb.creator = 'Somirai Lab';
+  wb.created = new Date();
+
+  const COLOR = {
+    header:   { argb: 'FF1A1A2E' },
+    subHeader:{ argb: 'FF16213E' },
+    achieved: { argb: 'FF22C55E' },
+    steady:   { argb: 'FF3B82F6' },
+    caution:  { argb: 'FFFBBF24' },
+    behind:   { argb: 'FFEF4444' },
+    white:    { argb: 'FFFFFFFF' },
+    lightGray:{ argb: 'FFF3F4F6' },
+    darkText: { argb: 'FF111827' },
+  };
+
+  function headerStyle(color = COLOR.header) {
+    return {
+      font: { bold: true, color: COLOR.white, size: 11 },
+      fill: { type: 'pattern', pattern: 'solid', fgColor: color },
+      alignment: { horizontal: 'center', vertical: 'middle' },
+      border: { bottom: { style: 'thin', color: { argb: 'FF6B7280' } } },
+    };
+  }
+
+  function statusColor(st) {
+    if (st === '達成') return COLOR.achieved;
+    if (st === '順調') return COLOR.steady;
+    if (st === '要注意') return COLOR.caution;
+    return COLOR.behind;
+  }
+
+  function statusStyle(st) {
+    return {
+      font: { bold: true, color: COLOR.white, size: 10 },
+      fill: { type: 'pattern', pattern: 'solid', fgColor: statusColor(st) },
+      alignment: { horizontal: 'center', vertical: 'middle' },
+    };
+  }
+
+  function cellStyle(bg = null) {
+    const s = { alignment: { vertical: 'middle', wrapText: true }, font: { color: COLOR.darkText } };
+    if (bg) s.fill = { type: 'pattern', pattern: 'solid', fgColor: bg };
+    return s;
+  }
+
+  // ─── シート1: KPIサマリー ───────────────────────────────────
+  const ws1 = wb.addWorksheet('KPIサマリー');
+  ws1.columns = [
+    { key: 'label',   width: 18 },
+    { key: 'actual',  width: 18 },
+    { key: 'target',  width: 18 },
+    { key: 'rate',    width: 12 },
+    { key: 'status',  width: 10 },
+    { key: 'bar',     width: 30 },
+  ];
+
+  // タイトル行
+  ws1.mergeCells('A1:F1');
+  const titleCell = ws1.getCell('A1');
+  titleCell.value = `Somirai Lab 総合レポート — ${today}（${phase}: ${phaseData.label}）`;
+  titleCell.style = { font: { bold: true, size: 14, color: COLOR.white }, fill: { type: 'pattern', pattern: 'solid', fgColor: COLOR.header }, alignment: { horizontal: 'center', vertical: 'middle' } };
+  ws1.getRow(1).height = 30;
+
+  // サブタイトル
+  ws1.mergeCells('A2:F2');
+  const themeCell = ws1.getCell('A2');
+  themeCell.value = `テーマ: ${phaseData.theme}`;
+  themeCell.style = { font: { italic: true, size: 11, color: COLOR.white }, fill: { type: 'pattern', pattern: 'solid', fgColor: COLOR.subHeader }, alignment: { horizontal: 'center', vertical: 'middle' } };
+  ws1.getRow(2).height = 22;
+
+  // ヘッダー
+  const h1 = ws1.addRow(['指標', '実績', '目標', '達成率', '判定', '進捗バー']);
+  ['A', 'B', 'C', 'D', 'E', 'F'].forEach(col => {
+    ws1.getCell(`${col}3`).style = headerStyle();
+  });
+  ws1.getRow(3).height = 22;
+
+  // データ行
+  rows.forEach((r, i) => {
+    const p = r.actual !== null && r.actual !== undefined ? Math.round((r.actual / r.target) * 100) : null;
+    const st = p !== null ? status(p) : '取得不可';
+    const barWidth = p !== null ? Math.min(20, Math.round(p / 5)) : 0;
+    const barStr = '■'.repeat(barWidth) + '□'.repeat(20 - barWidth);
+    const actualStr = r.actual !== null ? `${r.actual.toLocaleString()} ${r.unit}` : '取得不可';
+    const targetStr = `${(r.target || 0).toLocaleString()} ${r.unit}`;
+    const rateStr = p !== null ? `${p}%` : '-';
+
+    const row = ws1.addRow([r.label, actualStr, targetStr, rateStr, st, barStr]);
+    const bg = i % 2 === 0 ? COLOR.lightGray : null;
+    ['A', 'B', 'C', 'D', 'F'].forEach(col => {
+      ws1.getCell(`${col}${row.number}`).style = cellStyle(bg);
+    });
+    ws1.getCell(`E${row.number}`).style = p !== null ? statusStyle(st) : cellStyle(bg);
+    row.height = 20;
+  });
+
+  // Search Console補足
+  if (gsc) {
+    ws1.addRow([]);
+    const scHeader = ws1.addRow(['Search Console サマリー', '', '', '', '', '']);
+    ws1.mergeCells(`A${scHeader.number}:F${scHeader.number}`);
+    ws1.getCell(`A${scHeader.number}`).style = headerStyle(COLOR.subHeader);
+
+    ws1.addRow(['期間', gsc.period, '', '表示回数', gsc.totalImpressions, '']);
+    ws1.addRow(['CTR', `${gsc.avgCTR}%`, '', '平均順位', `${gsc.avgPosition}位`, '']);
+
+    if (gsc.topQueries?.length) {
+      ws1.addRow(['上位クエリ', 'クリック数', '表示回数', 'CTR', '平均順位', '']);
+      gsc.topQueries.slice(0, 5).forEach(q => {
+        ws1.addRow([q.query, q.clicks, q.impressions, `${q.ctr}%`, `${q.position}位`, '']);
+      });
+    }
+  }
+
+  // ─── シート2: PDCA分析 ─────────────────────────────────────
+  const ws2 = wb.addWorksheet('PDCA分析');
+  ws2.columns = [{ width: 6 }, { width: 60 }];
+
+  ws2.mergeCells('A1:B1');
+  ws2.getCell('A1').value = `PDCA分析 — ${today}`;
+  ws2.getCell('A1').style = { font: { bold: true, size: 14, color: COLOR.white }, fill: { type: 'pattern', pattern: 'solid', fgColor: COLOR.header }, alignment: { horizontal: 'center', vertical: 'middle' } };
+  ws2.getRow(1).height = 28;
+
+  const addSection = (label, color, items, prefix = '') => {
+    const hRow = ws2.addRow([label, '']);
+    ws2.mergeCells(`A${hRow.number}:B${hRow.number}`);
+    ws2.getCell(`A${hRow.number}`).style = headerStyle(color);
+    hRow.height = 22;
+    items.forEach(item => {
+      const r = ws2.addRow([prefix, item]);
+      ws2.getCell(`A${r.number}`).style = { alignment: { horizontal: 'center' }, font: { size: 13 } };
+      ws2.getCell(`B${r.number}`).style = { alignment: { vertical: 'middle', wrapText: true }, font: { size: 10 } };
+      r.height = 18;
+    });
+    ws2.addRow([]);
+  };
+
+  addSection('✅ Check — 良かった点', { argb: 'FF166534' }, wins, '✅');
+  addSection('⚠️  Check — 課題点',   { argb: 'FF92400E' }, issues, '⚠️');
+  addSection('📋 Act — 今週のTODO（優先順）', { argb: 'FF1E40AF' }, todos.slice(0, 5).map((t, i) => `${i + 1}. ${t}`));
+  addSection('🗺️  Plan — 次フェーズへの道筋', { argb: 'FF4C1D95' }, nextPhaseData ? [
+    `次フェーズ ${nextPhase}（${nextPhaseData.label}）`,
+    `テーマ: ${nextPhaseData.theme}`,
+    ...nextPhaseData.milestones.map(m => `・${m}`),
+  ] : ['最終フェーズです。安定収益の継続と収益源の多様化を進めてください。']);
+
+  // ─── シート3: 収益ロードマップ ──────────────────────────────
+  const ws3 = wb.addWorksheet('収益ロードマップ');
+  ws3.columns = [
+    { key: 'phase',  width: 8  },
+    { key: 'label',  width: 20 },
+    { key: 'target', width: 18 },
+    { key: 'theme',  width: 50 },
+    { key: 'status', width: 10 },
+  ];
+
+  ws3.mergeCells('A1:E1');
+  ws3.getCell('A1').value = '収益ロードマップ進捗';
+  ws3.getCell('A1').style = { font: { bold: true, size: 14, color: COLOR.white }, fill: { type: 'pattern', pattern: 'solid', fgColor: COLOR.header }, alignment: { horizontal: 'center', vertical: 'middle' } };
+  ws3.getRow(1).height = 28;
+
+  const rmHeader = ws3.addRow(['フェーズ', 'ラベル', '月収目標', 'テーマ', '状態']);
+  ['A', 'B', 'C', 'D', 'E'].forEach(col => ws3.getCell(`${col}2`).style = headerStyle());
+  rmHeader.height = 22;
+
+  PHASE_ORDER.forEach((q, i) => {
+    const qd = goals.roadmap[q];
+    const isCurrent = q === phase;
+    const totalTarget = (qd.monthly.adsenseRevenue || 0) + (qd.monthly.noteRevenue || 0) + (qd.monthly.affiliateRevenue || 0);
+    const stStr = isCurrent ? '▶ 現在' : (PHASE_ORDER.indexOf(q) < PHASE_ORDER.indexOf(phase) ? '完了' : '未来');
+    const row = ws3.addRow([q, qd.label, `${totalTarget.toLocaleString()}円`, qd.theme, stStr]);
+    const bg = isCurrent ? { argb: 'FFDBEAFE' } : (i % 2 === 0 ? COLOR.lightGray : null);
+    ['A', 'B', 'C', 'D', 'E'].forEach(col => {
+      ws3.getCell(`${col}${row.number}`).style = cellStyle(bg);
+      if (isCurrent) ws3.getCell(`${col}${row.number}`).font = { bold: true };
+    });
+    row.height = 20;
+  });
+
+  // ─── シート4: 日別データ（GA4 + Search Console） ───────────
+  {
+    const ws4 = wb.addWorksheet('日別データ');
+    const cols = [
+      { key: 'date',     width: 13, header: '日付' },
+      { key: 'pv',       width: 9,  header: 'PV' },
+      { key: 'sessions', width: 10, header: 'セッション' },
+      { key: 'users',    width: 9,  header: 'ユーザー' },
+      { key: 'bounce',   width: 10, header: '直帰率(%)' },
+      { key: 'duration', width: 12, header: '滞在時間(秒)' },
+      { key: 'clicks',   width: 10, header: 'SCクリック' },
+      { key: 'impress',  width: 12, header: 'SC表示回数' },
+      { key: 'ctr',      width: 9,  header: 'CTR(%)' },
+      { key: 'position', width: 9,  header: '平均順位' },
+      { key: 'cumPV',    width: 11, header: '累積PV' },
+      { key: 'pacePV',   width: 15, header: '目標ペース(累積)' },
+      { key: 'paceDiff', width: 11, header: 'ペース差' },
+    ];
+    ws4.columns = cols;
+
+    // 2行目（ヘッダー行）でウィンドウ枠を固定
+    ws4.views = [{ state: 'frozen', xSplit: 0, ySplit: 2, topLeftCell: 'A3' }];
+
+    ws4.mergeCells('A1:M1');
+    ws4.getCell('A1').value = `日別データ（GA4 + Search Console）— 直近${days}日`;
+    ws4.getCell('A1').style = { font: { bold: true, size: 14, color: COLOR.white }, fill: { type: 'pattern', pattern: 'solid', fgColor: COLOR.header }, alignment: { horizontal: 'center', vertical: 'middle' } };
+    ws4.getRow(1).height = 28;
+
+    const d4Header = ws4.addRow(cols.map(c => c.header));
+    'ABCDEFGHIJKLM'.split('').forEach(col => ws4.getCell(`${col}2`).style = headerStyle());
+    d4Header.height = 22;
+
+    // SC日別をdateキーのMapに変換
+    const scMap = {};
+    (gsc?.dailyTrend || []).forEach(r => { scMap[r.date] = r; });
+
+    // GA4日別データを正規化（date を YYYY-MM-DD 形式に統一）
+    const gaDaily = (ga?.trend || []).map(g => {
+      const raw = g.date || '';
+      const dateStr = raw.length === 8
+        ? `${raw.slice(0,4)}-${raw.slice(4,6)}-${raw.slice(6,8)}`
+        : raw;
+      return { ...g, dateStr };
+    });
+
+    // SCのみにある日付を追加してから日付昇順でソート
+    const ga4DateSet = new Set(gaDaily.map(g => g.dateStr));
+    const scOnlyDates = (gsc?.dailyTrend || [])
+      .filter(r => !ga4DateSet.has(r.date))
+      .map(r => ({ dateStr: r.date, _scOnly: true, ...r }));
+
+    const allDays = [...gaDaily, ...scOnlyDates]
+      .sort((a, b) => a.dateStr.localeCompare(b.dateStr));
+
+    let cumPV = 0;
+    const totalDays = allDays.length;
+    allDays.forEach((g, i) => {
+      const sc = scMap[g.dateStr] || {};
+      const bounceVal = !g._scOnly && g.bounceRate != null ? Math.round(g.bounceRate * 100) : '-';
+      const durationVal = !g._scOnly && g.averageSessionDuration != null ? Math.round(g.averageSessionDuration) : '-';
+      const pvVal = g._scOnly ? 0 : (typeof g.screenPageViews === 'number' ? g.screenPageViews : 0);
+      cumPV += pvVal;
+
+      // 目標ペース: 月次目標を全期間日数で按分した累積値
+      const pacePV = monthlyPvTarget ? Math.round((monthlyPvTarget / 30) * (i + 1)) : null;
+      const paceDiff = pacePV !== null ? cumPV - pacePV : null;
+
+      const row = ws4.addRow([
+        g.dateStr,
+        g._scOnly ? '-' : (g.screenPageViews ?? '-'),
+        g._scOnly ? '-' : (g.sessions ?? '-'),
+        g._scOnly ? '-' : (g.activeUsers ?? '-'),
+        bounceVal,
+        durationVal,
+        sc.clicks ?? '-',
+        sc.impressions ?? '-',
+        sc.ctr != null ? sc.ctr : '-',
+        sc.position != null ? sc.position : '-',
+        cumPV,
+        pacePV ?? '-',
+        paceDiff ?? '-',
+      ]);
+
+      const bg = i % 2 === 0 ? COLOR.lightGray : null;
+      'ABCDEFGHIJKLM'.split('').forEach(col => {
+        ws4.getCell(`${col}${row.number}`).style = cellStyle(bg);
+        ws4.getCell(`${col}${row.number}`).alignment = { horizontal: 'right', vertical: 'middle' };
+      });
+      ws4.getCell(`A${row.number}`).alignment = { horizontal: 'left', vertical: 'middle' };
+
+      // ペース差（M列）を色付け
+      if (paceDiff !== null) {
+        const diffCell = ws4.getCell(`M${row.number}`);
+        diffCell.font = { bold: true, color: { argb: paceDiff >= 0 ? 'FF166534' : 'FF991B1B' } };
+        diffCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: paceDiff >= 0 ? 'FFD1FAE5' : 'FFFEE2E2' } };
+      }
+
+      row.height = 18;
+    });
+  }
+
+  // 保存
+  const downloadsDir = path.join(process.env.HOME, 'Downloads');
+  const dateStr = new Date().toISOString().split('T')[0];
+  const outPath = path.join(downloadsDir, `somirai_report_${dateStr}.xlsx`);
+  await wb.xlsx.writeFile(outPath);
+  console.log(`\n  📊 Excelレポート出力: ${outPath}`);
+  return outPath;
+}
+
+// ── PPT エクスポート ──────────────────────────────────────────
+async function exportToPptx({ today, phase, phaseData, nextPhaseData, nextPhase, rows, gsc, wins, issues, todos, totalPV, totalSessions, followers, adRevenue, monthly }) {
+  const prs = new PptxGenJS();
+  prs.layout = 'LAYOUT_WIDE'; // 13.33 x 7.5 inch (16:9)
+  prs.author  = 'Somirai Lab';
+  prs.subject = `Somirai Lab レポート ${today}`;
+
+  // ── カラー定数 ──────────────────────────────────────────────
+  const C = {
+    bg:      '1A1A2E',
+    accent:  '4F87FF',
+    green:   '22C55E',
+    yellow:  'FBBF24',
+    red:     'EF4444',
+    blue:    '3B82F6',
+    white:   'FFFFFF',
+    gray:    'CBD5E1',
+    darkgray:'334155',
+  };
+
+  function statusColor(p) {
+    if (p === null) return C.gray;
+    if (p >= 100) return C.green;
+    if (p >= 80)  return C.blue;
+    if (p >= 50)  return C.yellow;
+    return C.red;
+  }
+
+  function addSlide(titleText, subtitleText) {
+    const slide = prs.addSlide();
+    // 背景
+    slide.background = { color: C.bg };
+    // タイトルバー（左端の縦ライン）
+    slide.addShape(prs.ShapeType.rect, { x: 0, y: 0, w: 0.08, h: 7.5, fill: { color: C.accent } });
+    // タイトル
+    slide.addText(titleText, {
+      x: 0.25, y: 0.15, w: 12, h: 0.6,
+      fontSize: 24, bold: true, color: C.white, fontFace: 'Hiragino Sans',
+    });
+    if (subtitleText) {
+      slide.addText(subtitleText, {
+        x: 0.25, y: 0.75, w: 12, h: 0.35,
+        fontSize: 13, color: C.gray, fontFace: 'Hiragino Sans',
+      });
+    }
+    // 区切り線
+    slide.addShape(prs.ShapeType.line, {
+      x: 0.25, y: 1.1, w: 12.8, h: 0,
+      line: { color: C.accent, width: 1 },
+    });
+    return slide;
+  }
+
+  // ─── スライド1: タイトル ───────────────────────────────────
+  {
+    const slide = prs.addSlide();
+    slide.background = { color: C.bg };
+    slide.addShape(prs.ShapeType.rect, { x: 0, y: 0, w: 0.12, h: 7.5, fill: { color: C.accent } });
+    slide.addText('Somirai Lab', {
+      x: 0.4, y: 1.8, w: 12, h: 0.8,
+      fontSize: 40, bold: true, color: C.white, fontFace: 'Hiragino Sans',
+    });
+    slide.addText('総合レポート', {
+      x: 0.4, y: 2.6, w: 12, h: 0.7,
+      fontSize: 30, color: C.accent, fontFace: 'Hiragino Sans',
+    });
+    slide.addText(today, {
+      x: 0.4, y: 3.4, w: 12, h: 0.5,
+      fontSize: 18, color: C.gray, fontFace: 'Hiragino Sans',
+    });
+    slide.addText(`フェーズ ${phase}（${phaseData.label}）— ${phaseData.theme}`, {
+      x: 0.4, y: 4.0, w: 12, h: 0.45,
+      fontSize: 15, color: C.gray, fontFace: 'Hiragino Sans',
+    });
+  }
+
+  // ─── スライド2: KPIサマリー ────────────────────────────────
+  {
+    const slide = addSlide('KPI 目標対比', `${phase} 月次目標 — 直近30日`);
+
+    rows.forEach((r, i) => {
+      const p = r.actual !== null && r.actual !== undefined
+        ? Math.round((r.actual / (r.target || 1)) * 100) : null;
+      const barW = Math.min(7.5, ((p || 0) / 100) * 7.5);
+      const col = statusColor(p);
+      const yBase = 1.35 + i * 0.95;
+
+      // ラベル
+      slide.addText(r.label, {
+        x: 0.25, y: yBase, w: 2.2, h: 0.4,
+        fontSize: 12, color: C.white, fontFace: 'Hiragino Sans',
+      });
+      // 実績 / 目標
+      const actualStr = r.actual !== null ? `${r.actual.toLocaleString()} ${r.unit}` : '取得不可';
+      const targetStr = `/ 目標 ${(r.target || 0).toLocaleString()} ${r.unit}`;
+      slide.addText(`${actualStr}  ${targetStr}`, {
+        x: 2.5, y: yBase, w: 5, h: 0.4,
+        fontSize: 11, color: C.gray, fontFace: 'Hiragino Sans',
+      });
+      // 達成率バッジ
+      const badge = p !== null ? `${p}%` : '-';
+      const badgeColor = col;
+      slide.addShape(prs.ShapeType.roundRect, {
+        x: 11.5, y: yBase + 0.02, w: 1.0, h: 0.35,
+        fill: { color: badgeColor }, line: { color: badgeColor },
+        rectRadius: 0.05,
+      });
+      slide.addText(badge, {
+        x: 11.5, y: yBase + 0.02, w: 1.0, h: 0.35,
+        fontSize: 11, bold: true, color: C.white, align: 'center', fontFace: 'Hiragino Sans',
+      });
+      // プログレスバー背景
+      slide.addShape(prs.ShapeType.rect, {
+        x: 2.5, y: yBase + 0.45, w: 7.5, h: 0.22,
+        fill: { color: C.darkgray }, line: { color: C.darkgray },
+      });
+      // プログレスバー本体
+      if (barW > 0) {
+        slide.addShape(prs.ShapeType.rect, {
+          x: 2.5, y: yBase + 0.45, w: barW, h: 0.22,
+          fill: { color: col }, line: { color: col },
+        });
+      }
+    });
+  }
+
+  // ─── スライド3: PDCA Check ────────────────────────────────
+  {
+    const slide = addSlide('Check — 現状評価', '良かった点 / 課題点');
+
+    // 良かった点
+    slide.addText('✅  良かった点', {
+      x: 0.25, y: 1.2, w: 6, h: 0.4,
+      fontSize: 14, bold: true, color: C.green, fontFace: 'Hiragino Sans',
+    });
+    wins.forEach((w, i) => {
+      slide.addText(`・${w}`, {
+        x: 0.4, y: 1.65 + i * 0.55, w: 5.8, h: 0.5,
+        fontSize: 11, color: C.white, fontFace: 'Hiragino Sans', wrap: true,
+      });
+    });
+
+    // 区切り縦線
+    slide.addShape(prs.ShapeType.line, {
+      x: 6.7, y: 1.2, w: 0, h: 5.8,
+      line: { color: C.darkgray, width: 1 },
+    });
+
+    // 課題点
+    slide.addText('⚠️  課題点', {
+      x: 6.9, y: 1.2, w: 6, h: 0.4,
+      fontSize: 14, bold: true, color: C.yellow, fontFace: 'Hiragino Sans',
+    });
+    issues.forEach((iss, i) => {
+      slide.addText(`・${iss}`, {
+        x: 7.0, y: 1.65 + i * 0.65, w: 5.8, h: 0.6,
+        fontSize: 11, color: C.white, fontFace: 'Hiragino Sans', wrap: true,
+      });
+    });
+  }
+
+  // ─── スライド4: Act（TODO）────────────────────────────────
+  {
+    const slide = addSlide('Act — 今週のTODO', '優先度順 Top5');
+
+    todos.slice(0, 5).forEach((t, i) => {
+      const y = 1.3 + i * 1.0;
+      // 番号バッジ
+      slide.addShape(prs.ShapeType.ellipse, {
+        x: 0.25, y: y, w: 0.45, h: 0.45,
+        fill: { color: C.accent }, line: { color: C.accent },
+      });
+      slide.addText(`${i + 1}`, {
+        x: 0.25, y: y, w: 0.45, h: 0.45,
+        fontSize: 14, bold: true, color: C.white, align: 'center', fontFace: 'Hiragino Sans',
+      });
+      // TODO テキスト
+      slide.addText(t, {
+        x: 0.85, y: y, w: 12.2, h: 0.5,
+        fontSize: 12, color: C.white, fontFace: 'Hiragino Sans', wrap: true,
+      });
+      // 下線
+      slide.addShape(prs.ShapeType.line, {
+        x: 0.85, y: y + 0.55, w: 12.2, h: 0,
+        line: { color: C.darkgray, width: 0.5 },
+      });
+    });
+  }
+
+  // ─── スライド5: Plan（次フェーズ） ───────────────────────
+  {
+    const slide = addSlide('Plan — 次フェーズへの道筋', nextPhaseData ? `次フェーズ: ${nextPhase}（${nextPhaseData.label}）` : '最終フェーズ');
+
+    if (nextPhaseData) {
+      slide.addText(`テーマ: ${nextPhaseData.theme}`, {
+        x: 0.25, y: 1.3, w: 12.8, h: 0.45,
+        fontSize: 15, color: C.accent, fontFace: 'Hiragino Sans',
+      });
+      slide.addText('移行条件', {
+        x: 0.25, y: 1.85, w: 12.8, h: 0.4,
+        fontSize: 13, bold: true, color: C.gray, fontFace: 'Hiragino Sans',
+      });
+      nextPhaseData.milestones.forEach((m, i) => {
+        slide.addShape(prs.ShapeType.rect, {
+          x: 0.25, y: 2.35 + i * 0.85, w: 12.5, h: 0.65,
+          fill: { color: C.darkgray }, line: { color: C.darkgray },
+          rectRadius: 0.06,
+        });
+        slide.addText(`✓  ${m}`, {
+          x: 0.4, y: 2.35 + i * 0.85, w: 12.2, h: 0.65,
+          fontSize: 13, color: C.white, fontFace: 'Hiragino Sans',
+        });
+      });
+    } else {
+      slide.addText('最終フェーズです。安定収益の継続と収益源の多様化を進めてください。', {
+        x: 0.25, y: 2.0, w: 12.8, h: 0.5,
+        fontSize: 14, color: C.white, fontFace: 'Hiragino Sans',
+      });
+    }
+  }
+
+  // 保存
+  const downloadsDir = path.join(process.env.HOME, 'Downloads');
+  const dateStr = new Date().toISOString().split('T')[0];
+  const outPath = path.join(downloadsDir, `somirai_report_${dateStr}.pptx`);
+  await prs.writeFile({ fileName: outPath });
+  console.log(`  📊 PPTレポート出力:  ${outPath}`);
+  return outPath;
 }
 
 main().catch(err => {

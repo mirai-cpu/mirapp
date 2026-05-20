@@ -35,7 +35,7 @@ async function fetchSearchConsole(daysArg) {
   const { startDate, endDate } = getDateRange(d);
 
   // ① サマリー（全体クリック・表示・CTR・平均順位）
-  const [summary, byQuery, byPage, byDevice] = await Promise.all([
+  const [summary, byQuery, byPage, byDevice, byDate] = await Promise.all([
     sc.searchanalytics.query({
       siteUrl: SITE_URL,
       requestBody: {
@@ -73,6 +73,16 @@ async function fetchSearchConsole(daysArg) {
         rowLimit: 5,
       },
     }),
+    // ⑤ 日別
+    sc.searchanalytics.query({
+      siteUrl: SITE_URL,
+      requestBody: {
+        startDate, endDate,
+        dimensions: ['date'],
+        rowLimit: 90,
+        orderBy: [{ fieldName: 'date', sortOrder: 'ascending' }],
+      },
+    }),
   ]);
 
   const fmt = (rows) =>
@@ -94,6 +104,7 @@ async function fetchSearchConsole(daysArg) {
     topQueries: fmt(byQuery).map((r) => ({ query: r.keys[0], ...r, keys: undefined })),
     topPages: fmt(byPage).map((r) => ({ page: r.keys[0], ...r, keys: undefined })),
     devices: fmt(byDevice).map((r) => ({ device: r.keys[0], ...r, keys: undefined })),
+    dailyTrend: fmt(byDate).map((r) => ({ date: r.keys[0], ...r, keys: undefined })),
   };
 }
 

@@ -42,12 +42,18 @@ async function fetchGA4() {
     orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
   });
 
-  // ③ 日別セッション推移（直近30日）
+  // ③ 日別推移
   const [trendRes] = await client.runReport({
     property: `properties/${propertyId}`,
     dateRanges: [{ startDate: `${days}daysAgo`, endDate: 'today' }],
     dimensions: [{ name: 'date' }],
-    metrics: [{ name: 'sessions' }, { name: 'activeUsers' }],
+    metrics: [
+      { name: 'screenPageViews' },
+      { name: 'sessions' },
+      { name: 'activeUsers' },
+      { name: 'bounceRate' },
+      { name: 'averageSessionDuration' },
+    ],
     orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }],
   });
 
