@@ -392,6 +392,20 @@
     }
     .roster-actions { display: flex; gap: 5px; flex-shrink: 0; }
 
+    /* ── Absent toggle ── */
+    .absent-toggle {
+      background: none; border: 1px solid var(--border); border-radius: 6px;
+      color: var(--muted); font-size: 11px; font-weight: 700; padding: 3px 8px;
+      cursor: pointer; transition: all .2s; font-family: var(--mono); flex-shrink: 0;
+    }
+    .absent-toggle:hover { border-color: var(--yellow); color: var(--yellow); }
+    .absent-toggle.is-absent {
+      background: rgba(255,215,64,.12); border-color: rgba(255,215,64,.5);
+      color: var(--yellow);
+    }
+    .roster-item.absent { opacity: 0.45; }
+    .roster-item.absent .roster-name { text-decoration: line-through; color: var(--muted); }
+
     /* ── Pos Grid ── */
     .pos-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 6px; }
     .pos-toggle {
@@ -660,15 +674,25 @@
 
     <!-- エクスポート/インポート -->
     <div class="card">
-      <div class="card-header"><span class="card-title">データ管理</span></div>
+      <div class="card-header">
+        <span class="card-title">データ管理</span>
+        <button class="btn btn-ghost btn-xs" onclick="clearAbsent()" title="欠席マークをすべて解除">欠席を全解除</button>
+      </div>
+      <p style="font-size:11px;color:var(--accent);font-family:var(--mono);font-weight:700;margin-bottom:8px;letter-spacing:.04em">▸ 選手データのみ</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <button class="btn btn-ghost" onclick="exportRoster()">⬇️ 書き出し</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('roster-file-input').click()">⬆️ 読み込み</button>
+      </div>
+      <p style="font-size:11px;color:var(--accent);font-family:var(--mono);font-weight:700;margin-bottom:8px;letter-spacing:.04em">▸ 完全バックアップ（打順・投手陣・保存済みオーダー含む）</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-ghost" onclick="exportRoster()">⬇️ 書き出し（エクスポート）</button>
-        <button class="btn btn-ghost" onclick="document.getElementById('roster-file-input').click()">⬆️ 読み込み（インポート）</button>
+        <button class="btn btn-ghost" onclick="exportFull()">⬇️ 完全バックアップ書き出し</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('full-backup-file-input').click()">⬆️ バックアップから復元</button>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.8">
-        選手データをJSONファイルで保存・読み込みできます。<br>機種変更時やバックアップにご利用ください。
+        機種変更やデータ移行に。完全バックアップには打順・投手陣・保存済みオーダーもすべて含まれます。
       </p>
       <input type="file" id="roster-file-input" accept=".json" style="display:none" onchange="importRoster(event)">
+      <input type="file" id="full-backup-file-input" accept=".json" style="display:none" onchange="importFull(event)">
     </div>
   </section>
 
@@ -1038,12 +1062,13 @@ const FIELD_POS = {
 };
 
 // ── State ──────────────────────────
-let players  = load('sm_players',  []);
-let order    = load('sm_order',    Array(9).fill(null));
-let pitchers = load('sm_pitchers', []);
-let lineups  = load('sm_lineups',  []);
-let isDH     = load('sm_isDH',     false);
-let theme    = load('sm_theme',    'dark');
+let players   = load('sm_players',  []);
+let order     = load('sm_order',    Array(9).fill(null));
+let pitchers  = load('sm_pitchers', []);
+let lineups   = load('sm_lineups',  []);
+let isDH      = load('sm_isDH',     false);
+let theme     = load('sm_theme',    'dark');
+let absentIds = load('sm_absent',   []);
 
 if (!Array.isArray(order) || order.length !== 9) order = Array(9).fill(null);
 
@@ -1056,6 +1081,7 @@ function saveAll() {
   localStorage.setItem('sm_lineups',  JSON.stringify(lineups));
   localStorage.setItem('sm_isDH',     JSON.stringify(isDH));
   localStorage.setItem('sm_theme',    JSON.stringify(theme));
+  localStorage.setItem('sm_absent',   JSON.stringify(absentIds));
 }
 
 // ── Theme ───────────────────────────
@@ -1175,20 +1201,36 @@ function renderRoster() {
     </div>`;
     return;
   }
-  el.innerHTML = players.map(p => `
-    <div class="roster-item">
+  el.innerHTML = players.map(p => {
+    const isAbsent = absentIds.includes(p.id);
+    return `
+    <div class="roster-item${isAbsent ? ' absent' : ''}">
       <div class="roster-num">${p.num || '—'}</div>
       <div class="roster-info">
         <div class="roster-name">${esc(p.name)}</div>
         <div class="roster-pos">${p.pos.map(x=>`<span class="pos-chip">${x}</span>`).join('') || '<span style="font-size:12px;color:var(--muted)">ポジション未設定</span>'}</div>
       </div>
       <div class="roster-actions">
+        <button class="absent-toggle${isAbsent ? ' is-absent' : ''}" onclick="toggleAbsent('${p.id}')" title="${isAbsent ? '欠席中（クリックで解除）' : '出席（クリックで欠席マーク）'}">${isAbsent ? '欠席' : '出席'}</button>
         <button class="btn btn-ghost btn-xs" onclick="openEdit('${p.id}')">編集</button>
         <button class="btn btn-danger btn-xs" onclick="removePlayer('${p.id}')">削除</button>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
   renderPosStats();
+}
+
+// ── Absent ──────────────────────────
+function toggleAbsent(id) {
+  const idx = absentIds.indexOf(id);
+  if (idx >= 0) absentIds.splice(idx, 1);
+  else absentIds.push(id);
+  saveAll(); renderRoster(); renderOrderSlots();
+}
+function clearAbsent() {
+  absentIds = [];
+  saveAll(); renderRoster(); renderOrderSlots();
+  showToast('欠席マークをすべて解除しました');
 }
 
 // ── Edit Player ─────────────────────
@@ -1222,11 +1264,11 @@ function onDHChange() {
 }
 function renderOrderSlots() {
   const el = document.getElementById('order-slots');
-  const total = order.length;
-  const filled = order.filter(Boolean).length;
-  document.getElementById('order-filled').textContent = `${filled} / ${total}`;
+  const filled = order.slice(0, 9).filter(s => s && (s.playerId || s.isGuest)).length;
+  document.getElementById('order-filled').textContent = `${filled} / 9`;
 
   const basePosOpts = isDH ? POSITIONS : POSITIONS.filter(p => p !== 'DH');
+  const activePlayers = players.filter(p => !absentIds.includes(p.id));
 
   el.innerHTML = order.map((slot, i) => {
     const isExtra = i >= 9;
@@ -1249,7 +1291,8 @@ function renderOrderSlots() {
       <select onchange="setPlayer(${i},this.value)">
         <option value="">— 選手 —</option>
         <option value="__guest__" ${isGuest?'selected':''}>✏️ 助っ人（直接入力）</option>
-        ${players.map(p=>`<option value="${p.id}" ${slot.playerId===p.id?'selected':''}>${p.num?'#'+p.num+' ':''}${esc(p.name)}</option>`).join('')}
+        ${activePlayers.map(p=>`<option value="${p.id}" ${slot.playerId===p.id?'selected':''}>${p.num?'#'+p.num+' ':''}${esc(p.name)}</option>`).join('')}
+        ${selP && absentIds.includes(selP.id) ? `<option value="${selP.id}" selected>⚠️ ${esc(selP.name)}（欠席中）</option>` : ''}
       </select>
       ${isGuest?`<input class="guest-input" type="text" placeholder="助っ人の名前" value="${esc(slot.guestName||'')}" oninput="setGuestName(${i},this.value)">`:''}`;
     const posSelect = `
@@ -1336,7 +1379,9 @@ function setPos(i, pos) {
 function clearSlot(i) { order[i] = null; saveAll(); renderOrderSlots(); }
 function clearOrder() {
   if (!confirm('オーダーをすべてクリアしますか？')) return;
+  const extraCount = order.filter((_, i) => i >= 9).length;
   order = Array(9).fill(null);
+  for (let i = 0; i < extraCount; i++) order.push({ playerId: null, pos: 'DH', isExtra: true });
   saveAll(); renderOrderSlots(); showToast('クリアしました');
 }
 
@@ -1364,12 +1409,13 @@ function deleteLineup(id) {
 }
 function renderSavedChips() {
   const el = document.getElementById('saved-chips');
-  if (!lineups.length) { el.innerHTML = ''; return; }
+  if (!lineups.length) { el.innerHTML = '<span style="font-size:12px;color:var(--muted);font-family:var(--mono)">保存済みオーダーはありません</span>'; return; }
   el.innerHTML = lineups.map(l => `
-    <div class="saved-chip" onclick="loadLineup('${l.id}')">
+    <div class="saved-chip" onclick="loadLineup('${l.id}')" title="クリックで「${esc(l.name)}」を読み込む">
+      <span style="font-size:10px;font-weight:700;color:var(--accent);font-family:var(--mono);letter-spacing:.05em">読込</span>
       📋 ${esc(l.name)}
       ${l.date?`<span style="color:var(--muted);font-size:11px">${fmtShort(l.date)}</span>`:''}
-      <span class="chip-del" onclick="event.stopPropagation();deleteLineup('${l.id}')">✕</span>
+      <span class="chip-del" onclick="event.stopPropagation();deleteLineup('${l.id}')" title="削除">✕</span>
     </div>
   `).join('');
 }
@@ -1617,6 +1663,49 @@ function exportRoster() {
   showToast(`${players.length}人の選手データを書き出しました`);
 }
 
+function exportFull() {
+  const data = {
+    version: 2,
+    exportedAt: new Date().toISOString(),
+    players, order, pitchers, lineups, isDH, absentIds,
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `スタメンメーカー_完全バックアップ_${new Date().toLocaleDateString('ja-JP').replace(/\//g,'-')}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+  showToast('完全バックアップを書き出しました');
+}
+
+function importFull(e) {
+  const file = e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const raw = JSON.parse(ev.target.result);
+      if (raw.version !== 2 || !Array.isArray(raw.players)) throw new Error('invalid');
+      if (!confirm('完全バックアップを復元します。現在のすべてのデータは上書きされます。よろしいですか？')) return;
+      players  = raw.players  || [];
+      order    = Array.isArray(raw.order) ? raw.order : Array(9).fill(null);
+      pitchers = raw.pitchers || [];
+      lineups  = raw.lineups  || [];
+      isDH     = raw.isDH     ?? false;
+      absentIds = Array.isArray(raw.absentIds) ? raw.absentIds : [];
+      if (!Array.isArray(order) || order.length < 9) order = Array(9).fill(null);
+      document.getElementById('dh-toggle').checked = isDH;
+      saveAll();
+      renderRoster(); renderOrderSlots(); renderPitcherSelect(); renderPitcherList(); renderGantt(); renderSavedChips();
+      showToast('バックアップを復元しました');
+    } catch {
+      showToast('読み込みに失敗しました。バックアップファイルを確認してください', true);
+    }
+  };
+  reader.readAsText(file);
+}
+
 function importRoster(e) {
   const file = e.target.files[0];
   e.target.value = '';
@@ -1632,19 +1721,19 @@ function importRoster(e) {
       if (!validPlayers.length) { showToast('有効な選手データがありません', true); return; }
 
       const doReplace = confirm(
-        `${validPlayers.length}人の選手データを読み込みます。\n\nOK → 既存データに追加\nキャンセル → 既存データと置き換え`
+        `${validPlayers.length}人の選手データを読み込みます。\n\nOK → 全て置き換え（現在のデータは削除されます）\nキャンセル → 既存データに追加`
       );
       if (doReplace) {
+        // 置き換え（元のIDがあれば保持してオーダー参照を維持）
+        players = validPlayers.map(p => ({ ...p, id: p.id || uid() }));
+        showToast(`${players.length}人の選手データを読み込みました`);
+      } else {
         // 追加（同名はスキップ）
         const existing = new Set(players.map(p => p.name));
         const added = validPlayers.filter(p => !existing.has(p.name))
-                                  .map(p => ({ ...p, id: uid() }));
+                                  .map(p => ({ ...p, id: p.id || uid() }));
         players = [...players, ...added];
         showToast(`${added.length}人を追加しました（重複${validPlayers.length - added.length}人スキップ）`);
-      } else {
-        // 置き換え
-        players = validPlayers.map(p => ({ ...p, id: uid() }));
-        showToast(`${players.length}人の選手データを読み込みました`);
       }
       saveAll(); renderRoster(); renderOrderSlots(); renderPitcherSelect();
     } catch {
