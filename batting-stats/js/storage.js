@@ -19,7 +19,7 @@ const Storage = (() => {
 
   function add(atBat) {
     const atBats = load();
-    atBat.id = Date.now();
+    atBat.id = Date.now() + '_' + Math.random().toString(36).slice(2, 6);
     atBats.push(atBat);
     save(atBats);
     return atBat;

@@ -1135,6 +1135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     showToast(`${checked.length}件削除しました`);
     exitBulkMode();
     renderStats();
+    renderStoryTab();
   });
 
   function buildGameSummary(s) {
@@ -1234,7 +1235,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       header.addEventListener('touchmove', e => {
         const dx = Math.abs(e.touches[0].clientX - _touchStartX);
         const dy = Math.abs(e.touches[0].clientY - _touchStartY);
-        if (dx > 10 || dy > 10) { _touchMoved = true; clearTimeout(_longPressTimer); }
+        if (dx > 20 || dy > 20) { _touchMoved = true; clearTimeout(_longPressTimer); }
       }, { passive: true });
 
       header.addEventListener('touchend', () => clearTimeout(_longPressTimer), { passive: true });
@@ -1271,6 +1272,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           showToast(I18n.t('msg.deleted'));
           renderHistory();
           renderStats();
+          renderStoryTab();
         }
       });
     });
@@ -1282,6 +1284,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     showToast(I18n.t('msg.deleted'));
     renderHistory();
     renderStats();
+    renderStoryTab();
   }
 
   function editAtBat(id) {
@@ -1307,6 +1310,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     infieldHit     = ab.infieldHit  || false;
     selectedPos    = ab.fielderPos  || null;
     selectedDir    = ab.direction   || null;
+    selectedOrder  = ab.battingOrder || null;
+    battingOrderButtons.querySelectorAll('.hand-btn').forEach(b =>
+      b.classList.toggle('selected', parseInt(b.dataset.order) === selectedOrder)
+    );
 
     formSubmit.textContent = I18n.t('form.update');
     updateHandButtons();
