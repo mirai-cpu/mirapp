@@ -157,5 +157,44 @@
       "blogsanbikoboshi_kagaku.html": 11.33,
       "contact.html": 25.8
     }
+  },
+  {
+    "date": "2026-05-23",
+    "days": 30,
+    "pv": 916,
+    "sessions": 692,
+    "organicSessions": 578,
+    "followers": 387,
+    "impressions": 1539,
+    "clicks": 205,
+    "avgPosition": 5.3,
+    "bounceRates": {
+      "order_maker": 0.62,
+      "habit": 0.42,
+      "top": 0.5,
+      "write": 0.62,
+      "batting_stats": 0.22,
+      "savings": 0.09,
+      "bloghabit_app_temper.html": 0,
+      "about.html": 0.33,
+      "blog": 0,
+      "blogsanbikoboshi_kagaku.html": 0.5,
+      "blogbaseball_order_maker.html": 1,
+      "contact.html": 0
+    },
+    "avgDurations": {
+      "order_maker": 196.49,
+      "habit": 68.31,
+      "top": 61.1,
+      "write": 75.91,
+      "batting_stats": 284.71,
+      "savings": 12.98,
+      "bloghabit_app_temper.html": 18.78,
+      "about.html": 9.9,
+      "blog": 29.93,
+      "blogsanbikoboshi_kagaku.html": 11.33,
+      "blogbaseball_order_maker.html": 0,
+      "contact.html": 25.8
+    }
   }
 ]

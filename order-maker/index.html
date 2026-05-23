@@ -161,6 +161,45 @@
       0%, 100% { box-shadow: 0 0 8px rgba(0,230,118,0.2); }
       50%      { box-shadow: 0 0 20px rgba(0,230,118,0.5); }
     }
+    @keyframes inputPulse {
+      0%, 100% { border-color: var(--border); box-shadow: none; }
+      50% { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,230,118,0.18); }
+    }
+    @keyframes btnRipple {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,230,118,0); }
+      50% { box-shadow: 0 0 0 8px rgba(0,230,118,0.18); }
+    }
+    @keyframes floatUp {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    .input-pulse { animation: inputPulse 2.2s ease-in-out infinite; }
+    .btn-ripple  { animation: btnRipple  2.2s ease-in-out infinite; }
+    .empty-cta {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 10px; padding: 28px 16px 24px; text-align: center; cursor: pointer;
+      border-radius: 10px; transition: background .2s;
+    }
+    .empty-cta:hover { background: rgba(0,230,118,.03); }
+    .empty-cta-ball { font-size: 32px; animation: floatUp 2.5s ease-in-out infinite; line-height:1; }
+    .empty-cta-title { font-size: 15px; font-weight: 700; color: var(--text); margin-top:2px; }
+    .empty-cta-desc  { font-size: 12px; color: var(--muted); line-height: 1.6; }
+    .empty-cta-link  {
+      display: inline-flex; align-items: center; gap: 5px; margin-top: 4px;
+      font-size: 12px; font-weight: 700; color: var(--accent);
+      border: 1px dashed rgba(0,230,118,.4); border-radius: 20px; padding: 6px 14px;
+      letter-spacing: .04em; transition: all .2s;
+    }
+    .empty-cta:hover .empty-cta-link { background: rgba(0,230,118,.08); border-color: var(--accent); }
+    .step-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 700; letter-spacing: .12em; font-family: var(--mono);
+      color: var(--accent); text-transform: uppercase; opacity: .85;
+    }
+    .step-badge::before {
+      content: ''; display: inline-block; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--accent);
+    }
     @keyframes terminalBlink {
       0%, 100% { opacity: 1; }
       50%      { opacity: 0; }
@@ -575,14 +614,17 @@
   <!-- ── 選手登録 ── -->
   <section class="section active" id="sec-roster">
     <div class="card">
-      <div class="card-header"><span class="card-title">選手を追加</span></div>
+      <div class="card-header">
+        <span class="card-title">選手を追加</span>
+        <span class="step-badge" id="step1-badge">STEP 1</span>
+      </div>
       <div class="form-row">
         <div class="form-group" style="flex:0 0 76px">
           <label>背番号</label>
           <input type="number" id="inp-num" placeholder="10" min="0" max="99">
         </div>
         <div class="form-group">
-          <label>選手名</label>
+          <label>選手名 <span style="color:var(--accent);font-size:11px" id="name-hint">← まずここから</span></label>
           <input type="text" id="inp-name" placeholder="山田 太郎" maxlength="20">
         </div>
       </div>
@@ -590,7 +632,7 @@
         <label>守備可能ポジション</label>
         <div class="pos-grid" id="add-pos-grid"></div>
       </div>
-      <button class="btn btn-primary" onclick="addPlayer()">＋ 追加する</button>
+      <button class="btn btn-primary" id="add-player-btn" onclick="addPlayer()">＋ 追加する</button>
     </div>
     <div class="card">
       <div class="card-header">
@@ -1090,6 +1132,8 @@ function addPlayer() {
   addPosSel = new Set();
   buildPosGrid('add-pos-grid', addPosSel);
   showToast(`${name} を追加しました`);
+  gtag('event', 'player_added', { roster_size: players.length });
+  setFirstTimeState(false);
 }
 function removePlayer(id) {
   if (!confirm('この選手を削除しますか？')) return;
@@ -1123,7 +1167,12 @@ function renderRoster() {
   const el = document.getElementById('roster-list');
   document.getElementById('roster-count').textContent = players.length + '人';
   if (!players.length) {
-    el.innerHTML = `<div class="empty"><div class="empty-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><p>まだ選手が登録されていません</p></div>`;
+    el.innerHTML = `<div class="empty-cta" onclick="focusAddForm()" role="button" aria-label="選手追加フォームへ移動">
+      <div class="empty-cta-ball">⚾</div>
+      <div class="empty-cta-title">まず選手を1人登録しましょう</div>
+      <div class="empty-cta-desc">名前を入れて「追加する」を押すだけ<br>ポジション・背番号はあとから編集できます</div>
+      <div class="empty-cta-link">↑ 上のフォームで追加する</div>
+    </div>`;
     return;
   }
   el.innerHTML = players.map(p => `
@@ -1261,6 +1310,7 @@ function setPlayer(i, playerId) {
     const vp = p?.pos || [];
     if (vp.length === 1 && vp[0] !== 'DH') order[i].pos = vp[0];
     else if (order[i].pos && order[i].pos !== 'DH' && !vp.includes(order[i].pos)) order[i].pos = null;
+    gtag('event', 'lineup_edited', { slot: i + 1 });
   }
   saveAll(); renderOrderSlots();
 }
@@ -1297,6 +1347,7 @@ function saveLineup() {
   lineups.unshift({ id: uid(), name, date, order: clone(order), pitchers: clone(pitchers), isDH });
   if (lineups.length > 30) lineups = lineups.slice(0,30);
   saveAll(); renderSavedChips(); showToast(`「${name}」を保存しました`);
+  gtag('event', 'lineup_saved');
 }
 function loadLineup(id) {
   const l = lineups.find(x => x.id === id); if (!l) return;
@@ -1535,6 +1586,7 @@ async function shareNative() {
   if (navigator.share) {
     try {
       await navigator.share({ title, text });
+      gtag('event', 'lineup_shared', { method: 'native' });
     } catch(e) {
       if (e.name !== 'AbortError') copyText();
     }
@@ -1545,7 +1597,7 @@ async function shareNative() {
 
 function copyText() {
   navigator.clipboard.writeText(buildText())
-    .then(()=>showToast('クリップボードにコピーしました'))
+    .then(()=>{ showToast('クリップボードにコピーしました'); gtag('event', 'lineup_shared', { method: 'copy' }); })
     .catch(()=>showToast('コピーに失敗しました',true));
 }
 
@@ -1701,6 +1753,31 @@ function showToast(msg, isErr=false) {
   t._t = setTimeout(()=>t.classList.remove('show'), 2400);
 }
 
+// ── First-visit UX helpers ──────────
+function focusAddForm() {
+  const el = document.getElementById('inp-name');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => el.focus(), 300);
+}
+
+function setFirstTimeState(isEmpty) {
+  const btn  = document.getElementById('add-player-btn');
+  const inp  = document.getElementById('inp-name');
+  const hint = document.getElementById('name-hint');
+  const badge = document.getElementById('step1-badge');
+  if (isEmpty) {
+    btn?.classList.add('btn-ripple');
+    inp?.classList.add('input-pulse');
+    if (hint)  hint.style.display  = '';
+    if (badge) badge.style.display = '';
+  } else {
+    btn?.classList.remove('btn-ripple');
+    inp?.classList.remove('input-pulse');
+    if (hint)  hint.style.display  = 'none';
+    if (badge) badge.style.display = 'none';
+  }
+}
+
 // ── Init ─────────────────────────────
 applyBg(localStorage.getItem('om-bgPreset') || 'light');
 document.getElementById('dh-toggle').checked = isDH;
@@ -1715,6 +1792,10 @@ renderSavedChips();
 if (!localStorage.getItem('sm_tutorial_done')) {
   openTutorial();
   localStorage.setItem('sm_tutorial_done','1');
+}
+setFirstTimeState(players.length === 0);
+if (players.length === 0 && window.innerWidth >= 768) {
+  setTimeout(() => document.getElementById('inp-name')?.focus(), 500);
 }
 
 // ---- PWA インストールバナー ----
