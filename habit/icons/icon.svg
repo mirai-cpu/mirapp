@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f0804"/>
+      <stop offset="100%" stop-color="#1a0c06"/>
+    </linearGradient>
+    <linearGradient id="flameG" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="50%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#dc2626"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="70%" r="45%">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="108" fill="url(#bg)"/>
+  <ellipse cx="256" cy="340" rx="200" ry="170" fill="url(#glow)"/>
+
+  <!-- Outer flame -->
+  <path d="M 256 80
+    C 290 120, 340 140, 330 200
+    C 320 240, 350 260, 340 310
+    C 328 370, 290 400, 256 420
+    C 222 400, 184 370, 172 310
+    C 162 260, 192 240, 182 200
+    C 172 140, 222 120, 256 80 Z"
+    fill="url(#flameG)" opacity="0.95"/>
+
+  <!-- Inner flame (lighter) -->
+  <path d="M 256 150
+    C 272 175, 298 185, 294 220
+    C 290 252, 308 268, 302 308
+    C 295 348, 276 370, 256 384
+    C 236 370, 217 348, 210 308
+    C 204 268, 222 252, 218 220
+    C 214 185, 240 175, 256 150 Z"
+    fill="#fbbf24" opacity="0.75"/>
+
+  <!-- Core bright -->
+  <ellipse cx="256" cy="310" rx="30" ry="42" fill="#fef3c7" opacity="0.6"/>
+
+  <!-- Bottom glow bar -->
+  <rect x="180" y="440" width="152" height="4" rx="2" fill="#f97316" opacity="0.3"/>
+</svg>
