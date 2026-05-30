@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Somirai Lab について — 野球成績管理・TEMPER・家計簿アプリなど、登録不要の無料Webツール集を個人開発しています。">
+  <meta name="description" content="Somirai Lab について — 草野球チームのスコアラー・主将経験を持つ運営者が、Next.js・React を使って「自分が使いたい」登録不要の無料Webツールを作成・公開しています。野球成績管理・習慣トラッカー・家計簿・メモツールを公開中。">
   <title>About — Somirai Lab</title>
   <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
@@ -13,7 +13,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://somirai.jp/about.html">
   <meta property="og:title" content="About — Somirai Lab">
-  <meta property="og:description" content="野球成績管理・TEMPER・家計簿アプリなど、登録不要の無料Webツール集を個人開発しています。">
+  <meta property="og:description" content="野球成績管理・習慣トラッカー・家計簿・メモなど、登録不要の無料Webツール集を運営しています。">
   <meta property="og:locale" content="ja_JP">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -375,7 +375,7 @@
   <!-- Page header -->
   <div class="page-header">
     <div class="page-eyebrow">About Somirai Lab</div>
-    <h1 class="page-h1">個人開発の<br><em>Webツール集。</em></h1>
+    <h1 class="page-h1">Somirai Lab の<br><em>Webツール集。</em></h1>
     <p class="page-sub">「自分が使いたいものを作る」という想いからはじまった、登録不要・ブラウザだけで完結する無料ツールのコレクションです。</p>
   </div>
 
@@ -387,6 +387,7 @@
       <div class="toc-label">On this page</div>
       <ul class="toc-list">
         <li><a href="#background" class="active">背景・目的</a></li>
+        <li><a href="#developer">開発者について</a></li>
         <li><a href="#tools">各ツールへの想い</a></li>
         <li><a href="#philosophy">こだわり</a></li>
         <li><a href="#roadmap">今後の展望</a></li>
@@ -401,9 +402,20 @@
         <div class="section-num">01 — Background</div>
         <h2 class="section-h2">サイトの目的と、作りはじめた背景</h2>
         <div class="prose">
-          <p>Somirai Lab は、個人開発者が「自分自身が使いたいと思ったツール」を少しずつ積み上げてきたWebサービスです。きっかけは単純で、「野球の打撃成績をシンプルに管理したい」「習慣を楽しく続けたい」「支出の記録をもっとカジュアルにしたい」という日常の小さな不満でした。</p>
+          <p>Somirai Lab は、「自分自身が使いたいと思ったツール」を少しずつ積み上げてきたWebサービスです。きっかけは単純で、「野球の打撃成績をシンプルに管理したい」「習慣を楽しく続けたい」「支出の記録をもっとカジュアルにしたい」という日常の小さな不満でした。</p>
           <p>市販のアプリは高機能すぎたり、アカウント登録が必要だったり、スマホ専用だったりと、ちょっと使いにくいことが多い。だったら、登録不要・ブラウザだけで完結する、シンプルで使いやすい無料Webツールを自分で作ってしまおう——そんな発想からこのサイトは生まれました。</p>
           <p>「自分が本当に欲しい機能だけを入れる」というこだわりで、UIのシンプルさと使いやすさを最優先にしています。画面を開いた瞬間から直感的に操作でき、余計なステップを踏まずにすぐ記録・確認できることを意識して設計しています。</p>
+        </div>
+      </div>
+
+      <div class="section-block" id="developer">
+        <div class="section-num">01b — Developer</div>
+        <h2 class="section-h2">運営者について</h2>
+        <div class="prose">
+          <p>草野球チームのスコアラー・主将を数年間担当した経験から、「野球チームの成績管理やスタメン共有をもっとラクにしたい」という実感が最初のツール作成につながりました。紙のスコアシートから打率を手計算していた時間・試合前にLINEでスタメンをやり取りしていた手間、そうした日常の不便を解決したくてツールを作りはじめました。</p>
+          <p>習慣化・家計管理・メモツールは、いずれも自分自身が挫折を繰り返した経験から生まれています。三日坊主で終わった習慣は両手の指で足りないほどあり、メモアプリを渡り歩いては「開くのが億劫」になっていくサイクルを何度も経験しました。「なぜ続かないのか」を突き詰めて考えるうちに、フィードバックの設計とシンプルさの重要性にたどり着き、それが各ツールのコンセプトになっています。</p>
+          <p>技術スタックはフロントエンドを中心に、Next.js・React・TypeScript・Tailwind CSS を使っています。バックエンドなし・localStorage のみの構成にしているのは、プライバシーへの配慮と「登録不要でいますぐ使える」体験を最優先にしているためです。インフラは Netlify を利用しており、すべてのツールが PWA 対応でホーム画面への追加も可能です。</p>
+          <p>このサイトに掲載しているブログ記事は、各ツールを実際に自分で使い続けた経験・試行錯誤をもとに執筆しています。野球の成績管理・習慣化・家計管理・思考整理のそれぞれについて、一次経験に基づいた情報を発信することをポリシーとしています。</p>
         </div>
       </div>
 
@@ -493,7 +505,7 @@
           <dl>
             <div class="info-row">
               <dt class="info-dt">運営者</dt>
-              <dd class="info-dd">Somirai（ソミライ）</dd>
+              <dd class="info-dd">Somirai（ソミライ）／ ソフトウェアエンジニア</dd>
             </div>
             <div class="info-row">
               <dt class="info-dt">サービス名</dt>
@@ -505,11 +517,23 @@
             </div>
             <div class="info-row">
               <dt class="info-dt">運営形態</dt>
-              <dd class="info-dd">個人開発・個人運営</dd>
+              <dd class="info-dd">個人運営</dd>
             </div>
             <div class="info-row">
               <dt class="info-dt">開設</dt>
-              <dd class="info-dd">2026年</dd>
+              <dd class="info-dd">2026年2月</dd>
+            </div>
+            <div class="info-row">
+              <dt class="info-dt">技術スタック</dt>
+              <dd class="info-dd">Next.js・React・TypeScript・Tailwind CSS・Netlify。バックエンドなし、localStorage のみの構成。全ツール PWA 対応。</dd>
+            </div>
+            <div class="info-row">
+              <dt class="info-dt">開発背景</dt>
+              <dd class="info-dd">草野球チームのスコアラー・主将経験から野球ツールを作成。習慣化・家計管理・メモツールはいずれも自身の挫折経験をもとに設計。</dd>
+            </div>
+            <div class="info-row">
+              <dt class="info-dt">広告について</dt>
+              <dd class="info-dd">本サイトは Google AdSense による広告を掲載しています。また一部の記事にはAmazonアソシエイト等のアフィリエイトリンクを含む場合があります。</dd>
             </div>
             <div class="info-row">
               <dt class="info-dt">お問い合わせ</dt>
