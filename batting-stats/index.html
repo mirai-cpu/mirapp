@@ -587,13 +587,25 @@
     </ul>
   </section>
 
-  <section aria-label="関連ツール" style="background:#0d0f18;border-top:1px solid #1c1f30;padding:20px 12px 12px;text-align:center;">
-    <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#555878;margin:0 0 12px;letter-spacing:.1em;font-weight:600;text-transform:uppercase">Somirai Lab の他のツール</p>
-    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
-      <a href="https://somirai.jp/order-maker/" style="display:inline-flex;align-items:center;gap:6px;background:#12152280;color:#9898a8;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:7px 14px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;letter-spacing:.06em;transition:border-color .15s">スタメンメーカー</a>
-      <a href="https://somirai.jp/habit/" style="display:inline-flex;align-items:center;gap:6px;background:#12152280;color:#9898a8;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:7px 14px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;letter-spacing:.06em">TEMPER</a>
-      <a href="https://somirai.jp/write/" style="display:inline-flex;align-items:center;gap:6px;background:#12152280;color:#9898a8;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:7px 14px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;letter-spacing:.06em">MARGINALIA</a>
-      <a href="https://somirai.jp/savings/" style="display:inline-flex;align-items:center;gap:6px;background:#12152280;color:#9898a8;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:7px 14px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;letter-spacing:.06em">KURA</a>
+  <section aria-label="関連ツール" style="background:#0d0f18;border-top:1px solid #1c1f30;padding:24px 12px 16px;">
+    <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#555878;margin:0 0 14px;letter-spacing:.1em;font-weight:600;text-transform:uppercase;text-align:center;">Somirai Lab の他のツール</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:480px;margin:0 auto;">
+      <a href="https://somirai.jp/order-maker/" onclick="gtag('event','cross_tool_click',{from:'lumber',to:'tactician'})" style="display:flex;flex-direction:column;gap:3px;background:#12152280;color:#c8cad8;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c1f30'">
+        <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">⚾ TACTICIAN</span>
+        <span style="font-size:10px;color:#555878;line-height:1.4;">スタメン表・打順を無料で作成</span>
+      </a>
+      <a href="https://somirai.jp/habit/" onclick="gtag('event','cross_tool_click',{from:'lumber',to:'temper'})" style="display:flex;flex-direction:column;gap:3px;background:#12152280;color:#c8cad8;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#f97316'" onmouseout="this.style.borderColor='#1c1f30'">
+        <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">🔥 TEMPER</span>
+        <span style="font-size:10px;color:#555878;line-height:1.4;">習慣トラッカー・ストリーク管理</span>
+      </a>
+      <a href="https://somirai.jp/write/" onclick="gtag('event','cross_tool_click',{from:'lumber',to:'marginalia'})" style="display:flex;flex-direction:column;gap:3px;background:#12152280;color:#c8cad8;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#d4a853'" onmouseout="this.style.borderColor='#1c1f30'">
+        <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">✏️ MARGINALIA</span>
+        <span style="font-size:10px;color:#555878;line-height:1.4;">メモ・ToDo管理・レベルアップ</span>
+      </a>
+      <a href="https://somirai.jp/savings/" onclick="gtag('event','cross_tool_click',{from:'lumber',to:'kura'})" style="display:flex;flex-direction:column;gap:3px;background:#12152280;color:#c8cad8;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#fbbf24'" onmouseout="this.style.borderColor='#1c1f30'">
+        <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">💰 KURA</span>
+        <span style="font-size:10px;color:#555878;line-height:1.4;">家計簿・貯蓄管理</span>
+      </a>
     </div>
   </section>
 
@@ -601,15 +613,15 @@
   <section aria-label="関連記事" style="background:#0d0f18;border-top:1px solid #1c1f30;padding:20px 12px 16px;">
     <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#555878;margin:0 0 12px;letter-spacing:.1em;font-weight:600;text-transform:uppercase;text-align:center;">野球・スタメン管理の関連記事</p>
     <div style="display:flex;flex-direction:column;gap:7px;max-width:480px;margin:0 auto;">
-      <a href="https://somirai.jp/blog/baseball-batting-stats.html" style="display:flex;align-items:center;gap:10px;background:#12152280;color:#c8cad8;padding:10px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c2a3a'">
+      <a href="https://somirai.jp/blog/baseball-batting-stats.html" onclick="gtag('event','blog_link_click',{from:'lumber',article:'batting-stats-guide'})" style="display:flex;align-items:center;gap:10px;background:#12152280;color:#c8cad8;padding:10px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c1f30'">
         <span style="font-size:15px;flex-shrink:0;">📊</span>
         <span style="font-size:12px;line-height:1.45;">野球の打撃成績を無料で管理する方法<span style="display:block;font-size:10px;color:#555878;margin-top:2px;">打率・OPS・出塁率を自動計算するツールの使い方</span></span>
       </a>
-      <a href="https://somirai.jp/blog/baseball-order-maker.html" style="display:flex;align-items:center;gap:10px;background:#12152280;color:#c8cad8;padding:10px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c2a3a'">
+      <a href="https://somirai.jp/blog/baseball-order-maker.html" onclick="gtag('event','blog_link_click',{from:'lumber',article:'order-maker-guide'})" style="display:flex;align-items:center;gap:10px;background:#12152280;color:#c8cad8;padding:10px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c1f30'">
         <span style="font-size:15px;flex-shrink:0;">📋</span>
         <span style="font-size:12px;line-height:1.45;">野球オーダー作成サイトの使い方ガイド<span style="display:block;font-size:10px;color:#555878;margin-top:2px;">スタメン表・守備配置図を5分で完成させる方法</span></span>
       </a>
-      <a href="https://somirai.jp/blog/baseball-batting-order.html" style="display:flex;align-items:center;gap:10px;background:#12152280;color:#c8cad8;padding:10px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c2a3a'">
+      <a href="https://somirai.jp/blog/baseball-batting-order.html" onclick="gtag('event','blog_link_click',{from:'lumber',article:'batting-order-guide'})" style="display:flex;align-items:center;gap:10px;background:#12152280;color:#c8cad8;padding:10px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c1f30'">
         <span style="font-size:15px;flex-shrink:0;">⚾</span>
         <span style="font-size:12px;line-height:1.45;">野球の打順の組み方 完全解説<span style="display:block;font-size:10px;color:#555878;margin-top:2px;">1〜9番の役割・クリーンナップの選び方</span></span>
       </a>
