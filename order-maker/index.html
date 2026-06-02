@@ -573,6 +573,132 @@
 <body>
 <div id="starfield" aria-hidden="true"></div>
 
+<!-- ── Landing Overlay（初回訪問のみ表示） ── -->
+<script>if(localStorage.getItem('sm_landing_done')){document.addEventListener('DOMContentLoaded',function(){var e=document.getElementById('tc-landing');if(e)e.remove();});}</script>
+<div id="tc-landing" style="
+  position:fixed;inset:0;z-index:9000;
+  background:#07090f;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px 22px 40px;
+  overflow-y:auto;
+">
+  <style>
+    @keyframes tc-up { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes tc-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+    .tc-i { animation: tc-up 0.55s cubic-bezier(.22,1,.36,1) both; }
+    .tc-i:nth-child(1){animation-delay:.04s}
+    .tc-i:nth-child(2){animation-delay:.12s}
+    .tc-i:nth-child(3){animation-delay:.20s}
+    .tc-i:nth-child(4){animation-delay:.28s}
+    .tc-i:nth-child(5){animation-delay:.36s}
+    .tc-i:nth-child(6){animation-delay:.44s}
+    .tc-cta-btn { transition:transform .16s,box-shadow .16s; }
+    .tc-cta-btn:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(0,230,118,.45)!important; }
+    .tc-scroll { animation: tc-bounce 1.8s ease-in-out infinite; }
+  </style>
+
+  <div style="width:100%;max-width:400px;">
+
+    <!-- label -->
+    <div class="tc-i" style="display:flex;align-items:center;gap:10px;margin-bottom:22px;font-size:10px;letter-spacing:.22em;color:#2a4a35;text-transform:uppercase;font-family:system-ui,sans-serif;">
+      <span style="display:block;width:24px;height:1px;background:#00e676;opacity:.7;"></span>
+      Baseball · Lineup · Share
+    </div>
+
+    <!-- title -->
+    <div class="tc-i">
+      <h1 style="font-family:'Barlow','Noto Sans JP',system-ui,sans-serif;font-size:clamp(48px,13vw,68px);font-weight:800;color:#e8f5ee;line-height:1.0;letter-spacing:-.02em;margin:0 0 8px;">TACTICIAN</h1>
+    </div>
+
+    <!-- subtitle -->
+    <div class="tc-i" style="font-size:13px;color:#3a6a4a;letter-spacing:.06em;margin-bottom:12px;font-family:system-ui,sans-serif;">
+      野球打順・スタメン作成ツール
+    </div>
+
+    <!-- tagline -->
+    <div class="tc-i" style="font-size:18px;color:#7abf95;line-height:1.5;margin-bottom:28px;font-family:'Noto Sans JP',system-ui,sans-serif;">
+      試合前の打順決め、60秒で完了。
+    </div>
+
+    <!-- CTA -->
+    <div class="tc-i" style="margin-bottom:14px;">
+      <button onclick="closeTcLanding()" class="tc-cta-btn" style="
+        display:inline-flex;align-items:center;gap:10px;
+        background:#00e676;color:#07090f;
+        padding:14px 30px;border-radius:4px;
+        font-size:15px;font-weight:800;border:none;cursor:pointer;
+        box-shadow:0 4px 22px rgba(0,230,118,.38);
+        letter-spacing:.01em;font-family:'Barlow',system-ui,sans-serif;
+        width:100%;justify-content:center;
+      ">今すぐ作成する →</button>
+    </div>
+
+    <!-- trust tags -->
+    <div class="tc-i" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;">
+      <span style="font-size:11px;color:#2a4a35;background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.18);border-radius:3px;padding:4px 10px;font-family:system-ui,sans-serif;">登録不要</span>
+      <span style="font-size:11px;color:#2a4a35;background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.18);border-radius:3px;padding:4px 10px;font-family:system-ui,sans-serif;">完全無料</span>
+      <span style="font-size:11px;color:#2a4a35;background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.18);border-radius:3px;padding:4px 10px;font-family:system-ui,sans-serif;">スマホ対応</span>
+      <span style="font-size:11px;color:#2a4a35;background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.18);border-radius:3px;padding:4px 10px;font-family:system-ui,sans-serif;">印刷対応</span>
+    </div>
+
+    <!-- 3 steps -->
+    <div class="tc-i" style="display:flex;gap:0;margin-bottom:32px;background:rgba(0,230,118,.04);border:1px solid rgba(0,230,118,.10);border-radius:6px;overflow:hidden;">
+      <div style="flex:1;text-align:center;padding:11px 4px;border-right:1px solid rgba(0,230,118,.10);">
+        <div style="font-size:10px;color:#00e676;font-weight:700;margin-bottom:3px;font-family:system-ui,sans-serif;letter-spacing:.1em;">STEP 1</div>
+        <div style="font-size:12px;color:#5a9a70;font-family:'Noto Sans JP',system-ui,sans-serif;">選手を登録</div>
+      </div>
+      <div style="flex:1;text-align:center;padding:11px 4px;border-right:1px solid rgba(0,230,118,.10);">
+        <div style="font-size:10px;color:#00e676;font-weight:700;margin-bottom:3px;font-family:system-ui,sans-serif;letter-spacing:.1em;">STEP 2</div>
+        <div style="font-size:12px;color:#5a9a70;font-family:'Noto Sans JP',system-ui,sans-serif;">打順を組む</div>
+      </div>
+      <div style="flex:1;text-align:center;padding:11px 4px;">
+        <div style="font-size:10px;color:#00e676;font-weight:700;margin-bottom:3px;font-family:system-ui,sans-serif;letter-spacing:.1em;">STEP 3</div>
+        <div style="font-size:12px;color:#5a9a70;font-family:'Noto Sans JP',system-ui,sans-serif;">LINEで共有</div>
+      </div>
+    </div>
+
+    <!-- features -->
+    <div class="tc-i">
+      <div style="font-size:10px;letter-spacing:.18em;color:#2a4a35;text-transform:uppercase;margin-bottom:12px;font-family:system-ui,sans-serif;">できること</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:20px;flex-shrink:0;margin-top:1px;">⚾</span>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#c8e8d0;margin-bottom:2px;font-family:'Barlow',system-ui,sans-serif;">打順 + 守備配置を一括管理</div>
+            <div style="font-size:12px;color:#3a6a4a;line-height:1.6;font-family:'Noto Sans JP',system-ui,sans-serif;">1〜9番の打順と守備ポジションを同時に設定。DH制にも対応。</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:20px;flex-shrink:0;margin-top:1px;">📋</span>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#c8e8d0;margin-bottom:2px;font-family:'Barlow',system-ui,sans-serif;">スタメン表をLINEで即共有</div>
+            <div style="font-size:12px;color:#3a6a4a;line-height:1.6;font-family:'Noto Sans JP',system-ui,sans-serif;">守備配置図つきのスタメン表をワンタップでチームグループに送信。</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:20px;flex-shrink:0;margin-top:1px;">🔄</span>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#c8e8d0;margin-bottom:2px;font-family:'Barlow',system-ui,sans-serif;">投手ローテも管理できる</div>
+            <div style="font-size:12px;color:#3a6a4a;line-height:1.6;font-family:'Noto Sans JP',system-ui,sans-serif;">先発・中継ぎ・抑えの登板順と担当イニングをガントチャートで確認。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- scroll hint -->
+    <div class="tc-i" style="text-align:center;margin-top:24px;">
+      <span class="tc-scroll" style="display:inline-block;font-size:16px;color:rgba(0,230,118,.3);">↓</span>
+    </div>
+
+    <!-- footer -->
+    <div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid rgba(0,230,118,.07);">
+      <p style="font-size:11px;color:#1a3a25;font-family:system-ui,sans-serif;">© 2026 TACTICIAN · <a href="https://somirai.jp/" style="color:#00e676;text-decoration:none;">Somirai Lab</a></p>
+    </div>
+
+  </div>
+</div>
+<!-- ── /Landing Overlay ── -->
+
 <header>
   <div class="header-left">
     <a href="/" class="header-back" style="display:inline-flex;align-items:center;gap:5px;"><svg viewBox="0 0 120 120" width="20" height="20" style="border-radius:5px;"><defs><linearGradient id="hbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1220"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><linearGradient id="hco" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/></linearGradient></defs><rect width="120" height="120" rx="26" fill="url(#hbg)"/><circle cx="60" cy="48" r="14" fill="url(#hco)"/><path d="M60 26 L62 42 L60 48 L58 42Z" fill="#fb923c" opacity=".85"/><circle cx="84" cy="30" r="3.5" fill="#fb923c" opacity=".6"/><circle cx="34" cy="68" r="3" fill="#fbbf24" opacity=".5"/><circle cx="88" cy="62" r="2.5" fill="#6ee7b7" opacity=".45"/></svg>Somirai Lab</a>
@@ -1120,6 +1246,16 @@ function renderThemeGrid() {
 function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
 function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 function openTutorial() { openModal('tutorial-modal'); }
+function closeTcLanding() {
+  var el = document.getElementById('tc-landing');
+  if (el) {
+    el.style.transition = 'opacity .3s';
+    el.style.opacity = '0';
+    setTimeout(function(){ el.remove(); }, 300);
+  }
+  localStorage.setItem('sm_landing_done','1');
+  localStorage.setItem('sm_tutorial_done','1');
+}
 
 // ── Tab ─────────────────────────────
 function switchTab(tab) {
@@ -1878,7 +2014,9 @@ renderPitcherSelect();
 renderPitcherList();
 renderGantt();
 renderSavedChips();
-if (!localStorage.getItem('sm_tutorial_done')) {
+if (!localStorage.getItem('sm_landing_done')) {
+  // 初回：ランディングオーバーレイを表示（チュートリアルモーダルは出さない）
+} else if (!localStorage.getItem('sm_tutorial_done')) {
   openTutorial();
   localStorage.setItem('sm_tutorial_done','1');
 }
