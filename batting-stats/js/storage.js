@@ -26,12 +26,12 @@ const Storage = (() => {
   }
 
   function remove(id) {
-    const atBats = load().filter(ab => ab.id !== id);
+    const atBats = load().filter(ab => String(ab.id) !== String(id));
     save(atBats);
   }
 
   function update(id, data) {
-    const atBats = load().map(ab => ab.id === id ? { ...data, id } : ab);
+    const atBats = load().map(ab => String(ab.id) === String(id) ? { ...data, id } : ab);
     save(atBats);
   }
 

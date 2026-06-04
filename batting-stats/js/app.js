@@ -1166,18 +1166,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const byDate = {};
     for (const ab of allAtBats) {
-      const key = ab.date || '----';
+      const key = `${ab.date || '----'}_${ab.opponent || ''}`;
       (byDate[key] = byDate[key] || []).push(ab);
     }
     const dates = Object.keys(byDate).sort().reverse();
 
-    historyList.innerHTML = dates.map(date => {
-      const gameAbs  = byDate[date];
+    historyList.innerHTML = dates.map(key => {
+      const gameAbs  = byDate[key];
       const s        = Stats.calculate(gameAbs);
       const opponent = gameAbs[0]?.opponent || '';
+      const date     = gameAbs[0]?.date || key;
       const season   = date.substring(0, 4);
       const summary  = buildGameSummary(s);
-      const detailId = `game-detail-${CSS.escape(date)}`;
+      const detailId = `game-detail-${CSS.escape(key)}`;
 
       const atBatRows = gameAbs.map((ab, i) => `
         <div class="atbat-item">
@@ -1194,7 +1195,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>`).join('');
 
       return `
-        <div class="game-card" data-date="${date}">
+        <div class="game-card" data-key="${key}">
           <div class="game-card-header">
             <div class="game-card-info">
               <div class="game-card-meta">
@@ -1205,7 +1206,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               <div class="game-summary">${summary}</div>
             </div>
             <div class="game-card-right">
-              <button class="btn-game-menu" data-date="${date}" title="${I18n.t('history.deleteGame')}">⋮</button>
+              <button class="btn-game-menu" data-key="${key}" title="${I18n.t('history.deleteGame')}">⋮</button>
               <span class="expand-icon">▼</span>
             </div>
           </div>
@@ -1226,7 +1227,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         _touchMoved  = false;
         _touchStartX = e.touches[0].clientX;
         _touchStartY = e.touches[0].clientY;
-        const d = header.closest('.game-card').dataset.date;
+        const d = header.closest('.game-card').dataset.key;
         _longPressTimer = setTimeout(() => {
           if (!_touchMoved) deleteGame(byDate[d]);
         }, 600);
@@ -1243,7 +1244,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       header.addEventListener('click', e => {
         if (e.target.closest('.btn-game-menu')) return;
         const card   = header.closest('.game-card');
-        const d      = card.dataset.date;
+        const d      = card.dataset.key;
         const detail = document.getElementById(`game-detail-${CSS.escape(d)}`);
         const icon   = header.querySelector('.expand-icon');
         const isOpen = detail.style.display !== 'none';
@@ -1256,19 +1257,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     historyList.querySelectorAll('.btn-game-menu').forEach(btn => {
       btn.addEventListener('click', e => {
         e.stopPropagation();
-        deleteGame(byDate[btn.dataset.date]);
+        deleteGame(byDate[btn.dataset.key]);
       });
     });
 
     // per at-bat: edit / delete
     historyList.querySelectorAll('.btn-edit-sm').forEach(btn => {
-      btn.addEventListener('click', () => editAtBat(parseInt(btn.dataset.id)));
+      btn.addEventListener('click', () => editAtBat(btn.dataset.id));
     });
 
     historyList.querySelectorAll('.btn-delete-sm').forEach(btn => {
       btn.addEventListener('click', () => {
         if (confirm(I18n.t('history.confirmDelete'))) {
-          Storage.remove(parseInt(btn.dataset.id));
+          Storage.remove(btn.dataset.id);
           showToast(I18n.t('msg.deleted'));
           renderHistory();
           renderStats();
@@ -1288,7 +1289,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function editAtBat(id) {
-    const ab = Storage.load().find(x => x.id === id);
+    const ab = Storage.load().find(x => String(x.id) === String(id));
     if (!ab) return;
 
     switchTab('record');
