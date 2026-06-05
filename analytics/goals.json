@@ -1,147 +1,126 @@
 {
   "_note": "目標値はここを直接編集してください。yoroshiku.js がこのファイルを参照します。",
-  "updatedAt": "2026-05-16",
-  "vision": "2027年4月末までに月5〜6万円のストック収益（アドセンス＋note＋アフィリエイト）を達成",
+  "updatedAt": "2026-06-03",
+  "vision": "副業許可取得後すぐ収益化できるよう、SEO・SNS・コンテンツ基盤を今のうちに完成させる",
   "currentPhase": "Q1",
   "roadmap": {
     "Q1": {
       "label": "2026年4〜7月",
-      "theme": "アドセンス審査通過 + SEO・SNS基盤作り",
+      "theme": "SEO基盤完成",
       "milestones": [
         "アドセンス審査を通過する",
-        "SEO記事を3本以上公開する",
-        "Xフォロワー500人達成"
+        "SEO記事を4本以上公開する",
+        "MARGINALIA直帰率40%以下"
       ],
       "monthly": {
-        "pv": 2000,
-        "sessions": 1200,
-        "organicClicks": 100,
+        "pv": 2200,
+        "sessions": 1500,
+        "organicClicks": 500,
         "adsenseRevenue": 0,
         "noteRevenue": 0,
-        "affiliateRevenue": 0,
-        "xFollowers": 500
+        "affiliateRevenue": 0
       },
       "monthlyMilestones": {
-        "2026-05": {
-          "pv": 1000,
-          "xFollowers": 400,
-          "bounceRateMax": { "write": 0.50, "habit": 0.35 },
-          "qualitative": ["直帰率を元水準に戻す（MARGINALIA 50%以下・TEMPER 35%以下）"]
-        },
         "2026-06": {
-          "pv": 1500,
-          "xFollowers": 450,
-          "qualitative": ["アドセンス承認・記事3本目公開"]
+          "pv": 1800,
+          "qualitative": ["アドセンス承認", "MARGINALIA直帰率45%以下", "note記事2本公開済み"]
         },
         "2026-07": {
-          "pv": 2000,
-          "xFollowers": 500,
-          "qualitative": ["Q1完了・広告収益スタート"]
+          "pv": 2200,
+          "qualitative": ["Q1完了", "SEO記事4本以上"]
         }
       }
     },
     "Q2": {
       "label": "2026年8〜10月",
-      "theme": "アドセンス収益化 + note有料記事1本目",
+      "theme": "コンテンツ量産 + 検索上位固定",
       "milestones": [
-        "月間PV 8,000達成",
-        "note有料記事を1本公開",
-        "月収1〜2万円達成"
+        "月間PV 5,000達成",
+        "SEO記事累計8本以上",
+        "note記事累計6本以上"
       ],
       "monthly": {
-        "pv": 8000,
-        "sessions": 5000,
-        "organicClicks": 400,
-        "adsenseRevenue": 5000,
-        "noteRevenue": 10000,
-        "affiliateRevenue": 5000,
-        "xFollowers": 600
+        "pv": 5000,
+        "sessions": 3500,
+        "organicClicks": 800,
+        "adsenseRevenue": 0,
+        "noteRevenue": 0,
+        "affiliateRevenue": 0
       },
       "monthlyMilestones": {
         "2026-08": {
-          "pv": 3500,
-          "xFollowers": 530,
-          "qualitative": ["アドセンス収益 2,000円"]
+          "pv": 3000,
+          "qualitative": ["「野球オーダー作成」1位獲得", "SEO記事5本目公開"]
         },
         "2026-09": {
-          "pv": 5500,
-          "xFollowers": 570,
-          "qualitative": ["note有料記事1本目公開", "月収 5,000円"]
+          "pv": 4000,
+          "qualitative": ["note記事5本公開", "月間新規ユーザー2,000人"]
         },
         "2026-10": {
-          "pv": 8000,
-          "xFollowers": 600,
-          "qualitative": ["月収1〜2万円・Q2完了"]
+          "pv": 5000,
+          "qualitative": ["Q2完了", "副業許可申請タイミング検討"]
         }
       }
     },
     "Q3": {
       "label": "2026年11月〜2027年1月",
-      "theme": "SEO × SNS複合加速",
+      "theme": "SEO複合加速",
       "milestones": [
-        "月間PV 20,000達成",
-        "月収3〜4万円達成",
-        "Xフォロワー1,000人達成"
+        "月間PV 15,000達成",
+        "SEO記事累計12本以上",
+        "副業許可取得（目標）"
       ],
       "monthly": {
-        "pv": 20000,
-        "sessions": 12000,
-        "organicClicks": 1000,
-        "adsenseRevenue": 15000,
-        "noteRevenue": 15000,
-        "affiliateRevenue": 10000,
-        "xFollowers": 1000
+        "pv": 15000,
+        "sessions": 10000,
+        "organicClicks": 1500,
+        "adsenseRevenue": 0,
+        "noteRevenue": 0,
+        "affiliateRevenue": 0
       },
       "monthlyMilestones": {
         "2026-11": {
-          "pv": 12000,
-          "xFollowers": 700,
-          "qualitative": ["月収 2万円"]
+          "pv": 8000,
+          "qualitative": ["SEO記事8本以上"]
         },
         "2026-12": {
-          "pv": 16000,
-          "xFollowers": 850,
-          "qualitative": ["月収 3万円"]
+          "pv": 11000,
+          "qualitative": ["note記事10本以上", "年間PV目標チェック"]
         },
         "2027-01": {
-          "pv": 20000,
-          "xFollowers": 1000,
-          "qualitative": ["Q3完了"]
+          "pv": 15000,
+          "qualitative": ["Q3完了", "副業許可状況確認"]
         }
       }
     },
     "Q4": {
       "label": "2027年2〜4月",
-      "theme": "達成・安定化",
+      "theme": "収益化準備完了・許可取得後即スタート",
       "milestones": [
-        "月間PV 50,000達成",
-        "月収5〜6万円達成",
-        "安定収益の確立"
+        "月間PV 30,000達成",
+        "副業許可取得後 収益化開始",
+        "月収1〜2万円（許可取得済みの場合）"
       ],
       "monthly": {
-        "pv": 50000,
-        "sessions": 30000,
+        "pv": 30000,
+        "sessions": 20000,
         "organicClicks": 2500,
-        "adsenseRevenue": 20000,
-        "noteRevenue": 20000,
-        "affiliateRevenue": 15000,
-        "xFollowers": 2000
+        "adsenseRevenue": 0,
+        "noteRevenue": 0,
+        "affiliateRevenue": 0
       },
       "monthlyMilestones": {
         "2027-02": {
-          "pv": 30000,
-          "xFollowers": 1200,
-          "qualitative": ["月収 4万円"]
+          "pv": 18000,
+          "qualitative": ["収益化準備完了確認"]
         },
         "2027-03": {
-          "pv": 40000,
-          "xFollowers": 1600,
-          "qualitative": ["月収 5万円"]
+          "pv": 24000,
+          "qualitative": ["SEO記事累計20本以上"]
         },
         "2027-04": {
-          "pv": 50000,
-          "xFollowers": 2000,
-          "qualitative": ["ビジョン達成・月収5〜6万円"]
+          "pv": 30000,
+          "qualitative": ["基盤完成・収益化フェーズへ移行準備"]
         }
       }
     }
@@ -165,7 +144,7 @@
         "記事本数不足（上位表示できるキーワードが少ない）",
         "CTR低下（タイトル・メタディスクリプションの最適化不足）"
       ],
-      "paceNote": "現ペースから月間2,000PVへはSEO記事2本追加 + X週2本投稿の両方が必要"
+      "paceNote": "現ペース1,656PV/月から月次+200〜400PV成長を継続。SEO記事月1本+X週3本投稿で達成可能"
     },
     "xFollowers": {
       "label": "Xフォロワー",
@@ -179,7 +158,7 @@
         "告知・宣伝系投稿の比率が高いと価値提供ゼロに見える",
         "エンゲージメント率が低い（いいね・リプライが少ない）"
       ],
-      "paceNote": "残り127人を2.5ヶ月で達成するには月50人増（週12人増）のペースが必要"
+      "paceNote": "現状月+3〜4人。週3本投稿で月+15〜20人ペースを目指す。現実目標：年末600人"
     },
     "bounceRate": {
       "label": "直帰率",
@@ -193,7 +172,7 @@
         "検索意図とページコンテンツのミスマッチ",
         "モバイル最適化不足・初回訪問時のCTA・誘導が弱い"
       ],
-      "paceNote": "MARGINALIA +9pt・TEMPER +11pt悪化。チュートリアル改修が逆効果の可能性が高く早急な原因究明が必要"
+      "paceNote": "MARGINALIA 52%（改修中）・order-maker 53%が課題。INT-005効果でTEMPER 29%は改善済み"
     },
     "organicClicks": {
       "label": "オーガニッククリック",
@@ -207,7 +186,7 @@
         "競合が上位を独占しているキーワードを狙っている",
         "メタディスクリプションが魅力的でない"
       ],
-      "paceNote": "SCクリックは目標超過。ただし表示回数780回はまだ少なく、記事増加で伸びしろは大きい"
+      "paceNote": "SCクリック584件（目標100件の584%）。表示回数3,309、平均順位4.3位。引き続き1位獲得を狙う"
     }
   }
 }
