@@ -1,29 +1,25 @@
 {
-  "name": "Write Quest",
-  "short_name": "WriteQuest",
-  "description": "書くたびにレベルアップするメモアプリ",
-  "start_url": "/write/",
+  "name": "Habit Quest",
+  "short_name": "HabitQuest",
+  "description": "ゲーミフィケーションで楽しく習慣を身につけよう",
+  "start_url": "/habit/",
   "display": "standalone",
-  "background_color": "#1c1c21",
+  "orientation": "portrait",
   "theme_color": "#1c1c21",
+  "background_color": "#1c1c21",
+  "categories": ["lifestyle", "productivity"],
   "icons": [
     {
-      "src": "/write/icons/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/write/icons/icon-192.png",
+      "src": "/habit/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "maskable"
     },
     {
-      "src": "/write/icons/icon-512.png",
+      "src": "/habit/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
