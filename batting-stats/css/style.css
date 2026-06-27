@@ -318,6 +318,8 @@ body {
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 .main-content { padding-bottom: 40px; position: relative; z-index: 1; }
+/* Cookieバナー・PWAバナーがbottom:0に固定されるためモバイルで底辺を確保 */
+@media (max-width: 599px) { .main-content { padding-bottom: 100px; } }
 .section-inner { padding: 16px; }
 
 /* ── Form ─────────────────────────────────── */
