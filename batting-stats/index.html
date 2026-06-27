@@ -152,6 +152,19 @@
 
     <!-- ── 記録タブ ── -->
     <section id="tab-record" class="tab-panel active" aria-label="記録">
+
+      <!-- ウェルカムバナー（初訪問者のみ） -->
+      <div id="welcome-banner" class="welcome-banner" style="display:none">
+        <div class="welcome-banner-inner">
+          <span class="welcome-icon">⚾</span>
+          <div class="welcome-text">
+            <strong>はじめての方へ</strong>
+            <span>打席結果を選んで「記録する」を押すだけ。打率が自動計算されます。</span>
+          </div>
+          <button class="welcome-close" id="welcome-close" aria-label="閉じる">✕</button>
+        </div>
+      </div>
+
       <form id="atbat-form" autocomplete="off" novalidate>
 
         <!-- 日付 / 相手 -->
@@ -716,14 +729,10 @@
       </div>
       <div class="tutorial-dots" id="tutorial-dots">
         <span class="tutorial-dot active"></span>
-        <span class="tutorial-dot"></span>
-        <span class="tutorial-dot"></span>
-        <span class="tutorial-dot"></span>
-        <span class="tutorial-dot"></span>
       </div>
       <div class="tutorial-nav">
-        <button class="btn-ghost" id="tutorial-prev">← 戻る</button>
-        <button class="btn-primary" id="tutorial-next">次へ →</button>
+        <button class="btn-ghost" id="tutorial-prev" style="display:none">← 戻る</button>
+        <button class="btn-primary" id="tutorial-next">はじめる →</button>
       </div>
       <button class="btn-ghost modal-close-btn" id="tutorial-close">スキップ</button>
     </div>

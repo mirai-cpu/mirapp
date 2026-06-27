@@ -412,7 +412,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       Storage.add(atBat);
       if (typeof gtag === 'function') gtag('event', 'tool_used', { tool_name: 'batting-stats', action: 'record_atbat' });
-      showToast(I18n.t('msg.saved'));
+      const isFirst = Storage.load().length === 1;
+      if (isFirst) {
+        showToast('⚾ 記録完了！「成績」タブで打率を確認してみてください');
+        document.getElementById('welcome-banner')?.remove();
+      } else {
+        showToast(I18n.t('msg.saved'));
+      }
     }
 
     resetForm();
@@ -554,7 +560,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderConditionSection(filtered);
 
     if (filtered.length === 0) {
-      statsTableContainer.innerHTML = `<p class="empty-state">${I18n.t('stats.noData')}</p>`;
+      statsTableContainer.innerHTML = `
+        <div class="empty-hero">
+          <div class="empty-hero-icon">📊</div>
+          <div class="empty-hero-title">打席を記録すると、ここに成績が表示されます</div>
+          <div class="empty-hero-preview">
+            <div class="preview-stat"><span class="preview-num">.312</span><span class="preview-label">打率</span></div>
+            <div class="preview-stat"><span class="preview-num">.401</span><span class="preview-label">出塁率</span></div>
+            <div class="preview-stat"><span class="preview-num">.487</span><span class="preview-label">長打率</span></div>
+            <div class="preview-stat preview-ops"><span class="preview-num">.888</span><span class="preview-label">OPS</span></div>
+          </div>
+          <a class="empty-hero-cta" href="#" onclick="document.querySelector('[data-tab=record]').click();return false;">最初の打席を記録する →</a>
+        </div>`;
       return;
     }
 
@@ -1031,6 +1048,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ── チュートリアル ────────────────────────────────────────────
   Tutorial.init();
 
+  // ── ウェルカムバナー（初訪問かつデータなし） ──────────────────
+  const welcomeBanner = document.getElementById('welcome-banner');
+  if (welcomeBanner && !localStorage.getItem('tutorial-seen-v1') && Storage.load().length === 0) {
+    welcomeBanner.style.display = '';
+    document.getElementById('welcome-close')?.addEventListener('click', () => {
+      welcomeBanner.style.display = 'none';
+      localStorage.setItem('tutorial-seen-v1', '1');
+    });
+  }
+
   // ── PWAインストールバナー ─────────────────────────────────────
   const _isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
   const _isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
@@ -1160,7 +1187,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   function renderHistory() {
     const allAtBats = Storage.load();
     if (allAtBats.length === 0) {
-      historyList.innerHTML = `<p class="empty-state">${I18n.t('history.noData')}</p>`;
+      historyList.innerHTML = `
+        <div class="empty-hero-history">
+          <div class="empty-hero-history-icon">📋</div>
+          <div class="empty-hero-history-title">まだ打席が記録されていません。<br>「記録」タブから最初の打席を記録してみましょう。</div>
+          <a class="empty-hero-cta" href="#" onclick="document.querySelector('[data-tab=record]').click();return false;">記録タブへ →</a>
+        </div>`;
       return;
     }
 

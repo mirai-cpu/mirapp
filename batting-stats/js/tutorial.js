@@ -6,38 +6,9 @@ const Tutorial = (() => {
   const SLIDES = [
     {
       icon: '⚾',
-      title: 'My Batting Stats へようこそ',
-      body: `野球の打撃成績を簡単に記録・分析できるアプリです。<br>
-             打率・OPS・打球方向など、さまざまなデータを自動で計算します。`,
-    },
-    {
-      icon: '📝',
-      title: '① 打席を記録する（記録タブ）',
-      body: `<strong>日付・相手・投手の左右</strong>を入力し、<br>
-             打席の<strong>結果ボタン</strong>（単打・三振・ゴロなど）を選んで<br>
-             <strong>「記録する」</strong>をタップするだけで保存できます。<br><br>
-             フィールド図をタップして<strong>打球方向</strong>も記録できます。`,
-    },
-    {
-      icon: '📊',
-      title: '② 成績を確認する（成績タブ）',
-      body: `打席を記録すると<strong>打率・出塁率・長打率・OPS</strong>が自動計算されます。<br><br>
-             フィルターで<strong>期間別・チーム別</strong>に絞り込み可能。<br>
-             打球方向ヒートマップや打率推移グラフも確認できます。`,
-    },
-    {
-      icon: '⚡',
-      title: '③ 特殊能力 & シェア',
-      body: `成績に応じて<strong>特殊能力</strong>が解放されます（50種類）。<br>
-             「広角打法」「ホームランバッター」など、あなたのプレースタイルが分かります。<br><br>
-             <strong>「成績をシェアする」</strong>ボタンから画像カードを作成してSNSに投稿できます。`,
-    },
-    {
-      icon: '💾',
-      title: '④ データについて',
-      body: `データはすべて<strong>このデバイスに保存</strong>されます（サーバー送信なし）。<br><br>
-             履歴タブの<strong>「CSVエクスポート」</strong>でデータをバックアップできます。<br>
-             ホーム画面に追加するとアプリとして使えます（PWA対応）。`,
+      title: '打席結果を選んで記録するだけ！',
+      body: `打率・OPS・スプレーチャートは自動計算されます。<br>
+             まず試合の打席結果を選んで「記録する」を押してみてください。`,
     },
   ];
 
@@ -100,8 +71,8 @@ const Tutorial = (() => {
     // ボタン
     const prevBtn = document.getElementById('tutorial-prev');
     const nextBtn = document.getElementById('tutorial-next');
-    prevBtn.style.visibility = _currentSlide === 0 ? 'hidden' : '';
-    nextBtn.textContent = isLast ? '✓ 閉じる' : '次へ →';
+    if (prevBtn) prevBtn.style.display = 'none';
+    if (nextBtn) nextBtn.textContent = 'はじめる →';
   }
 
   return { init, openModal };
