@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>試合日の天気を確認【無料】草野球向け天気チェッカー FORECAST | Somirai Lab</title>
+  <meta name="description" content="草野球・少年野球の試合日の天気を都道府県別に確認できる無料ツール。気象庁データで降水確率・気温を表示。グラウンドコンディション判定付き。登録不要・完全無料。">
+  <meta name="keywords" content="草野球 天気,野球 試合日 天気,グラウンドコンディション,野球 天気 確認,少年野球 天気,野球 雨 中止">
+  <link rel="canonical" href="https://somirai.jp/weather/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="FORECAST — 野球試合日天気チェッカー【無料】">
+  <meta property="og:description" content="草野球・少年野球の試合日の天気を都道府県別に確認。気象庁データで降水確率・気温・グラウンドコンディションを表示。登録不要・無料。">
+  <meta property="og:url" content="https://somirai.jp/weather/">
+  <meta property="og:site_name" content="Somirai Lab">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#070810">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"FORECAST - 野球試合日天気チェッカー","url":"https://somirai.jp/weather/","description":"草野球・少年野球の試合日の天気を都道府県別に確認できる無料ツール。気象庁データで降水確率・気温・グラウンドコンディションを表示。","applicationCategory":"SportsApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","author":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"}}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9485428408605916" crossorigin="anonymous"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #070810;
+      --surface:   #0d0f1a;
+      --surface2:  #121525;
+      --border:    #1a1f35;
+      --border2:   #252a45;
+      --text:      #e8ecf5;
+      --muted:     #52587a;
+      --muted2:    #363b58;
+
+      --clear:     #38bdf8;
+      --clear-bg:  rgba(56,189,248,.08);
+      --warn:      #f59e0b;
+      --warn-bg:   rgba(245,158,11,.08);
+      --rain:      #f43f5e;
+      --rain-bg:   rgba(244,63,94,.08);
+      --snow:      #a5b4fc;
+      --snow-bg:   rgba(165,180,252,.08);
+
+      --accent:    #38bdf8;
+      --mono:      'JetBrains Mono', monospace;
+      --display:   'Bebas Neue', cursive;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scanline {
+      0%   { transform: translateY(-100%); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { transform: translateY(400%); opacity: 0; }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .35; }
+    }
+    @keyframes starTwinkle {
+      from { opacity: 1; transform: scale(1); }
+      to   { opacity: .07; transform: scale(.5); }
+    }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── dot grid ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: radial-gradient(circle, #1e2242 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: .4;
+      pointer-events: none;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, black 20%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, black 20%, transparent 80%);
+    }
+
+    #starfield {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none; overflow: hidden;
+    }
+
+    /* ── layout ── */
+    .page {
+      position: relative; z-index: 1;
+      min-height: 100svh;
+      display: flex; flex-direction: column;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 16px 80px;
+    }
+
+    /* ── header ── */
+    .site-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .site-nav a {
+      color: var(--muted); text-decoration: none;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: color .15s;
+    }
+    .site-nav a:hover { color: var(--text); }
+
+    .app-hero {
+      padding: 32px 0 28px;
+      animation: fadeUp .5s ease-out both;
+    }
+    .app-eyebrow {
+      font-family: var(--mono);
+      font-size: 10px; font-weight: 600;
+      letter-spacing: .18em; color: var(--accent);
+      text-transform: uppercase;
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 8px;
+    }
+    .app-eyebrow::before {
+      content: '';
+      display: block; width: 18px; height: 1px;
+      background: var(--accent);
+    }
+    .app-title {
+      font-family: var(--display);
+      font-size: clamp(52px, 16vw, 80px);
+      letter-spacing: .06em; line-height: 1;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .app-sub {
+      font-size: 12px; color: var(--muted);
+      font-family: var(--mono); letter-spacing: .04em;
+    }
+
+    /* ── selector ── */
+    .selector-wrap {
+      display: flex; gap: 10px; align-items: stretch;
+      margin-bottom: 28px;
+      animation: fadeUp .5s .1s ease-out both;
+    }
+    .pref-select {
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 15px; font-weight: 500;
+      padding: 12px 14px;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+      transition: border-color .2s;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2352587a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 38px;
+    }
+    .pref-select:focus {
+      outline: none;
+      border-color: rgba(56,189,248,.4);
+      box-shadow: 0 0 0 3px rgba(56,189,248,.08);
+    }
+    .pref-select option { background: #0d0f1a; }
+
+    .fetch-btn {
+      padding: 12px 22px;
+      background: var(--accent);
+      color: #070810;
+      border: none; border-radius: 10px;
+      font-family: var(--mono);
+      font-size: 13px; font-weight: 700;
+      letter-spacing: .04em;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity .15s, transform .15s;
+      flex-shrink: 0;
+    }
+    .fetch-btn:hover { opacity: .85; transform: translateY(-1px); }
+    .fetch-btn:active { transform: translateY(0); opacity: 1; }
+    .fetch-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+    /* ── loading ── */
+    .loading-wrap {
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 48px 0; gap: 16px;
+      animation: fadeUp .3s ease-out both;
+    }
+    .loading-wrap.show { display: flex; }
+    .radar {
+      width: 56px; height: 56px;
+      border: 2px solid var(--border2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: rotate 1s linear infinite;
+    }
+    .loading-text {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--muted); letter-spacing: .1em;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    /* ── error ── */
+    .error-wrap {
+      display: none; text-align: center;
+      padding: 36px 20px;
+      background: rgba(244,63,94,.06);
+      border: 1px solid rgba(244,63,94,.2);
+      border-radius: 14px;
+      animation: fadeUp .3s ease-out both;
+    }
+    .error-wrap.show { display: block; }
+    .error-icon { font-size: 32px; margin-bottom: 12px; }
+    .error-msg { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* ── forecast cards ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .day-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 12px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .day-card.show {
+      animation: fadeUp .45s ease-out both;
+    }
+    .day-card:nth-child(1).show { animation-delay: .04s; }
+    .day-card:nth-child(2).show { animation-delay: .12s; }
+    .day-card:nth-child(3).show { animation-delay: .20s; }
+
+    .day-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 14px 14px 0 0;
+      background: var(--card-accent, var(--border2));
+      transition: background .3s;
+    }
+
+    .day-card.cond-clear  { --card-accent: var(--clear); border-color: rgba(56,189,248,.25); }
+    .day-card.cond-warn   { --card-accent: var(--warn); border-color: rgba(245,158,11,.25); }
+    .day-card.cond-rain   { --card-accent: var(--rain); border-color: rgba(244,63,94,.25); }
+    .day-card.cond-snow   { --card-accent: var(--snow); border-color: rgba(165,180,252,.25); }
+
+    .card-day-label {
+      font-family: var(--mono);
+      font-size: 10px; font-weight: 600;
+      letter-spacing: .12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .card-date {
+      font-family: var(--display);
+      font-size: 22px; letter-spacing: .06em;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .card-emoji {
+      font-size: 34px; line-height: 1;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .card-desc {
+      font-size: 10px; color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 12px;
+      min-height: 30px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-pop-row {
+      margin-bottom: 12px;
+    }
+    .card-pop-label {
+      font-family: var(--mono);
+      font-size: 9px; color: var(--muted);
+      letter-spacing: .08em; margin-bottom: 4px;
+    }
+    .card-pop-bar-track {
+      height: 4px; background: var(--border2);
+      border-radius: 2px; overflow: hidden;
+      margin-bottom: 4px;
+    }
+    .card-pop-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: var(--fill-color, var(--clear));
+      transition: width .6s cubic-bezier(.22,1,.36,1);
+      width: 0%;
+    }
+    .card-pop-value {
+      font-family: var(--display);
+      font-size: 26px; letter-spacing: .04em;
+      color: var(--fill-color, var(--clear));
+      line-height: 1;
+    }
+    .card-pop-unit {
+      font-family: var(--mono);
+      font-size: 11px; color: var(--muted);
+      margin-left: 1px;
+    }
+
+    .card-temp {
+      font-family: var(--mono);
+      font-size: 11px; color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .card-temp .hi { color: var(--warn); font-weight: 700; }
+    .card-temp .lo { color: var(--clear); font-weight: 700; }
+
+    .card-badge {
+      font-family: var(--mono);
+      font-size: 9px; font-weight: 600;
+      letter-spacing: .06em;
+      padding: 4px 8px;
+      border-radius: 20px;
+      display: inline-block;
+      line-height: 1.3;
+    }
+    .badge-clear { background: rgba(56,189,248,.12); color: var(--clear); }
+    .badge-warn  { background: rgba(245,158,11,.12); color: var(--warn); }
+    .badge-rain  { background: rgba(244,63,94,.12); color: var(--rain); }
+    .badge-snow  { background: rgba(165,180,252,.12); color: var(--snow); }
+
+    /* ── summary banner ── */
+    .summary-banner {
+      display: none;
+      padding: 16px 18px;
+      border-radius: 12px;
+      margin-bottom: 28px;
+      animation: fadeUp .4s .3s ease-out both;
+      opacity: 0;
+    }
+    .summary-banner.show {
+      display: flex; opacity: 1;
+      align-items: center; gap: 14px;
+    }
+    .summary-icon { font-size: 28px; flex-shrink: 0; }
+    .summary-text { flex: 1; }
+    .summary-title {
+      font-size: 14px; font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .summary-desc {
+      font-size: 12px; color: var(--muted); line-height: 1.5;
+    }
+    .sb-clear { background: var(--clear-bg); border: 1px solid rgba(56,189,248,.2); }
+    .sb-warn  { background: var(--warn-bg);  border: 1px solid rgba(245,158,11,.2); }
+    .sb-rain  { background: var(--rain-bg);  border: 1px solid rgba(244,63,94,.2); }
+
+    /* ── related tools ── */
+    .related-wrap {
+      margin-top: 8px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+    .related-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 13px; font-weight: 700;
+      display: flex; flex-direction: column; gap: 3px;
+      transition: border-color .15s;
+    }
+    .related-card:hover { border-color: var(--border2); }
+    .related-card span { font-size: 10px; color: var(--muted); font-weight: 400; }
+
+    /* ── footer ── */
+    .app-footer {
+      margin-top: auto;
+      padding-top: 40px;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 10px; color: var(--muted2);
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 16px; letter-spacing: .04em;
+    }
+    .app-footer a {
+      color: var(--muted); text-decoration: none;
+      transition: color .15s;
+    }
+    .app-footer a:hover { color: var(--text); }
+
+    /* ── data source note ── */
+    .data-note {
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 10px; color: var(--muted2);
+      padding: 16px 0 0;
+      letter-spacing: .04em;
+    }
+
+    @media (max-width: 380px) {
+      .cards-grid { gap: 7px; }
+      .day-card { padding: 13px 8px; }
+      .card-emoji { font-size: 28px; }
+      .card-pop-value { font-size: 22px; }
+      .card-date { font-size: 18px; }
+      .card-badge { font-size: 8px; padding: 3px 6px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="starfield" aria-hidden="true"></div>
+
+<div class="page">
+
+  <!-- nav -->
+  <nav class="site-nav">
+    <a href="https://somirai.jp/">
+      <svg viewBox="0 0 120 120" width="18" height="18" style="border-radius:4px;flex-shrink:0"><defs><linearGradient id="nbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1220"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><linearGradient id="nco" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/></linearGradient></defs><rect width="120" height="120" rx="26" fill="url(#nbg)"/><circle cx="60" cy="48" r="14" fill="url(#nco)"/><path d="M60 26L62 42L60 48L58 42Z" fill="#fb923c" opacity=".85"/></svg>
+      Somirai Lab
+    </a>
+    <span>Data: 気象庁</span>
+  </nav>
+
+  <!-- hero -->
+  <div class="app-hero">
+    <div class="app-eyebrow">Weather · Baseball · Ground Check</div>
+    <h1 class="app-title">FORECAST</h1>
+    <p class="app-sub">野球試合日 天気チェッカー — 登録不要・無料</p>
+  </div>
+
+  <!-- selector -->
+  <div class="selector-wrap">
+    <select class="pref-select" id="pref-select" aria-label="都道府県を選択">
+      <option value="130000">東京</option>
+      <option value="016000">北海道</option>
+      <option value="020000">青森</option>
+      <option value="030000">岩手</option>
+      <option value="040000">宮城</option>
+      <option value="050000">秋田</option>
+      <option value="060000">山形</option>
+      <option value="070000">福島</option>
+      <option value="080000">茨城</option>
+      <option value="090000">栃木</option>
+      <option value="100000">群馬</option>
+      <option value="110000">埼玉</option>
+      <option value="120000">千葉</option>
+      <option value="140000">神奈川</option>
+      <option value="150000">新潟</option>
+      <option value="160000">富山</option>
+      <option value="170000">石川</option>
+      <option value="180000">福井</option>
+      <option value="190000">山梨</option>
+      <option value="200000">長野</option>
+      <option value="210000">岐阜</option>
+      <option value="220000">静岡</option>
+      <option value="230000">愛知</option>
+      <option value="240000">三重</option>
+      <option value="250000">滋賀</option>
+      <option value="260000">京都</option>
+      <option value="270000">大阪</option>
+      <option value="280000">兵庫</option>
+      <option value="290000">奈良</option>
+      <option value="300000">和歌山</option>
+      <option value="310000">鳥取</option>
+      <option value="320000">島根</option>
+      <option value="330000">岡山</option>
+      <option value="340000">広島</option>
+      <option value="350000">山口</option>
+      <option value="360000">徳島</option>
+      <option value="370000">香川</option>
+      <option value="380000">愛媛</option>
+      <option value="390000">高知</option>
+      <option value="400000">福岡</option>
+      <option value="410000">佐賀</option>
+      <option value="420000">長崎</option>
+      <option value="430000">熊本</option>
+      <option value="440000">大分</option>
+      <option value="450000">宮崎</option>
+      <option value="460100">鹿児島</option>
+      <option value="471000">沖縄</option>
+    </select>
+    <button class="fetch-btn" id="fetch-btn">確認する</button>
+  </div>
+
+  <!-- loading -->
+  <div class="loading-wrap" id="loading-wrap" role="status" aria-live="polite">
+    <div class="radar" aria-hidden="true"></div>
+    <span class="loading-text">FETCHING WEATHER DATA...</span>
+  </div>
+
+  <!-- error -->
+  <div class="error-wrap" id="error-wrap" role="alert">
+    <div class="error-icon">⚠️</div>
+    <p class="error-msg" id="error-msg">データの取得に失敗しました。しばらくしてから再度お試しください。</p>
+  </div>
+
+  <!-- forecast cards -->
+  <div class="cards-grid" id="cards-grid" aria-label="天気予報"></div>
+
+  <!-- summary -->
+  <div class="summary-banner" id="summary-banner" role="region" aria-label="グラウンドコンディション判定"></div>
+
+  <!-- data note -->
+  <p class="data-note" id="data-note" style="display:none">
+    ※ データ: 気象庁予報（CC BY 4.0） / 更新: <span id="updated-time">—</span>
+  </p>
+
+  <!-- related tools -->
+  <div style="margin-top:32px;">
+    <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;text-align:center;">Somirai Lab の他のツール</p>
+    <div class="related-wrap">
+      <a href="https://somirai.jp/order-maker/" class="related-card" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'forecast',to:'tactician'})">
+        ⚾ スタメンを組む →
+        <span>TACTICIAN — 打順・守備配置作成</span>
+      </a>
+      <a href="https://somirai.jp/batting-stats/" class="related-card" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'forecast',to:'lumber'})">
+        📊 打撃成績を記録 →
+        <span>LUMBER — 打率・OPS自動計算</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer class="app-footer">
+    <a href="https://somirai.jp/">Somirai Lab</a>
+    <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    <a href="https://x.com/mira11554" target="_blank" rel="noopener">𝕏 お問い合わせ</a>
+    <span>© 2026 Somirai Lab</span>
+  </footer>
+
+</div><!-- /page -->
+
+<script>
+// ── Starfield ────────────────────────────────────────────────
+(function(){
+  var sf = document.getElementById('starfield');
+  var frag = document.createDocumentFragment();
+  function rand(s){ var x=Math.sin(s*127.1+311.7)*43758.5453; return x-Math.floor(x); }
+  for(var i=0;i<80;i++){
+    var el=document.createElement('div');
+    var x=rand(i*3+1)*100, y=rand(i*7+2)*100, sz=0.5+rand(i*11+3)*1.6;
+    var op=0.1+rand(i*13+4)*0.6, dur=2+rand(i*17+5)*4, del=rand(i*19+6)*10;
+    var r=rand(i*23+7), col=r<0.1?'#7dd3fc':r<0.25?'#bfdbfe':'#fff';
+    el.style.cssText='position:absolute;border-radius:50%;left:'+x+'%;top:'+y+'%;width:'+sz+'px;height:'+sz+'px;background:'+col+';opacity:'+op+';animation:starTwinkle '+dur+'s ease-in-out '+del+'s infinite alternate;';
+    frag.appendChild(el);
+  }
+  sf.appendChild(frag);
+})();
+
+// ── Weather logic ─────────────────────────────────────────────
+const DAY_NAMES = ['日','月','火','水','木','金','土'];
+
+function getWeatherEmoji(code) {
+  const c = parseInt(code, 10);
+  if (c >= 400) return '❄️';
+  if (c >= 300) return '🌧️';
+  if (c >= 200) return '☁️';
+  if (c >= 110) return '⛅';
+  return '☀️';
+}
+
+function conditionClass(pop) {
+  if (pop === null || pop === undefined || pop === '---') return 'clear';
+  const p = parseInt(pop, 10);
+  if (p >= 50) return 'rain';
+  if (p >= 30) return 'warn';
+  return 'clear';
+}
+
+function conditionLabel(pop, code) {
+  const c = parseInt(code, 10);
+  if (c >= 400) return '❄️ 雪の可能性';
+  if (pop === null || pop === undefined || pop === '---') return '— データなし';
+  const p = parseInt(pop, 10);
+  if (p >= 60) return '❌ 試合困難';
+  if (p >= 50) return '❌ 雨の恐れ';
+  if (p >= 30) return '⚠️ 要確認';
+  return '✅ 野球日和';
+}
+
+function badgeClass(pop, code) {
+  const c = parseInt(code, 10);
+  if (c >= 400) return 'badge-snow';
+  if (pop === null || pop === undefined || pop === '---') return 'badge-clear';
+  const p = parseInt(pop, 10);
+  if (p >= 50) return 'badge-rain';
+  if (p >= 30) return 'badge-warn';
+  return 'badge-clear';
+}
+
+function getPopForDay(popsAll, popTimeDefs, dayIndex, dayDate) {
+  if (!popsAll || popsAll.length === 0) return '---';
+  // Find entries that match the day
+  const dayStr = dayDate.toISOString().slice(0, 10);
+  const matchingPops = [];
+  popTimeDefs.forEach((td, i) => {
+    if (td.startsWith(dayStr)) matchingPops.push(popsAll[i]);
+  });
+  if (matchingPops.length > 0) {
+    // prefer afternoon slot (index 2 of 4, or last available)
+    const afIdx = Math.min(2, matchingPops.length - 1);
+    const val = matchingPops[afIdx];
+    return (val === '' || val === undefined) ? (matchingPops.find(v => v !== '') || '---') : val;
+  }
+  // fallback: by index
+  const stepsPerDay = Math.max(1, Math.round(popsAll.length / 3));
+  const base = dayIndex * stepsPerDay;
+  const afSlot = base + Math.min(2, stepsPerDay - 1);
+  const val = popsAll[Math.min(afSlot, popsAll.length - 1)];
+  return (val === '' || val === undefined) ? '---' : val;
+}
+
+async function fetchForecast(officeCode) {
+  const url = `https://www.jma.go.jp/bosai/forecast/data/forecast/${officeCode}.json`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  const entry = data[0];
+  const ts = entry.timeSeries;
+  const published = entry.reportDatetime;
+
+  // --- weather codes & descriptions ---
+  const wSeries = ts[0];
+  const dates = wSeries.timeDefines.slice(0, 3);
+  const wArea = wSeries.areas[0];
+  const codes = wArea.weatherCodes || [];
+  const descs = wArea.weathers || [];
+
+  // --- precipitation probability ---
+  let pops = ['---','---','---'];
+  if (ts[1]) {
+    const pSeries = ts[1];
+    const pArea = pSeries.areas[0];
+    const popsAll = pArea.pops || [];
+    const pTimeDefs = pSeries.timeDefines || [];
+    pops = dates.map((d, i) => getPopForDay(popsAll, pTimeDefs, i, new Date(d)));
+  }
+
+  // --- temperature ---
+  let temps = [{min:'---',max:'---'},{min:'---',max:'---'},{min:'---',max:'---'}];
+  if (ts[2]) {
+    const tSeries = ts[2];
+    const tArea = tSeries.areas[0];
+    if (tArea.tempsMin && tArea.tempsMax) {
+      temps = dates.map((_, i) => ({
+        min: tArea.tempsMin[i] || '---',
+        max: tArea.tempsMax[i] || '---',
+      }));
+    } else if (tArea.temps) {
+      const t = tArea.temps;
+      // alternating or just max
+      if (t.length >= dates.length * 2) {
+        temps = dates.map((_, i) => ({ min: t[i*2] || '---', max: t[i*2+1] || '---' }));
+      } else {
+        temps = dates.map((_, i) => ({ min: '---', max: t[i] || '---' }));
+      }
+    }
+  }
+
+  return {
+    published,
+    days: dates.map((d, i) => ({
+      date: new Date(d),
+      code: codes[i] || '100',
+      desc: (descs[i] || '').replace(/\s{2,}/g,' ').replace(/　+/g,' ').trim(),
+      pop: pops[i],
+      tempMin: temps[i].min,
+      tempMax: temps[i].max,
+    }))
+  };
+}
+
+function renderCards(result) {
+  const grid = document.getElementById('cards-grid');
+  grid.innerHTML = '';
+
+  result.days.forEach((day, i) => {
+    const cond = conditionClass(day.pop, day.code);
+    const popNum = (day.pop !== '---' && day.pop !== '') ? parseInt(day.pop, 10) : null;
+    const fillColor = cond === 'rain' ? 'var(--rain)' : cond === 'warn' ? 'var(--warn)' : 'var(--clear)';
+    const dayNames = ['今日','明日','明後日'];
+    const dowStr = DAY_NAMES[day.date.getDay()];
+    const monthStr = (day.date.getMonth()+1);
+    const dateStr = day.date.getDate();
+
+    const card = document.createElement('div');
+    card.className = `day-card cond-${cond}`;
+    card.setAttribute('aria-label', `${dayNames[i]} ${monthStr}/${dateStr} ${day.desc} 降水確率${day.pop}%`);
+    card.innerHTML = `
+      <div class="card-day-label">${dayNames[i]}</div>
+      <div class="card-date">${monthStr}/${dateStr}<span style="font-family:'Noto Sans JP',sans-serif;font-size:12px;color:var(--muted);margin-left:3px;">${dowStr}</span></div>
+      <span class="card-emoji" role="img" aria-label="${day.desc}">${getWeatherEmoji(day.code)}</span>
+      <div class="card-desc">${day.desc || '—'}</div>
+      <div class="card-pop-row">
+        <div class="card-pop-label">降水確率</div>
+        <div class="card-pop-bar-track"><div class="card-pop-bar-fill" style="--fill-color:${fillColor};width:0%" data-target="${popNum !== null ? popNum : 0}%"></div></div>
+        <div>
+          <span class="card-pop-value" style="--fill-color:${fillColor}">${day.pop !== '---' ? day.pop : '—'}</span><span class="card-pop-unit">${day.pop !== '---' ? '%' : ''}</span>
+        </div>
+      </div>
+      <div class="card-temp">
+        ${day.tempMax !== '---' ? `<span class="hi">↑${day.tempMax}°</span>` : ''}
+        ${day.tempMin !== '---' && day.tempMin !== '' ? `<span class="lo"> ↓${day.tempMin}°</span>` : ''}
+        ${day.tempMax === '---' && day.tempMin === '---' ? '—' : ''}
+      </div>
+      <span class="card-badge ${badgeClass(day.pop, day.code)}">${conditionLabel(day.pop, day.code)}</span>
+    `;
+    grid.appendChild(card);
+
+    // animate bar fill after DOM insertion
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        card.classList.add('show');
+        const fill = card.querySelector('.card-pop-bar-fill');
+        if (fill) fill.style.width = fill.dataset.target;
+      });
+    });
+  });
+
+  // summary banner
+  const pops = result.days.map(d => d.pop !== '---' && d.pop !== '' ? parseInt(d.pop, 10) : 0);
+  const maxPop = Math.max(...pops);
+  const banner = document.getElementById('summary-banner');
+  let sbClass, sbIcon, sbTitle, sbDesc;
+  if (maxPop >= 50) {
+    sbClass='sb-rain'; sbIcon='☔';
+    sbTitle='週末は雨の可能性があります';
+    sbDesc=`最大降水確率 ${maxPop}%。試合の中止・延期を検討してください。`;
+  } else if (maxPop >= 30) {
+    sbClass='sb-warn'; sbIcon='⛅';
+    sbTitle='天候に注意が必要です';
+    sbDesc=`最大降水確率 ${maxPop}%。グラウンドの状況を事前に確認してください。`;
+  } else {
+    sbClass='sb-clear'; sbIcon='⚾';
+    sbTitle='絶好の野球日和です！';
+    sbDesc=`最大降水確率 ${maxPop}%。スタメンを組んで試合に備えましょう。`;
+  }
+  banner.className = `summary-banner show ${sbClass}`;
+  banner.innerHTML = `<span class="summary-icon">${sbIcon}</span><div class="summary-text"><div class="summary-title">${sbTitle}</div><p class="summary-desc">${sbDesc}</p></div>`;
+
+  // update time
+  const note = document.getElementById('data-note');
+  note.style.display = '';
+  const pub = new Date(result.published);
+  document.getElementById('updated-time').textContent =
+    `${pub.getMonth()+1}/${pub.getDate()} ${String(pub.getHours()).padStart(2,'0')}:${String(pub.getMinutes()).padStart(2,'0')}`;
+}
+
+async function doFetch() {
+  const select = document.getElementById('pref-select');
+  const btn = document.getElementById('fetch-btn');
+  const loading = document.getElementById('loading-wrap');
+  const errWrap = document.getElementById('error-wrap');
+  const grid = document.getElementById('cards-grid');
+  const banner = document.getElementById('summary-banner');
+  const note = document.getElementById('data-note');
+
+  const code = select.value;
+
+  // reset
+  grid.innerHTML = '';
+  banner.className = 'summary-banner';
+  errWrap.className = 'error-wrap';
+  note.style.display = 'none';
+  btn.disabled = true;
+  loading.classList.add('show');
+
+  try {
+    const result = await fetchForecast(code);
+    loading.classList.remove('show');
+    renderCards(result);
+    if(typeof gtag === 'function') gtag('event', 'tool_used', {tool_name:'forecast', prefecture: select.options[select.selectedIndex].text});
+  } catch(err) {
+    loading.classList.remove('show');
+    errWrap.className = 'error-wrap show';
+    document.getElementById('error-msg').textContent =
+      '天気データの取得に失敗しました。通信環境を確認してしばらくしてから再度お試しください。';
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+document.getElementById('fetch-btn').addEventListener('click', doFetch);
+document.getElementById('pref-select').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doFetch();
+});
+
+// auto-fetch on load
+window.addEventListener('load', doFetch);
+</script>
+
+<script>
+// Cookie banner
+(function(){
+  if(localStorage.getItem('cookie_ok'))return;
+  var b=document.createElement('div');
+  b.id='ck-banner';
+  b.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#050912;color:#5a6fa0;font-size:13px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9999;border-top:1px solid rgba(56,189,248,.12)';
+  b.innerHTML='<span>本サイトはGoogle AdSense・AnalyticsのためにCookieを使用しています。<a href="/privacy.html" style="color:#38bdf8">プライバシーポリシー</a></span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:transparent;color:#38bdf8;border:1px solid #38bdf8;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">OK</button>';
+  document.body.appendChild(b);
+})();
+</script>
+
+</body>
+</html>
