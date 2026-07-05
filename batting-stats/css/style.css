@@ -1464,6 +1464,47 @@ textarea { resize: vertical; min-height: 64px; }
   .pwa-banner { left: 50%; right: auto; transform: translateX(-50%); width: 560px; border-radius: var(--radius) var(--radius) 0 0; }
 }
 
+/* ── Weather Widget ─────────────────────────────── */
+.wx-widget-group { gap: 8px; }
+.wx-widget-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.wx-pref-select {
+  background: var(--surface); border: 1px solid var(--border-2);
+  color: var(--text); border-radius: 8px;
+  font-family: 'Noto Sans JP', sans-serif; font-size: 13px;
+  padding: 5px 8px; cursor: pointer; outline: none;
+  -webkit-appearance: none; appearance: none;
+}
+.wx-widget-body {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 10px 12px;
+  min-height: 44px; display: flex; align-items: center;
+}
+.wx-idle { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+.wx-loading { font-size: 12px; color: var(--muted); font-family: var(--mono); animation: shimmer 1.4s ease-in-out infinite; }
+.wx-card {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+}
+.wx-emoji { font-size: 26px; line-height: 1; flex-shrink: 0; }
+.wx-info { flex: 1; min-width: 0; }
+.wx-desc { font-size: 12px; color: var(--text); font-weight: 500; margin-bottom: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wx-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.wx-pop  { margin-right: 8px; }
+.wx-source { font-size: 9px; color: var(--muted); font-family: var(--mono);
+  background: rgba(255,255,255,.04); border-radius: 4px; padding: 1px 5px; margin-left: auto; flex-shrink: 0; }
+.wx-error { font-size: 11px; color: var(--c-out); font-family: var(--mono); }
+
+/* weather badge in history/story cards */
+.wx-badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 11px; font-family: var(--mono);
+  color: var(--muted); background: rgba(255,255,255,.04);
+  border-radius: 5px; padding: 2px 7px;
+  margin-left: 6px; vertical-align: middle;
+}
+
 /* ── Welcome Banner ─────────────────────────────── */
 .welcome-banner {
   background: linear-gradient(135deg, rgba(255,215,0,.08) 0%, rgba(255,171,0,.04) 100%);

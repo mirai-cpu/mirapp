@@ -182,6 +182,30 @@
           </div>
         </div>
 
+        <!-- 天気ウィジェット -->
+        <div class="field-group wx-widget-group" id="wx-widget-group">
+          <div class="wx-widget-header">
+            <label style="margin:0">試合日の天気</label>
+            <select id="wx-pref-select" class="wx-pref-select" aria-label="都道府県">
+              <option>東京</option><option>北海道</option><option>青森</option><option>岩手</option>
+              <option>宮城</option><option>秋田</option><option>山形</option><option>福島</option>
+              <option>茨城</option><option>栃木</option><option>群馬</option><option>埼玉</option>
+              <option>千葉</option><option>神奈川</option><option>新潟</option><option>富山</option>
+              <option>石川</option><option>福井</option><option>山梨</option><option>長野</option>
+              <option>岐阜</option><option>静岡</option><option>愛知</option><option>三重</option>
+              <option>滋賀</option><option>京都</option><option>大阪</option><option>兵庫</option>
+              <option>奈良</option><option>和歌山</option><option>鳥取</option><option>島根</option>
+              <option>岡山</option><option>広島</option><option>山口</option><option>徳島</option>
+              <option>香川</option><option>愛媛</option><option>高知</option><option>福岡</option>
+              <option>佐賀</option><option>長崎</option><option>熊本</option><option>大分</option>
+              <option>宮崎</option><option>鹿児島</option><option>沖縄</option>
+            </select>
+          </div>
+          <div class="wx-widget-body" id="wx-widget-body" aria-live="polite">
+            <span class="wx-idle">日付を設定すると天気を表示します</span>
+          </div>
+        </div>
+
         <!-- 投手の左右 -->
         <div class="field-group">
           <label data-i18n="form.pitcher">投手</label>
@@ -740,6 +764,7 @@
 
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.7/chart.umd.min.js" defer></script>
+  <script src="js/weather.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/stats.js"></script>

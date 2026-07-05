@@ -400,6 +400,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       rbi:          rbiValue,
       memo:         inputMemo.value.trim(),
       battingOrder: selectedOrder  || null,
+      weather:      _wxCurrentData || null,
     };
 
     if (atBat.opponent) Storage.setLastOpponent(atBat.opponent);
@@ -1048,6 +1049,66 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ── チュートリアル ────────────────────────────────────────────
   Tutorial.init();
 
+  // ── 天気ウィジェット ──────────────────────────────────────────
+  let _wxCurrentData = null;
+  const _wxPrefSel   = document.getElementById('wx-pref-select');
+  const _wxBody      = document.getElementById('wx-widget-body');
+
+  if (_wxPrefSel && typeof WeatherModule !== 'undefined') {
+    // 保存済み都道府県を復元
+    const savedPref = WeatherModule.getSavedPref();
+    if (savedPref) {
+      const opt = Array.from(_wxPrefSel.options).find(o => o.value === savedPref || o.text === savedPref);
+      if (opt) opt.selected = true;
+    }
+
+    _wxPrefSel.addEventListener('change', () => {
+      WeatherModule.savePref(_wxPrefSel.value);
+      _fetchWeatherForDate();
+    });
+
+    async function _fetchWeatherForDate() {
+      const dateVal = document.getElementById('input-date')?.value;
+      if (!dateVal || !_wxBody) return;
+      const pref = _wxPrefSel.value;
+      _wxBody.innerHTML = '<span class="wx-loading">取得中…</span>';
+      _wxCurrentData = null;
+      try {
+        const w = await WeatherModule.getWeather(pref, dateVal);
+        _wxCurrentData = w ? { ...w, pref, date: dateVal } : null;
+        if (!w) {
+          _wxBody.innerHTML = '<span class="wx-error">データを取得できませんでした</span>';
+          return;
+        }
+        const srcLabel = w.source === 'Archive' ? '過去' : '予報';
+        _wxBody.innerHTML = `
+          <div class="wx-card">
+            <span class="wx-emoji" role="img" aria-label="${w.desc}">${w.emoji}</span>
+            <div class="wx-info">
+              <div class="wx-desc">${w.desc}</div>
+              <div class="wx-meta">
+                <span class="wx-pop">☔ ${w.pop}</span>
+                ${w.tempMax !== '—' ? `🌡 ${w.tempMin !== '—' ? w.tempMin + '/' : ''}${w.tempMax}` : ''}
+              </div>
+            </div>
+            <span class="wx-source">${srcLabel}</span>
+          </div>`;
+      } catch {
+        _wxBody.innerHTML = '<span class="wx-error">取得失敗</span>';
+      }
+    }
+
+    // 日付変更時に天気自動取得
+    document.getElementById('input-date')?.addEventListener('change', _fetchWeatherForDate);
+    document.getElementById('btn-today')?.addEventListener('click', () => {
+      setTimeout(_fetchWeatherForDate, 50);
+    });
+
+    // 初期値があれば取得
+    const initDate = document.getElementById('input-date')?.value;
+    if (initDate) _fetchWeatherForDate();
+  }
+
   // ── ウェルカムバナー（初訪問かつデータなし） ──────────────────
   const welcomeBanner = document.getElementById('welcome-banner');
   if (welcomeBanner && !localStorage.getItem('tutorial-seen-v1') && Storage.load().length === 0) {
@@ -1234,6 +1295,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <span class="game-date">${date}</span>
                 ${opponent ? `<span class="game-opponent">${opponent}</span>` : ''}
                 ${season   ? `<span class="game-season-tag">${season}</span>` : ''}
+                ${abs[0]?.weather?.emoji ? `<span class="wx-badge" title="${abs[0].weather.desc} 降水${abs[0].weather.pop}">${abs[0].weather.emoji} ${abs[0].weather.pop}</span>` : ''}
               </div>
               <div class="game-summary">${summary}</div>
             </div>

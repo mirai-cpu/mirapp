@@ -741,6 +741,9 @@
         </div>
       </div>
     </div>
+    <button class="btn-icon" id="om-weather-btn" onclick="toggleWeatherPanel()" aria-label="天気チェック" title="試合日の天気を確認">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+    </button>
     <button class="btn-icon" onclick="openTutorial()" aria-label="使い方">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
     </button>
@@ -752,6 +755,85 @@
   <button class="tab-btn"        id="tab-order"   onclick="switchTab('order')">オーダー</button>
   <button class="tab-btn"        id="tab-pitcher" onclick="switchTab('pitcher')">投手陣</button>
   <button class="tab-btn"        id="tab-print"   onclick="switchTab('print')">スタメン表</button>
+</div>
+
+<!-- ── 天気パネル（ボトムシート） ── -->
+<div id="wx-panel-overlay" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);" onclick="if(event.target===this)toggleWeatherPanel()"></div>
+<div id="wx-panel" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:401;max-height:80svh;overflow-y:auto;background:var(--surface,#0d0f18);border-top:1px solid var(--border,#1c1f30);border-radius:16px 16px 0 0;padding:0 0 env(safe-area-inset-bottom,0);" aria-label="天気チェックパネル" role="dialog">
+  <style>
+    .wx-panel-handle { width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:12px auto 0; }
+    .wx-panel-head { display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px; }
+    .wx-panel-title { font-family:'Barlow','Noto Sans JP',sans-serif;font-size:16px;font-weight:700;color:#c8e8d0;letter-spacing:.04em; }
+    .wx-ctrl-row { display:flex;gap:8px;align-items:center;padding:0 16px 14px; }
+    .wx-ctrl-pref,.wx-ctrl-date {
+      background:rgba(255,255,255,.05);border:1px solid rgba(0,230,118,.2);border-radius:8px;
+      color:#c8e8d0;font-family:'Noto Sans JP',sans-serif;font-size:13px;padding:8px 10px;
+      -webkit-appearance:none;appearance:none;outline:none;flex:1;
+    }
+    .wx-ctrl-pref option,.wx-ctrl-date option { background:#0d0f18; }
+    .wx-fetch-btn {
+      background:var(--accent,#00e676);color:#07090f;border:none;border-radius:8px;
+      font-family:'Barlow',sans-serif;font-size:13px;font-weight:800;padding:8px 16px;
+      cursor:pointer;white-space:nowrap;transition:opacity .15s;flex-shrink:0;
+    }
+    .wx-fetch-btn:disabled { opacity:.4;cursor:not-allowed; }
+    .wx-cards-row { display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 16px 16px; }
+    .wx-day-card {
+      background:rgba(255,255,255,.04);border:1px solid rgba(0,230,118,.12);border-radius:10px;
+      padding:12px 8px;text-align:center;
+    }
+    .wx-day-label { font-family:'Barlow',sans-serif;font-size:11px;color:rgba(0,230,118,.6);letter-spacing:.08em;margin-bottom:4px; }
+    .wx-day-emoji { font-size:28px;line-height:1;display:block;margin-bottom:5px; }
+    .wx-day-desc { font-size:10px;color:#3a6a4a;line-height:1.4;margin-bottom:6px;min-height:28px;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
+    .wx-day-pop { font-family:'Barlow',sans-serif;font-size:20px;color:#c8e8d0;line-height:1; }
+    .wx-day-pop-unit { font-size:10px;color:#3a6a4a; }
+    .wx-day-temp { font-size:10px;color:#3a6a4a;margin-top:4px; }
+    .wx-day-cond { font-size:9px;padding:3px 6px;border-radius:8px;margin-top:6px;display:inline-block;font-family:'Barlow',sans-serif;font-weight:700; }
+    .wx-cond-ok   { background:rgba(0,230,118,.12);color:#00e676; }
+    .wx-cond-warn { background:rgba(245,158,11,.12);color:#f59e0b; }
+    .wx-cond-bad  { background:rgba(244,63,94,.12);color:#f43f5e; }
+    .wx-history-section { padding:0 16px 20px; }
+    .wx-history-title { font-family:'Barlow',sans-serif;font-size:10px;letter-spacing:.14em;color:#2a4a35;text-transform:uppercase;margin-bottom:10px; }
+    .wx-history-item { display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(0,230,118,.07); }
+    .wx-hist-date { font-family:'Barlow',sans-serif;font-size:13px;color:#5a9a70;min-width:70px;flex-shrink:0; }
+    .wx-hist-emoji { font-size:18px;flex-shrink:0; }
+    .wx-hist-info { flex:1;min-width:0; }
+    .wx-hist-desc { font-size:12px;color:#c8e8d0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+    .wx-hist-meta { font-size:10px;color:#2a4a35; }
+    .wx-hist-pref { font-size:10px;color:#2a4a35;flex-shrink:0; }
+    .wx-msg { text-align:center;padding:24px;font-family:'Barlow',sans-serif;font-size:13px;color:#2a4a35; }
+    .wx-msg.loading { animation:wx-spin 1s linear infinite; }
+    @keyframes wx-spin { from{opacity:1} 50%{opacity:.3} to{opacity:1} }
+    .wx-source-note { text-align:center;font-size:10px;color:#1a3a25;padding:0 16px 14px;font-family:'Barlow',sans-serif;letter-spacing:.04em; }
+    @media (max-width:380px) { .wx-cards-row { gap:6px; } .wx-day-emoji { font-size:24px; } .wx-day-pop { font-size:18px; } }
+  </style>
+  <div class="wx-panel-handle"></div>
+  <div class="wx-panel-head">
+    <span class="wx-panel-title">⛅ FORECAST — 試合日天気チェック</span>
+    <button onclick="toggleWeatherPanel()" style="background:none;border:none;color:#2a4a35;font-size:22px;cursor:pointer;padding:4px;" aria-label="閉じる">×</button>
+  </div>
+  <div class="wx-ctrl-row">
+    <select class="wx-ctrl-pref" id="om-wx-pref" aria-label="都道府県">
+      <option>東京</option><option>北海道</option><option>青森</option><option>岩手</option>
+      <option>宮城</option><option>秋田</option><option>山形</option><option>福島</option>
+      <option>茨城</option><option>栃木</option><option>群馬</option><option>埼玉</option>
+      <option>千葉</option><option>神奈川</option><option>新潟</option><option>富山</option>
+      <option>石川</option><option>福井</option><option>山梨</option><option>長野</option>
+      <option>岐阜</option><option>静岡</option><option>愛知</option><option>三重</option>
+      <option>滋賀</option><option>京都</option><option>大阪</option><option>兵庫</option>
+      <option>奈良</option><option>和歌山</option><option>鳥取</option><option>島根</option>
+      <option>岡山</option><option>広島</option><option>山口</option><option>徳島</option>
+      <option>香川</option><option>愛媛</option><option>高知</option><option>福岡</option>
+      <option>佐賀</option><option>長崎</option><option>熊本</option><option>大分</option>
+      <option>宮崎</option><option>鹿児島</option><option>沖縄</option>
+    </select>
+    <input type="date" class="wx-ctrl-date" id="om-wx-date" aria-label="日付">
+    <button class="wx-fetch-btn" id="om-wx-fetch-btn" onclick="omWxFetch()">確認</button>
+  </div>
+  <div id="om-wx-result"></div>
+  <div class="wx-source-note">予報: 気象庁 / 過去: Open-Meteo（Archive）</div>
+  <div class="wx-history-section" id="om-wx-history"></div>
 </div>
 
 <main>
@@ -2007,6 +2089,210 @@ function setFirstTimeState(isEmpty) {
     if (badge) badge.style.display = 'none';
   }
 }
+
+// ── 天気パネル ────────────────────────
+const OM_WX_OFFICES = {
+  '北海道':'016000','青森':'020000','岩手':'030000','宮城':'040000','秋田':'050000',
+  '山形':'060000','福島':'070000','茨城':'080000','栃木':'090000','群馬':'100000',
+  '埼玉':'110000','千葉':'120000','東京':'130000','神奈川':'140000','新潟':'150000',
+  '富山':'160000','石川':'170000','福井':'180000','山梨':'190000','長野':'200000',
+  '岐阜':'210000','静岡':'220000','愛知':'230000','三重':'240000','滋賀':'250000',
+  '京都':'260000','大阪':'270000','兵庫':'280000','奈良':'290000','和歌山':'300000',
+  '鳥取':'310000','島根':'320000','岡山':'330000','広島':'340000','山口':'350000',
+  '徳島':'360000','香川':'370000','愛媛':'380000','高知':'390000','福岡':'400000',
+  '佐賀':'410000','長崎':'420000','熊本':'430000','大分':'440000','宮崎':'450000',
+  '鹿児島':'460100','沖縄':'471000',
+};
+const OM_WX_COORDS = {
+  '北海道':{lat:43.06,lon:141.35},'青森':{lat:40.82,lon:140.74},'岩手':{lat:39.70,lon:141.15},
+  '宮城':{lat:38.27,lon:140.87},'秋田':{lat:39.72,lon:140.10},'山形':{lat:38.24,lon:140.36},
+  '福島':{lat:37.75,lon:140.47},'茨城':{lat:36.34,lon:140.45},'栃木':{lat:36.57,lon:139.88},
+  '群馬':{lat:36.39,lon:139.06},'埼玉':{lat:35.86,lon:139.65},'千葉':{lat:35.61,lon:140.12},
+  '東京':{lat:35.69,lon:139.69},'神奈川':{lat:35.45,lon:139.64},'新潟':{lat:37.91,lon:139.02},
+  '富山':{lat:36.70,lon:137.21},'石川':{lat:36.59,lon:136.63},'福井':{lat:36.07,lon:136.22},
+  '山梨':{lat:35.66,lon:138.57},'長野':{lat:36.65,lon:138.19},'岐阜':{lat:35.39,lon:136.72},
+  '静岡':{lat:34.98,lon:138.38},'愛知':{lat:35.18,lon:136.91},'三重':{lat:34.73,lon:136.51},
+  '滋賀':{lat:35.00,lon:135.87},'京都':{lat:35.02,lon:135.76},'大阪':{lat:34.69,lon:135.50},
+  '兵庫':{lat:34.69,lon:135.18},'奈良':{lat:34.69,lon:135.83},'和歌山':{lat:34.23,lon:135.17},
+  '鳥取':{lat:35.50,lon:134.24},'島根':{lat:35.47,lon:133.05},'岡山':{lat:34.66,lon:133.94},
+  '広島':{lat:34.40,lon:132.46},'山口':{lat:34.19,lon:131.47},'徳島':{lat:34.07,lon:134.56},
+  '香川':{lat:34.34,lon:134.05},'愛媛':{lat:33.84,lon:132.77},'高知':{lat:33.56,lon:133.53},
+  '福岡':{lat:33.61,lon:130.42},'佐賀':{lat:33.25,lon:130.30},'長崎':{lat:32.74,lon:129.87},
+  '熊本':{lat:32.79,lon:130.74},'大分':{lat:33.24,lon:131.61},'宮崎':{lat:31.91,lon:131.42},
+  '鹿児島':{lat:31.56,lon:130.56},'沖縄':{lat:26.21,lon:127.68},
+};
+const OM_WX_CACHE_KEY = 'somirai-weather-cache-v1';
+const OM_WX_PREF_KEY  = 'somirai-weather-pref';
+const DAY_JA2 = ['日','月','火','水','木','金','土'];
+
+function _omWxEmoji(c){const n=parseInt(c,10);if(n>=400)return'❄️';if(n>=300)return'🌧️';if(n>=200)return'☁️';if(n>=110)return'⛅';return'☀️';}
+function _omWmoEmoji(c){if(c===0)return'☀️';if(c<=2)return'⛅';if(c<=3)return'☁️';if(c<=49)return'🌫️';if(c<=67)return'🌧️';if(c<=77)return'❄️';if(c<=82)return'🌧️';if(c<=86)return'❄️';return'⛈️';}
+function _omWmoDesc(c){const m={0:'快晴',1:'晴れ',2:'晴れ時々くもり',3:'くもり',45:'霧',48:'霧',51:'小雨',53:'雨',55:'大雨',61:'雨',63:'雨',65:'大雨',71:'小雪',73:'雪',75:'大雪',77:'みぞれ',80:'にわか雨',81:'雨',82:'大雨',85:'にわか雪',86:'大雪',95:'雷雨'};return m[c]||'—';}
+function _omWxCondClass(pop){const p=parseInt(pop)||0;if(p>=50)return'wx-cond-bad';if(p>=30)return'wx-cond-warn';return'wx-cond-ok';}
+function _omWxCondLabel(pop){const p=parseInt(pop)||0;if(p>=50)return'❌ 試合困難';if(p>=30)return'⚠️ 要確認';return'✅ 野球日和';}
+
+function _omGetWxCache(){try{return JSON.parse(localStorage.getItem(OM_WX_CACHE_KEY)||'{}')}catch{return {}}}
+function _omSetWxCache(k,v){const c=_omGetWxCache();c[k]={...v,_ts:Date.now()};try{localStorage.setItem(OM_WX_CACHE_KEY,JSON.stringify(c))}catch{}}
+
+function toggleWeatherPanel() {
+  const panel   = document.getElementById('wx-panel');
+  const overlay = document.getElementById('wx-panel-overlay');
+  const isOpen  = panel.style.display !== 'none';
+  if (isOpen) {
+    panel.style.display   = 'none';
+    overlay.style.display = 'none';
+  } else {
+    panel.style.display   = '';
+    overlay.style.display = '';
+    // 保存済み都道府県・デフォルト日付をセット
+    const savedPref = localStorage.getItem(OM_WX_PREF_KEY) || '東京';
+    const prefSel = document.getElementById('om-wx-pref');
+    if (prefSel) { const opt = Array.from(prefSel.options).find(o=>o.text===savedPref); if(opt)opt.selected=true; }
+    const dateSel = document.getElementById('om-wx-date');
+    if (dateSel && !dateSel.value) dateSel.value = new Date().toISOString().slice(0,10);
+    omWxRenderHistory();
+    // 初回は3日予報を自動取得
+    omWxFetch3Day(savedPref);
+  }
+}
+
+async function omWxFetch3Day(pref) {
+  const officeCode = OM_WX_OFFICES[pref];
+  const resultEl = document.getElementById('om-wx-result');
+  if (!officeCode || !resultEl) return;
+  resultEl.innerHTML = '<div class="wx-msg loading">天気を取得中…</div>';
+  try {
+    const res = await fetch(`https://www.jma.go.jp/bosai/forecast/data/forecast/${officeCode}.json`);
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    const ts = data[0].timeSeries;
+    const wSeries = ts[0];
+    const rawDates = wSeries.timeDefines.slice(0,3);
+    const wArea = wSeries.areas[0];
+    const popsMap = {};
+    if (ts[1]) {
+      const pA = ts[1].areas[0];
+      ts[1].timeDefines.forEach((td,i)=>{ const ds=td.slice(0,10); if(!popsMap[ds]&&pA.pops[i]!=='') popsMap[ds]=pA.pops[i]; });
+    }
+    const tempsMap = {};
+    if (ts[2]) {
+      const tA = ts[2].areas[0];
+      rawDates.forEach((d,i)=>{ const ds=d.slice(0,10); const mn=tA.tempsMin?.[i]; const mx=tA.tempsMax?.[i]||tA.temps?.[i]; tempsMap[ds]={min:(mn&&mn!=='')?mn+'°':'—',max:(mx&&mx!=='')?mx+'°':'—'}; });
+    }
+    const days = rawDates.map((d,i)=>{
+      const ds=d.slice(0,10); const dt=new Date(d);
+      const pop=popsMap[ds]||'—'; const t=tempsMap[ds]||{min:'—',max:'—'};
+      const pc=parseInt(pop)||0;
+      return `<div class="wx-day-card">
+        <div class="wx-day-label">${dt.getMonth()+1}/${dt.getDate()}(${DAY_JA2[dt.getDay()]})</div>
+        <span class="wx-day-emoji">${_omWxEmoji(wArea.weatherCodes?.[i]||'100')}</span>
+        <div class="wx-day-desc">${(wArea.weathers?.[i]||'').replace(/\s+/g,' ').trim()||'—'}</div>
+        <div><span class="wx-day-pop">${pop}</span><span class="wx-day-pop-unit">${pop!=='—'?'%':''}</span></div>
+        <div class="wx-day-temp">${t.max!=='—'?'↑'+t.max:''}${t.min!=='—'?' ↓'+t.min:''}</div>
+        <span class="wx-day-cond ${_omWxCondClass(pop)}">${_omWxCondLabel(pop)}</span>
+      </div>`;
+    }).join('');
+    resultEl.innerHTML = `<div class="wx-cards-row">${days}</div>`;
+  } catch {
+    resultEl.innerHTML = '<div class="wx-msg">取得に失敗しました</div>';
+  }
+}
+
+async function omWxFetch() {
+  const pref    = document.getElementById('om-wx-pref')?.value || '東京';
+  const dateVal = document.getElementById('om-wx-date')?.value;
+  const btn     = document.getElementById('om-wx-fetch-btn');
+  const resultEl = document.getElementById('om-wx-result');
+  if (!dateVal || !resultEl) return;
+  localStorage.setItem(OM_WX_PREF_KEY, pref);
+  // 過去日付判定
+  const isPast = new Date(dateVal+'T00:00:00') < (() => { const t=new Date();t.setHours(0,0,0,0);return t; })();
+  // キャッシュ確認
+  const cacheKey = `${pref}_${dateVal}`;
+  const cached = _omGetWxCache()[cacheKey];
+  if (cached && cached.emoji) {
+    omWxRenderSingle(resultEl, cached, pref, dateVal); return;
+  }
+  btn.disabled = true;
+  resultEl.innerHTML = '<div class="wx-msg loading">取得中…</div>';
+  try {
+    let w;
+    if (isPast) {
+      const coords = OM_WX_COORDS[pref];
+      if (!coords) throw new Error('coords not found');
+      const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${coords.lat}&longitude=${coords.lon}&start_date=${dateVal}&end_date=${dateVal}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Asia%2FTokyo`;
+      const res = await fetch(url); if(!res.ok) throw new Error();
+      const data = await res.json(); if(!data.daily?.time?.length) throw new Error();
+      const code=data.daily.weathercode[0]; const precip=parseFloat(data.daily.precipitation_sum[0])||0;
+      const pop=precip>15?'80':precip>8?'60':precip>3?'40':precip>0.5?'20':'0';
+      w={emoji:_omWmoEmoji(code),desc:_omWmoDesc(code),pop:pop+'%',tempMin:Math.round(data.daily.temperature_2m_min[0])+'°',tempMax:Math.round(data.daily.temperature_2m_max[0])+'°',source:'Archive'};
+    } else {
+      const officeCode=OM_WX_OFFICES[pref]; if(!officeCode) throw new Error();
+      const res=await fetch(`https://www.jma.go.jp/bosai/forecast/data/forecast/${officeCode}.json`); if(!res.ok) throw new Error();
+      const data=await res.json(); const ts=data[0].timeSeries; const wS=ts[0];
+      const idx=wS.timeDefines.findIndex(d=>d.startsWith(dateVal)); if(idx<0) throw new Error('date not in forecast');
+      const wA=wS.areas[0];
+      let pop='—'; if(ts[1]){const pA=ts[1].areas[0];const m=ts[1].timeDefines.map((td,i)=>td.startsWith(dateVal)&&pA.pops[i]!==''?pA.pops[i]:null).filter(v=>v!==null);if(m.length)pop=m[Math.min(2,m.length-1)]+'%';}
+      let tMin='—',tMax='—'; if(ts[2]){const tA=ts[2].areas[0];const mn=tA.tempsMin?.[idx];const mx=tA.tempsMax?.[idx]||tA.temps?.[idx];if(mn&&mn!=='')tMin=mn+'°';if(mx&&mx!=='')tMax=mx+'°';}
+      w={emoji:_omWxEmoji(wA.weatherCodes?.[idx]||'100'),desc:(wA.weathers?.[idx]||'').replace(/\s+/g,' ').trim()||'—',pop,tempMin:tMin,tempMax:tMax,source:'JMA'};
+    }
+    _omSetWxCache(cacheKey, w);
+    omWxRenderSingle(resultEl, w, pref, dateVal);
+    omWxRenderHistory();
+  } catch(e) {
+    const msg = isPast ? '過去データの取得に失敗しました（Open-Meteo Archive）' : '予報データが見つかりませんでした。予報期間外の日付は「過去天気」として取得できます。';
+    resultEl.innerHTML = `<div class="wx-msg">${msg}</div>`;
+  } finally { btn.disabled = false; }
+}
+
+function omWxRenderSingle(el, w, pref, dateStr) {
+  const dt = new Date(dateStr+'T00:00:00');
+  const dlabel = `${dt.getMonth()+1}/${dt.getDate()}(${DAY_JA2[dt.getDay()]})`;
+  const pc = parseInt(w.pop)||0;
+  const srcLabel = w.source==='Archive' ? '過去データ' : '予報';
+  el.innerHTML = `<div class="wx-cards-row" style="grid-template-columns:1fr;">
+    <div class="wx-day-card" style="padding:16px;">
+      <div class="wx-day-label">${pref} ${dlabel} <span style="opacity:.5;font-size:9px;">${srcLabel}</span></div>
+      <span class="wx-day-emoji" style="font-size:36px;">${w.emoji}</span>
+      <div class="wx-day-desc" style="-webkit-line-clamp:3;">${w.desc}</div>
+      <div><span class="wx-day-pop">${w.pop}</span><span class="wx-day-pop-unit">${w.pop!=='—'?'%':''}</span></div>
+      <div class="wx-day-temp">${w.tempMax!=='—'?'↑'+w.tempMax:''}${w.tempMin!=='—'?' ↓'+w.tempMin:''}</div>
+      <span class="wx-day-cond ${_omWxCondClass(w.pop)}">${_omWxCondLabel(w.pop)}</span>
+    </div>
+  </div>`;
+}
+
+function omWxRenderHistory() {
+  const histEl = document.getElementById('om-wx-history');
+  if (!histEl) return;
+  const cache = _omGetWxCache();
+  const entries = Object.entries(cache)
+    .map(([k,v])=>{ const [pref,date]=k.split('_'); return {pref,date,...v}; })
+    .filter(e=>e.date&&e.emoji)
+    .sort((a,b)=>b.date.localeCompare(a.date))
+    .slice(0,15);
+  if (!entries.length) { histEl.innerHTML=''; return; }
+  histEl.innerHTML = `<div class="wx-history-title">過去に確認した天気</div>` +
+    entries.map(e=>{
+      const dt=new Date(e.date+'T00:00:00');
+      const dl=`${dt.getMonth()+1}/${dt.getDate()}(${DAY_JA2[dt.getDay()]})`;
+      return `<div class="wx-history-item">
+        <span class="wx-hist-date">${dl}</span>
+        <span class="wx-hist-emoji">${e.emoji}</span>
+        <div class="wx-hist-info"><div class="wx-hist-desc">${e.desc}</div><div class="wx-hist-meta">☔ ${e.pop} ${e.tempMax!=='—'?'/ ↑'+e.tempMax:''}</div></div>
+        <span class="wx-hist-pref">${e.pref||''}</span>
+      </div>`;
+    }).join('');
+}
+
+// 都道府県変更で3日予報を自動更新
+document.addEventListener('DOMContentLoaded', () => {
+  const prefSel = document.getElementById('om-wx-pref');
+  prefSel?.addEventListener('change', () => {
+    localStorage.setItem(OM_WX_PREF_KEY, prefSel.value);
+    omWxFetch3Day(prefSel.value);
+  });
+});
 
 // ── Init ─────────────────────────────
 applyBg(localStorage.getItem('om-bgPreset') || 'light');
