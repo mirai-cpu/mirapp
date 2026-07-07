@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>打席反応ゲーム SWING! 【無料】草野球プレイヤー向けブラウザゲーム | Somirai Lab</title>
+  <meta name="description" content="ストレート・スライダー・カーブを見極めてスイング！草野球プレイヤー向け無料打席反応ゲーム。打率.300を目指せ。登録不要・ブラウザで即プレイ。">
+  <meta name="keywords" content="野球ゲーム,打席反応ゲーム,草野球ゲーム,ブラウザゲーム,無料野球ゲーム">
+  <link rel="canonical" href="https://somirai.jp/swing/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SWING! — 打席反応ゲーム【無料】">
+  <meta property="og:description" content="ストレート・スライダー・カーブを見極めてスイング！草野球プレイヤー向け無料打席反応ゲーム。">
+  <meta property="og:url" content="https://somirai.jp/swing/">
+  <meta property="og:site_name" content="Somirai Lab">
+  <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#04060f">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"SWING! - 打席反応ゲーム","url":"https://somirai.jp/swing/","description":"ストレート・スライダー・カーブを見極めてスイング！草野球プレイヤー向け無料打席反応ゲーム。","genre":"Sports","numberOfPlayers":{"@type":"QuantitativeValue","minValue":1,"maxValue":1},"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","author":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"}}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9485428408605916" crossorigin="anonymous"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #04060f;
+      --surface: #080c18;
+      --border:  #161e38;
+      --text:    #dde4f5;
+      --muted:   #3a4a7a;
+      --display: 'Bebas Neue', cursive;
+      --mono:    monospace;
+
+      --col-straight: #f0f0ff;
+      --col-slider:   #60a5fa;
+      --col-curve:    #fbbf24;
+      --col-change:   #4ade80;
+
+      --col-hit:      #4ade80;
+      --col-perfect:  #ffd700;
+      --col-hr:       #ff6b35;
+      --col-out:      #f43f5e;
+      --col-ball:     #38bdf8;
+      --col-strike:   #f59e0b;
+    }
+
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn   { from{opacity:0} to{opacity:1} }
+    @keyframes popIn    { 0%{opacity:0;transform:scale(.5)} 70%{transform:scale(1.1)} 100%{opacity:1;transform:scale(1)} }
+    @keyframes flash    { 0%,100%{opacity:0} 15%,85%{opacity:1} }
+    @keyframes glow     { 0%,100%{text-shadow:0 0 20px currentColor} 50%{text-shadow:0 0 60px currentColor,0 0 120px currentColor} }
+    @keyframes shake    { 0%,100%{transform:translate(0)} 20%{transform:translate(-6px,2px)} 40%{transform:translate(6px,-2px)} 60%{transform:translate(-4px,3px)} 80%{transform:translate(4px,-1px)} }
+    @keyframes particle { from{opacity:1;transform:translate(0,0) scale(1)} to{opacity:0;transform:translate(var(--px),var(--py)) scale(0)} }
+    @keyframes scanline { 0%{transform:translateY(-100%)} 100%{transform:translateY(100vh)} }
+    @keyframes breathe  { 0%,100%{opacity:.6} 50%{opacity:1} }
+    @keyframes markerMove { from{left:calc(100% - 8px)} to{left:calc(50% - 4px)} }
+    @keyframes swingFlash { 0%{opacity:.7} 100%{opacity:0} }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      touch-action: manipulation;
+    }
+
+    /* ── Scanline overlay ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.06) 2px, rgba(0,0,0,.06) 4px);
+    }
+
+    /* ── Grain ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: .025;
+    }
+
+    /* ── Game wrapper ── */
+    #game-wrap {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      max-width: 440px; margin: 0 auto;
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    #game-header {
+      flex-shrink: 0;
+      background: rgba(8,12,24,.95);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: relative; z-index: 10;
+    }
+    .header-left {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .back-link {
+      color: var(--muted); text-decoration: none; font-size: 11px;
+      font-family: var(--display); letter-spacing: .08em;
+      transition: color .15s;
+    }
+    .back-link:hover { color: var(--text); }
+    #game-title {
+      font-family: var(--display);
+      font-size: 26px; letter-spacing: .1em;
+      color: var(--col-perfect);
+      text-shadow: 0 0 20px rgba(255,215,0,.5);
+      line-height: 1;
+    }
+    #header-stats {
+      font-family: var(--display);
+      font-size: 14px; letter-spacing: .06em;
+      color: var(--muted);
+      text-align: right; line-height: 1.4;
+    }
+    #header-avg { font-size: 20px; color: var(--text); }
+    #header-counts { font-size: 12px; }
+
+    /* ── Field ── */
+    #game-field {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 80% 55% at 50% -5%, rgba(30,60,20,.7) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 40% at 50% 105%, rgba(10,20,8,.9) 0%, transparent 70%),
+        linear-gradient(180deg, #060c06 0%, #080f08 40%, #040904 100%);
+    }
+
+    /* Stadium lights */
+    #game-field::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 30% 20% at 10% 5%, rgba(255,240,180,.07) 0%, transparent 60%),
+        radial-gradient(ellipse 30% 20% at 90% 5%, rgba(255,240,180,.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Pitcher's mound */
+    #mound {
+      position: absolute;
+      top: 14%; left: 50%; transform: translateX(-50%);
+      width: 54px; height: 22px;
+      background: radial-gradient(ellipse, #2a1a0a 0%, #1a1008 60%, transparent 100%);
+      border-radius: 50%;
+      opacity: .7;
+    }
+
+    /* Pitcher SVG */
+    #pitcher-wrap {
+      position: absolute;
+      top: 5%; left: 50%; transform: translateX(-50%);
+      width: 48px; height: 60px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #pitcher-svg { transition: transform .2s ease; }
+    #pitcher-wrap.windup #pitcher-svg { transform: rotate(-8deg) scaleX(-1); }
+    #pitcher-wrap.throwing #pitcher-svg { transform: rotate(15deg) scaleX(-1); animation: shake .15s ease; }
+
+    /* Strike zone */
+    #strike-zone {
+      position: absolute;
+      left: 50%; transform: translateX(-50%);
+      bottom: 28%;
+      width: 115px; height: 130px;
+      border: 2px solid rgba(56,189,248,.35);
+      background: rgba(56,189,248,.03);
+      border-radius: 4px;
+      box-shadow: 0 0 20px rgba(56,189,248,.1), inset 0 0 20px rgba(56,189,248,.05);
+      transition: border-color .3s, box-shadow .3s;
+    }
+    #strike-zone.active {
+      border-color: rgba(56,189,248,.7);
+      box-shadow: 0 0 30px rgba(56,189,248,.25), inset 0 0 30px rgba(56,189,248,.1);
+    }
+    #strike-zone.miss  { border-color: rgba(244,63,94,.5); }
+    #strike-zone.hit   { border-color: rgba(74,222,128,.8); box-shadow: 0 0 40px rgba(74,222,128,.4); }
+    #sz-label {
+      position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+      font-family: var(--display); font-size: 10px; letter-spacing: .14em;
+      color: rgba(56,189,248,.4); white-space: nowrap;
+    }
+
+    /* Ball */
+    #game-ball {
+      position: absolute;
+      border-radius: 50%;
+      display: none;
+      pointer-events: none;
+      will-change: transform, width, height, left, top;
+      z-index: 5;
+    }
+    #ball-seam {
+      position: absolute; inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid rgba(200,100,80,.4);
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+      transform: rotate(30deg);
+    }
+
+    /* Screen flash */
+    #screen-flash {
+      position: absolute; inset: 0; z-index: 20;
+      pointer-events: none; opacity: 0;
+      background: rgba(255,255,255,0);
+      transition: opacity .05s;
+    }
+
+    /* Result text */
+    #result-text {
+      position: absolute; inset: 0; z-index: 15;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; opacity: 0;
+    }
+    #result-inner {
+      font-family: var(--display);
+      font-size: 52px; letter-spacing: .08em;
+      text-align: center; line-height: 1;
+      text-shadow: 0 4px 20px currentColor;
+    }
+    #result-sub {
+      font-size: 16px; letter-spacing: .12em;
+      margin-top: 6px; opacity: .7;
+    }
+    #result-text.show { animation: popIn .4s cubic-bezier(.34,1.56,.64,1) forwards; }
+
+    /* Particles */
+    #particles {
+      position: absolute; inset: 0; z-index: 16;
+      pointer-events: none;
+    }
+    .particle {
+      position: absolute;
+      width: 8px; height: 8px; border-radius: 50%;
+      top: 50%; left: 50%;
+      animation: particle .8s ease-out forwards;
+    }
+
+    /* Swing flash overlay */
+    #swing-flash {
+      position: absolute; inset: 0; z-index: 14;
+      pointer-events: none; opacity: 0;
+      background: radial-gradient(ellipse at 50% 70%, rgba(255,255,255,.25) 0%, transparent 60%);
+    }
+    #swing-flash.show { animation: swingFlash .25s ease-out forwards; }
+
+    /* Count bar */
+    #count-bar {
+      flex-shrink: 0;
+      background: rgba(8,12,24,.97);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: relative; z-index: 10;
+    }
+    .count-group {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .count-label {
+      font-family: var(--display); font-size: 14px; letter-spacing: .1em;
+    }
+    .count-label.b { color: var(--col-ball); }
+    .count-label.s { color: var(--col-strike); }
+    .count-label.o { color: var(--col-out); }
+    .count-dots { display: flex; gap: 4px; }
+    .dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      border: 1.5px solid currentColor; opacity: .3;
+      transition: opacity .2s, background .2s;
+    }
+    .dot.lit { opacity: 1; background: currentColor; }
+    #inning-display {
+      font-family: var(--display); font-size: 14px; letter-spacing: .08em; color: var(--muted);
+    }
+    #inning-num { color: var(--text); }
+
+    /* Timing rail */
+    #timing-section {
+      flex-shrink: 0;
+      background: rgba(8,12,24,.97);
+      padding: 10px 16px 8px;
+      position: relative; z-index: 10;
+    }
+    #timing-label {
+      font-family: var(--display); font-size: 10px; letter-spacing: .14em; color: var(--muted);
+      margin-bottom: 6px; display: flex; justify-content: space-between;
+    }
+    #timing-rail {
+      position: relative;
+      height: 10px;
+      background: rgba(255,255,255,.05);
+      border-radius: 5px;
+      overflow: visible;
+    }
+    /* Perfect zone marker (static, center) */
+    #timing-center {
+      position: absolute;
+      left: 50%; transform: translateX(-50%);
+      top: -4px; bottom: -4px;
+      width: 3px;
+      background: var(--col-perfect);
+      border-radius: 2px;
+      box-shadow: 0 0 10px var(--col-perfect);
+      opacity: .6;
+      z-index: 2;
+    }
+    /* Perfect window flash */
+    #timing-window {
+      position: absolute; top: 0; bottom: 0;
+      left: 50%; transform: translateX(-50%);
+      width: 60px;
+      background: rgba(255,215,0,.12);
+      border-radius: 4px;
+      transition: opacity .1s;
+      opacity: 0;
+      z-index: 1;
+    }
+    #timing-window.visible { opacity: 1; }
+    /* Moving ball marker */
+    #timing-marker {
+      position: absolute;
+      width: 16px; height: 16px; border-radius: 50%;
+      top: 50%; transform: translateY(-50%);
+      left: calc(100% - 12px);
+      background: radial-gradient(circle at 35% 30%, white, var(--marker-color, #f0f0f0));
+      box-shadow: 0 0 8px var(--marker-color, #f0f0f0);
+      z-index: 3;
+      display: none;
+      pointer-events: none;
+    }
+
+    /* Action area */
+    #action-area {
+      flex-shrink: 0;
+      background: rgba(8,12,24,.99);
+      padding: 12px 16px 18px;
+      position: relative; z-index: 10;
+    }
+    #swing-btn {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #1a2a1a, #0d1a0d);
+      border: 2px solid rgba(74,222,128,.3);
+      border-radius: 12px;
+      color: var(--col-hit);
+      font-family: var(--display);
+      font-size: 28px; letter-spacing: .12em;
+      cursor: pointer;
+      transition: background .1s, border-color .1s, transform .08s;
+      position: relative; overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    #swing-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 100%, rgba(74,222,128,.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    #swing-btn:active, #swing-btn.pressed {
+      transform: scale(.97);
+      border-color: rgba(74,222,128,.8);
+      background: linear-gradient(135deg, #243324, #162216);
+    }
+    #swing-btn.idle { color: var(--muted); border-color: rgba(255,255,255,.08); }
+    #pitch-info-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 8px;
+    }
+    #last-pitch { font-family: var(--display); font-size: 13px; letter-spacing: .08em; color: var(--muted); }
+    #pitch-type-badge {
+      font-family: var(--display); font-size: 13px; letter-spacing: .06em;
+      padding: 3px 10px; border-radius: 6px;
+      background: rgba(255,255,255,.05); color: var(--muted);
+    }
+
+    /* ── OVERLAYS ── */
+    .overlay {
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: rgba(4,6,15,.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 24px;
+      animation: fadeIn .4s ease;
+    }
+    .overlay.hidden { display: none; }
+
+    /* Start screen */
+    #start-screen h1 {
+      font-family: var(--display);
+      font-size: clamp(64px, 20vw, 96px); letter-spacing: .1em;
+      color: var(--col-perfect);
+      text-shadow: 0 0 40px rgba(255,215,0,.6), 0 0 80px rgba(255,215,0,.3);
+      line-height: 1;
+      animation: glow 2s ease-in-out infinite;
+    }
+    #start-screen .tagline {
+      font-size: 14px; color: var(--muted); margin: 8px 0 32px;
+      letter-spacing: .1em; font-family: var(--display);
+    }
+    .pitch-legend {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      width: 100%; max-width: 280px; margin-bottom: 28px;
+    }
+    .pitch-chip {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 8px; padding: 8px 10px;
+    }
+    .pitch-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .pitch-chip-name { font-family: var(--display); font-size: 13px; letter-spacing: .06em; }
+    .pitch-chip-speed { font-size: 11px; color: var(--muted); margin-left: auto; font-family: var(--mono); }
+    .how-to {
+      font-size: 12px; color: var(--muted); text-align: center; line-height: 2;
+      margin-bottom: 28px;
+      background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06);
+      border-radius: 10px; padding: 12px 16px;
+      width: 100%; max-width: 300px;
+    }
+    .play-btn {
+      background: var(--col-perfect);
+      color: #04060f;
+      border: none; border-radius: 12px;
+      font-family: var(--display); font-size: 24px; letter-spacing: .12em;
+      padding: 16px 56px; cursor: pointer;
+      box-shadow: 0 4px 24px rgba(255,215,0,.4);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .play-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,215,0,.5); }
+    .play-btn:active { transform: scale(.97); }
+
+    /* Gameover screen */
+    #gameover-screen h2 {
+      font-family: var(--display); font-size: 40px; letter-spacing: .1em;
+      color: var(--col-perfect); margin-bottom: 24px;
+      text-shadow: 0 0 30px rgba(255,215,0,.5);
+    }
+    .go-stats {
+      width: 100%; max-width: 280px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      margin-bottom: 20px;
+    }
+    .go-stat {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px; padding: 12px 14px; text-align: center;
+    }
+    .go-stat-label { font-family: var(--display); font-size: 11px; letter-spacing: .12em; color: var(--muted); margin-bottom: 4px; }
+    .go-stat-value { font-family: var(--display); font-size: 28px; letter-spacing: .04em; color: var(--text); }
+    .go-stat-value.highlight { color: var(--col-perfect); }
+    #highscore-msg {
+      font-family: var(--display); font-size: 14px; letter-spacing: .1em;
+      color: var(--col-perfect); margin-bottom: 20px;
+      text-shadow: 0 0 20px rgba(255,215,0,.5);
+      min-height: 22px;
+      animation: breathe 1.5s ease-in-out infinite;
+    }
+    .go-btns { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 280px; }
+    .go-btn-primary {
+      background: var(--col-hit); color: #04060f;
+      border: none; border-radius: 10px;
+      font-family: var(--display); font-size: 20px; letter-spacing: .1em;
+      padding: 14px; cursor: pointer;
+      transition: opacity .15s, transform .15s;
+    }
+    .go-btn-primary:hover { opacity: .85; transform: translateY(-1px); }
+    .go-btn-secondary {
+      background: transparent; color: var(--muted);
+      border: 1px solid rgba(255,255,255,.1); border-radius: 10px;
+      font-family: var(--display); font-size: 16px; letter-spacing: .08em;
+      padding: 12px; cursor: pointer; text-decoration: none; text-align: center;
+      transition: border-color .15s, color .15s;
+    }
+    .go-btn-secondary:hover { border-color: rgba(255,255,255,.25); color: var(--text); }
+
+    /* Windup text */
+    #windup-text {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      font-family: var(--display); font-size: 18px; letter-spacing: .18em; color: var(--muted);
+      opacity: 0; pointer-events: none; z-index: 6; white-space: nowrap;
+      animation: breathe 0.6s ease-in-out infinite;
+    }
+
+    /* SAFE AREA */
+    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+      #action-area { padding-bottom: calc(18px + env(safe-area-inset-bottom)); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── START SCREEN ── -->
+<div class="overlay" id="start-screen">
+  <h1>SWING!</h1>
+  <p class="tagline">打席反応ゲーム — ブラウザで即プレイ</p>
+
+  <div class="pitch-legend">
+    <div class="pitch-chip">
+      <div class="pitch-dot" style="background:#f0f0ff;box-shadow:0 0 6px #f0f0ff"></div>
+      <span class="pitch-chip-name">ストレート</span>
+      <span class="pitch-chip-speed">FAST</span>
+    </div>
+    <div class="pitch-chip">
+      <div class="pitch-dot" style="background:#60a5fa;box-shadow:0 0 6px #60a5fa"></div>
+      <span class="pitch-chip-name">スライダー</span>
+      <span class="pitch-chip-speed">BREAK→</span>
+    </div>
+    <div class="pitch-chip">
+      <div class="pitch-dot" style="background:#fbbf24;box-shadow:0 0 6px #fbbf24"></div>
+      <span class="pitch-chip-name">カーブ</span>
+      <span class="pitch-chip-speed">DROP↓</span>
+    </div>
+    <div class="pitch-chip">
+      <div class="pitch-dot" style="background:#4ade80;box-shadow:0 0 6px #4ade80"></div>
+      <span class="pitch-chip-name">チェンジアップ</span>
+      <span class="pitch-chip-speed">SLOW</span>
+    </div>
+  </div>
+
+  <div class="how-to">
+    ボールが近づいたら <strong>SWING !</strong><br>
+    タイミングバーの ⬛ が中央 ◆ に重なったら叩け<br>
+    ボール球は見送れ — 4球で四球<br>
+    3アウト × 3イニング = ゲーム終了
+  </div>
+
+  <button class="play-btn" id="start-btn">PLAY BALL</button>
+
+  <p style="margin-top:20px;font-size:11px;color:var(--muted);font-family:var(--display);letter-spacing:.08em;">
+    <a href="https://somirai.jp/" style="color:inherit;text-decoration:none;">Somirai Lab</a>
+  </p>
+</div>
+
+<!-- ── GAMEOVER SCREEN ── -->
+<div class="overlay hidden" id="gameover-screen">
+  <h2>GAME OVER</h2>
+  <div class="go-stats">
+    <div class="go-stat"><div class="go-stat-label">打 率</div><div class="go-stat-value highlight" id="go-avg">---</div></div>
+    <div class="go-stat"><div class="go-stat-label">安 打</div><div class="go-stat-value" id="go-hits">0</div></div>
+    <div class="go-stat"><div class="go-stat-label">本塁打</div><div class="go-stat-value" id="go-hr">0</div></div>
+    <div class="go-stat"><div class="go-stat-label">打 席</div><div class="go-stat-value" id="go-ab">0</div></div>
+  </div>
+  <div id="highscore-msg"></div>
+  <div class="go-btns">
+    <button class="go-btn-primary" id="retry-btn">もう一度プレイ</button>
+    <a href="https://somirai.jp/batting-stats/" class="go-btn-secondary">⚾ 打撃成績を記録する →</a>
+    <a href="https://somirai.jp/" class="go-btn-secondary" style="font-size:13px;">Somirai Lab トップへ</a>
+  </div>
+</div>
+
+<!-- ── MAIN GAME UI ── -->
+<div id="game-wrap">
+
+  <!-- Header -->
+  <header id="game-header">
+    <div class="header-left">
+      <a href="https://somirai.jp/" class="back-link">◀ SOMIRAI</a>
+      <div id="game-title">SWING!</div>
+    </div>
+    <div id="header-stats">
+      <div id="header-avg">---</div>
+      <div id="header-counts">H: 0 &nbsp;HR: 0</div>
+    </div>
+  </header>
+
+  <!-- Field -->
+  <div id="game-field">
+    <div id="mound"></div>
+
+    <!-- Pitcher SVG -->
+    <div id="pitcher-wrap" aria-hidden="true">
+      <svg id="pitcher-svg" viewBox="0 0 50 80" width="42" height="68">
+        <circle cx="25" cy="8" r="7" fill="#b08040"/>
+        <line x1="25" y1="15" x2="25" y2="46" stroke="#b08040" stroke-width="4" stroke-linecap="round"/>
+        <line id="arm-throw" x1="25" y1="25" x2="42" y2="18" stroke="#b08040" stroke-width="3" stroke-linecap="round"/>
+        <line x1="25" y1="25" x2="10" y2="34" stroke="#b08040" stroke-width="3" stroke-linecap="round"/>
+        <line x1="25" y1="46" x2="14" y2="68" stroke="#b08040" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="25" y1="46" x2="36" y2="68" stroke="#b08040" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="44" cy="16" r="4" fill="none" stroke="#b08040" stroke-width="2" opacity=".5"/>
+      </svg>
+    </div>
+
+    <!-- Strike zone -->
+    <div id="strike-zone">
+      <div id="sz-label">STRIKE ZONE</div>
+    </div>
+
+    <!-- Ball -->
+    <div id="game-ball">
+      <div id="ball-seam"></div>
+    </div>
+
+    <!-- Windup text -->
+    <div id="windup-text">READY...</div>
+
+    <!-- Overlays -->
+    <div id="screen-flash"></div>
+    <div id="swing-flash"></div>
+    <div id="result-text"><div><div id="result-inner"></div><div id="result-sub"></div></div></div>
+    <div id="particles"></div>
+  </div>
+
+  <!-- Count bar -->
+  <div id="count-bar">
+    <div class="count-group">
+      <span class="count-label b">B</span>
+      <div class="count-dots" id="ball-dots" style="color:var(--col-ball)">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+    </div>
+    <div class="count-group">
+      <span class="count-label s">S</span>
+      <div class="count-dots" id="strike-dots" style="color:var(--col-strike)">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+    </div>
+    <div class="count-group">
+      <span class="count-label o">O</span>
+      <div class="count-dots" id="out-dots" style="color:var(--col-out)">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+    </div>
+    <div id="inning-display">INN <span id="inning-num">1</span></div>
+  </div>
+
+  <!-- Timing rail -->
+  <div id="timing-section">
+    <div id="timing-label">
+      <span>早い</span>
+      <span id="timing-hint">ボールを待て…</span>
+      <span>遅い</span>
+    </div>
+    <div id="timing-rail">
+      <div id="timing-center"></div>
+      <div id="timing-window"></div>
+      <div id="timing-marker"></div>
+    </div>
+  </div>
+
+  <!-- Action area -->
+  <div id="action-area">
+    <button id="swing-btn" class="idle" aria-label="スイング" disabled>⚾ SWING !</button>
+    <div id="pitch-info-row">
+      <span id="last-pitch">— 最初の投球を待て —</span>
+      <span id="pitch-type-badge"></span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── Audio ────────────────────────────────────────────────────
+let _audioCtx = null;
+function getAudio() {
+  if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return _audioCtx;
+}
+function playTone(freq, dur, type='sine', vol=0.2) {
+  try {
+    const ctx = getAudio();
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type = type; o.frequency.setValueAtTime(freq, ctx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(freq * 0.5, ctx.currentTime + dur);
+    g.gain.setValueAtTime(vol, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+    o.start(ctx.currentTime); o.stop(ctx.currentTime + dur);
+  } catch {}
+}
+function playCrack() {
+  try {
+    const ctx = getAudio();
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.12, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (d.length * 0.06));
+    const src = ctx.createBufferSource(); src.buffer = buf;
+    const g = ctx.createGain(); g.gain.setValueAtTime(0.6, ctx.currentTime);
+    src.connect(g); g.connect(ctx.destination); src.start();
+  } catch {}
+}
+function playSwing() { playTone(160, 0.15, 'sawtooth', 0.12); }
+function playHit()   { playCrack(); playTone(440, 0.1, 'sine', 0.15); }
+function playHR()    { playCrack(); playTone(880, 0.35, 'sine', 0.2); }
+function playMiss()  { playTone(120, 0.2, 'sawtooth', 0.08); }
+function playBall()  { playTone(300, 0.12, 'sine', 0.1); }
+function playStrike(){ playTone(220, 0.15, 'square', 0.1); }
+
+// ── Game config ──────────────────────────────────────────────
+const PITCHES = [
+  { name:'ストレート', key:'straight', speed:385, color:'#f0f0ff', glow:'rgba(240,240,255,0.7)', dx:0,  dy:0  },
+  { name:'スライダー', key:'slider',   speed:455, color:'#60a5fa', glow:'rgba(96,165,250,0.7)',  dx:62, dy:12 },
+  { name:'カーブ',    key:'curve',    speed:585, color:'#fbbf24', glow:'rgba(251,191,36,0.7)',   dx:-28,dy:65  },
+  { name:'チェンジアップ',key:'change',speed:660,color:'#4ade80', glow:'rgba(74,222,128,0.7)', dx:10, dy:28  },
+];
+const PITCH_COLORS = { straight:'#f0f0ff', slider:'#60a5fa', curve:'#fbbf24', change:'#4ade80' };
+const TOTAL_OUTS = 9; // 3 innings
+
+// ── State ────────────────────────────────────────────────────
+const S = {
+  phase: 'ready', // ready | windup | pitch | result
+  balls: 0, strikes: 0, outs: 0,
+  hits: 0, ab: 0, hr: 0,
+  pitch: null,
+  swingTime: null,
+  releaseTime: null,
+  plateTime: null,
+  judgeTimer: null,
+  animId: null,
+  timingAnimId: null,
+  swung: false,
+};
+
+// ── DOM refs ─────────────────────────────────────────────────
+const $field        = document.getElementById('game-field');
+const $ball         = document.getElementById('game-ball');
+const $pitcher      = document.getElementById('pitcher-wrap');
+const $sz           = document.getElementById('strike-zone');
+const $swingBtn     = document.getElementById('swing-btn');
+const $resultText   = document.getElementById('result-text');
+const $resultInner  = document.getElementById('result-inner');
+const $resultSub    = document.getElementById('result-sub');
+const $flash        = document.getElementById('screen-flash');
+const $swingFlash   = document.getElementById('swing-flash');
+const $particles    = document.getElementById('particles');
+const $windupText   = document.getElementById('windup-text');
+const $timingMarker = document.getElementById('timing-marker');
+const $timingWindow = document.getElementById('timing-window');
+const $timingHint   = document.getElementById('timing-hint');
+const $lastPitch    = document.getElementById('last-pitch');
+const $pitchBadge   = document.getElementById('pitch-type-badge');
+const $headerAvg    = document.getElementById('header-avg');
+const $headerCounts = document.getElementById('header-counts');
+const $inningNum    = document.getElementById('inning-num');
+
+// ── Utilities ────────────────────────────────────────────────
+function fmtAvg(h, ab) { if (ab === 0) return '---'; return '.' + String(Math.round(h / ab * 1000)).padStart(3, '0'); }
+function rnd(min, max) { return Math.random() * (max - min) + min; }
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function updateCountDots() {
+  ['ball-dots','strike-dots','out-dots'].forEach((id, gi) => {
+    const counts = [S.balls, S.strikes, S.outs];
+    const maxes  = [4, 3, 3];
+    document.getElementById(id).querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('lit', i < counts[gi]);
+    });
+  });
+  const inning = Math.floor(S.outs / 3) + 1;
+  $inningNum.textContent = Math.min(inning, 3);
+  $headerAvg.textContent = fmtAvg(S.hits, S.ab);
+  $headerCounts.textContent = `H: ${S.hits}  HR: ${S.hr}`;
+}
+
+// ── Ball animation ───────────────────────────────────────────
+function getFieldRect() { return $field.getBoundingClientRect(); }
+
+function startBallAnim(pitch) {
+  if (S.animId) cancelAnimationFrame(S.animId);
+  const rect = getFieldRect();
+  const W = rect.width, H = rect.height;
+
+  // Pitcher release point (near top center)
+  const startX = W * 0.5;
+  const startY = H * 0.22;
+  const startSize = 4;
+
+  // Home plate landing (center-ish, lower)
+  const endX = W * 0.5 + pitch.dx;
+  const endY = H * 0.66 + pitch.dy;
+  const endSize = 54;
+
+  $ball.style.cssText = `
+    display:block; border-radius:50%; position:absolute;
+    background: radial-gradient(circle at 35% 30%, white, ${pitch.color});
+    box-shadow: 0 0 16px ${pitch.glow}, 0 0 32px ${pitch.glow};
+    pointer-events:none; will-change:transform,width,height,left,top;
+    width:${startSize}px; height:${startSize}px;
+    left:${startX - startSize/2}px; top:${startY - startSize/2}px;
+    z-index:5;
+  `;
+  document.getElementById('ball-seam').style.borderColor = `rgba(200,80,60,.35)`;
+
+  const duration = pitch.speed;
+  const t0 = performance.now();
+
+  function frame(now) {
+    const t = Math.min((now - t0) / duration, 1);
+    const tPos = t;
+    const tSize = t * t * (3 - 2 * t); // smooth step for size
+
+    const x = lerp(startX, endX, tPos);
+    const y = lerp(startY, endY, tPos);
+    const size = lerp(startSize, endSize, tSize);
+
+    $ball.style.width  = size + 'px';
+    $ball.style.height = size + 'px';
+    $ball.style.left   = (x - size/2) + 'px';
+    $ball.style.top    = (y - size/2) + 'px';
+
+    if (t < 1) S.animId = requestAnimationFrame(frame);
+    else        S.animId = null;
+  }
+  S.animId = requestAnimationFrame(frame);
+}
+
+// ── Timing rail animation ────────────────────────────────────
+function startTimingAnim(pitch) {
+  if (S.timingAnimId) cancelAnimationFrame(S.timingAnimId);
+  const rail = document.getElementById('timing-rail');
+  const railW = rail.offsetWidth;
+  // Marker starts at right edge, moves to center (= plateTime)
+  const startLeft = railW - 12;  // right edge
+  const endLeft   = railW / 2 - 8;  // center
+
+  $timingMarker.style.display = 'block';
+  $timingMarker.style.left = startLeft + 'px';
+  $timingMarker.style.setProperty('--marker-color', pitch.color);
+
+  const t0 = performance.now();
+  const dur = pitch.speed;
+
+  function frame(now) {
+    if (S.phase !== 'pitch') { S.timingAnimId = null; return; }
+    const t = Math.min((now - t0) / dur, 1);
+    const left = lerp(startLeft, endLeft, t);
+    $timingMarker.style.left = left + 'px';
+
+    // Show perfect window when marker is near center (t = 0.85 to 1.15)
+    if (t > 0.82 && t < 1.18) {
+      $timingWindow.classList.add('visible');
+    } else {
+      $timingWindow.classList.remove('visible');
+    }
+
+    if (t < 1.5) S.timingAnimId = requestAnimationFrame(frame);
+    else { S.timingAnimId = null; $timingMarker.style.display = 'none'; $timingWindow.classList.remove('visible'); }
+  }
+  S.timingAnimId = requestAnimationFrame(frame);
+}
+
+// ── Particles (HR) ───────────────────────────────────────────
+function spawnParticles() {
+  $particles.innerHTML = '';
+  const colors = ['#ffd700','#ff6b35','#ff8c42','#ffab00','#fff176','#ffe082'];
+  for (let i = 0; i < 28; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const angle = (i / 28) * 360 + rnd(-20, 20);
+    const dist  = rnd(80, 180);
+    const rad   = angle * Math.PI / 180;
+    const px = Math.cos(rad) * dist;
+    const py = Math.sin(rad) * dist;
+    const sz = rnd(6, 14);
+    p.style.cssText = `width:${sz}px;height:${sz}px;background:${colors[i%colors.length]};
+      --px:${px}px;--py:${py}px;animation-duration:${rnd(0.6,1.1)}s;animation-delay:${rnd(0,0.1)}s;
+      margin-left:-${sz/2}px;margin-top:-${sz/2}px;`;
+    $particles.appendChild(p);
+  }
+  setTimeout(() => $particles.innerHTML = '', 1200);
+}
+
+// ── Screen flash ─────────────────────────────────────────────
+function doFlash(color, dur=80) {
+  $flash.style.background = color;
+  $flash.style.opacity = '1';
+  setTimeout(() => $flash.style.opacity = '0', dur);
+}
+
+// ── Show result ──────────────────────────────────────────────
+function showResult(text, sub, color, isHR=false) {
+  $resultInner.textContent = text;
+  $resultInner.style.color = color;
+  $resultSub.textContent   = sub;
+  $resultSub.style.color   = color;
+  $resultText.className    = 'show';
+  $resultText.style.opacity = '1';
+  if (isHR) {
+    doFlash('rgba(255,107,53,0.3)', 200);
+    spawnParticles();
+  }
+}
+function clearResult() {
+  $resultText.className = '';
+  $resultText.style.opacity = '0';
+}
+
+// ── Update strike zone state ──────────────────────────────────
+function szState(state) {
+  $sz.className = state || '';
+}
+
+// ── Enable/disable swing button ───────────────────────────────
+function enableSwing(yes) {
+  $swingBtn.disabled = !yes;
+  $swingBtn.classList.toggle('idle', !yes);
+}
+
+// ── Generate pitch ───────────────────────────────────────────
+function generatePitch() {
+  const type = PITCHES[Math.floor(Math.random() * PITCHES.length)];
+  const isStrike = Math.random() < 0.6;
+  let finalDx = type.dx;
+  let finalDy = type.dy;
+  if (!isStrike) {
+    // Push outside strike zone
+    const side = Math.random() > 0.5 ? 1 : -1;
+    if (Math.random() > 0.4) finalDx += side * rnd(80, 130);
+    else finalDy += side * rnd(70, 110);
+  }
+  return { ...type, isStrike, finalDx, finalDy };
+}
+
+// ── Judge outcome ────────────────────────────────────────────
+function judge() {
+  const p = S.pitch;
+  clearTimeout(S.judgeTimer);
+  S.judgeTimer = null;
+
+  if (!S.swung) {
+    // No swing
+    if (p.isStrike) {
+      S.strikes++;
+      if (S.strikes >= 3) { handleOut('見逃し三振', ''); return; }
+      showResult('見逃し', 'ストライク', 'var(--col-strike)');
+      playStrike();
+      szState('miss');
+    } else {
+      S.balls++;
+      if (S.balls >= 4) { handleWalk(); return; }
+      showResult('ボール', `${S.balls} BALL`, 'var(--col-ball)');
+      playBall();
+    }
+    scheduleNext(1400);
+    return;
+  }
+
+  // Swung
+  playSwing();
+  $swingFlash.classList.remove('show');
+  void $swingFlash.offsetWidth;
+  $swingFlash.classList.add('show');
+
+  if (!p.isStrike) {
+    S.strikes++;
+    if (S.strikes >= 3) { handleOut('空振り三振', 'BALL OUTSIDE'); playMiss(); return; }
+    showResult('空振り', 'ボール球', 'var(--col-out)');
+    playMiss();
+    szState('miss');
+    scheduleNext(1400);
+    return;
+  }
+
+  const diff = Math.abs(S.swingTime - S.plateTime);
+  if (diff <= 80) {
+    // Perfect timing
+    S.ab++;
+    S.hits++;
+    const isHR = Math.random() < 0.12;
+    if (isHR) {
+      S.hr++;
+      showResult('⚾ HOME RUN !!', 'PERFECT TIMING', 'var(--col-hr)', true);
+      doFlash('rgba(255,107,53,.25)', 300);
+      playHR();
+    } else {
+      showResult('⚾ HIT !', 'PERFECT !', 'var(--col-perfect)');
+      doFlash('rgba(255,215,0,.15)', 100);
+      playHit();
+    }
+    szState('hit');
+    scheduleNext(isHR ? 2000 : 1500);
+  } else if (diff <= 220) {
+    // Okay timing — may be out
+    S.ab++;
+    const outcomes = ['ゴロ', 'フライ', 'ライナー'];
+    const label = outcomes[Math.floor(Math.random() * outcomes.length)];
+    if (Math.random() < 0.22) {
+      // Lucky hit on mediocre timing
+      S.hits++;
+      showResult('HIT !', `${label} / 内野安打`, 'var(--col-hit)');
+      playHit();
+      szState('hit');
+    } else {
+      showResult('アウト', label, 'var(--col-out)');
+      playMiss();
+      szState('miss');
+      S.strikes = 0; S.balls = 0;
+      S.outs++;
+      if (S.outs >= TOTAL_OUTS) { scheduleGameOver(); return; }
+    }
+    scheduleNext(1400);
+  } else {
+    // Too early or too late
+    S.strikes++;
+    if (S.strikes >= 3) { handleOut('空振り三振', diff < 80 ? '早すぎ' : '遅すぎ'); playMiss(); return; }
+    const label = S.swingTime < S.plateTime ? 'タイミング早い' : 'タイミング遅い';
+    showResult('空振り', label, 'var(--col-out)');
+    playMiss();
+    szState('miss');
+    scheduleNext(1400);
+  }
+}
+
+function handleOut(label, sub) {
+  S.ab++;
+  S.outs++;
+  S.strikes = 0; S.balls = 0;
+  showResult(label, sub, 'var(--col-out)');
+  doFlash('rgba(244,63,94,.12)', 120);
+  if (S.outs >= TOTAL_OUTS) { scheduleGameOver(); return; }
+  scheduleNext(1600);
+}
+
+function handleWalk() {
+  showResult('⚡ 四球', '4 BALLS — 出塁', 'var(--col-ball)');
+  playBall();
+  S.balls = 0; S.strikes = 0;
+  scheduleNext(1400);
+}
+
+function scheduleNext(delay) {
+  updateCountDots();
+  $ball.style.display = 'none';
+  if (S.animId) { cancelAnimationFrame(S.animId); S.animId = null; }
+  if (S.timingAnimId) { cancelAnimationFrame(S.timingAnimId); S.timingAnimId = null; }
+  $timingMarker.style.display = 'none';
+  $timingWindow.classList.remove('visible');
+  enableSwing(false);
+  setTimeout(() => {
+    szState('');
+    clearResult();
+    startPitch();
+  }, delay);
+}
+
+function scheduleGameOver() {
+  updateCountDots();
+  $ball.style.display = 'none';
+  enableSwing(false);
+  setTimeout(showGameOver, 1800);
+}
+
+// ── Pitch cycle ──────────────────────────────────────────────
+function startPitch() {
+  if (S.outs >= TOTAL_OUTS) { showGameOver(); return; }
+
+  S.phase   = 'windup';
+  S.swung   = false;
+  S.swingTime = null;
+  S.pitch   = generatePitch();
+  S.releaseTime = null;
+  S.plateTime   = null;
+
+  // Show windup
+  $pitcher.className = 'windup';
+  $windupText.style.opacity = '1';
+  $timingHint.textContent = 'ボールを待て…';
+  enableSwing(false);
+
+  const windupDelay = rnd(800, 1500);
+  setTimeout(() => {
+    if (S.phase !== 'windup') return;
+    $pitcher.className = 'throwing';
+    $windupText.style.opacity = '0';
+
+    setTimeout(() => {
+      S.phase       = 'pitch';
+      S.releaseTime = performance.now();
+      S.plateTime   = S.releaseTime + S.pitch.speed;
+
+      // Update pitch type display
+      const p = S.pitch;
+      $lastPitch.textContent = 'ボール接近中 — スイングのタイミング！';
+      $pitchBadge.textContent = p.name;
+      $pitchBadge.style.color = p.color;
+      $pitchBadge.style.background = `${p.glow.replace('0.7','0.12')}`;
+
+      $timingHint.textContent = '◆ に合わせてSWING！';
+      szState('active');
+      enableSwing(true);
+
+      startBallAnim(p);
+      startTimingAnim(p);
+
+      // Auto-judge after plateTime + 220ms
+      S.judgeTimer = setTimeout(() => {
+        if (S.phase === 'pitch') {
+          S.phase = 'result';
+          judge();
+        }
+      }, p.speed + 220);
+
+    }, 120);
+  }, windupDelay);
+}
+
+// ── Swing handler ─────────────────────────────────────────────
+function doSwing() {
+  if (S.phase !== 'pitch' || S.swung) return;
+  S.swung     = true;
+  S.swingTime = performance.now();
+  clearTimeout(S.judgeTimer);
+  S.judgeTimer = null;
+  S.phase = 'result';
+  $swingBtn.classList.add('pressed');
+  setTimeout(() => $swingBtn.classList.remove('pressed'), 200);
+  judge();
+}
+
+// ── Game over ────────────────────────────────────────────────
+function showGameOver() {
+  S.phase = 'gameover';
+  const avg = fmtAvg(S.hits, S.ab);
+  document.getElementById('go-avg').textContent   = avg;
+  document.getElementById('go-hits').textContent  = S.hits;
+  document.getElementById('go-hr').textContent    = S.hr;
+  document.getElementById('go-ab').textContent    = S.ab;
+
+  // Highscore
+  const prev = localStorage.getItem('swing-highscore') || '0';
+  const prevVal = parseFloat(prev) || 0;
+  const cur = S.ab > 0 ? S.hits / S.ab : 0;
+  const hsMsg = document.getElementById('highscore-msg');
+  if (cur > prevVal && S.ab >= 3) {
+    localStorage.setItem('swing-highscore', cur.toFixed(4));
+    hsMsg.textContent = '🏆 打率記録更新！最高: ' + avg;
+  } else if (prevVal > 0) {
+    hsMsg.textContent = `最高打率: .${String(Math.round(prevVal * 1000)).padStart(3,'0')}`;
+  } else {
+    hsMsg.textContent = '';
+  }
+
+  if(typeof gtag === 'function') gtag('event', 'game_complete', { game: 'swing', hits: S.hits, ab: S.ab, hr: S.hr });
+  document.getElementById('gameover-screen').classList.remove('hidden');
+}
+
+// ── Reset & start ─────────────────────────────────────────────
+function resetGame() {
+  if (S.animId) cancelAnimationFrame(S.animId);
+  if (S.timingAnimId) cancelAnimationFrame(S.timingAnimId);
+  clearTimeout(S.judgeTimer);
+  Object.assign(S, { phase:'ready', balls:0, strikes:0, outs:0, hits:0, ab:0, hr:0,
+    pitch:null, swingTime:null, releaseTime:null, plateTime:null, judgeTimer:null,
+    animId:null, timingAnimId:null, swung:false });
+  $ball.style.display = 'none';
+  $windupText.style.opacity = '0';
+  clearResult();
+  szState('');
+  $timingMarker.style.display = 'none';
+  $timingWindow.classList.remove('visible');
+  $pitcher.className = '';
+  updateCountDots();
+  $lastPitch.textContent = '— 最初の投球を待て —';
+  $pitchBadge.textContent = '';
+  $timingHint.textContent = 'ボールを待て…';
+}
+
+// ── Event listeners ───────────────────────────────────────────
+document.getElementById('start-btn').addEventListener('click', () => {
+  document.getElementById('start-screen').classList.add('hidden');
+  resetGame();
+  setTimeout(startPitch, 600);
+});
+
+document.getElementById('retry-btn').addEventListener('click', () => {
+  document.getElementById('gameover-screen').classList.add('hidden');
+  resetGame();
+  setTimeout(startPitch, 400);
+});
+
+$swingBtn.addEventListener('click', doSwing);
+$swingBtn.addEventListener('touchstart', e => { e.preventDefault(); doSwing(); }, { passive: false });
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' || e.code === 'Enter') {
+    e.preventDefault();
+    doSwing();
+  }
+});
+
+// Prevent scroll on game field touch
+$field.addEventListener('touchstart', e => { e.preventDefault(); doSwing(); }, { passive: false });
+</script>
+
+<script>
+(function(){
+  if(localStorage.getItem('cookie_ok'))return;
+  var b=document.createElement('div');
+  b.id='ck-banner';
+  b.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#04060f;color:#3a4a7a;font-size:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:10000;border-top:1px solid rgba(255,215,0,.15)';
+  b.innerHTML='<span>本サイトはCookieを使用しています。<a href="/privacy.html" style="color:#ffd700">詳細</a></span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:transparent;color:#ffd700;border:1px solid #ffd700;border-radius:5px;padding:4px 12px;font-size:12px;cursor:pointer;white-space:nowrap">OK</button>';
+  document.body.appendChild(b);
+})();
+</script>
+</body>
+</html>
