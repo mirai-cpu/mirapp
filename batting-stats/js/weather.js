@@ -224,9 +224,79 @@ const WeatherModule = (() => {
 
   const PREFS = Object.keys(PREF_OFFICES);
 
+  // ── 市区町村ジオコーディング（Nominatim / OSM）──────────────
+  // Nominatim: 商用利用OK、1req/s制限、User-Agent必須
+  async function geocodeCity(cityName) {
+    const q = encodeURIComponent(cityName + ' 日本');
+    const url = `https://nominatim.openstreetmap.org/search?q=${q}&format=json&limit=1&countrycodes=jp&accept-language=ja`;
+    const res = await fetch(url, { headers: { 'User-Agent': 'SomiraiLab-Weather/1.0 (somirai.jp)' } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data.length) return null;
+    const name = data[0].display_name.split(',').slice(0, 2).join('').trim();
+    return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), name };
+  }
+
+  // ── Open-Meteo 予報（緯度経度指定・市区町村精度）────────────
+  // Open-Meteo Forecast: 非商用無料。本サイトは現在収益0のため利用可。
+  async function fromOpenMeteoForecast(lat, lon, days = 7) {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat.toFixed(4)}&longitude=${lon.toFixed(4)}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=${days}`;
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data.daily?.time?.length) return null;
+    return data.daily.time.map((d, i) => ({
+      dateStr:  d,
+      dateLabel: dateLabel(d),
+      emoji:    wmoEmoji(data.daily.weathercode[i]),
+      desc:     wmoDesc(data.daily.weathercode[i]),
+      pop:      (data.daily.precipitation_probability_max[i] ?? '—') + '%',
+      tempMin:  Math.round(data.daily.temperature_2m_min[i]) + '°',
+      tempMax:  Math.round(data.daily.temperature_2m_max[i]) + '°',
+      source:   'OpenMeteo',
+    }));
+  }
+
+  // ── 市名で検索 → 7日予報を返す ───────────────────────────────
+  async function searchCityForecast(cityName) {
+    const geo = await geocodeCity(cityName);
+    if (!geo) return null;
+    const forecast = await fromOpenMeteoForecast(geo.lat, geo.lon, 7);
+    if (!forecast) return null;
+    return { ...geo, forecast };
+  }
+
+  // ── 市名 + 特定日の天気を返す ─────────────────────────────────
+  async function getCityWeatherForDate(cityName, dateStr) {
+    const geo = await geocodeCity(cityName);
+    if (!geo) return null;
+    let result;
+    if (isPast(dateStr)) {
+      result = await fromArchive(dateStr.slice(0,10).replace(/-/g,'-') ? geo.lat : null, geo.lon);
+      // fromArchive needs pref name → remap to use lat/lon directly
+      const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${geo.lat.toFixed(4)}&longitude=${geo.lon.toFixed(4)}&start_date=${dateStr}&end_date=${dateStr}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Asia%2FTokyo`;
+      const res = await fetch(url); if (!res.ok) return null;
+      const data = await res.json(); if (!data.daily?.time?.length) return null;
+      const code = data.daily.weathercode[0];
+      const precip = parseFloat(data.daily.precipitation_sum[0]) || 0;
+      const popEst = precip > 15 ? '80%' : precip > 8 ? '60%' : precip > 3 ? '40%' : precip > 0.5 ? '20%' : '0%';
+      result = { emoji: wmoEmoji(code), desc: wmoDesc(code), pop: popEst,
+        tempMin: Math.round(data.daily.temperature_2m_min[0]) + '°',
+        tempMax: Math.round(data.daily.temperature_2m_max[0]) + '°', source: 'Archive' };
+    } else {
+      const days = await fromOpenMeteoForecast(geo.lat, geo.lon, 7);
+      result = days?.find(d => d.dateStr === dateStr) || null;
+    }
+    if (result) {
+      storeCache(cityName, dateStr, { ...result, cityName: geo.name });
+    }
+    return result ? { ...result, cityName: geo.name } : null;
+  }
+
   return {
     getWeather, forecast3Day, getCacheHistory,
     getSavedPref, savePref,
     isPast, dateLabel, PREFS,
+    geocodeCity, fromOpenMeteoForecast, searchCityForecast, getCityWeatherForDate,
   };
 })();

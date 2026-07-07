@@ -1070,17 +1070,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function _fetchWeatherForDate() {
       const dateVal = document.getElementById('input-date')?.value;
       if (!dateVal || !_wxBody) return;
+      const cityInput = document.getElementById('wx-city-input');
+      const city = cityInput?.value.trim();
       const pref = _wxPrefSel.value;
       _wxBody.innerHTML = '<span class="wx-loading">取得中…</span>';
       _wxCurrentData = null;
       try {
-        const w = await WeatherModule.getWeather(pref, dateVal);
-        _wxCurrentData = w ? { ...w, pref, date: dateVal } : null;
+        let w = null;
+        let locationName = pref;
+        // 市区町村が入力されていればそちらを優先
+        if (city && typeof WeatherModule !== 'undefined' && WeatherModule.getCityWeatherForDate) {
+          w = await WeatherModule.getCityWeatherForDate(city, dateVal);
+          if (w) locationName = w.cityName || city;
+        }
+        if (!w) {
+          w = await WeatherModule.getWeather(pref, dateVal);
+        }
+        _wxCurrentData = w ? { ...w, pref, city: city || null, date: dateVal } : null;
         if (!w) {
           _wxBody.innerHTML = '<span class="wx-error">データを取得できませんでした</span>';
           return;
         }
-        const srcLabel = w.source === 'Archive' ? '過去' : '予報';
+        const srcLabel = w.source === 'Archive' ? '過去' : w.source === 'OpenMeteo' ? '予報(市)' : '予報';
         _wxBody.innerHTML = `
           <div class="wx-card">
             <span class="wx-emoji" role="img" aria-label="${w.desc}">${w.emoji}</span>
