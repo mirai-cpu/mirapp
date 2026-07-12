@@ -1049,6 +1049,29 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ── チュートリアル ────────────────────────────────────────────
   Tutorial.init();
 
+  // ── 天気ウィジェット トグル ───────────────────────────────────
+  const _wxToggleBtn = document.getElementById('wx-toggle-btn');
+  const _wxWidgetGroup = document.getElementById('wx-widget-group');
+  const _wxToggleArrow = document.getElementById('wx-toggle-arrow');
+  const _wxToggleLabel = document.getElementById('wx-toggle-label');
+  if (_wxToggleBtn && _wxWidgetGroup) {
+    _wxToggleBtn.addEventListener('click', () => {
+      const expanded = _wxToggleBtn.getAttribute('aria-expanded') === 'true';
+      _wxToggleBtn.setAttribute('aria-expanded', String(!expanded));
+      _wxWidgetGroup.style.display = expanded ? 'none' : '';
+      _wxToggleArrow.style.transform = expanded ? '' : 'rotate(180deg)';
+      if (!expanded) {
+        _wxToggleBtn.style.borderColor = 'rgba(255,215,0,.35)';
+        _wxToggleLabel.textContent = '試合日の天気';
+        const dateVal = document.getElementById('input-date')?.value;
+        if (dateVal) setTimeout(_fetchWeatherForDate, 50);
+      } else {
+        _wxToggleBtn.style.borderColor = '';
+        _wxToggleLabel.textContent = '試合日の天気を確認する';
+      }
+    });
+  }
+
   // ── 天気ウィジェット ──────────────────────────────────────────
   let _wxCurrentData = null;
   const _wxPrefSel   = document.getElementById('wx-pref-select');

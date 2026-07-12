@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="打順メーカー×スタメン表が60秒で完成。登録不要・アプリ不要・完全無料の野球オーダー作成ツール。草野球の打順・守備・投手ローテをまとめて管理してLINEで即共有。印刷対応。">
+  <meta name="description" content="無料の打順メーカー。選手名を登録するだけで打順・守備配置・投手ローテが60秒で完成。守備配置図つきスタメン表をLINEにワンタップ共有。草野球・少年野球に最適。登録不要・アプリ不要。">
   <meta name="keywords" content="野球スタメン作成サイト,スタメン作成,野球オーダー作成,打順メーカー,スタメンメーカー,オーダー表,草野球,軟式野球,スタメン表,投手ローテ">
   <meta name="theme-color" content="#020805">
   <link rel="icon" href="/order-maker/icons/favicon.ico" sizes="any">
@@ -103,7 +103,7 @@
     ]
   }
   </script>
-  <title>打順メーカー・野球オーダー表・スタメン作成【無料・登録不要】TACTICIAN</title>
+  <title>【無料】打順メーカー | 野球スタメン作成・オーダー表 60秒完成 TACTICIAN</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9485428408605916" crossorigin="anonymous"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
   <script>
@@ -867,7 +867,12 @@
         <span class="card-sub" id="roster-count">0人</span>
       </div>
       <div class="roster-list" id="roster-list">
-        <div class="empty"><div class="empty-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><p>まだ選手が登録されていません</p></div>
+        <div class="empty" onclick="focusAddForm()" style="cursor:pointer;padding:28px 16px;">
+          <div class="empty-icon">⚾</div>
+          <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;">選手を登録してオーダーを組もう</p>
+          <p style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:14px;">上のフォームに名前を入れて<br>「追加する」をタップするだけ</p>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.35);border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;color:var(--accent);font-family:var(--mono);">⬆ 選手を追加する</div>
+        </div>
       </div>
     </div>
 
@@ -1418,9 +1423,9 @@ function renderRoster() {
   if (!players.length) {
     el.innerHTML = `<div class="empty-cta" onclick="focusAddForm()" role="button" aria-label="選手追加フォームへ移動">
       <div class="empty-cta-ball">⚾</div>
-      <div class="empty-cta-title">まず選手を1人登録しましょう</div>
-      <div class="empty-cta-desc">名前を入れて「追加する」を押すだけ<br>ポジション・背番号はあとから編集できます</div>
-      <div class="empty-cta-link">↑ 上のフォームで追加する</div>
+      <div class="empty-cta-title">選手を登録してオーダーを組もう</div>
+      <div class="empty-cta-desc">「選手」タブで名前を入力 → 「追加する」<br>登録後はここで打順・守備を設定できます</div>
+      <div class="empty-cta-link">⬆ 選手タブへ移動して追加する</div>
     </div>`;
     return;
   }
