@@ -811,8 +811,8 @@ function startBallAnim(pitch) {
   const startSize = 4;
 
   // Home plate landing (center-ish, lower)
-  const endX = W * 0.5 + pitch.dx;
-  const endY = H * 0.66 + pitch.dy;
+  const endX = W * 0.5 + pitch.finalDx;
+  const endY = H * 0.66 + pitch.finalDy;
   const endSize = 40;
 
   $ball.style.cssText = `
@@ -977,9 +977,9 @@ function generatePitch() {
     finalDx = szRelX + rnd(-(szHW - BALL_R), szHW - BALL_R);
     finalDy = szRelY + rnd(-(szHH - BALL_R), szHH - BALL_R);
   } else {
-    // ボールがゾーン外に完全に出る（端からBall_R+6px以上外）
+    // ゾーン外に着地（一部は枠にかかるケースも含む）
     const dir     = Math.floor(Math.random() * 4);
-    const margin  = rnd(BALL_R + 6, 80);
+    const margin  = rnd(4, 80);
     switch (dir) {
       case 0: finalDx = szRelX + szHW + margin;  finalDy = szRelY + rnd(-szHH, szHH); break; // 外角
       case 1: finalDx = szRelX - szHW - margin;  finalDy = szRelY + rnd(-szHH, szHH); break; // 内角
@@ -988,10 +988,10 @@ function generatePitch() {
     }
   }
 
-  // isStrike は着地座標で確定（乱数ではない）
+  // isStrike: ボール端（半径分）がゾーン枠にかかれば判定（枠の線もストライク）
   const isStrike = (
-    finalDx >= szRelX - szHW && finalDx <= szRelX + szHW &&
-    finalDy >= szRelY - szHH && finalDy <= szRelY + szHH
+    finalDx > szRelX - szHW - BALL_R && finalDx < szRelX + szHW + BALL_R &&
+    finalDy > szRelY - szHH - BALL_R && finalDy < szRelY + szHH + BALL_R
   );
 
   const speed = Math.round(type.baseSpeed * DIFF.speedFactor);
