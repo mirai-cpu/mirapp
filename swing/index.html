@@ -813,7 +813,7 @@ function startBallAnim(pitch) {
   // Home plate landing (center-ish, lower)
   const endX = W * 0.5 + pitch.dx;
   const endY = H * 0.66 + pitch.dy;
-  const endSize = 54;
+  const endSize = 40;
 
   $ball.style.cssText = `
     display:block; border-radius:50%; position:absolute;
@@ -970,14 +970,16 @@ function generatePitch() {
 
   let finalDx, finalDy;
 
+  const BALL_R = 20; // endSize/2
+
   if (wantStrike) {
-    // ゾーン内に着地（端5px は避ける）
-    finalDx = szRelX + rnd(-(szHW - 6), szHW - 6);
-    finalDy = szRelY + rnd(-(szHH - 6), szHH - 6);
+    // ボールがゾーン内に完全に収まる（端からBall_R分余裕）
+    finalDx = szRelX + rnd(-(szHW - BALL_R), szHW - BALL_R);
+    finalDy = szRelY + rnd(-(szHH - BALL_R), szHH - BALL_R);
   } else {
-    // ゾーン外の4方向いずれかに着地
+    // ボールがゾーン外に完全に出る（端からBall_R+6px以上外）
     const dir     = Math.floor(Math.random() * 4);
-    const margin  = rnd(22, 80);
+    const margin  = rnd(BALL_R + 6, 80);
     switch (dir) {
       case 0: finalDx = szRelX + szHW + margin;  finalDy = szRelY + rnd(-szHH, szHH); break; // 外角
       case 1: finalDx = szRelX - szHW - margin;  finalDy = szRelY + rnd(-szHH, szHH); break; // 内角
