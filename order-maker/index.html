@@ -2444,6 +2444,156 @@ if (players.length === 0 && window.innerWidth >= 768) {
   </ul>
 </section>
 
+<!-- ── 使い方3ステップ ── -->
+<section aria-label="打順メーカーの使い方" style="padding:26px 16px;border-top:1px solid #1c1f30;background:#070810;position:relative;z-index:1;">
+  <div style="max-width:640px;margin:0 auto;">
+    <h2 style="font-size:14px;font-weight:700;color:#00e676;margin-bottom:6px;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;">打順メーカーの使い方（3ステップ）</h2>
+    <p style="font-size:13px;color:#a8adc4;line-height:1.9;margin-bottom:16px;">
+      初めての方でも3分でスタメン表が完成します。会員登録もアプリのインストールも不要で、入力したデータはお使いのブラウザ内にだけ保存されます。
+    </p>
+
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+      <div style="display:flex;gap:14px;background:#0d0f18;border:1px solid #1c2a3a;border-radius:10px;padding:14px 16px;">
+        <span style="flex-shrink:0;width:28px;height:28px;border-radius:4px;border:1.5px solid #00e676;color:#00e676;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;">1</span>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#eaecf4;margin-bottom:4px;">選手を登録する</div>
+          <div style="font-size:12px;color:#a8adc4;line-height:1.8;">「選手」タブで名前・背番号・守備できるポジションを登録します。控えを含めてチーム全員を先に登録しておくと、当日の欠席者を「欠」ボタンで外すだけでオーダーが組めるようになります。ポジションは複数選択できるので、兼任する選手も1人分の登録で済みます。</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;background:#0d0f18;border:1px solid #1c2a3a;border-radius:10px;padding:14px 16px;">
+        <span style="flex-shrink:0;width:28px;height:28px;border-radius:4px;border:1.5px solid #00e676;color:#00e676;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;">2</span>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#eaecf4;margin-bottom:4px;">打順と守備を決める</div>
+          <div style="font-size:12px;color:#a8adc4;line-height:1.8;">「オーダー」タブで1番から9番までの枠に選手を割り当てます。左のハンドルをドラッグすれば打順の入れ替えは一瞬です。DH制のオン・オフ、助っ人のゲスト入力にも対応。決まったオーダーは名前を付けて保存でき、「対右投手」「Bチーム」など複数パターンを使い分けられます。</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;background:#0d0f18;border:1px solid #1c2a3a;border-radius:10px;padding:14px 16px;">
+        <span style="flex-shrink:0;width:28px;height:28px;border-radius:4px;border:1.5px solid #00e676;color:#00e676;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;">3</span>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#eaecf4;margin-bottom:4px;">スタメン表を共有・印刷する</div>
+          <div style="font-size:12px;color:#a8adc4;line-height:1.8;">「スタメン表」タブを開くと、守備配置図つきの一覧が自動で生成されます。シェアボタンからLINEのチームグループへワンタップ送信、テキストコピー、そのまま印刷して審判に渡す紙のオーダー表としても使えます。投手ローテを設定していれば登板イニングも一緒に出力されます。</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:12px;color:#555878;line-height:1.8;">
+      さらに詳しい手順は<a href="guide.html" style="color:#00e676;text-decoration:underline;">使い方ガイド</a>にまとめています。
+    </p>
+  </div>
+</section>
+
+<!-- ── 打順理論の解説 ── -->
+<section aria-label="打順の組み方・打順理論" style="padding:26px 16px;border-top:1px solid #1c1f30;background:#070810;position:relative;z-index:1;">
+  <div style="max-width:640px;margin:0 auto;">
+    <h2 style="font-size:14px;font-weight:700;color:#00e676;margin-bottom:6px;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;">野球の打順の組み方 — 1番から9番までの役割</h2>
+    <p style="font-size:13px;color:#a8adc4;line-height:1.9;margin-bottom:18px;">
+      打順を組むうえで最初に押さえておきたいのは、<strong style="color:#eaecf4;">打順とは「打席数の配分」である</strong>という事実です。1番打者は9番打者より1試合あたり平均0.5打席ほど多く打席に立ちます。7イニング制の草野球でも、シーズンを通せば上位打線と下位打線では打席数に無視できない差が生まれます。つまり打順を決めるという行為は、「誰に多くチャンスを与えるか」を決める作業にほかなりません。以下、各打順の一般的な役割と、草野球・少年野球での現実的な考え方をまとめます。
+    </p>
+
+    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">1番：出塁率がすべて</h3>
+    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
+      1番打者に求められる最大の資質は、打率でも足の速さでもなく<strong style="color:#eaecf4;">出塁率</strong>です。初回だけは必ず走者なしで打席が回るため、まず塁に出ることがチームの得点確率を直接押し上げます。「1番＝俊足巧打」というイメージが根強いですが、盗塁が成功しても得点期待値の増加はわずかで、失敗したときの損失のほうが大きいというのがセイバーメトリクスの一般的な見解です。四球を選べる選手、簡単に凡退しない選手を置くのが正解に近くなります。
+    </p>
+
+    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">2番：つなぎ役から「二人目の主軸」へ</h3>
+    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
+      日本の伝統的な野球では、2番はバントや進塁打で1番を送る「つなぎ役」とされてきました。しかし近年のメジャーリーグでは、2番にチーム屈指の強打者を置く「<strong style="color:#eaecf4;">強打者2番</strong>」が主流になっています。理由はシンプルで、2番は3番より年間で約20打席多く回ってくるうえ、1番が出塁した直後という得点機会に絡みやすいからです。送りバントは確実にアウトを1つ献上する作戦であり、多くの局面で得点期待値を下げます。無死一塁からのバントは、1点勝負の終盤以外では慎重に選ぶべき手段です。
+    </p>
+
+    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">3番：最強打者の定位置は本当にここか</h3>
+    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
+      「チームで一番良い打者は3番」という常識は長く支持されてきましたが、データ上は必ずしも最適ではありません。3番打者は初回に限れば2アウト走者なしで打席が回るケースが最も多い打順で、得点圏に走者がいる場面の割合は4番より低いのです。とはいえ、走者を返す力と自分で出塁する力の両方が求められる打順であることに変わりはありません。打率・出塁率・長打率のバランスが取れた選手を置くのが定石です。
+    </p>
+
+    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">4番：長打で走者を還す</h3>
+    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
+      4番は全打順のなかで<strong style="color:#eaecf4;">得点圏に走者を置いた状態で打席に立つ回数が最も多い</strong>打順です。したがって求められるのは長打力、なかでも外野の間を抜く二塁打・三塁打を打てる能力です。三振が多くても、単打を積み重ねるより一発で2点入れられる打者のほうがこの打順では価値を持ちます。草野球では「打球が飛ぶ人」を4番に置けば、自然とこの理屈に沿った並びになります。
+    </p>
+
+    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">5番：4番を勝負させるための存在</h3>
+    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
+      5番の役割は打点だけではありません。5番に怖い打者がいれば相手投手は4番を敬遠しにくくなり、結果としてチーム全体の得点力が上がります。3番・4番・5番をまとめてクリーンナップと呼びますが、<strong style="color:#eaecf4;">クリーンナップの選び方は「上位3人を単純に並べる」ではなく「相手が逃げ場を失う並びにする」</strong>と考えると外しません。左右の打者を交互に配置して継投を難しくするのも有効な工夫です。
+    </p>
+
+    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">6番・7番：第二のクリーンナップ</h3>
+    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
+      試合が中盤に入れば、打線は必ず一巡して6番・7番から始まるイニングが訪れます。ここが弱いと「下位で3人で終わり、上位が走者なしで迎える」という最悪の循環に陥ります。6番には長打力の残る選手、7番には出塁できる選手を置き、下位から上位へつなぐ流れを作るのが理想です。草野球では6番を「もう一人の4番」と位置づけると打線が途切れにくくなります。
+    </p>
+
+    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">8番・9番：9番を「第二の1番」にする</h3>
+    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:18px;">
+      最も打力が低い選手を8番に、9番には出塁率がそこそこ高い選手を置く——これがメジャーでも採用される「<strong style="color:#eaecf4;">9番＝第二の1番</strong>」の考え方です。9番が塁に出れば、そのまま1番・2番・3番という最も得点力の高い並びにつながります。逆に9番に最弱打者を置くと、一巡した後の攻撃が毎回そこで途切れてしまいます。DH制を使わない草野球で投手が打席に立つ場合も、投手を9番ではなく8番に入れるだけで攻撃の効率は改善します。
+    </p>
+
+    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">得点期待値という考え方</h3>
+    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
+      打順を考えるときの共通の物差しが<strong style="color:#eaecf4;">得点期待値</strong>です。これは「この走者状況・アウトカウントから、そのイニングで平均何点入るか」を過去の膨大な試合データから算出した数値で、無死走者なしを基準にすると、走者が進むほど、そしてアウトが少ないほど値は大きくなります。ここから導かれる原則はひとつ、<strong style="color:#eaecf4;">アウトはチームで27個しかない有限の資源であり、自分から差し出す作戦は原則として損</strong>だということです。送りバントや盗塁死が嫌われるのはこのためで、逆に四球を選ぶ、粘ってファウルで球数を稼ぐといった地味なプレーが評価されるのもこの物差しによります。
+    </p>
+
+    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">草野球・少年野球での現実的な組み方</h3>
+    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
+      プロと違い、草野球や少年野球では選手間の実力差が非常に大きくなります。この場合、理論よりも優先すべき実践的な指針が3つあります。第一に、<strong style="color:#eaecf4;">打てる選手をできるだけ上位に固める</strong>こと。差が大きいほど打席数の配分が結果に直結します。第二に、<strong style="color:#eaecf4;">初心者や苦手な選手を連続させない</strong>こと。3人続くと1イニングが確実に無得点で終わります。第三に、<strong style="color:#eaecf4;">守備位置と打順を切り離して考えない</strong>こと。守備の負担が大きい捕手や投手を上位に置くと、走塁で消耗して守備が乱れることがあります。TACTICIANでは打順と守備配置を同じ画面で確認できるので、この3点をまとめて調整できます。
+    </p>
+
+    <div style="padding:14px 16px;background:rgba(0,230,118,0.04);border:1px solid rgba(0,230,118,0.2);border-radius:10px;font-size:12px;color:#a8adc4;line-height:1.9;">
+      <strong style="color:#00e676;">組み方のコツ：</strong>迷ったら「出塁できる人を1番・2番・9番に、打球を飛ばせる人を4番・6番に」と決めてしまうのが最短ルートです。まずは1パターン作って保存し、試合を重ねながら微調整していくほうが、机上で完璧を目指すより早く最適解に近づきます。
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ（可視HTML／head内のFAQ構造化データと対応） ── -->
+<section aria-label="よくある質問" style="padding:26px 16px;border-top:1px solid #1c1f30;background:#070810;position:relative;z-index:1;">
+  <div style="max-width:640px;margin:0 auto;">
+    <h2 style="font-size:14px;font-weight:700;color:#00e676;margin-bottom:14px;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;">よくある質問（FAQ）</h2>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. 野球のスタメン作成サイトは無料で使えますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. はい、TACTICIANは完全無料で使えます。アカウント登録不要で、ブラウザを開くだけでスタメン作成を始めることができます。</p>
+      </div>
+      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. スマホでスタメン表を作れますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. はい、スマホ・タブレット・PCのどのデバイスからでも利用できます。アプリのインストールは不要で、ブラウザだけで動作します。ホーム画面に追加すればアプリのように起動することもできます。</p>
+      </div>
+      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. 何人まで選手登録できますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. 人数の上限はありません。草野球チーム・軟式野球チームのメンバーを全員登録してポジションや打順を自由に設定できます。控え選手も登録しておくと、当日の欠席者を外すだけでオーダーが完成します。</p>
+      </div>
+      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. スタメン表を印刷・共有できますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. はい、印刷用の一覧表を出力できます。またX（旧Twitter）やLINEなどSNSへのシェアや、データのエクスポートにも対応しています。</p>
+      </div>
+      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. DH制（指名打者）に対応していますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. はい。オーダー画面でDHをオンにすると、守備につかない指名打者を打順に組み込めます。DHを使わない草野球のルールにもそのまま対応しています。</p>
+      </div>
+      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. 入力したデータはどこに保存されますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. お使いのブラウザ内（localStorage）にのみ保存され、外部サーバーへは送信されません。機種変更やブラウザの変更時は、JSONエクスポート機能でデータを書き出して移行してください。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 開発ノート ── -->
+<section aria-label="開発ノート" style="padding:26px 16px 30px;border-top:1px solid #1c1f30;background:#070810;position:relative;z-index:1;">
+  <div style="max-width:640px;margin:0 auto;">
+    <h2 style="font-size:14px;font-weight:700;color:#00e676;margin-bottom:10px;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;">開発ノート — このツールを作った理由</h2>
+    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:12px;">
+      TACTICIANは、草野球チームの試合前に毎回起きていた「打順どうする問題」を片付けるために作りました。集合場所でスマホのメモ帳に打順を書き、誰かが「あいつ今日来られないって」と言い出すたびに全部打ち直す。書き終わってLINEに貼ったら守備位置が抜けている。この往復を毎週やっていて、単純にもったいないと感じたのが出発点です。
+    </p>
+    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:12px;">
+      作るうえで決めたことは3つあります。1つ目は<strong style="color:#eaecf4;">ログインを作らない</strong>こと。試合前の慌ただしいグラウンドでパスワードを思い出させるツールは使われません。2つ目は<strong style="color:#eaecf4;">データを外に出さない</strong>こと。チームメイトの名前が入るので、サーバーに置かずブラウザ内保存だけにしています。3つ目は<strong style="color:#eaecf4;">紙でも成立させる</strong>こと。審判に提出するオーダー表は今も紙が必要な場面があるため、印刷レイアウトを最初から作り込みました。
+    </p>
+    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:12px;">
+      公開後に一番反応があったのは、実は守備配置図でした。文字だけの打順表より、フィールド図に名前が載っているほうがチームに伝わるという当たり前のことに、作ってから気づかされました。天気チェック機能を後から足したのも「そもそも試合があるのか」を先に知りたいという実際の使われ方に合わせた結果です。
+    </p>
+    <p style="font-size:12px;color:#555878;line-height:1.9;">
+      個人開発のツールなので、要望や不具合の報告はいつでも歓迎です。<a href="https://x.com/mira11554" target="_blank" rel="noopener" style="color:#00e676;text-decoration:underline;">𝕏</a> から気軽に投げてください。
+    </p>
+  </div>
+</section>
+
 <section aria-label="打撃成績記録" style="background:#07090f;border-top:1px solid #1c1f30;padding:18px 16px;text-align:center;position:relative;z-index:1;">
   <p style="font-size:11px;color:#555878;margin:0 0 10px;letter-spacing:.05em;">⚾ スタメンが決まったら、試合後の成績を記録しよう</p>
   <a href="https://somirai.jp/batting-stats/" onclick="gtag('event','cross_tool_click',{from:'tactician_cta',to:'lumber'})" style="display:inline-flex;align-items:center;gap:6px;background:#0d2a18;color:#00e676;padding:10px 20px;border-radius:8px;text-decoration:none;border:1px solid rgba(0,230,118,.4);font-size:13px;font-weight:700;">⚾ LUMBER で打撃成績を記録 →</a>
