@@ -705,13 +705,13 @@
 <!-- ── /Landing Overlay ── -->
 
 <header>
-  <div class="header-left">
+  <nav class="header-left" aria-label="メインナビゲーション">
     <a href="/" class="header-back" style="display:inline-flex;align-items:center;gap:5px;"><svg viewBox="0 0 120 120" width="20" height="20" style="border-radius:5px;"><defs><linearGradient id="hbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1220"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><linearGradient id="hco" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/></linearGradient></defs><rect width="120" height="120" rx="26" fill="url(#hbg)"/><circle cx="60" cy="48" r="14" fill="url(#hco)"/><path d="M60 26 L62 42 L60 48 L58 42Z" fill="#fb923c" opacity=".85"/><circle cx="84" cy="30" r="3.5" fill="#fb923c" opacity=".6"/><circle cx="34" cy="68" r="3" fill="#fbbf24" opacity=".5"/><circle cx="88" cy="62" r="2.5" fill="#6ee7b7" opacity=".45"/></svg>Somirai Lab</a>
     <div class="header-title">
       <span class="header-title-main">TACTICIAN</span>
       <span class="header-title-sub">野球スタメン作成</span>
     </div>
-  </div>
+  </nav>
   <div class="header-right">
     <div style="position:relative;">
       <button class="btn-color" id="om-btn-color" aria-label="テーマカラー変更">
@@ -2640,11 +2640,13 @@ if (players.length === 0 && window.innerWidth >= 768) {
 
 <footer style="text-align:center;padding:16px;font-size:11px;color:#555878;background:#070810;border-top:1px solid #1c1f30;position:relative;z-index:1;">
   <div>© 2026 <a href="/" style="color:#00e676;text-decoration:none;font-weight:700;">Somirai Lab</a></div>
-  <div style="margin-top:4px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+  <nav aria-label="サイト内リンク" style="margin-top:4px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
     <a href="guide.html" style="color:#555878;text-decoration:underline;">使い方ガイド</a>
+    <a href="https://somirai.jp/blog/" style="color:#555878;text-decoration:underline;">ブログ</a>
+    <a href="https://somirai.jp/about.html" style="color:#555878;text-decoration:underline;">About</a>
     <a href="/privacy.html" style="color:#555878;text-decoration:underline;">プライバシーポリシー</a>
     <a href="https://x.com/mira11554" target="_blank" rel="noopener" style="color:#555878;text-decoration:underline;">𝕏 お問い合わせ</a>
-  </div>
+  </nav>
 </footer>
 
 <script>
