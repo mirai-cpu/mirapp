@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /sapporo-nights/
+Disallow: /clear.html
 
 Sitemap: https://somirai.jp/sitemap.xml
