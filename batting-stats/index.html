@@ -635,6 +635,143 @@
     </ul>
   </section>
 
+  <!-- ── 打撃指標の解説 ── -->
+  <section aria-label="打撃指標の見方・計算式" style="padding:26px 16px;border-top:1px solid var(--border);background:var(--bg);">
+    <div style="max-width:640px;margin:0 auto;">
+      <h2 style="font-size:14px;font-weight:700;color:var(--accent);margin-bottom:8px;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;">打撃指標の読み方 — 打率だけでは打者は測れない</h2>
+      <p style="font-size:13px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:18px;">
+        「3割打てば一流」——野球に触れたことがあれば誰でも知っている物差しです。ところが打率という数字は、<strong style="color:var(--text)">四球を10個選んでも1ミリも動かず、場外弾も内野安打も同じ「1本」としてしか数えません</strong>。つまり打率は「どれだけ塁に出たか」も「どれだけ遠くへ飛ばしたか」も表現できない、かなり穴の多い指標なのです。だからといって難解なセイバーメトリクスを持ち出す必要はありません。打率・出塁率・長打率という基本の3つと、そこから派生するいくつかの数字を理解するだけで、自分の打撃は驚くほど立体的に見えてきます。ここではLUMBERが自動計算している指標の意味と計算式を、草野球の現場感覚に沿って解説します。
+      </p>
+
+      <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">打率（AVG）— 「凡退しなかった割合」</h3>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);line-height:1.7;margin-bottom:10px;">打率 ＝ 安打 ÷ 打数<br>打数 ＝ 打席数 −（四球 ＋ 死球 ＋ 犠打 ＋ 犠飛）</div>
+      <p style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:16px;">
+        分母が「打席数」ではなく「打数」であることが最大のポイントです。四球・死球・犠打・犠飛は打数から除外されるため、<strong style="color:var(--text)">歩いても打率は上がらないし下がらない</strong>。4打数2安打なら.500、4打席のうち2つが四球で2打数1安打なら.500です。打率が測っているのは「バットで勝負した結果、アウトにならなかった割合」であって、チームへの貢献度そのものではありません。草野球の目安としては、.250でチーム平均前後、.300を超えれば上位打線を任される水準、.350以上ならチームの看板打者と言っていいでしょう。ただし打数が20を下回るうちは1本の当たりで数字が大きく揺れるため、シーズン序盤の打率にはあまり意味がありません。LUMBERが試合推移グラフを用意しているのは、単発の数字ではなく<strong style="color:var(--text)">上下の「波」で自分の調子を掴んでほしい</strong>からです。
+      </p>
+
+      <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">出塁率（OBP）— 得点に最も近い指標</h3>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);line-height:1.7;margin-bottom:10px;">出塁率 ＝（安打 ＋ 四球 ＋ 死球）÷（打数 ＋ 四球 ＋ 死球 ＋ 犠飛）</div>
+      <p style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:16px;">
+        分母から犠打だけが除かれているのが独特ですが、要は<strong style="color:var(--text)">「バントを除いた全打席のうち、アウトにならずに塁へ到達した割合」</strong>です。野球は27個のアウトを使い切ったら終わるスポーツなので、アウトを使わずに塁に出る行為はそれ自体が得点への貢献になります。実際、チームの得点との相関は打率よりも出塁率のほうがはっきり高いことが知られています。<br><br>
+        たとえば「打率.300・出塁率.320」の打者と「打率.250・出塁率.400」の打者。打率だけ見れば前者が優秀ですが、100打席立ったとき塁に出る回数は前者が32回、後者は40回です。<strong style="color:var(--text)">アウトを8個も減らしている後者のほうが、チームにとっては明確に価値が高い</strong>。「あいつはよく歩く」と地味に見られがちな選手こそ、出塁率を計算してあげると本当の貢献が見えてきます。草野球では.350で上出来、.400を超えたら1番・2番に固定していい水準です。
+      </p>
+
+      <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">長打率（SLG）— 実は「率」ではない</h3>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);line-height:1.7;margin-bottom:10px;">長打率 ＝ 塁打 ÷ 打数<br>塁打 ＝ 単打×1 ＋ 二塁打×2 ＋ 三塁打×3 ＋ 本塁打×4</div>
+      <p style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:16px;">
+        名前に「率」と付いていますが、これは割合ではなく<strong style="color:var(--text)">「1打数あたり平均で何個の塁を進んだか」を表す平均値</strong>です。だから理論上の最大は1.000ではなく4.000（全打席本塁打）。4打数1本塁打・3三振なら長打率は1.000になります。打率が「当たったかどうか」だけを見るのに対し、長打率は「どれだけ大きく当たったか」を距離で評価する指標です。草野球なら.350前後が平均的、.450を超えればクリーンナップ候補、.550以上は相手が敬遠を考えるレベルです。
+      </p>
+
+      <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">OPS — なぜ出塁率と長打率を「足す」のか</h3>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);line-height:1.7;margin-bottom:10px;">OPS ＝ 出塁率 ＋ 長打率</div>
+      <p style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:16px;">
+        初めて見たとき「分母が違う数字を足していいのか」と引っかかった人は正しい感覚の持ち主です。出塁率は打席あたりの割合、長打率は打数あたりの平均塁打数で、数学的には単位の違うものを無理やり加算しています。それでもOPSが広く使われているのは、<strong style="color:var(--text)">この乱暴な足し算が、チーム得点との相関で驚くほど高い精度を示すから</strong>です。打率と得点の相関に比べ、OPSと得点の相関は明らかに強く、しかも電卓さえあれば誰でも計算できます。「理論的な厳密さ」を少し捨てて「実用性」を取った指標、それがOPSです。<br><br>
+        厳密には、得点への寄与は出塁率のほうが長打率より1.7倍ほど大きいとされ、単純に足すOPSは長打をやや過大評価します（これを補正したのがOPS+やwOBAといった指標です）。ただ草野球で自分の成長を追うぶんには、その誤差を気にする必要はありません。目安はこうです。
+      </p>
+      <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px;">
+        <div style="display:flex;gap:10px;padding:9px 13px;background:var(--surface);border-bottom:1px solid var(--border);"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);font-weight:700;min-width:64px;">.600未満</span><span style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.6;">まずは打席に慣れる段階。三振と凡打の内訳を見直したい</span></div>
+        <div style="display:flex;gap:10px;padding:9px 13px;border-bottom:1px solid var(--border);"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);font-weight:700;min-width:64px;">.700</span><span style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.6;">スタメンに定着できる、チーム平均クラスの打者</span></div>
+        <div style="display:flex;gap:10px;padding:9px 13px;background:var(--surface);border-bottom:1px solid var(--border);"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);font-weight:700;min-width:64px;">.800</span><span style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.6;">上位打線・クリーンナップを任せられる中心選手</span></div>
+        <div style="display:flex;gap:10px;padding:9px 13px;border-bottom:1px solid var(--border);"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);font-weight:700;min-width:64px;">.900</span><span style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.6;">相手が明確に警戒してくる、チームの主砲</span></div>
+        <div style="display:flex;gap:10px;padding:9px 13px;background:var(--surface);"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);font-weight:700;min-width:64px;">1.000以上</span><span style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.6;">別格。リーグでも指折りの打者</span></div>
+      </div>
+
+      <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">同じOPSでも中身はまるで違う</h3>
+      <p style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:16px;">
+        OPS.800の打者が2人いても、「出塁率.400＋長打率.400」と「出塁率.300＋長打率.500」ではまったく別のタイプです。前者は塁に出続けるタイプなので1番・2番に置くとチャンスメーカーとして機能し、後者は走者を還す力があるので4番向き。<strong style="color:var(--text)">OPSは打者の総合力を1つの数字にまとめる代わりに、その打者の「性格」を消してしまう</strong>という弱点があります。だからLUMBERでは合計値だけでなく出塁率と長打率を必ず並べて表示しています。打順を考えるときは合計ではなく内訳を見てください。
+      </p>
+
+      <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">見落とされがちな3つの数字</h3>
+      <p style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:12px;">
+        基本3指標に慣れたら、その「差分」を取ると新しい情報が見えてきます。引き算するだけなので難しくありません。
+      </p>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);line-height:1.7;margin-bottom:10px;">IsoD（選球眼）＝ 出塁率 − 打率<br>IsoP（純長打率）＝ 長打率 − 打率<br>BABIP ＝（安打 − 本塁打）÷（打数 − 三振 − 本塁打 ＋ 犠飛）</div>
+      <p style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:14px;">
+        <strong style="color:var(--text)">IsoD</strong>は打率に上乗せされた出塁分、つまり四死球でどれだけ稼いだかを示します。.050未満なら来た球をとにかく振っている状態、.080以上なら明確に「選べる打者」です。打率が伸び悩んでいてもIsoDが高ければ、打順を上げるだけでチーム貢献が跳ね上がります。<br><br>
+        <strong style="color:var(--text)">IsoP</strong>は長打率から単打の分を差し引いた、純粋なパワーの指標です。.100前後が標準、.150を超えればパワーヒッター、.200以上なら草野球では規格外です。打率.320・IsoP.060の打者は「よく当たるが飛ばない」タイプで、二塁打を狙う打球角度をつくれば一段上に行ける可能性があります。<br><br>
+        <strong style="color:var(--text)">BABIP</strong>はフェアゾーンに飛んだ打球（本塁打を除く）が安打になった割合で、いわば<strong style="color:var(--text)">「運の温度計」</strong>です。おおむね.300前後に収束するとされ、.400近い数字が出ているなら好調というより幸運が続いているだけで、いずれ落ちます。逆に.220などの低さで打率が沈んでいるなら、打球の質は悪くない可能性が高い。フォームを壊す前に、まず打球方向の偏りを疑ってください。スプレーチャートで一方向に固まっていれば、守備位置を寄せられて安打を潰されているのかもしれません。
+      </p>
+      <p style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:16px;">
+        あわせて評価が割れやすいのが<strong style="color:var(--text)">犠打と盗塁</strong>です。犠打は打数に含まれないので打率は下がりませんが、アウトを1つ自分から差し出す作戦であることに変わりはありません。得点期待値の観点では、終盤の1点勝負以外では割に合わない場面が多いのが実情です。盗塁も同様で、一般に<strong style="color:var(--text)">成功率およそ7割が損益分岐点</strong>とされ、それを下回るなら走らないほうがチームは得をします。10回走って6回成功、では貢献はマイナスだということです。数字にすると、感覚で「積極的でいい」と評価していたプレーの見え方が変わります。
+      </p>
+
+      <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">三振は、ほかの凡打より悪いのか</h3>
+      <p style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:16px;">
+        「せめて前に飛ばせ」はベンチでよく飛ぶ言葉ですが、指標のうえでは<strong style="color:var(--text)">三振も内野ゴロも同じ1アウト</strong>で、打率にも出塁率にも同じだけのマイナスしか与えません。差が出るのは走者がいる場面だけです。走者が三塁にいれば内野ゴロでも1点入る可能性がありますし、無死一塁なら打球が転がることで進塁のチャンスが生まれます。逆に言えば、<strong style="color:var(--text)">走者なしの場面では三振を恐れて当てにいくメリットはほとんどありません</strong>。むしろスイングを緩めたぶん長打率が落ち、OPSは下がります。<br><br>
+        一方で三振には、併殺打にならないという見過ごされがちな利点もあります。無死一塁でゴロを打てば併殺で一気に2アウト、三振なら1アウトで走者は残る。数字のうえでは三振のほうがマシな場面すらあるということです。三振数を減らすことを目標にするより、<strong style="color:var(--text)">「どのカウントで凡退しているか」を記録して振り返るほうが打撃は速く改善します</strong>。三振が多くてもOPSが.850あるなら、それはもう立派な戦力です。
+      </p>
+
+      <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">得点圏打率という罠 — サンプルサイズの話</h3>
+      <p style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:16px;">
+        「あいつはチャンスに強い」「勝負弱い」といった評価は、たいてい得点圏打率という数字を根拠にしています。しかしこの指標はきわめて不安定です。草野球のシーズンで得点圏の打席は多くても20〜30程度。その中の2本の当たりが出るか出ないかで、打率は.100以上動きます。<strong style="color:var(--text)">得点圏打率.150と.400の差は、実際には安打3本ぶんの偶然であることがほとんど</strong>なのです。プロ野球の数千打席規模のデータでも、「チャンスに強い打者」という能力が継続的に存在する証拠はほとんど見つかっていません。<br><br>
+        指標を読むときは常に、<strong style="color:var(--text)">その数字が何打席から計算されているかをセットで確認する</strong>癖をつけてください。打率なら最低でも50打数、出塁率やOPSなら100打席を超えたあたりからようやく実力を反映しはじめます。逆に、打者本人が短期の数字に振り回されないための最良の方法は、記録を1試合単位でつけ続け、シーズン累計のグラフで判断することです。<strong style="color:var(--text)">1試合の4打数0安打には情報がほとんどありませんが、30試合ぶんの推移には確かな傾向が現れます。</strong>
+      </p>
+
+      <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">打者タイプ別・次に伸ばすべきポイント</h3>
+      <p style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:12px;">
+        LUMBERの「あなたの打者タイプ」診断は、ここまでの指標のバランスからあなたの傾向を判定しています。タイプごとに、次の一歩は明確に違います。
+      </p>
+      <ul style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;padding-left:0;list-style:none;margin-bottom:16px;">
+        <li style="margin-bottom:10px;"><strong style="color:var(--text)">アベレージヒッター（打率高・IsoP低）</strong>：当てる技術は完成しています。伸びしろは長打側にあるので、追い込まれる前のカウントで甘い球を強く叩く意識を持つと、単打が二塁打に変わります。打率が少し落ちてもOPSは上がります。</li>
+        <li style="margin-bottom:10px;"><strong style="color:var(--text)">スラッガー（IsoP高・三振多）</strong>：飛ばす力は武器なので削らないこと。改善余地は三振ではなく<strong style="color:var(--text)">早いカウントの凡退</strong>にあります。初球から2ストライクまでの成績を分けて見ると、狙い球を絞れているかが分かります。</li>
+        <li style="margin-bottom:10px;"><strong style="color:var(--text)">出塁マシン（IsoD高・長打率低）</strong>：選球眼はチームの資産です。ただし走者を置いた場面で待ちすぎると得点機を逃すので、「走者なしでは選ぶ・得点圏では初球から振る」と場面で切り替えるだけで打点が増えます。</li>
+        <li style="margin-bottom:10px;"><strong style="color:var(--text)">不調に見えるが実は不運（BABIP低）</strong>：打撃フォームより先にスプレーチャートを確認してください。引っ張り一辺倒なら、逆方向へ流す打席を意識的に作るだけで安打が戻ることがあります。</li>
+        <li><strong style="color:var(--text)">まだ打席数が少ない</strong>：どのタイプ判定も打数20〜30を超えたあたりから安定します。それまでは数字を追うより、記録を溜めること自体が最優先です。</li>
+      </ul>
+
+      <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 10px;">記録の実務Q&amp;A — 迷いやすい打席結果</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+          <h4 style="padding:11px 13px;background:var(--surface);font-size:12px;font-weight:700;color:var(--text);margin:0;">Q. エラーで出塁したら打率はどうなる？</h4>
+          <p style="padding:11px 13px;font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin:0;border-top:1px solid var(--border);">A. 失策による出塁は安打になりません。打数だけが増えるため、打率・出塁率ともに下がります。塁には出ているのに数字上は凡退と同じ扱い、というのが失策出塁のつらいところです。LUMBERでは「失策」として記録すれば自動的にこの計算になります。</p>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+          <h4 style="padding:11px 13px;background:var(--surface);font-size:12px;font-weight:700;color:var(--text);margin:0;">Q. 打点はどんなときに付く？</h4>
+          <p style="padding:11px 13px;font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin:0;border-top:1px solid var(--border);">A. 自分の打撃行為の結果として走者が生還すれば打点が付きます。安打はもちろん、犠飛・内野ゴロの間の生還・押し出しの四球や死球も打点です。逆に、併殺打の間の生還と、失策がなければ得点が入らなかったケースには打点は付きません。「自分のバットで還したか」が判定の軸だと考えると迷いません。</p>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+          <h4 style="padding:11px 13px;background:var(--surface);font-size:12px;font-weight:700;color:var(--text);margin:0;">Q. 野選（フィールダースチョイス）の扱いは？</h4>
+          <p style="padding:11px 13px;font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin:0;border-top:1px solid var(--border);">A. 野手が先の走者を刺しにいった結果として打者が生きた場合は野選となり、安打にはならず打数が増えます。失策出塁と同じく、打率にはマイナスに働きます。</p>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+          <h4 style="padding:11px 13px;background:var(--surface);font-size:12px;font-weight:700;color:var(--text);margin:0;">Q. 犠打・犠飛を記録すると打率は下がる？</h4>
+          <p style="padding:11px 13px;font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin:0;border-top:1px solid var(--border);">A. どちらも打数に含まれないので打率は下がりません。ただし犠飛は出塁率の分母には入るため、出塁率だけはわずかに下がります。バントがヒットになった場合は犠打ではなく安打として記録してください。</p>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+          <h4 style="padding:11px 13px;background:var(--surface);font-size:12px;font-weight:700;color:var(--text);margin:0;">Q. 振り逃げで出塁したときは？</h4>
+          <p style="padding:11px 13px;font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin:0;border-top:1px solid var(--border);">A. 記録上は三振が付いたうえで出塁した扱いになります。安打でも四球でもないため打率・出塁率は上がりません。塁上にいても打者としての結果はアウトと同じ、という珍しいケースです。</p>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+          <h4 style="padding:11px 13px;background:var(--surface);font-size:12px;font-weight:700;color:var(--text);margin:0;">Q. 打撃妨害で一塁に進んだら？</h4>
+          <p style="padding:11px 13px;font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin:0;border-top:1px solid var(--border);">A. 打撃妨害は打数にも出塁率の分母にも入らず、打撃成績には影響しません。打席数だけが増える扱いです。草野球ではまず起きませんが、記録に迷ったら「打者の責任ではないものは打数に数えない」と覚えておけば大きく外しません。</p>
+        </div>
+      </div>
+
+      <div style="padding:14px 16px;background:var(--accent-bg);border:1px solid color-mix(in srgb, var(--accent) 35%, transparent);border-radius:10px;font-size:12px;color:color-mix(in srgb, var(--text) 78%, var(--muted));line-height:1.9;">
+        <strong style="color:var(--accent);">まとめ：</strong>打率は「勝負した結果」、出塁率は「アウトを使わなかった度合い」、長打率は「進んだ塁の数」。この3つを分けて見るだけで、自分の課題は自然に浮かび上がります。まずは1試合ぶんの打席を記録するところから始めてください。数字は20打数を超えたあたりから嘘をつかなくなります。
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 開発ノート ── -->
+  <section aria-label="開発ノート" style="padding:26px 16px 30px;border-top:1px solid var(--border);background:var(--bg);">
+    <div style="max-width:640px;margin:0 auto;">
+      <h2 style="font-size:14px;font-weight:700;color:var(--accent);margin-bottom:10px;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;">開発ノート — なぜ打率以外も計算させたのか</h2>
+      <p style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:12px;">
+        LUMBERを作るきっかけは、草野球の帰り道にスマホの電卓で打率を計算していたことでした。「4打数1安打だから今日は.250、通算だと……」と毎回やり直す。しかもノートに書いた記録は数試合で途切れ、シーズン後半にはもう自分が何割打っているのか分からなくなっている。この面倒くささを消したかったのが出発点です。
+      </p>
+      <p style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:12px;">
+        ただ作りはじめてすぐに気づいたのは、<strong style="color:var(--text)">打率だけを表示するツールは、かえって自分を誤解させる</strong>ということでした。四球で出た日は打率が動かないので「何もしていない試合」に見えてしまう。逆に内野安打だけの日が好調に見える。それなら計算はアプリに任せて、出塁率・長打率・OPSまで最初から並べて出したほうがいい——そう考えて、打席結果を1タップ選ぶだけで全指標が同時に更新される形にしました。
+      </p>
+      <p style="font-size:12px;color:color-mix(in srgb, var(--text) 70%, var(--muted));line-height:1.9;margin-bottom:12px;">
+        打球方向のスプレーチャートを後から追加したのも、実際に使っていて「打率は落ちていないのに嫌な感じがする」時期があったからです。記録を見返すと打球が完全に引っ張り方向に固まっていました。数字だけでは掴めない偏りが図にすると一目で分かる、というのは自分で使って初めて実感したことです。ログインを作らず、データをすべてブラウザ内に保存する設計にしているのは、試合後の疲れた状態でパスワードを思い出させるツールは続かないと分かっていたからです。
+      </p>
+      <p style="font-size:12px;color:var(--muted);line-height:1.9;">
+        個人で作って個人で運用しているツールなので、要望や不具合の報告はいつでも歓迎です。<a href="https://x.com/mira11554" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;">𝕏</a> から気軽に投げてください。
+      </p>
+    </div>
+  </section>
+
   <section aria-label="関連ツール" style="background:#0d0f18;border-top:1px solid #1c1f30;padding:24px 12px 16px;">
     <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#555878;margin:0 0 14px;letter-spacing:.1em;font-weight:600;text-transform:uppercase;text-align:center;">Somirai Lab の他のツール</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:480px;margin:0 auto;">
