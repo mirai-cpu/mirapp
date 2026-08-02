@@ -1305,6 +1305,14 @@ $field.addEventListener('touchstart', e => { e.preventDefault(); doSwing(); }, {
   document.body.appendChild(b);
 })();
 </script>
+<a id="mp-card" href="https://somirai.jp/player/" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'swing'})" style="display:none;align-items:center;gap:10px;max-width:420px;margin:0 auto;background:rgba(232,196,104,0.06);border:1px solid rgba(232,196,104,0.3);border-radius:10px;padding:12px 14px;text-decoration:none;">
+  <span style="font-size:18px;">⭐</span>
+  <span style="flex:1;">
+    <span style="display:block;font-size:12px;font-weight:700;color:#e8c468;">MY PLAYER</span>
+    <span style="display:block;font-size:11px;color:#8a92c0;">SWING!の成績もステータスに反映されています →</span>
+  </span>
+</a>
+<script>(function(){try{if(localStorage.getItem('somirai:seen')){var e=document.getElementById('mp-card');if(e)e.style.display='flex';}else{localStorage.setItem('somirai:seen','1');}}catch(e){}})();</script>
 <footer style="text-align:center;padding:16px 14px 20px;font-size:11px;color:#3a4a7a;">
   <nav aria-label="サイト内リンク" style="display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:6px;">
     <a href="https://somirai.jp/" style="color:#ffd700;text-decoration:none;">Somirai Lab</a>
