@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <meta name="description" content="Somirai Labの各ツールの利用状況から、あなたの選手ステータスを可視化するMY PLAYER。">
+  <title>MY PLAYER | Somirai Lab</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-902VNDKEE9');
+  </script>
+  <style>
+    :root {
+      --bg: #070810; --surface: #0d0f18; --border: #1c1f30;
+      --text: #eaecf4; --text-sec: #a8adc4; --text-mut: #555878;
+      --gold: #e8c468; --gold-soft: rgba(232,196,104,0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: 'Barlow', 'Noto Sans JP', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px; border-bottom: 1px solid var(--border);
+    }
+    header nav { display: flex; align-items: center; gap: 8px; }
+    header a.back {
+      color: var(--text-sec); text-decoration: none; font-size: 13px;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    main { max-width: 640px; margin: 0 auto; padding: 32px 20px 60px; }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em;
+      color: var(--gold); text-transform: uppercase; text-align: center; margin-bottom: 8px;
+    }
+    h1 {
+      font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 0.08em;
+      text-align: center; margin: 0 0 6px; color: var(--text);
+    }
+    .subtitle { text-align: center; font-size: 13px; color: var(--text-sec); margin-bottom: 32px; line-height: 1.7; }
+    .radar-wrap { display: flex; justify-content: center; margin-bottom: 28px; }
+    .stat-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 14px 16px; display: flex; align-items: center; gap: 14px;
+      text-decoration: none; color: inherit; transition: border-color .15s;
+    }
+    .stat-card:hover { border-color: var(--gold); }
+    .stat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .stat-main { flex: 1; min-width: 0; }
+    .stat-label-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 3px; }
+    .stat-label { font-size: 13px; font-weight: 700; color: var(--text); }
+    .stat-tool { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-mut); letter-spacing: 0.06em; }
+    .stat-detail { font-size: 11px; color: var(--text-sec); }
+    .stat-score {
+      font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700;
+      color: var(--gold); flex-shrink: 0; min-width: 40px; text-align: right;
+    }
+    .note {
+      font-size: 11px; color: var(--text-mut); line-height: 1.9; text-align: center;
+      padding: 16px 12px; border-top: 1px solid var(--border);
+    }
+    footer {
+      text-align: center; padding: 16px; font-size: 11px; color: var(--text-mut);
+      border-top: 1px solid var(--border);
+    }
+    footer nav { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
+    footer a { color: var(--text-mut); text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav aria-label="メインナビゲーション">
+      <a href="/" class="back"><svg viewBox="0 0 120 120" width="18" height="18" style="border-radius:5px;"><defs><linearGradient id="hbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1220"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><linearGradient id="hco" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e8c468"/><stop offset="100%" stop-color="#c9a13f"/></linearGradient></defs><rect width="120" height="120" rx="26" fill="url(#hbg)"/><circle cx="60" cy="48" r="14" fill="url(#hco)"/><path d="M60 26 L62 42 L60 48 L58 42Z" fill="#f3dca0" opacity=".85"/></svg>Somirai Lab</a>
+    </nav>
+  </header>
+
+  <main>
+    <p class="eyebrow">My Player · Somirai Lab</p>
+    <h1>MY PLAYER</h1>
+    <p class="subtitle">TEMPER・MARGINALIA・KURA・LUMBER・TACTICIANの利用状況から、<br>あなたの選手ステータスを合成表示します。</p>
+
+    <div class="radar-wrap">
+      <svg id="radar" width="300" height="300" viewBox="0 0 300 300"></svg>
+    </div>
+
+    <div class="stat-list" id="stat-list"></div>
+
+    <p class="note">
+      各ステータスは対応するツールの利用量（記録数・習慣の達成回数など）から簡易的に算出した目安です。<br>
+      データはすべてブラウザ内（localStorage）にのみ保存され、外部には送信されません。
+    </p>
+  </main>
+
+  <footer>
+    <div>© 2026 <a href="https://somirai.jp/" style="color:var(--gold);text-decoration:none;font-weight:700;">Somirai Lab</a></div>
+    <nav aria-label="サイト内リンク">
+      <a href="https://somirai.jp/blog/">ブログ</a>
+      <a href="https://somirai.jp/about.html">About</a>
+      <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    </nav>
+  </footer>
+
+  <script>
+    function safeReadJSON(key) {
+      try {
+        var raw = localStorage.getItem(key);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (e) {
+        return null;
+      }
+    }
+    function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+
+    function computeStats() {
+      var stats = [];
+
+      // TEMPER 体力
+      var habitData = safeReadJSON('habit-quest:data');
+      var temperScore = 0, temperDetail = '未プレイ';
+      if (habitData && habitData.completions) {
+        var totalCompletions = 0;
+        for (var d in habitData.completions) {
+          if (Array.isArray(habitData.completions[d])) totalCompletions += habitData.completions[d].length;
+        }
+        if (totalCompletions > 0) {
+          temperScore = clamp(Math.round(totalCompletions / 150 * 100), 1, 100);
+          temperDetail = '習慣' + ((habitData.habits || []).length) + '個・累計' + totalCompletions + '回達成';
+        }
+      }
+      stats.push({ label: '体力', tool: 'TEMPER', url: 'https://somirai.jp/habit/', score: temperScore, detail: temperDetail, color: '#f97316' });
+
+      // MARGINALIA 集中力
+      var writeData = safeReadJSON('write-quest:data');
+      var mgScore = 0, mgDetail = '未プレイ';
+      if (writeData && Array.isArray(writeData.memos) && writeData.memos.length > 0) {
+        mgScore = clamp(Math.round(writeData.memos.length / 60 * 100), 1, 100);
+        mgDetail = 'メモ' + writeData.memos.length + '件';
+      }
+      stats.push({ label: '集中力', tool: 'MARGINALIA', url: 'https://somirai.jp/write/', score: mgScore, detail: mgDetail, color: '#d4a853' });
+
+      // KURA 精神力
+      var savingsData = safeReadJSON('saving-quest:data');
+      var kuraScore = 0, kuraDetail = '未プレイ';
+      if (savingsData && Array.isArray(savingsData.expenses) && savingsData.expenses.length > 0) {
+        kuraScore = clamp(Math.round(savingsData.expenses.length / 60 * 100), 1, 100);
+        kuraDetail = '記録' + savingsData.expenses.length + '件';
+      }
+      stats.push({ label: '精神力', tool: 'KURA', url: 'https://somirai.jp/savings/', score: kuraScore, detail: kuraDetail, color: '#10b981' });
+
+      // LUMBER 打撃
+      var battingData = safeReadJSON('batting_stats_v1');
+      var lumberScore = 0, lumberDetail = '未プレイ';
+      if (Array.isArray(battingData) && battingData.length > 0) {
+        lumberScore = clamp(Math.round(battingData.length / 100 * 100), 1, 100);
+        lumberDetail = '打席' + battingData.length + '回';
+      }
+      stats.push({ label: '打撃', tool: 'LUMBER', url: 'https://somirai.jp/batting-stats/', score: lumberScore, detail: lumberDetail, color: '#00e676' });
+
+      // TACTICIAN 戦術
+      var players = safeReadJSON('sm_players');
+      var lineups = safeReadJSON('sm_lineups');
+      var tacticianScore = 0, tacticianDetail = '未プレイ';
+      if (Array.isArray(players) && players.length > 0) {
+        var lineupCount = Array.isArray(lineups) ? lineups.length : 0;
+        tacticianScore = clamp(players.length * 5 + lineupCount * 15, 1, 100);
+        tacticianDetail = '選手' + players.length + '人・オーダー' + lineupCount + 'パターン';
+      }
+      stats.push({ label: '戦術', tool: 'TACTICIAN', url: 'https://somirai.jp/order-maker/', score: tacticianScore, detail: tacticianDetail, color: '#60a5fa' });
+
+      return stats;
+    }
+
+    function renderRadar(stats) {
+      var svg = document.getElementById('radar');
+      var cx = 150, cy = 150, maxR = 105;
+      var n = stats.length;
+      var ns = 'http://www.w3.org/2000/svg';
+
+      function pointAt(i, r) {
+        var angle = -Math.PI / 2 + (i * 2 * Math.PI / n);
+        return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+      }
+
+      // grid rings
+      [0.25, 0.5, 0.75, 1].forEach(function (frac) {
+        var pts = [];
+        for (var i = 0; i < n; i++) pts.push(pointAt(i, maxR * frac).join(','));
+        var poly = document.createElementNS(ns, 'polygon');
+        poly.setAttribute('points', pts.join(' '));
+        poly.setAttribute('fill', 'none');
+        poly.setAttribute('stroke', '#1c1f30');
+        poly.setAttribute('stroke-width', '1');
+        svg.appendChild(poly);
+      });
+
+      // axis lines + labels
+      stats.forEach(function (s, i) {
+        var end = pointAt(i, maxR);
+        var line = document.createElementNS(ns, 'line');
+        line.setAttribute('x1', cx); line.setAttribute('y1', cy);
+        line.setAttribute('x2', end[0]); line.setAttribute('y2', end[1]);
+        line.setAttribute('stroke', '#1c1f30');
+        svg.appendChild(line);
+
+        var labelPt = pointAt(i, maxR + 22);
+        var text = document.createElementNS(ns, 'text');
+        text.setAttribute('x', labelPt[0]); text.setAttribute('y', labelPt[1]);
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dominant-baseline', 'middle');
+        text.setAttribute('fill', s.color);
+        text.setAttribute('font-size', '12');
+        text.setAttribute('font-weight', '700');
+        text.setAttribute('font-family', "'Barlow', sans-serif");
+        text.textContent = s.label;
+        svg.appendChild(text);
+      });
+
+      // data polygon
+      var dataPts = stats.map(function (s, i) {
+        return pointAt(i, maxR * (s.score / 100));
+      });
+      var poly = document.createElementNS(ns, 'polygon');
+      poly.setAttribute('points', dataPts.map(function (p) { return p.join(','); }).join(' '));
+      poly.setAttribute('fill', 'rgba(232,196,104,0.18)');
+      poly.setAttribute('stroke', '#e8c468');
+      poly.setAttribute('stroke-width', '2');
+      svg.appendChild(poly);
+
+      dataPts.forEach(function (p, i) {
+        var dot = document.createElementNS(ns, 'circle');
+        dot.setAttribute('cx', p[0]); dot.setAttribute('cy', p[1]);
+        dot.setAttribute('r', '3.5');
+        dot.setAttribute('fill', stats[i].color);
+        svg.appendChild(dot);
+      });
+    }
+
+    function renderList(stats) {
+      var list = document.getElementById('stat-list');
+      stats.forEach(function (s) {
+        var a = document.createElement('a');
+        a.className = 'stat-card';
+        a.href = s.url;
+        a.addEventListener('click', function () {
+          if (typeof gtag === 'function') gtag('event', 'player_stat_click', { tool: s.tool });
+        });
+        a.innerHTML =
+          '<span class="stat-dot" style="background:' + s.color + '"></span>' +
+          '<span class="stat-main">' +
+            '<span class="stat-label-row"><span class="stat-label">' + s.label + '</span><span class="stat-tool">' + s.tool + '</span></span>' +
+            '<span class="stat-detail">' + s.detail + '</span>' +
+          '</span>' +
+          '<span class="stat-score">' + s.score + '</span>';
+        list.appendChild(a);
+      });
+    }
+
+    var stats = computeStats();
+    renderRadar(stats);
+    renderList(stats);
+    if (typeof gtag === 'function') {
+      gtag('event', 'player_view', { unique_tools_used: stats.filter(function (s) { return s.score > 0; }).length });
+    }
+  </script>
+</body>
+</html>
