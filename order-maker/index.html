@@ -1120,6 +1120,15 @@
       </div>
       <span style="font-size:12px;color:#00e676;flex-shrink:0;margin-left:auto;">→</span>
     </a>
+
+    <a href="https://somirai.jp/player/" class="no-print" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'tactician_complete'})" style="display:flex;align-items:center;gap:12px;margin-top:10px;padding:12px 14px;background:rgba(232,196,104,0.06);border:1px solid rgba(232,196,104,0.3);border-radius:8px;text-decoration:none;color:inherit;">
+      <span style="font-size:22px;flex-shrink:0;">⭐</span>
+      <div style="min-width:0;">
+        <div style="font-size:12px;font-weight:700;color:#e8c468;margin-bottom:2px;">MY PLAYERで選手ステータスを見る</div>
+        <div style="font-size:11px;color:#555878;line-height:1.4;">今のスタメン作成もステータスに反映されています</div>
+      </div>
+      <span style="font-size:12px;color:#e8c468;flex-shrink:0;margin-left:auto;">→</span>
+    </a>
   </section>
 
 </main>
@@ -2606,7 +2615,7 @@ if (players.length === 0 && window.innerWidth >= 768) {
     <span style="display:block;font-size:11px;color:#a8adc4;">TACTICIANの利用状況もステータスに反映されています →</span>
   </span>
 </a>
-<script>(function(){try{if(localStorage.getItem('somirai:seen')){var e=document.getElementById('mp-card');if(e)e.style.display='flex';}else{localStorage.setItem('somirai:seen','1');}}catch(e){}})();</script>
+<script>(function(){try{if(localStorage.getItem('somirai:seen')){var e=document.getElementById('mp-card');if(e)e.style.display='flex';}else{localStorage.setItem('somirai:seen','1');}var t=new Date().toISOString().slice(0,10),r=localStorage.getItem('somirai:streak'),s=r?JSON.parse(r):null;if(!s||s.lastDate!==t){var y=new Date(Date.now()-864e5).toISOString().slice(0,10);localStorage.setItem('somirai:streak',JSON.stringify({lastDate:t,count:(s&&s.lastDate===y)?s.count+1:1}));}}catch(e){}})();</script>
 
 <section aria-label="関連ツール" style="background:#070810;border-top:1px solid #1c1f30;padding:28px 16px 20px;position:relative;z-index:1;">
   <p style="font-size:10px;color:#555878;margin:0 0 16px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;text-align:center;">Somirai Lab の他のツール</p>

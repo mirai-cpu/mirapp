@@ -90,6 +90,8 @@
     <h1>MY PLAYER</h1>
     <p class="subtitle">TEMPER・MARGINALIA・KURA・LUMBER・TACTICIANの利用状況から、<br>あなたの選手ステータスを合成表示します。</p>
 
+    <p id="streak-display" style="display:none;text-align:center;font-size:13px;color:var(--gold);font-weight:700;margin-bottom:20px;"></p>
+
     <div class="radar-wrap">
       <svg id="radar" width="300" height="300" viewBox="0 0 300 300"></svg>
     </div>
@@ -204,6 +206,26 @@
     if (typeof gtag === 'function') {
       gtag('event', 'player_view', { unique_tools_used: stats.filter(function (s) { return s.score > 0; }).length });
     }
+
+    // 連続来訪ストリーク記録・表示
+    (function () {
+      try {
+        var today = new Date().toISOString().slice(0, 10);
+        var raw = localStorage.getItem('somirai:streak');
+        var streak = raw ? JSON.parse(raw) : null;
+        if (!streak || streak.lastDate !== today) {
+          var yesterday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+          var count = (streak && streak.lastDate === yesterday) ? streak.count + 1 : 1;
+          streak = { lastDate: today, count: count };
+          localStorage.setItem('somirai:streak', JSON.stringify(streak));
+        }
+        if (streak && streak.count >= 2) {
+          var el = document.getElementById('streak-display');
+          el.textContent = '🔥 ' + streak.count + '日連続で来訪中';
+          el.style.display = 'block';
+        }
+      } catch (e) { /* localStorage unavailable */ }
+    })();
   </script>
 </body>
 </html>
