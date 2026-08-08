@@ -99,6 +99,11 @@
         "@type": "Question",
         "name": "スタメン表を印刷・共有できますか？",
         "acceptedAnswer": { "@type": "Answer", "text": "はい、印刷用の一覧表を出力できます。またX（旧Twitter）などSNSへのシェアや、データのエクスポートにも対応しています。" }
+      },
+      {
+        "@type": "Question",
+        "name": "甲子園・大会形式のベンチ入りメンバー表は作れますか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "はい。選手をベンチ入り登録すると、背番号順に並んだベンチ入りメンバー表がスタメン表タブに自動で追加され、大会規定の人数に合わせて印刷できます。" }
       }
     ]
   }
@@ -866,6 +871,8 @@
         <span class="card-title">登録選手一覧</span>
         <span class="card-sub" id="roster-count">0人</span>
       </div>
+      <p style="font-size:11px;color:#e8c468;margin:-4px 0 10px;font-family:var(--mono);" id="bench-count">ベンチ入り 0人</p>
+      <p style="font-size:11px;color:var(--muted);margin:-6px 0 12px;line-height:1.6;">⭐ 大会規定のベンチ入り人数に合わせて「ベンチ入り登録」を押すと、メンバー表（甲子園・大会形式）に出力できます。</p>
       <div class="roster-list" id="roster-list">
         <div class="empty" onclick="focusAddForm()" style="cursor:pointer;padding:28px 16px;">
           <div class="empty-icon">⚾</div>
@@ -1102,6 +1109,24 @@
         </table>
       </div>
     </div>
+
+    <!-- ── メンバー表（甲子園・大会形式） ── -->
+    <div class="print-card" id="member-sheet-card" style="display:none;margin-top:16px;">
+      <div class="print-title">ベンチ入りメンバー表</div>
+      <div class="print-meta" id="member-sheet-meta"></div>
+      <div class="section-label">背番号順</div>
+      <table class="print-table">
+        <thead>
+          <tr>
+            <th style="text-align:center;width:52px">背番号</th>
+            <th>選手名</th>
+            <th>守備</th>
+          </tr>
+        </thead>
+        <tbody id="member-sheet-tbody"></tbody>
+      </table>
+    </div>
+
     <div class="share-row">
       <button class="btn btn-share" onclick="shareNative()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
@@ -1296,6 +1321,7 @@ let lineups   = load('sm_lineups',  []);
 let isDH      = load('sm_isDH',     false);
 let theme     = load('sm_theme',    'dark');
 let absentIds = load('sm_absent',   []);
+let benchIds  = load('sm_bench',    []); // 甲子園モード: ベンチ入りメンバー
 
 if (!Array.isArray(order) || order.length !== 9) order = Array(9).fill(null);
 
@@ -1309,6 +1335,7 @@ function saveAll() {
   localStorage.setItem('sm_isDH',     JSON.stringify(isDH));
   localStorage.setItem('sm_theme',    JSON.stringify(theme));
   localStorage.setItem('sm_absent',   JSON.stringify(absentIds));
+  localStorage.setItem('sm_bench',    JSON.stringify(benchIds));
 }
 
 // ── Theme ───────────────────────────
@@ -1429,6 +1456,8 @@ function renderPosStats() {
 function renderRoster() {
   const el = document.getElementById('roster-list');
   document.getElementById('roster-count').textContent = players.length + '人';
+  const benchCountEl = document.getElementById('bench-count');
+  if (benchCountEl) benchCountEl.textContent = `ベンチ入り ${benchIds.length}人`;
   if (!players.length) {
     el.innerHTML = `<div class="empty-cta" onclick="focusAddForm()" role="button" aria-label="選手追加フォームへ移動">
       <div class="empty-cta-ball">⚾</div>
@@ -1440,6 +1469,7 @@ function renderRoster() {
   }
   el.innerHTML = players.map(p => {
     const isAbsent = absentIds.includes(p.id);
+    const isBench  = benchIds.includes(p.id);
     return `
     <div class="roster-item${isAbsent ? ' absent' : ''}">
       <div class="roster-num">${p.num || '—'}</div>
@@ -1449,6 +1479,7 @@ function renderRoster() {
       </div>
       <div class="roster-actions">
         <button class="absent-toggle${isAbsent ? ' is-absent' : ''}" onclick="toggleAbsent('${p.id}')" title="${isAbsent ? '欠席中（クリックで解除）' : '出席（クリックで欠席マーク）'}">${isAbsent ? '欠席' : '出席'}</button>
+        <button class="btn btn-xs" onclick="toggleBench('${p.id}')" style="${isBench ? 'background:rgba(232,196,104,0.15);border:1px solid rgba(232,196,104,0.5);color:#e8c468;' : 'background:transparent;border:1px solid var(--border);color:var(--muted);'}" title="${isBench ? 'ベンチ入り登録済み（クリックで解除）' : 'クリックでベンチ入り登録'}">${isBench ? '★ ベンチ入り' : 'ベンチ入り登録'}</button>
         <button class="btn btn-ghost btn-xs" onclick="openEdit('${p.id}')">編集</button>
         <button class="btn btn-danger btn-xs" onclick="removePlayer('${p.id}')">削除</button>
       </div>
@@ -1468,6 +1499,14 @@ function clearAbsent() {
   absentIds = [];
   saveAll(); renderRoster(); renderOrderSlots();
   showToast('欠席マークをすべて解除しました');
+}
+
+// ── ベンチ入り(甲子園モード) ──────────────
+function toggleBench(id) {
+  const idx = benchIds.indexOf(id);
+  if (idx >= 0) benchIds.splice(idx, 1);
+  else benchIds.push(id);
+  saveAll(); renderRoster(); renderMemberSheet();
 }
 
 // ── Edit Player ─────────────────────
@@ -1833,6 +1872,24 @@ function renderPrint() {
       return `<tr><td class="t-order">${i+1}</td><td class="t-num">${p?.num?'#'+p.num:'—'}</td><td>${p?esc(p.name):'—'}</td><td>${pitcherInningLabel(pt)||'—'}</td></tr>`;
     }).join('');
   } else { ps.style.display = 'none'; }
+
+  renderMemberSheet();
+}
+
+// ── メンバー表（甲子園・大会形式） ───────────
+function renderMemberSheet() {
+  const card = document.getElementById('member-sheet-card');
+  if (!benchIds.length) { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+  const name = document.getElementById('lineup-name')?.value.trim() || 'スタメン';
+  document.getElementById('member-sheet-meta').textContent = `${name} — ベンチ入り${benchIds.length}名`;
+  const benchPlayers = players
+    .filter(p => benchIds.includes(p.id))
+    .slice()
+    .sort((a,b) => (a.num ?? 999) - (b.num ?? 999));
+  document.getElementById('member-sheet-tbody').innerHTML = benchPlayers.map(p =>
+    `<tr><td class="t-num">${p.num ? '#'+p.num : '—'}</td><td>${esc(p.name)}</td><td>${p.pos.map(x=>`<span class="pos-chip">${x}</span>`).join('') || '—'}</td></tr>`
+  ).join('');
 }
 
 function pitcherInningLabel(pt) {
@@ -1904,7 +1961,7 @@ function exportFull() {
   const data = {
     version: 2,
     exportedAt: new Date().toISOString(),
-    players, order, pitchers, lineups, isDH, absentIds,
+    players, order, pitchers, lineups, isDH, absentIds, benchIds,
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -1931,6 +1988,7 @@ function importFull(e) {
       lineups  = raw.lineups  || [];
       isDH     = raw.isDH     ?? false;
       absentIds = Array.isArray(raw.absentIds) ? raw.absentIds : [];
+      benchIds  = Array.isArray(raw.benchIds)  ? raw.benchIds  : [];
       if (!Array.isArray(order) || order.length < 9) order = Array(9).fill(null);
       document.getElementById('dh-toggle').checked = isDH;
       saveAll();
@@ -2579,6 +2637,10 @@ if (players.length === 0 && window.innerWidth >= 768) {
       <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
         <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. 入力したデータはどこに保存されますか？</h3>
         <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. お使いのブラウザ内（localStorage）にのみ保存され、外部サーバーへは送信されません。機種変更やブラウザの変更時は、JSONエクスポート機能でデータを書き出して移行してください。</p>
+      </div>
+      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. 甲子園・大会形式のベンチ入りメンバー表は作れますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. はい。「選手」タブで各選手を「ベンチ入り登録」すると、背番号順に並んだベンチ入りメンバー表が「スタメン表」タブに自動で追加されます。大会規定のベンチ入り人数に合わせて登録・印刷できます。</p>
       </div>
     </div>
   </div>
