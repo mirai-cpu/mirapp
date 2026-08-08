@@ -417,6 +417,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (isFirst) {
         showToast('⚾ 記録完了！「成績」タブで打率を確認してみてください');
         document.getElementById('welcome-banner')?.remove();
+        const rcBanner = document.getElementById('record-complete-banner');
+        if (rcBanner && !localStorage.getItem('record-complete-seen')) {
+          rcBanner.style.display = '';
+          localStorage.setItem('record-complete-seen', '1');
+        }
       } else {
         showToast(I18n.t('msg.saved'));
       }
@@ -1152,6 +1157,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       localStorage.setItem('tutorial-seen-v1', '1');
     });
   }
+
+  // ── 初回記録完了バナー ───────────────────────────────────────
+  const recordCompleteBanner = document.getElementById('record-complete-banner');
+  document.getElementById('record-complete-close')?.addEventListener('click', () => {
+    if (recordCompleteBanner) recordCompleteBanner.style.display = 'none';
+  });
 
   // ── PWAインストールバナー ─────────────────────────────────────
   const _isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);

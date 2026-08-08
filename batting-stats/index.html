@@ -165,6 +165,19 @@
         </div>
       </div>
 
+      <!-- 初回記録完了バナー -->
+      <div id="record-complete-banner" class="welcome-banner" style="display:none;background:linear-gradient(135deg, rgba(232,196,104,.10) 0%, rgba(232,196,104,.04) 100%);border-color:rgba(232,196,104,.3);">
+        <div class="welcome-banner-inner">
+          <span class="welcome-icon">⭐</span>
+          <div class="welcome-text">
+            <strong style="color:#e8c468;">記録完了！</strong>
+            <span>この打撃感覚のままSWING!で腕試し、またはMY PLAYERで選手ステータスを確認できます。</span>
+          </div>
+          <a href="https://somirai.jp/swing/" style="color:#e8c468;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;margin-right:4px;" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'lumber_complete',to:'swing'})">SWING!→</a>
+          <button class="welcome-close" id="record-complete-close" aria-label="閉じる">✕</button>
+        </div>
+      </div>
+
       <form id="atbat-form" autocomplete="off" novalidate>
 
         <!-- 日付 / 相手 -->
