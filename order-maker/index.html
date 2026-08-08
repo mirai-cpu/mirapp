@@ -395,7 +395,7 @@
       background: rgba(0,230,118,.06); border: 1px solid rgba(0,230,118,.2);
       color: var(--accent); font-weight: 700;
     }
-    .roster-actions { display: flex; gap: 5px; flex-shrink: 0; }
+    .roster-actions { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
 
     /* ── Absent toggle ── */
     .absent-toggle {
@@ -1430,7 +1430,9 @@ function removePlayer(id) {
   players = players.filter(p => p.id !== id);
   order    = order.map(s => s?.playerId === id ? null : s);
   pitchers = pitchers.filter(p => p.playerId !== id);
-  saveAll(); renderRoster(); renderOrderSlots(); renderPitcherSelect(); renderPitcherList();
+  absentIds = absentIds.filter(x => x !== id);
+  benchIds  = benchIds.filter(x => x !== id);
+  saveAll(); renderRoster(); renderOrderSlots(); renderPitcherSelect(); renderPitcherList(); renderMemberSheet();
 }
 function renderPosStats() {
   const BASE_POS = ['投','捕','一','二','三','遊','左','中','右','DH'];
@@ -1479,7 +1481,7 @@ function renderRoster() {
       </div>
       <div class="roster-actions">
         <button class="absent-toggle${isAbsent ? ' is-absent' : ''}" onclick="toggleAbsent('${p.id}')" title="${isAbsent ? '欠席中（クリックで解除）' : '出席（クリックで欠席マーク）'}">${isAbsent ? '欠席' : '出席'}</button>
-        <button class="btn btn-xs" onclick="toggleBench('${p.id}')" style="${isBench ? 'background:rgba(232,196,104,0.15);border:1px solid rgba(232,196,104,0.5);color:#e8c468;' : 'background:transparent;border:1px solid var(--border);color:var(--muted);'}" title="${isBench ? 'ベンチ入り登録済み（クリックで解除）' : 'クリックでベンチ入り登録'}">${isBench ? '★ ベンチ入り' : 'ベンチ入り登録'}</button>
+        <button class="btn btn-xs" onclick="toggleBench('${p.id}')" aria-pressed="${isBench}" style="${isBench ? 'background:rgba(232,196,104,0.15);border:1px solid rgba(232,196,104,0.5);color:#e8c468;' : 'background:transparent;border:1px solid var(--border);color:var(--muted);'}" title="${isBench ? 'ベンチ入り登録済み（クリックで解除）' : 'クリックでベンチ入り登録'}">${isBench ? '★ ベンチ' : '☆ ベンチ'}</button>
         <button class="btn btn-ghost btn-xs" onclick="openEdit('${p.id}')">編集</button>
         <button class="btn btn-danger btn-xs" onclick="removePlayer('${p.id}')">削除</button>
       </div>
@@ -1886,9 +1888,12 @@ function renderMemberSheet() {
   const benchPlayers = players
     .filter(p => benchIds.includes(p.id))
     .slice()
-    .sort((a,b) => (a.num ?? 999) - (b.num ?? 999));
+    .sort((a,b) => {
+      const na = parseInt(a.num, 10), nb = parseInt(b.num, 10);
+      return (Number.isFinite(na) ? na : Infinity) - (Number.isFinite(nb) ? nb : Infinity);
+    });
   document.getElementById('member-sheet-tbody').innerHTML = benchPlayers.map(p =>
-    `<tr><td class="t-num">${p.num ? '#'+p.num : '—'}</td><td>${esc(p.name)}</td><td>${p.pos.map(x=>`<span class="pos-chip">${x}</span>`).join('') || '—'}</td></tr>`
+    `<tr><td class="t-num">${p.num ? '#'+esc(p.num) : '—'}</td><td>${esc(p.name)}</td><td>${p.pos.map(x=>`<span class="pos-chip">${esc(x)}</span>`).join('') || '—'}</td></tr>`
   ).join('');
 }
 
@@ -2677,7 +2682,7 @@ if (players.length === 0 && window.innerWidth >= 768) {
     <span style="display:block;font-size:11px;color:#a8adc4;">TACTICIANの利用状況もステータスに反映されています →</span>
   </span>
 </a>
-<script>(function(){try{if(localStorage.getItem('somirai:seen')){var e=document.getElementById('mp-card');if(e)e.style.display='flex';}else{localStorage.setItem('somirai:seen','1');}var t=new Date().toISOString().slice(0,10),r=localStorage.getItem('somirai:streak'),s=r?JSON.parse(r):null;if(!s||s.lastDate!==t){var y=new Date(Date.now()-864e5).toISOString().slice(0,10);localStorage.setItem('somirai:streak',JSON.stringify({lastDate:t,count:(s&&s.lastDate===y)?s.count+1:1}));}}catch(e){}})();</script>
+<script>(function(){try{if(localStorage.getItem('somirai:seen')){var e=document.getElementById('mp-card');if(e)e.style.display='flex';}else{localStorage.setItem('somirai:seen','1');}function ld(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}var t=ld(new Date()),r=localStorage.getItem('somirai:streak'),s=r?JSON.parse(r):null;if(!s||s.lastDate!==t){var y=ld(new Date(Date.now()-864e5));localStorage.setItem('somirai:streak',JSON.stringify({lastDate:t,count:(s&&s.lastDate===y)?s.count+1:1}));}}catch(e){}})();</script>
 
 <section aria-label="関連ツール" style="background:#070810;border-top:1px solid #1c1f30;padding:28px 16px 20px;position:relative;z-index:1;">
   <p style="font-size:10px;color:#555878;margin:0 0 16px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;text-align:center;">Somirai Lab の他のツール</p>

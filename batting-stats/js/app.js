@@ -418,10 +418,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         showToast('⚾ 記録完了！「成績」タブで打率を確認してみてください');
         document.getElementById('welcome-banner')?.remove();
         const rcBanner = document.getElementById('record-complete-banner');
-        if (rcBanner && !localStorage.getItem('record-complete-seen')) {
-          rcBanner.style.display = '';
-          localStorage.setItem('record-complete-seen', '1');
-        }
+        if (rcBanner) rcBanner.style.display = '';
       } else {
         showToast(I18n.t('msg.saved'));
       }
