@@ -1,0 +1,25 @@
+{
+  "name": "MY PLAYER - Somirai Lab",
+  "short_name": "MY PLAYER",
+  "description": "Somirai Labの各ツールの利用状況から選手ステータスを可視化するMY PLAYER",
+  "start_url": "/player/",
+  "display": "standalone",
+  "background_color": "#070810",
+  "theme_color": "#070810",
+  "orientation": "portrait-primary",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "/player/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/player/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

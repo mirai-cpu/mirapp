@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1610"/>
+      <stop offset="100%" stop-color="#0f0d0a"/>
+    </linearGradient>
+    <radialGradient id="glowG" cx="50%" cy="46%" r="42%">
+      <stop offset="0%" stop-color="#e8c468" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#e8c468" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="starG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f3dca0"/>
+      <stop offset="100%" stop-color="#c9a13f"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#bgG)"/>
+  <ellipse cx="256" cy="236" rx="210" ry="210" fill="url(#glowG)"/>
+
+  <!-- Radar grid rings (pentagon) -->
+  <g fill="none" stroke="#e8c468" stroke-width="2" opacity="0.22">
+    <polygon points="256,96 384,182 336,326 176,326 128,182"/>
+    <polygon points="256,141 349,205 314,313 198,313 163,205"/>
+    <polygon points="256,186 314,228 292,300 220,300 198,228"/>
+  </g>
+  <g stroke="#e8c468" stroke-width="2" opacity="0.18">
+    <line x1="256" y1="236" x2="256" y2="96"/>
+    <line x1="256" y1="236" x2="384" y2="182"/>
+    <line x1="256" y1="236" x2="336" y2="326"/>
+    <line x1="256" y1="236" x2="176" y2="326"/>
+    <line x1="256" y1="236" x2="128" y2="182"/>
+  </g>
+
+  <!-- Data polygon (asymmetric, like a real player stat spread) -->
+  <polygon points="256,120 358,196 322,308 200,300 168,198" fill="#e8c468" opacity="0.22" stroke="url(#starG)" stroke-width="7" stroke-linejoin="round"/>
+  <circle cx="256" cy="120" r="10" fill="#f3dca0"/>
+  <circle cx="358" cy="196" r="10" fill="#f3dca0"/>
+  <circle cx="322" cy="308" r="10" fill="#f3dca0"/>
+  <circle cx="200" cy="300" r="10" fill="#f3dca0"/>
+  <circle cx="168" cy="198" r="10" fill="#f3dca0"/>
+
+  <!-- Center star -->
+  <path d="M256 208 L266 232 L292 234 L272 250 L279 276 L256 262 L233 276 L240 250 L220 234 L246 232 Z" fill="url(#starG)"/>
+
+  <!-- Wordmark -->
+  <text x="256" y="438" text-anchor="middle" font-family="'Helvetica Neue','Arial',sans-serif" font-size="46" font-weight="800" fill="#4a4433" letter-spacing="0.1em">MY PLAYER</text>
+</svg>
