@@ -2599,7 +2599,7 @@ if (players.length === 0 && window.innerWidth >= 768) {
   <a href="https://somirai.jp/batting-stats/" onclick="gtag('event','cross_tool_click',{from:'tactician_cta',to:'lumber'})" style="display:inline-flex;align-items:center;gap:6px;background:#0d2a18;color:#00e676;padding:10px 20px;border-radius:8px;text-decoration:none;border:1px solid rgba(0,230,118,.4);font-size:13px;font-weight:700;">⚾ LUMBER で打撃成績を記録 →</a>
 </section>
 
-<a id="mp-card" href="https://somirai.jp/player/" onclick="gtag('event','player_entry_click',{from:'tactician'})" style="display:none;align-items:center;gap:10px;max-width:480px;margin:16px auto 0;background:rgba(232,196,104,0.06);border:1px solid rgba(232,196,104,0.3);border-radius:10px;padding:12px 14px;text-decoration:none;">
+<a id="mp-card" href="https://somirai.jp/player/" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'tactician'})" style="display:none;align-items:center;gap:10px;max-width:480px;margin:16px auto 0;background:rgba(232,196,104,0.06);border:1px solid rgba(232,196,104,0.3);border-radius:10px;padding:12px 14px;text-decoration:none;">
   <span style="font-size:18px;">⭐</span>
   <span style="flex:1;">
     <span style="display:block;font-size:12px;font-weight:700;color:#e8c468;">MY PLAYER</span>
