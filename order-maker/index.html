@@ -1132,6 +1132,7 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
         シェアする
       </button>
+      <button class="btn btn-ghost" onclick="shareImage()">🖼️ 画像で保存・共有</button>
       <button class="btn btn-ghost" onclick="copyText()">📋 テキストコピー</button>
       <button class="btn btn-ghost" onclick="window.print()">🖨️ 印刷</button>
       <button class="btn btn-ghost" onclick="switchTab('order')">← 戻る</button>
@@ -1923,6 +1924,144 @@ function buildText() {
   }
   txt += '\n⚾ スタメンメーカー https://somirai.jp/order-maker/';
   return txt;
+}
+
+// ── スタメン表を画像として書き出し・共有 ─────────────
+function drawLineupCard() {
+  const name = document.getElementById('lineup-name').value.trim() || 'スタメン';
+  const date = document.getElementById('match-date').value;
+  const rows = order.map((slot, i) => {
+    const dname = slotDisplayName(slot);
+    const p = slot?.playerId ? players.find(x => x.id === slot.playerId) : null;
+    const numLabel = p?.num ? '#' + p.num : (slot?.isGuest ? '助' : '');
+    return { order: i + 1, num: numLabel, name: dname || '未設定', pos: slot?.pos || '' };
+  });
+  const pitcherRows = pitchers.map((pt, i) => {
+    const p = players.find(x => x.id === pt.playerId);
+    return { order: i + 1, name: p ? p.name : '—', label: pitcherInningLabel(pt) || '' };
+  });
+
+  const W = 900;
+  const rowH = 52;
+  const headerH = 190;
+  const pitcherH = pitcherRows.length ? (50 + pitcherRows.length * 44 + 20) : 0;
+  const footerH = 70;
+  const H = headerH + rows.length * rowH + pitcherH + footerH;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // 背景
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, '#0d0f18');
+  bg.addColorStop(1, '#070810');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = '#00e676';
+  ctx.fillRect(0, 0, W, 5);
+
+  // タイトル
+  ctx.fillStyle = '#eaecf4';
+  ctx.font = '900 42px "Barlow", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText(name, 40, 76);
+  ctx.fillStyle = '#a8adc4';
+  ctx.font = '400 20px sans-serif';
+  ctx.fillText(date ? fmtFull(date) : new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' }), 40, 108);
+
+  // テーブルヘッダー
+  let y = headerH;
+  ctx.strokeStyle = '#1c2a3a';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(40, y - 20); ctx.lineTo(W - 40, y - 20); ctx.stroke();
+  ctx.fillStyle = '#555878';
+  ctx.font = '700 15px monospace';
+  ctx.fillText('打順', 40, y - 30);
+  ctx.fillText('選手', 140, y - 30);
+  ctx.fillText('守備', W - 140, y - 30);
+
+  // 打順テーブル
+  rows.forEach((r, i) => {
+    const rowY = y + i * rowH;
+    if (i % 2 === 0) {
+      ctx.fillStyle = 'rgba(255,255,255,0.02)';
+      ctx.fillRect(40, rowY, W - 80, rowH);
+    }
+    ctx.fillStyle = '#00e676';
+    ctx.font = '900 22px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(String(r.order), 65, rowY + 33);
+
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#eaecf4';
+    ctx.font = '700 22px "Barlow", sans-serif';
+    const numText = r.num ? r.num + ' ' : '';
+    ctx.fillText(numText + r.name, 140, rowY + 33);
+
+    ctx.fillStyle = '#a8adc4';
+    ctx.font = '700 18px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(r.pos, W - 60, rowY + 33);
+    ctx.textAlign = 'left';
+  });
+
+  // 投手陣
+  let py = y + rows.length * rowH + 20;
+  if (pitcherRows.length) {
+    ctx.fillStyle = '#555878';
+    ctx.font = '700 15px monospace';
+    ctx.fillText('投手陣', 40, py);
+    py += 30;
+    pitcherRows.forEach((r) => {
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = '700 20px "Barlow", sans-serif';
+      ctx.fillText(r.order + '番手  ' + r.name, 40, py + 20);
+      ctx.fillStyle = '#a8adc4';
+      ctx.font = '400 16px sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(r.label, W - 60, py + 20);
+      ctx.textAlign = 'left';
+      py += 44;
+    });
+  }
+
+  // フッター
+  ctx.fillStyle = '#555878';
+  ctx.font = '400 18px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('⚾ TACTICIAN — somirai.jp/order-maker/', W / 2, H - 28);
+
+  return canvas;
+}
+
+function shareImage() {
+  try {
+    const canvas = drawLineupCard();
+    canvas.toBlob(function (blob) {
+      if (!blob) return;
+      const fileName = 'スタメン表_' + new Date().toISOString().slice(0, 10) + '.png';
+      const file = new File([blob], fileName, { type: 'image/png' });
+      if (typeof gtag === 'function') gtag('event', 'lineup_shared', { method: 'image' });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({
+          files: [file],
+          title: document.getElementById('lineup-name').value.trim() || 'スタメン',
+          text: '⚾ TACTICIANでスタメンを作成しました！ https://somirai.jp/order-maker/',
+        }).catch(function () { /* user cancelled */ });
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = fileName;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+        showToast('画像を保存しました');
+      }
+    }, 'image/png');
+  } catch (e) {
+    showToast('画像の生成に失敗しました', true);
+  }
 }
 
 async function shareNative() {
