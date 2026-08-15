@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="防御率(ERA)の計算機。投球回・自責点を入力するだけで防御率を自動計算。計算式の解説、草野球・少年野球での目安、9イニング換算の考え方も紹介。登録不要・完全無料。">
-  <meta name="keywords" content="防御率 計算,防御率 計算方法,ERA 計算,自責点 計算,防御率 計算機,野球 防御率,投手成績">
-  <link rel="canonical" href="https://somirai.jp/era-calculator/">
+  <meta name="description" content="WHIP(投球回あたりの与四球+被安打)の計算機。与四球・被安打・投球回を入力するだけで自動計算。計算式の解説、目安、防御率との違いも紹介。登録不要・完全無料。">
+  <meta name="keywords" content="WHIP 計算,WHIP とは,WHIP 計算方法,野球 WHIP,与四球 被安打,投手成績,WHIP 計算機">
+  <link rel="canonical" href="https://somirai.jp/whip-calculator/">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="防御率計算機【無料】投球回・自責点から自動計算 | Somirai Lab">
-  <meta property="og:description" content="投球回・自責点を入力するだけで防御率を自動計算。計算式の解説と目安つき。登録不要・完全無料。">
-  <meta property="og:url" content="https://somirai.jp/era-calculator/">
+  <meta property="og:title" content="WHIP計算機【無料】与四球・被安打・投球回から自動計算 | Somirai Lab">
+  <meta property="og:description" content="与四球・被安打・投球回を入力するだけでWHIPを自動計算。計算式の解説と目安つき。登録不要・完全無料。">
+  <meta property="og:url" content="https://somirai.jp/whip-calculator/">
   <meta property="og:site_name" content="Somirai Lab">
   <meta property="og:locale" content="ja_JP">
   <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
   <meta name="twitter:card" content="summary_large_image">
-  <title>防御率計算機【無料】投球回・自責点から一発計算 | Somirai Lab</title>
+  <title>WHIP計算機【無料】与四球・被安打から一発計算 | Somirai Lab</title>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -25,18 +25,18 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "防御率はどうやって計算しますか？",
-        "acceptedAnswer": { "@type": "Answer", "text": "防御率(ERA) = 自責点 ÷ 投球回 × 9 で計算します。9イニングあたり平均何点自責点を許すかを表す指標です。" }
+        "name": "WHIPはどうやって計算しますか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "WHIP = (与四球＋被安打) ÷ 投球回 で計算します。1イニングあたり平均何人の走者を出すかを表す指標です。" }
       },
       {
         "@type": "Question",
-        "name": "投球回が中途半端な場合(例: 5回2/3)はどう入力しますか？",
-        "acceptedAnswer": { "@type": "Answer", "text": "1アウトを1/3回として小数で計算します。5回2/3は5.667回として入力するか、このツールではアウト数を別途入力して自動換算できます。" }
+        "name": "WHIPと防御率の違いは何ですか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "防御率は「点を取られたか」を見る指標、WHIPは「走者をどれだけ出したか」を見る指標です。防御率が低くても走者を出しすぎている投手はWHIPが悪く、次の試合で崩れるリスクが見えることがあります。" }
       },
       {
         "@type": "Question",
-        "name": "草野球・少年野球での防御率の目安は？",
-        "acceptedAnswer": { "@type": "Answer", "text": "レベルにより幅がありますが、目安として3点台なら好投手、2点台以下なら相手が苦しむエース級と言われることが多いです。プロ野球では2点台前半が優秀とされます。" }
+        "name": "WHIPの目安はどれくらいですか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "プロ野球では1.00以下がエース級、1.30前後が平均的とされます。草野球・少年野球ではレベル差が大きいため、1.50以下を目標にするのが現実的な目安です。" }
       }
     ]
   }
@@ -64,8 +64,8 @@
       background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
       padding: 24px 20px; margin-bottom: 28px;
     }
-    .field-row { display: flex; gap: 12px; margin-bottom: 14px; }
-    .field { flex: 1; }
+    .field-row { display: flex; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+    .field { flex: 1; min-width: 120px; }
     .field label { display: block; font-size: 12px; color: var(--text-sec); margin-bottom: 6px; font-weight: 700; }
     .field input {
       width: 100%; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 8px;
@@ -112,62 +112,66 @@
   </header>
 
   <main>
-    <h1>防御率計算機</h1>
-    <p class="lead">投球回と自責点を入力するだけで、防御率(ERA)を自動計算します。登録不要・完全無料。</p>
+    <h1>WHIP計算機</h1>
+    <p class="lead">与四球・被安打・投球回を入力するだけで、WHIPを自動計算します。登録不要・完全無料。</p>
 
     <div class="calc-card">
       <div class="field-row">
         <div class="field">
-          <label for="innings">投球回（例: 6.1 = 6回1/3）</label>
-          <input type="number" id="innings" placeholder="6.1" step="0.1" min="0" inputmode="decimal">
+          <label for="walks">与四球（与死球含む）</label>
+          <input type="number" id="walks" placeholder="2" step="1" min="0" inputmode="numeric">
         </div>
         <div class="field">
-          <label for="earned">自責点</label>
-          <input type="number" id="earned" placeholder="2" step="1" min="0" inputmode="numeric">
+          <label for="hits">被安打</label>
+          <input type="number" id="hits" placeholder="5" step="1" min="0" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="innings">投球回（例: 6.1 = 6回1/3）</label>
+          <input type="number" id="innings" placeholder="6.1" step="0.1" min="0" inputmode="decimal">
         </div>
       </div>
       <p style="font-size:11px;color:var(--text-mut);margin-top:-6px;">※ 投球回は「6回1/3」なら <strong style="color:var(--text-sec)">6.1</strong>、「6回2/3」なら <strong style="color:var(--text-sec)">6.2</strong> と入力してください（1/3・2/3表記）</p>
 
       <div class="result-box" id="result-box" style="display:none;">
-        <div class="result-label">ERA（防御率）</div>
+        <div class="result-label">WHIP</div>
         <div class="result-value" id="result-value">-.--</div>
         <div class="result-note" id="result-note"></div>
       </div>
     </div>
 
-    <h2>防御率の計算式</h2>
-    <div class="formula-box">防御率 ＝ 自責点 ÷ 投球回 × 9</div>
+    <h2>WHIPの計算式</h2>
+    <div class="formula-box">WHIP ＝ (与四球 ＋ 被安打) ÷ 投球回</div>
     <p>
-      9イニング（1試合フル）を投げたと仮定したとき、平均で何点の自責点を与えるかを表す指標です。分母の「投球回」は、1アウト＝1/3回として数えます（3アウトで1回、6アウトで2回）。自分のミス以外（味方のエラー等）で生まれた失点は自責点に含めないのが基本ルールです。
+      WHIP（Walks plus Hits per Inning Pitched）は、1イニングあたり平均で何人の走者を出したかを表す指標です。防御率が「失点」という結果を見るのに対し、WHIPは「走者をどれだけ出したか」という過程を見ます。防御率が良くても守備の助けで失点を免れているだけの投手は、WHIPを見ると実態が浮かび上がることがあります。
     </p>
 
     <h2>草野球・少年野球での目安</h2>
     <table class="benchmark-table">
-      <tr><td>1点台</td><td>相手が苦しむエース級。ほぼ完璧に近い投球内容</td></tr>
-      <tr><td>2点台</td><td>優秀な投手。安定して試合を作れるレベル</td></tr>
-      <tr><td>3点台</td><td>好投手。チームのエースを任せられる水準</td></tr>
-      <tr><td>4点台</td><td>平均的な投手。試合によってムラが出やすい</td></tr>
-      <tr><td>5点以上</td><td>立て直しが必要な水準。制球・球種の見直しを検討</td></tr>
+      <tr><td>1.00以下</td><td>ほぼ走者を出さないエース級。プロでも一流の水準</td></tr>
+      <tr><td>1.00〜1.30</td><td>優秀な投手。安定した試合運びができる</td></tr>
+      <tr><td>1.30〜1.50</td><td>平均的な投手。試合によってムラが出やすい</td></tr>
+      <tr><td>1.50〜1.80</td><td>やや不安定。制球力の見直しを検討したい水準</td></tr>
+      <tr><td>1.80以上</td><td>走者を出しすぎている状態。フォーム・球種の見直しが必要</td></tr>
     </table>
     <p>
-      プロ野球では2点台前半が「優秀」とされますが、草野球・少年野球は守備力や球場条件の差が大きいため、この目安はあくまで参考値として捉えてください。
+      プロ野球では1.00前後がトップクラスとされますが、草野球・少年野球では守備力の差が大きいため、1.50以下を当面の目標にするのが現実的です。
     </p>
 
-    <a href="https://somirai.jp/whip-calculator/" class="cta-card" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'era_calc',to:'whip_calc'})">
+    <a href="https://somirai.jp/era-calculator/" class="cta-card" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'whip_calc',to:'era_calc'})">
       <span style="font-size:22px;">🧮</span>
       <span>
-        <span class="cta-title" style="display:block;">WHIPも計算する</span>
-        <span class="cta-desc">与四球・被安打から1イニングあたりの走者数を計算</span>
+        <span class="cta-title" style="display:block;">防御率(ERA)も計算する</span>
+        <span class="cta-desc">投球回・自責点から防御率を自動計算</span>
       </span>
     </a>
-    <a href="https://somirai.jp/batting-stats/" class="cta-card" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'era_calc',to:'lumber'})">
+    <a href="https://somirai.jp/batting-stats/" class="cta-card" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'whip_calc',to:'lumber'})">
       <span style="font-size:22px;">⚾</span>
       <span>
         <span class="cta-title" style="display:block;">LUMBERで打撃成績も記録する</span>
         <span class="cta-desc">打率・出塁率・OPSまで自動計算する無料ツール</span>
       </span>
     </a>
-    <a href="https://somirai.jp/order-maker/" class="cta-card" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'era_calc',to:'tactician'})">
+    <a href="https://somirai.jp/order-maker/" class="cta-card" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'whip_calc',to:'tactician'})">
       <span style="font-size:22px;">📋</span>
       <span>
         <span class="cta-title" style="display:block;">TACTICIANで投手ローテも管理する</span>
@@ -177,15 +181,15 @@
 
     <h2>よくある質問</h2>
     <div class="faq-item">
-      <h3>投球回が中途半端な場合（例: 5回2/3）はどう入力しますか？</h3>
-      <p>1アウトを1/3回として小数で計算します。「5回2/3」は 5.2 と入力してください（このツールでは1/3・2/3表記に対応しています）。</p>
+      <h3>与死球（デッドボール）もWHIPに含めますか？</h3>
+      <p>正式なWHIPは与四球のみで計算しますが、草野球・少年野球の現場では与死球も含めて「走者を出した数」として計算する運用も一般的です。このツールでは与四球の欄に与死球を合算して入力してください。</p>
     </div>
     <div class="faq-item">
-      <h3>自責点と失点の違いは？</h3>
-      <p>失点は味方のエラーによる分も含む総失点、自責点はエラーを除いた「投手の責任」による失点のみです。防御率の計算には自責点を使います。</p>
+      <h3>WHIPと防御率、どちらを重視すべきですか？</h3>
+      <p>両方見るのが理想です。防御率だけが良い投手は守備やたまたまの結果に助けられている可能性があり、WHIPが同時に良ければ「安定して抑えられている」投手だと判断できます。</p>
     </div>
     <div class="faq-item">
-      <h3>シーズン通算の防御率も計算できますか？</h3>
+      <h3>シーズン通算のWHIPも計算できますか？</h3>
       <p>このページは1試合単位の簡易計算機です。シーズン通算で自動集計したい場合は、無料の打撃成績管理ツール「LUMBER」と合わせてご利用ください。</p>
     </div>
   </main>
@@ -208,8 +212,9 @@
   </script>
   <script>
     (function () {
+      var $walks = document.getElementById('walks');
+      var $hits = document.getElementById('hits');
       var $innings = document.getElementById('innings');
-      var $earned = document.getElementById('earned');
       var $box = document.getElementById('result-box');
       var $value = document.getElementById('result-value');
       var $note = document.getElementById('result-note');
@@ -225,22 +230,23 @@
       }
 
       function calc() {
+        var walksVal = parseFloat($walks.value);
+        var hitsVal = parseFloat($hits.value);
         var inningsVal = parseInnings($innings.value);
-        var earnedVal = parseFloat($earned.value);
-        if (inningsVal === null || inningsVal <= 0 || !isFinite(earnedVal) || earnedVal < 0) {
+        if (!isFinite(walksVal) || walksVal < 0 || !isFinite(hitsVal) || hitsVal < 0 || inningsVal === null || inningsVal <= 0) {
           $box.style.display = 'none';
           return;
         }
-        var era = (earnedVal / inningsVal) * 9;
-        $value.textContent = era.toFixed(2);
-        var displayInnings = $innings.value;
-        $note.textContent = '投球回 ' + displayInnings + ' ・ 自責点 ' + earnedVal;
+        var whip = (walksVal + hitsVal) / inningsVal;
+        $value.textContent = whip.toFixed(2);
+        $note.textContent = '与四球 ' + walksVal + ' ・ 被安打 ' + hitsVal + ' ・ 投球回 ' + $innings.value;
         $box.style.display = 'block';
-        if (typeof gtag === 'function') gtag('event', 'era_calculated', {});
+        if (typeof gtag === 'function') gtag('event', 'whip_calculated', {});
       }
 
+      $walks.addEventListener('input', calc);
+      $hits.addEventListener('input', calc);
       $innings.addEventListener('input', calc);
-      $earned.addEventListener('input', calc);
     })();
   </script>
 
