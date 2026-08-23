@@ -20,6 +20,7 @@
   <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"VALE - 物価上昇シミュレーター","url":"https://somirai.jp/price-sim/","description":"インフレで貯蓄の実質価値がどう変わるか計算・可視化できる無料ツール。年数・インフレ率を設定してグラフで確認。KURAの家計簿データと連携可能。","applicationCategory":"FinanceApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","author":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"ja","mainEntity":[{"@type":"Question","name":"インフレ率は何%に設定すればいいですか？","acceptedAnswer":{"@type":"Answer","text":"迷ったら2〜3%あたりから始めるのが一つの目安です。日本の消費者物価指数の上昇率は近年おおむねこの水準で推移しています（総務省統計局）。ただし体感は家計の構成によって変わるため、食費や光熱費の比率が高い家庭では3〜4%で試してみると実感に近くなることがあります。複数の値で試して幅を掴むのがおすすめです。"}},{"@type":"Question","name":"グラフの「名目額」が横ばいなのはなぜですか？","acceptedAnswer":{"@type":"Answer","text":"VALEは「現金・預金のまま置いておいた場合」を前提に計算しているためです。運用による増加を含めていないので、名目額（通帳の数字）は動かず、実質購買力だけが下がっていく形になります。この2本の線の開きが、そのままインフレによる目減り分を表しています。"}},{"@type":"Question","name":"給料も上がればインフレは問題ないのでは？","acceptedAnswer":{"@type":"Answer","text":"収入が物価と同じペースで増えるなら、毎月の生活は保たれます。ただしすでに貯めてある預金には給料の上昇は及びません。過去に積み上げた分の購買力は物価上昇のぶんだけ下がっていくため、フローの収入とストックの資産は分けて考える必要があります。VALEが試算しているのは後者、すでに手元にある貯蓄のほうです。"}},{"@type":"Question","name":"入力したデータはどこかに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"送信されません。貯蓄額の計算はすべてブラウザ内で完結しており、サーバーに保存も送信もしていません。KURAからの読み込みも、同じブラウザのローカル保存領域を参照しているだけです。会員登録も不要で、金額を入れても外部に残ることはありません。"}},{"@type":"Question","name":"デフレになったらどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"物価が下がる局面では、現金の実質的な価値は逆に上がります。VALEのインフレ率は0.5%が下限のため、マイナスの試算はできませんが、下限に近い値ほど目減りが小さくなる様子は確認できます。もっとも、長期でどちらに振れるかを事前に当てるのは難しいというのが、期間分散や資産分散という考え方が語られる背景でもあります。"}}]}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -353,6 +354,91 @@
       text-align: center; padding-top: 12px; letter-spacing: .04em;
       line-height: 1.7;
     }
+
+    /* article */
+    .article { margin-top: 36px; }
+    .article h2 {
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      letter-spacing: .12em; color: var(--accent); text-transform: uppercase;
+      margin: 32px 0 12px; padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .article h2:first-child { margin-top: 0; }
+    .article h3 {
+      font-size: 13px; font-weight: 700; color: var(--text);
+      margin: 20px 0 8px; letter-spacing: .02em;
+    }
+    .article p {
+      font-size: 13px; line-height: 1.9; color: var(--text);
+      opacity: .82; margin-bottom: 13px;
+    }
+    .article p:last-child { margin-bottom: 0; }
+    .article strong { color: var(--accent); font-weight: 700; opacity: 1; }
+    .article ul { margin: 0 0 13px; padding-left: 0; list-style: none; }
+    .article li {
+      font-size: 13px; line-height: 1.85; color: var(--text); opacity: .82;
+      padding-left: 16px; position: relative; margin-bottom: 6px;
+    }
+    .article li::before {
+      content: ''; position: absolute; left: 2px; top: 11px;
+      width: 4px; height: 4px; border-radius: 50%; background: var(--muted);
+    }
+
+    .rate-table {
+      width: 100%; border-collapse: collapse;
+      font-family: var(--mono); font-size: 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .rate-table th {
+      background: var(--surface2); color: var(--muted);
+      font-weight: 600; font-size: 10px; letter-spacing: .08em;
+      text-transform: uppercase; padding: 9px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .rate-table td {
+      padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text);
+    }
+    .rate-table tr:last-child td { border-bottom: none; }
+    .rate-table .v-real { color: var(--accent); }
+    .rate-table .v-loss { color: var(--danger); }
+
+    .faq-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 8px;
+    }
+    .faq-q {
+      font-size: 13px; font-weight: 700; color: var(--text);
+      margin-bottom: 7px; display: flex; gap: 8px; align-items: flex-start;
+    }
+    .faq-q::before {
+      content: 'Q'; font-family: var(--mono); font-size: 11px;
+      color: var(--accent); flex-shrink: 0; padding-top: 1px;
+    }
+    .faq-a {
+      font-size: 12.5px; line-height: 1.85; color: var(--text); opacity: .78;
+      display: flex; gap: 8px; align-items: flex-start;
+    }
+    .faq-a::before {
+      content: 'A'; font-family: var(--mono); font-size: 11px;
+      color: var(--muted); flex-shrink: 0; padding-top: 2px;
+    }
+
+    .devnote {
+      background: var(--surface); border: 1px solid var(--border);
+      border-left: 2px solid var(--muted2);
+      border-radius: 10px; padding: 16px 18px;
+    }
+    .devnote p { font-size: 12.5px; opacity: .75; }
+
+    .article-disclaimer {
+      margin-top: 20px; padding: 12px 14px;
+      background: rgba(251,191,36,.05);
+      border: 1px solid rgba(251,191,36,.15);
+      border-radius: 10px;
+      font-size: 11.5px; line-height: 1.8; color: var(--text); opacity: .7;
+    }
   </style>
 </head>
 <body>
@@ -455,14 +541,86 @@
   </p>
 
   <!-- about -->
-  <div style="margin-top:32px;max-width:480px;margin-left:auto;margin-right:auto;padding:0 4px;">
-    <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">実質価値という考え方</p>
-    <div style="font-size:13px;color:var(--text);opacity:.8;line-height:1.85;">
-      <p style="margin-bottom:12px;">貯金100万円は、20年後も「100万円」のままだが、それで買えるモノの量（実質購買力）は同じではない。物価が毎年2.5%ずつ上がり続けると、20年後には同じ100万円でも今の約60%程度の価値しか無くなる計算になる。これがインフレによる「目減り」で、銀行預金だけでは実感しにくい。</p>
-      <p style="margin-bottom:12px;">VALEは、想定インフレ率と年数を入力するだけで、この目減りを名目額と実質購買力の両方でグラフ表示するシミュレーターです。「貯金しているつもりが実は減っている」という状態を可視化することで、資産をどう保つかを考えるきっかけになる。</p>
-      <p>あくまで想定インフレ率に基づく試算であり、将来の実際の物価変動を保証するものではない。KURA（家計簿）で貯蓄額を記録している場合は、そのデータを読み込んでそのままシミュレーションできる。</p>
+  <article class="article">
+
+    <h2>実質価値という考え方</h2>
+    <p>貯金100万円は、20年後も通帳の上では「100万円」のままです。しかしそれで買えるモノの量（実質購買力）は、同じではありません。物価が毎年2.5%ずつ上がり続けた場合、20年後の100万円は今の約61万円分の買い物しかできない計算になります。これがインフレによる「目減り」で、口座の数字が減らないぶん、預金だけを見ていても気づきにくいのが厄介なところです。</p>
+    <p>VALEは、想定インフレ率と年数を入力するだけで、この目減りを名目額と実質購買力の両方でグラフ表示するシミュレーターです。「貯金しているつもりが、実は買える量が減っている」という状態を目に見える形にすることで、お金をどう持っておくかを考えるきっかけにしてもらうことを狙っています。KURA（家計簿）で貯蓄額を記録している場合は、そのデータを読み込んでそのまま試算できます。</p>
+
+    <h2>インフレは生活のどこに出るか</h2>
+    <p>インフレは「物価が上がる」と一言で表現されますが、生活の中では一斉に同じ幅で上がるわけではありません。まず値上げが目に見えるのは、日常的に繰り返し買うものです。食料品、電気・ガスなどの光熱費、宅配や交通の運賃といった、いわゆる生活必需の支出から先に反映されていきます。</p>
+    <p>やっかいなのは、価格が据え置かれたまま内容量だけが減る、いわゆる実質値上げが混ざることです。同じ棚の同じ値段でも中身が1割少なくなっていれば、支払う金額あたりで手に入るモノは減っています。レシートの合計額が前年と変わらないのに「なんとなく足りない」と感じるとき、この形の値上がりが起きていることがあります。</p>
+    <p>一方で、家電やパソコンのように技術の進歩で性能あたりの価格が下がりやすい分野もあります。統計上の物価指数はこうした上がるもの・下がるものをまとめて平均した数字なので、<strong>公表されている物価上昇率よりも、自分の家計の体感インフレのほうが高くなることは珍しくありません</strong>。食費や光熱費の割合が大きい家計ほど、その傾向は強く出ます。シミュレーションで想定インフレ率を少し高めに動かしてみると、自分の生活実感に近い数字が見つかることがあります。</p>
+
+    <h2>名目金利と実質金利 — なぜ貯金だけでは目減りするのか</h2>
+    <p>金利には、額面通りの<strong>名目金利</strong>と、そこから物価上昇分を差し引いた<strong>実質金利</strong>の2種類があります。関係はとてもシンプルで、おおよそ次の式で表せます。</p>
+    <ul>
+      <li>実質金利 ≒ 名目金利 − インフレ率</li>
+    </ul>
+    <p>たとえば普通預金の金利が年0.2%で、物価が年2.5%上がっているとします。名目では確かに増えていますが、実質金利は 0.2% − 2.5% = <strong>マイナス2.3%</strong>。つまり口座の残高は毎年わずかに増えているのに、その残高で買えるモノの量は毎年2.3%ずつ減っている、という状態です。これが「貯金だけでは資産が目減りする」と言われる仕組みで、損失が数字として一度も表示されないため、気づかないまま何年も進んでしまう点に特徴があります。</p>
+    <p>もう一つ押さえておきたいのが<strong>複利で効いてくる</strong>という性質です。インフレは前の年に上がった価格の上にさらに上乗せされるため、単純な足し算ではなく掛け算で積み重なります。年3%のインフレが1年なら3%の話ですが、これが20年続くと物価は約1.8倍。同じ金額で買えるモノは約55%まで落ち込みます。短期では誤差に見える差が、期間が延びるほど無視できない大きさになるのはこのためです。</p>
+    <p>ざっくり見積もる方法として「72の法則」も知られています。72をインフレ率（%）で割ると、物価がおおよそ2倍になる（＝お金の価値が半分になる）までの年数が出ます。年3%なら 72 ÷ 3 = 約24年。今の30代が定年を迎えるころには、手元の現金の価値が半分になっている可能性がある、という距離感です。</p>
+
+    <h2>インフレ率別シミュレーション例（100万円・20年）</h2>
+    <p>想定するインフレ率によって結果がどれだけ変わるかを、100万円を20年間そのまま現金で持ち続けた場合として並べてみます。数字はいずれも複利で計算した試算値です。</p>
+    <table class="rate-table" aria-label="インフレ率別の20年後シミュレーション">
+      <thead>
+        <tr><th>インフレ率</th><th>20年後の実質価値</th><th>目減り</th><th>価値が半減する年数</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>年2.0%</td><td class="v-real">約67万円</td><td class="v-loss">▼約33万円</td><td>約35年</td></tr>
+        <tr><td>年2.5%</td><td class="v-real">約61万円</td><td class="v-loss">▼約39万円</td><td>約28年</td></tr>
+        <tr><td>年3.0%</td><td class="v-real">約55万円</td><td class="v-loss">▼約45万円</td><td>約23年</td></tr>
+        <tr><td>年5.0%</td><td class="v-real">約38万円</td><td class="v-loss">▼約62万円</td><td>約14年</td></tr>
+      </tbody>
+    </table>
+    <p>注目したいのは、2%と3%というたった1ポイントの差が、20年後には12万円もの開きになる点です。率の違いは1年単位で見ればごくわずかですが、複利で20回積み重なると結果は大きく分かれます。さらに年5%まで上がると、20年で価値は4割近くまで落ち込みます。これは決して極端な想定ではなく、世界的に見れば実際に起きている水準です。</p>
+    <p>また、貯蓄額が大きいほど目減りの絶対額も比例して大きくなります。同じ年3%でも、100万円なら20年で約45万円の目減りですが、1,000万円なら約450万円分の購買力が失われる計算です。「多く貯めているから安心」とは必ずしも言えない、というのがインフレの見落としやすい側面です。</p>
+
+    <h2>資産防衛の一般的な考え方</h2>
+    <p>ここでは特定の金融商品や金融機関をおすすめすることはしません。あくまで一般に知られている考え方の整理として、いくつかの視点を挙げます。実際にどうするかは、ご自身の状況に合わせて判断するか、必要に応じて専門家に相談してください。</p>
+    <h3>1. 現金で持つべき額を先に決める</h3>
+    <p>すべてをインフレ対策に回す必要はありません。急な出費や収入が途切れたときに備える生活防衛資金は、値動きせずいつでも引き出せることのほうが重要です。一般に生活費の数ヶ月分が目安として語られます。この部分は目減りを承知のうえで現金・預金で確保し、それを超える分について考える、という順序が整理しやすいはずです。</p>
+    <h3>2. 期間で分けて考える</h3>
+    <p>1年後に使うお金と、20年後に使うお金では、インフレの影響がまったく違います。VALEのシミュレーション年数を1年、5年、20年と動かしてみると、短期ではほとんど差が出ず、長期になるほど曲線が急に離れていくのが分かります。目減りが問題になるのは主に長い時間を寝かせるお金のほうだ、という切り分けができます。</p>
+    <h3>3. 分散という発想</h3>
+    <p>資産の置き場所を一箇所に集中させないという考え方は、投資教育の分野で広く紹介されています。対象を分ける、時期を分ける、通貨を分ける、といった軸があります。どれも「何が起きても大丈夫にする」ものではなく、一つの見込みが外れたときの影響を小さくするための発想です。</p>
+    <h3>4. 支出を下げることもインフレ対策になる</h3>
+    <p>見落とされがちですが、必要な生活費そのものが小さければ、同じインフレ率でも受ける金額的なダメージは小さくなります。特に固定費は一度見直すと効果が毎月続くため、家計側からのアプローチとして有効です。Somirai Labの<a href="https://somirai.jp/savings/" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(74,222,128,.3)">KURA（家計簿）</a>は、この「まず自分が毎月いくら使っているかを把握する」ところを支援するために作ったツールです。</p>
+
+    <h2>よくある質問</h2>
+    <div class="faq-item">
+      <p class="faq-q">インフレ率は何%に設定すればいいですか？</p>
+      <p class="faq-a">迷ったら2〜3%あたりから始めるのが一つの目安です。日本の消費者物価指数の上昇率は近年おおむねこの水準で推移しています（総務省統計局）。ただし体感は家計の構成によって変わるため、食費や光熱費の比率が高い家庭では3〜4%で試してみると実感に近くなることがあります。複数の値で試して幅を掴むのがおすすめです。</p>
     </div>
-  </div>
+    <div class="faq-item">
+      <p class="faq-q">グラフの「名目額」が横ばいなのはなぜですか？</p>
+      <p class="faq-a">VALEは「現金・預金のまま置いておいた場合」を前提に計算しているためです。運用による増加を含めていないので、名目額（通帳の数字）は動かず、実質購買力だけが下がっていく形になります。この2本の線の開きが、そのままインフレによる目減り分を表しています。</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">給料も上がればインフレは問題ないのでは？</p>
+      <p class="faq-a">収入が物価と同じペースで増えるなら、毎月の生活は保たれます。ただしすでに貯めてある預金には給料の上昇は及びません。過去に積み上げた分の購買力は物価上昇のぶんだけ下がっていくため、フローの収入とストックの資産は分けて考える必要があります。VALEが試算しているのは後者、すでに手元にある貯蓄のほうです。</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">入力したデータはどこかに送信されますか？</p>
+      <p class="faq-a">送信されません。貯蓄額の計算はすべてブラウザ内で完結しており、サーバーに保存も送信もしていません。KURAからの読み込みも、同じブラウザのローカル保存領域を参照しているだけです。会員登録も不要で、金額を入れても外部に残ることはありません。</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">デフレになったらどうなりますか？</p>
+      <p class="faq-a">物価が下がる局面では、現金の実質的な価値は逆に上がります。VALEのインフレ率は0.5%が下限のため、マイナスの試算はできませんが、下限に近い値ほど目減りが小さくなる様子は確認できます。もっとも、長期でどちらに振れるかを事前に当てるのは難しいというのが、期間分散や資産分散という考え方が語られる背景でもあります。</p>
+    </div>
+
+    <h2>開発ノート</h2>
+    <div class="devnote">
+      <p>このツールを作ったきっかけは、家計簿ツールのKURAを自分で使っていて「貯金額が増えているのに、なぜか楽になった気がしない」という違和感を持ったことでした。数字は確かに増えている。でもスーパーでの支払いも、電気代の請求も、以前より確実に高い。増えた実感がないのは気のせいなのか、それとも増えた以上に物価が動いているのか。それを確かめたくて、電卓を叩く代わりに作ったのがVALEです。</p>
+      <p>実装で一番迷ったのは、名目額の線をグラフに残すかどうかでした。現金のままなら金額は変わらないので、横一直線の線を引く意味はないようにも思えます。ただ実際に並べてみると、この動かない線があるからこそ実質購買力の下がり方が際立つことに気づきました。「減っていないのに減っている」というインフレの分かりにくさは、2本を重ねて初めて絵として伝わる。結果として、あえて破線で薄く残す形にしています。</p>
+      <p>もう一つ意識したのは、危機感を煽る作りにしないことです。この手のシミュレーターは結果画面で不安を最大化して何かを売る導線に繋げがちですが、VALEでは商品の紹介は一切していません。年数を1年から40年まで動かせるようにしたのも、短期ではほとんど影響がないことまで含めて見てほしかったからです。数字を正確に見せて、あとは使う人が判断する。そこまでが道具の役割だと考えています。</p>
+      <p>今後は、KURAの月次支出データから体感インフレ率を逆算して初期値に反映する機能を検討中です。全国平均ではなく、自分の家計にとっての物価上昇率で試算できたほうが、判断材料としては意味があるはずだと考えています。</p>
+    </div>
+
+    <p class="article-disclaimer">本ページは物価と実質価値についての一般的な情報提供を目的としたものであり、特定の金融商品・投資手法・金融機関を推奨するものではありません。また、投資助言や税務上の助言を行うものでもありません。シミュレーション結果は入力された想定インフレ率に基づく試算であり、将来の物価変動や運用成果を保証するものではありません。実際の資産形成の判断にあたっては、ご自身の状況をふまえてご検討いただくか、必要に応じて専門家にご相談ください。</p>
+
+  </article>
 
   <a id="mp-card" href="https://somirai.jp/player/" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'vale'})" style="display:none;align-items:center;gap:10px;max-width:480px;margin:28px auto 0;background:rgba(232,196,104,0.06);border:1px solid rgba(232,196,104,0.3);border-radius:10px;padding:12px 14px;text-decoration:none;">
     <span style="font-size:18px;">⭐</span>

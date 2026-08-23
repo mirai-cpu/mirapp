@@ -20,6 +20,7 @@
   <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"FORECAST - 野球試合日天気チェッカー","url":"https://somirai.jp/weather/","description":"草野球・少年野球の試合日の天気を都道府県別に確認できる無料ツール。気象庁データで降水確率・気温・グラウンドコンディションを表示。","applicationCategory":"SportsApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","author":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"降水確率が何%から野球は中止になりますか？","acceptedAnswer":{"@type":"Answer","text":"共通の基準はなく、最終判断はグラウンド管理者や当日の運営者が行います。目安としては降水確率30%未満なら予定どおり、30〜50%は当日朝に再確認、50%を超えると中止・順延の可能性が現実的に出てくる、という感覚で見られることが多いです。降水確率は「1mm以上の雨が降る確率」であり雨量の多さを示す数字ではないため、確率だけでなく予報文（にわか雨・雷雨など）と併せて判断してください。"}},{"@type":"Question","name":"前日が雨で当日が晴れの予報なら試合はできますか？","acceptedAnswer":{"@type":"Answer","text":"当日の天気が良くても、前日の雨が土のグラウンドに残っていて使用不可になることがあります。水はけは会場ごとに差が大きく、河川敷は比較的乾きやすい一方、周囲を建物に囲まれた校庭は水が抜けにくい傾向があります。当日の降水確率だけでなく、前日からの流れを続けて確認するのが確実です。"}},{"@type":"Question","name":"FORECASTの天気データはどこのものですか？","acceptedAnswer":{"@type":"Answer","text":"都道府県で確認した場合は気象庁の予報データ（CC BY 4.0）を使用しています。市区町村名で検索した場合は、位置情報にNominatim（OpenStreetMap）、予報にOpen-Meteoを使用しています。いずれもテレビや天気アプリで見る予報と同じ元データです。"}},{"@type":"Question","name":"市区町村単位で天気を調べられますか？","acceptedAnswer":{"@type":"Answer","text":"はい。画面上部の検索欄に「渋谷区」「札幌市南区」のように市区町村名を入力すると、その地点の予報を表示します。都道府県単位では同じ県内でも山沿いと沿岸で天気が異なることがあるため、グラウンドのある市区町村で調べるほうが精度が上がります。"}},{"@type":"Question","name":"何日先まで確認できますか？会員登録は必要ですか？","acceptedAnswer":{"@type":"Answer","text":"今日・明日・明後日の3日分を表示します。会員登録やアプリのインストールは不要で、完全無料です。スマホ・タブレット・PCのブラウザからそのまま利用できます。"}},{"@type":"Question","name":"風が強い日は野球にどんな影響がありますか？","acceptedAnswer":{"@type":"Answer","text":"一般に、本塁へ向かう向かい風はフライの飛距離を抑え、外野方向への追い風は同じ打球を長打に変えます。横風は高く上がったフライの落下点をずらすため、強風の日は内野フライの処理が難しくなります。風速が5m/s前後を超えると体感でわかる差が出るため、守備位置の微調整や打球の狙い方を変える判断材料になります。"}}]}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -565,6 +566,124 @@
       <p>グラウンドの水はけが悪い会場では、前日の降水量が翌日のコンディションに影響することも多い。試合前日の夜と当日朝の2回チェックしておくと、判断の精度が上がる。</p>
     </div>
   </div>
+
+  <!-- ── 読み物：野球と天気 ── -->
+  <section aria-label="野球と天気の関係" style="margin-top:36px;padding-top:28px;border-top:1px solid var(--border);max-width:520px;margin-left:auto;margin-right:auto;">
+    <h2 style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;margin-bottom:14px;">野球と天気の関係 — 試合前に見るべきポイント</h2>
+
+    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">雨天中止はどう判断されるのか</h3>
+    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+      草野球や少年野球で試合の可否を最終的に決めるのは、グラウンドを管理する施設や当日の運営者です。全国共通の基準があるわけではありません。ただ、事前の見込みを立てる材料として降水確率が使われる場面は多く、実感としてはおおよそ次のような温度感で見られています。
+    </p>
+    <ul style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin:0 0 12px;padding-left:1.15em;">
+      <li><strong style="color:var(--text);">30%未満</strong> — ほぼ予定どおり実施される</li>
+      <li><strong style="color:var(--text);">30〜50%</strong> — 実施の方向だが、当日朝の再確認が必要</li>
+      <li><strong style="color:var(--text);">50〜60%</strong> — 中止・順延の可能性が現実的に出てくる</li>
+      <li><strong style="color:var(--text);">60%以上</strong> — 前日夜のうちに中止連絡が回ることが多い</li>
+    </ul>
+    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+      ここで注意したいのが、降水確率は<strong style="color:var(--text);">「1mm以上の雨が降る確率」であって、雨の強さを表す数字ではない</strong>という点です。80%でも一日中霧雨程度なら試合は成立しますし、逆に30%でも短時間に強い雨が落ちればグラウンドは使えなくなります。数字だけを見ずに、予報文にある「にわか雨」「所により雷雨」といった表現とセットで判断するのが実務的です。
+    </p>
+
+    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:18px 0 6px;">グラウンドコンディションは前日の雨で決まる</h3>
+    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+      土のグラウンドは、当日が快晴でも前日の雨が残っていれば使用不可になります。水はけの良し悪しは会場ごとの差が非常に大きく、風通しのよい河川敷は比較的乾きが早い一方、建物に囲まれた校庭や、内野が固く踏み固められた市営グラウンドは水が抜けにくい傾向があります。
+    </p>
+    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+      つまり見るべきなのは当日の1点ではなく、<strong style="color:var(--text);">前日から当日にかけての連続した流れ</strong>です。FORECASTが今日・明日・明後日の3日分を並べて表示しているのは、この「前後関係」を一目で掴めるようにするためです。前日の降水確率が高い日程では、当日の朝に会場へ電話を入れるか、早めに現地を見に行く前提で動いたほうが空振りが減ります。
+    </p>
+
+    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:18px 0 6px;">気温と湿度が選手のパフォーマンスに与える影響</h3>
+    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+      気温が高いほど疲労は早く訪れますが、実は同じくらい重要なのが<strong style="color:var(--text);">湿度</strong>です。湿度が高いと汗が蒸発せず体温を下げる仕組みが働かないため、同じ30度でも体への負荷はまったく違います。環境省が公表している熱中症予防情報でも、気温単独ではなく湿度と輻射熱を組み合わせたWBGT（暑さ指数）が指標として使われているのは、この理由によります。
+    </p>
+    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:8px;">真夏の試合運営で押さえておきたい一般的な対策は次のとおりです。</p>
+    <ul style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin:0 0 12px;padding-left:1.15em;">
+      <li>給水をイニング間に固定し、「喉が渇いてから」にしない</li>
+      <li>ベンチにテントやタープで日陰を作る</li>
+      <li>塩分を含む飲料やタブレットを用意しておく</li>
+      <li>攻撃中の待機場所を炎天下に置かない</li>
+      <li>顔が赤い・返事が遅い選手がいたら、本人が平気だと言っても休ませる</li>
+    </ul>
+    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+      逆に気温が低い日は、筋肉が硬いまま全力投球や全力疾走をして肉離れを起こしやすくなります。最高気温が10度を下回るような日は、ウォームアップの時間を普段より長めに取り、投手はキャッチボールの本数を増やしておきたいところです。気温は打球にも影響し、寒い日は空気の密度が上がるぶん飛距離が伸びにくくなります。
+    </p>
+
+    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:18px 0 6px;">風向き・風速は打球と投球を変える</h3>
+    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:8px;">
+      野球は屋外競技のなかでも風の影響を受けやすい部類に入ります。一般論として、次のような傾向が知られています。
+    </p>
+    <ul style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin:0 0 12px;padding-left:1.15em;">
+      <li><strong style="color:var(--text);">向かい風</strong>（外野から本塁方向）— フライの飛距離が削られ、抜けるはずの外野フライが失速する</li>
+      <li><strong style="color:var(--text);">追い風</strong>（本塁から外野方向）— 同じ打球が一段階伸び、長打になりやすい</li>
+      <li><strong style="color:var(--text);">横風</strong> — 高く上がった内野フライの落下点が大きくずれる。強風の日に落球が増えるのはこれが原因</li>
+      <li><strong style="color:var(--text);">風速5m/s前後</strong>を超えると、変化球の軌道や高いフライの処理に体感でわかる差が出てくる</li>
+    </ul>
+    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+      これは戦術に落とし込める情報です。守る側なら、風が強い日に外野の守備位置を数歩前後させるだけで捕れる打球が変わります。打つ側なら、向かい風の日に大きなフライを狙うより、ゴロで内野の間を抜くほうが期待値は高くなります。投手であれば、追い風の日は高めの失投が長打に直結すると意識しておくだけで配球が変わります。
+    </p>
+
+    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:18px 0 6px;">季節ごとの天気対策</h3>
+    <ul style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin:0 0 12px;padding-left:1.15em;">
+      <li><strong style="color:var(--text);">春（3〜5月）</strong> — 1日の気温差が大きい季節。朝は10度台でも昼は20度を超えることが珍しくないので、脱ぎ着できる服装が前提になります。強風の日も多く、フライの判断が難しい時期です。</li>
+      <li><strong style="color:var(--text);">梅雨（6〜7月）</strong> — 降水確率が高くても、雨雲が通過するタイミング次第で試合が成立することが最も多い時期。予報に加えて直前まで雨雲レーダーを見ておくと、無駄な中止判断を減らせます。</li>
+      <li><strong style="color:var(--text);">夏（7〜9月）</strong> — 熱中症対策が最優先。可能であれば開始時刻を朝一番か夕方に寄せ、日中の一番暑い時間帯を避けたいところです。給水回数を増やす運用も検討に値します。</li>
+      <li><strong style="color:var(--text);">秋（9〜11月）</strong> — 野球にはもっとも快適な季節ですが、日没が早くなります。照明のない会場では、試合開始時刻から逆算して何イニングできるかを事前に確認しておく必要があります。</li>
+      <li><strong style="color:var(--text);">冬（12〜2月）</strong> — 防寒に加えて、霜が溶けたあとのぬかるみに注意。朝は凍って硬かったグラウンドが、昼にはぐちゃぐちゃになることがあります。イレギュラーバウンドも増えるため、内野の守備位置は普段より前に取りすぎないほうが安全です。</li>
+    </ul>
+
+    <div style="padding:14px 16px;background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.2);border-radius:10px;font-size:12.5px;color:#9ba1bb;line-height:1.9;">
+      <strong style="color:var(--accent);">チェックのコツ：</strong>前日の夜に「明日の降水確率」、当日の朝に「今日の予報の更新」の2回だけ見れば、判断の精度はかなり上がります。降水確率が40〜60%のグレーゾーンに入った日は、中止か実施かを決め打ちせず、集合時間を少し遅らせる・現地判断にすると連絡しておくほうがチーム全体の動きがスムーズになります。
+    </div>
+  </section>
+
+  <!-- ── FAQ（head内のFAQPage構造化データと対応） ── -->
+  <section aria-label="よくある質問" style="margin-top:32px;padding-top:28px;border-top:1px solid var(--border);max-width:520px;margin-left:auto;margin-right:auto;">
+    <h2 style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;margin-bottom:14px;">よくある質問（FAQ）</h2>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="border:1px solid var(--border2);border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:var(--surface);font-size:12.5px;font-weight:700;color:var(--text);margin:0;">Q. 降水確率が何%から野球は中止になりますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:#9ba1bb;line-height:1.9;margin:0;border-top:1px solid var(--border2);">A. 全国共通の基準はなく、最終判断はグラウンド管理者や当日の運営者が行います。目安としては30%未満なら予定どおり、30〜50%は当日朝に再確認、50%を超えると中止・順延が現実的になる、という温度感で見られることが多いです。降水確率は雨の強さを表す数字ではないため、予報文と併せて判断してください。</p>
+      </div>
+      <div style="border:1px solid var(--border2);border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:var(--surface);font-size:12.5px;font-weight:700;color:var(--text);margin:0;">Q. 前日が雨で当日が晴れの予報なら試合はできますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:#9ba1bb;line-height:1.9;margin:0;border-top:1px solid var(--border2);">A. 当日が快晴でも、前日の雨が土のグラウンドに残っていて使用不可になることがあります。水はけは会場差が大きく、河川敷は乾きやすい一方、建物に囲まれた校庭は水が抜けにくい傾向があります。当日だけでなく前日からの流れを続けて確認するのが確実です。</p>
+      </div>
+      <div style="border:1px solid var(--border2);border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:var(--surface);font-size:12.5px;font-weight:700;color:var(--text);margin:0;">Q. 天気データはどこのものを使っていますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:#9ba1bb;line-height:1.9;margin:0;border-top:1px solid var(--border2);">A. 都道府県で確認した場合は気象庁の予報データ（CC BY 4.0）を使用しています。市区町村名で検索した場合は、位置情報にNominatim（OpenStreetMap）、予報にOpen-Meteoを使用しています。いずれもテレビや天気アプリと同じ元データです。</p>
+      </div>
+      <div style="border:1px solid var(--border2);border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:var(--surface);font-size:12.5px;font-weight:700;color:var(--text);margin:0;">Q. 市区町村単位で調べられますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:#9ba1bb;line-height:1.9;margin:0;border-top:1px solid var(--border2);">A. はい。画面上部の検索欄に「渋谷区」「札幌市南区」のように入力すると、その地点の予報を表示します。同じ県内でも山沿いと沿岸で天気が異なることがあるため、グラウンドのある市区町村で調べるほうが精度が上がります。</p>
+      </div>
+      <div style="border:1px solid var(--border2);border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:var(--surface);font-size:12.5px;font-weight:700;color:var(--text);margin:0;">Q. 何日先まで確認できますか？登録は必要ですか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:#9ba1bb;line-height:1.9;margin:0;border-top:1px solid var(--border2);">A. 今日・明日・明後日の3日分を表示します。会員登録やアプリのインストールは不要で完全無料です。スマホ・タブレット・PCのブラウザからそのまま使えます。</p>
+      </div>
+      <div style="border:1px solid var(--border2);border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:var(--surface);font-size:12.5px;font-weight:700;color:var(--text);margin:0;">Q. 風が強い日は野球にどんな影響がありますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:#9ba1bb;line-height:1.9;margin:0;border-top:1px solid var(--border2);">A. 一般に、本塁へ向かう向かい風はフライの飛距離を抑え、外野方向への追い風は同じ打球を長打に変えます。横風は高く上がったフライの落下点をずらすため、内野フライの処理が難しくなります。風速5m/s前後を超えると体感でわかる差が出るので、守備位置の微調整や狙う打球の種類を変える判断材料になります。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 開発ノート ── -->
+  <section aria-label="開発ノート" style="margin-top:32px;padding-top:28px;border-top:1px solid var(--border);max-width:520px;margin-left:auto;margin-right:auto;">
+    <h2 style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;margin-bottom:12px;">開発ノート — このツールを作った理由</h2>
+    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+      FORECASTは、試合前日の夜に何度も天気アプリを開き直していた自分のために作りました。既存の天気アプリは情報量が多く、週間予報・湿度・気圧・花粉と並ぶ画面のなかから「明日の降水確率」だけを探す作業が地味に面倒だったのが出発点です。知りたいことは一つ、「明日、野球ができるのか」だけでした。
+    </p>
+    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+      そこで決めたのは、<strong style="color:var(--text);">3日分だけを大きく出す</strong>ことと、<strong style="color:var(--text);">数字に判定をつける</strong>ことの2点です。降水確率50%と表示されても、それが実施できる数字なのか迷う人は多い。だから「野球日和」「要確認」「試合困難」というバッジを添えて、数字を見た瞬間に次の行動が決まるようにしました。天気の専門情報を増やすのではなく、判断までの距離を縮めるほうに寄せた設計です。
+    </p>
+    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+      公開後に一番要望が多かったのが市区町村での検索でした。都道府県単位だと、同じ県内でも山沿いと沿岸でまったく違う天気になることがあり、実際のグラウンドの天気とずれるという指摘です。これを受けて地点検索を追加し、気象庁の予報とOpen-Meteoの地点予報を使い分ける形にしました。3日分という表示範囲を変えなかったのは、週間予報を足すと結局「探す作業」が戻ってきてしまうからです。
+    </p>
+    <p style="font-size:12px;color:var(--muted);line-height:1.9;">
+      個人開発のツールなので、要望や不具合の報告はいつでも歓迎です。<a href="https://x.com/mira11554" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;">𝕏</a> から気軽に投げてください。
+    </p>
+  </section>
 
   <a id="mp-card" href="https://somirai.jp/player/" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'forecast'})" style="display:none;align-items:center;gap:10px;max-width:480px;margin:32px auto 0;background:rgba(232,196,104,0.06);border:1px solid rgba(232,196,104,0.3);border-radius:10px;padding:12px 14px;text-decoration:none;">
     <span style="font-size:18px;">⭐</span>

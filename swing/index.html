@@ -19,6 +19,44 @@
   <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"SWING! - 打席反応ゲーム","url":"https://somirai.jp/swing/","description":"ストレート・スライダー・カーブを見極めてスイング！草野球プレイヤー向け無料打席反応ゲーム。","genre":"Sports","numberOfPlayers":{"@type":"QuantitativeValue","minValue":1,"maxValue":1},"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","author":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"}}</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "野球未経験でもSWING!は楽しめますか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "楽しめます。操作はボタンを押すだけで、難易度「かんたん」はストレートとカーブの2球種のみ・タイミング判定も広めに設定しています。まずはタイミングバーの目盛りが中央に重なったタイミングで押す、というリズムを掴むところから始めてください。球種の見分けは「ふつう」以降で少しずつ覚えれば十分です。" }
+      },
+      {
+        "@type": "Question",
+        "name": "スマホでも遊べますか？会員登録は必要ですか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "スマホのブラウザでそのまま遊べます。アプリのインストールも会員登録も不要で、ページを開けばすぐプレイできます。縦画面・片手操作を前提にレイアウトしているため、通勤中や練習の待ち時間でも1試合を数分で終えられます。" }
+      },
+      {
+        "@type": "Question",
+        "name": "打率はどれくらいを目標にすればいいですか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "難易度「ふつう」で打率.300が最初の目標です。3打数に1本ヒットが出る計算で、球種を見てから振る判断が間に合っている状態の目安になります。「プロ」は判定ウィンドウが最も狭く、ボール球の割合も増えるため、.250を超えれば十分に高い水準です。" }
+      },
+      {
+        "@type": "Question",
+        "name": "このゲームは実際の打撃練習の代わりになりますか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "代わりにはなりません。スイングの動作そのものは素振りやトスバッティングでしか鍛えられないためです。SWING!が担当するのは打席の中の「判断」の部分だけで、球種を見極めて振るか見送るかを決める反復回数を増やす道具として使うのが適切です。練習前のウォームアップに2〜3分、といった組み合わせ方をおすすめします。" }
+      },
+      {
+        "@type": "Question",
+        "name": "プレイした成績は保存されますか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "ブラウザ内にシーズン記録として保存され、次回起動時に累計成績が表示されます。サーバーには送信されないため、同じ端末・同じブラウザで開いた場合のみ引き継がれます。実際の試合の打撃成績を残したい場合は、ゲーム終了画面から打撃成績記録ツールへ移動して入力してください。" }
+      },
+      {
+        "@type": "Question",
+        "name": "球種はどうやって見分ければいいですか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "ゲーム内ではボールの色と軌道が球種ごとに異なります。ストレートは白でまっすぐ、スライダーは青で横に滑り、カーブは黄色で縦に落ち、チェンジアップは緑で球速だけが遅くなります。実際の野球では、リリース位置の高さ・縫い目の回転の見え方・腕の振りに対する球の遅さ、の3点が見分けの手がかりになります。" }
+      }
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -593,11 +631,57 @@
     <p id="ghost-status" style="font-size:11px;color:var(--muted);margin-top:6px;text-align:center;min-height:14px;"></p>
   </div>
 
-  <div style="max-width:420px;margin:28px auto 0;padding:0 16px;font-size:12px;color:var(--muted);line-height:1.8;text-align:left;">
+  <div style="max-width:420px;margin:28px auto 0;padding:0 16px;font-size:13px;color:#8a92c0;line-height:1.9;text-align:left;">
     <p style="font-family:var(--display);letter-spacing:.08em;font-size:10px;color:#ffd700;margin-bottom:8px;text-transform:uppercase;">このゲームについて</p>
     <p style="margin-bottom:10px;">SWING!は、実際の打席のように「球種を見極めてから振る」動体視力トレーニング風の反応ゲーム。ストレート・スライダー・カーブ・チェンジアップの4球種はそれぞれ球速とタイミングバーの動きが異なり、見た目の色と軌道で瞬時に判断する必要がある。</p>
     <p style="margin-bottom:10px;">タイミングバーの ⬛ を中央の ◆ に合わせて振るのが基本。早すぎればファウルや空振り、遅すぎれば詰まった打球になりやすい。難易度が上がるほど球種の見分けが難しくなり、タイミングの許容範囲（判定ウィンドウ）も狭くなる。</p>
-    <p>3アウト×3イニングで試合終了となり、打率・安打数・本塁打数が記録される。プレイ後は「⚾ 打撃成績を記録する」からLUMBERに実際の試合成績を記録すれば、ゲームと実戦の両方のデータを一箇所で管理できる。</p>
+    <p style="margin-bottom:24px;">3アウト×3イニングで試合終了となり、打率・安打数・本塁打数が記録される。プレイ後は「⚾ 打撃成績を記録する」からLUMBERに実際の試合成績を記録すれば、ゲームと実戦の両方のデータを一箇所で管理できる。</p>
+
+    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#ffd700;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(255,215,0,.5);">動体視力と選球眼 — 打席の勝負は「振る前」に決まっている</h2>
+    <p style="margin-bottom:10px;">球速130km/hの投球が投手の手を離れてから捕手のミットに届くまで、およそ0.5秒。人間が「見えた」と認識してから体を動かし始めるまでの単純反応時間は0.2秒前後とされるため、打者が球種とコースを判断できる猶予は実質0.2〜0.3秒しか残らない。打席が「振る前に決まっている」と言われるのはこのためで、バットが出てからの修正はほとんど効かない。</p>
+    <p style="margin-bottom:10px;">この短い時間で振るか見送るかを決める能力が、いわゆる選球眼。選球眼は視力そのものではなく、リリースの瞬間から数メートルの区間でボールの回転・高さ・軌道を読み取り、過去に見た球の記憶と照合する処理能力に近い。生まれつきの目の良さではなく経験の蓄積で決まる部分が大きいので、繰り返し見た球数がそのまま伸びしろになる。</p>
+    <p style="margin-bottom:24px;">動体視力には、近づいてくる物体を見るKVA動体視力と、横方向に動く物体を目で追うDVA動体視力がある。打席で主に使うのは前者で、迫ってくる球の見かけの大きさの変化から距離とタイミングを推定する力。日常生活ではほとんど使わない能力のため、意識して使わないと鈍りやすい種類の感覚だと言われている。</p>
+
+    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#ffd700;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(255,215,0,.5);">球種の見分け方 — 初心者がまず見るべき3つのポイント</h2>
+    <p style="margin-bottom:6px;color:#c8cee8;font-weight:700;">1. リリース直後の高さ</p>
+    <p style="margin-bottom:12px;">変化球の多くは、ストレートよりわずかに高い軌道で出てくる。特にカーブはリリース位置が高く、山なりに入ってくるため、出だしの高さを見るだけでもかなり候補を絞り込める。逆に低い位置から真っ直ぐ来たらストレートの可能性が高い、という粗い二分でも打率は変わる。</p>
+    <p style="margin-bottom:6px;color:#c8cee8;font-weight:700;">2. 回転の見え方</p>
+    <p style="margin-bottom:12px;">ストレートはバックスピンがかかるため、縫い目が横一直線の帯のように見える。カーブは逆回転で、縫い目が一点に集まって「ドット」のような小さな点に見えることがある。スライダーは回転軸が傾くので、ボールの片側に小さな輪が浮かんで見える。この「ドットを探す」見極め方は、実際に多くの打者が使っている手がかり。</p>
+    <p style="margin-bottom:6px;color:#c8cee8;font-weight:700;">3. 腕の振りと球の速さのズレ</p>
+    <p style="margin-bottom:12px;">チェンジアップは、ストレートと同じ腕の振りで球速だけを落とす球種。腕は速く振れているのにボールが思ったより来ない、という違和感を覚えたらチェンジアップを疑う。この違和感は言葉にしにくいが、数を見ると体で分かるようになる典型的な感覚。</p>
+    <p style="margin-bottom:24px;">初心者ほど球種を当てにいこうとして振り遅れる。まずは「速い球か、遅い球か」の二択まで単純化し、慣れてきたら変化の方向（横か、縦か）を足していく順番が上達の近道になる。全部を見分けようとするより、ひとつ判断軸を増やすほうが確実に打率へ跳ね返る。</p>
+
+    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#ffd700;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(255,215,0,.5);">反応ゲームを実際の練習に組み込む</h2>
+    <p style="margin-bottom:10px;">反応ゲームだけで打てるようにはならない。打席という動作から「判断」の部分だけを切り出して反復する道具、という位置づけで使うのが正しい。実際の練習と役割を分けると次のようになる。</p>
+    <p style="margin-bottom:6px;">・<strong style="color:#c8cee8;">素振り</strong> — 振る動作そのものを固める。判断が挟まらないぶん、フォームの再現性だけに集中できる。</p>
+    <p style="margin-bottom:6px;">・<strong style="color:#c8cee8;">トスバッティング</strong> — 短い距離・遅い球で、当てる感覚とミートポイントを確認する。</p>
+    <p style="margin-bottom:12px;">・<strong style="color:#c8cee8;">反応ゲーム</strong> — 判断と反応だけを、道具も場所も使わず高回数で回す。</p>
+    <p style="margin-bottom:24px;">おすすめは、練習前のウォームアップとして2〜3分プレイして目と判断を起こしておく使い方と、試合前夜に軽く回して「見極めてから振る」意識を思い出す使い方。逆に、疲れているときに長時間続けても判断が雑になるだけなので、1試合（3イニング）で切り上げるくらいがちょうどいい。短く、こまめに、が反応系トレーニングの原則。</p>
+
+    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#ffd700;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(255,215,0,.5);">4段階の難易度は何を鍛えるのか</h2>
+    <p style="margin-bottom:10px;"><strong style="color:#4ade80;">かんたん</strong> — ストレートとカーブのみ。タイミング判定も広め。「バーの中央で振る」というリズムそのものを体に入れる段階で、野球未経験の人やルールを把握したい人向け。</p>
+    <p style="margin-bottom:10px;"><strong style="color:#ffd700;">ふつう</strong> — スライダーが加わり、色と軌道で球種を見分ける必要が出てくる。判定ウィンドウは標準。選球眼を鍛える目的なら、この難易度を一番長くプレイすることになる。</p>
+    <p style="margin-bottom:10px;"><strong style="color:#fbbf24;">むずかしい</strong> — チェンジアップを含む全4球種。球速差が大きく、タイミングの許容範囲も狭まる。速い球を待ちながら遅い球にも対応するという、実際の打席で最も難しい状況の練習になる。</p>
+    <p style="margin-bottom:24px;"><strong style="color:#f43f5e;">プロ</strong> — 判定ウィンドウが最小。ボール球の割合も増えるため、振らない勇気が試される。ここで打率.250を超えられれば、見極めの精度はかなり高い。</p>
+
+    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#ffd700;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(255,215,0,.5);">よくある質問</h2>
+    <p style="margin-bottom:4px;color:#c8cee8;font-weight:700;">Q. 野球未経験でも楽しめますか？</p>
+    <p style="margin-bottom:12px;">操作はボタンを押すだけなので楽しめる。難易度「かんたん」は2球種のみ・判定も広めなので、まずはタイミングを合わせるリズムを掴むところから始めてほしい。球種の見分けは「ふつう」以降で覚えれば十分。</p>
+    <p style="margin-bottom:4px;color:#c8cee8;font-weight:700;">Q. スマホでも遊べますか？会員登録は必要ですか？</p>
+    <p style="margin-bottom:12px;">スマホのブラウザでそのまま遊べる。アプリのインストールも会員登録も不要。縦画面・片手操作を前提にしているので、練習の待ち時間や移動中に1試合を数分で終えられる。</p>
+    <p style="margin-bottom:4px;color:#c8cee8;font-weight:700;">Q. 打率はどれくらいを目標にすればいいですか？</p>
+    <p style="margin-bottom:12px;">「ふつう」で打率.300が最初の目標。3打数に1本という計算で、球種を見てから振る判断が間に合っている状態の目安になる。「プロ」は判定が最も狭いので、.250を超えれば十分に高い水準。</p>
+    <p style="margin-bottom:4px;color:#c8cee8;font-weight:700;">Q. 実際の打撃練習の代わりになりますか？</p>
+    <p style="margin-bottom:12px;">代わりにはならない。スイング動作そのものは素振りやトスバッティングでしか鍛えられない。SWING!が担当するのは打席の中の判断だけなので、実際の練習と組み合わせて使ってほしい。</p>
+    <p style="margin-bottom:4px;color:#c8cee8;font-weight:700;">Q. プレイした成績は保存されますか？</p>
+    <p style="margin-bottom:24px;">ブラウザ内にシーズン記録として保存され、次回起動時に累計成績が表示される。サーバーには送信しないため、同じ端末・同じブラウザで開いた場合のみ引き継がれる。実際の試合成績を残したい場合は、終了画面から打撃成績記録ツールへ。</p>
+
+    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#ffd700;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(255,215,0,.5);">開発ノート — なぜ「判断」だけを切り出したのか</h2>
+    <p style="margin-bottom:10px;">バッティングセンターで打てないと、つい「スイングが悪いんだろう」と考えてしまう。けれど自分の打席を記録ツールで振り返ったとき、目立っていたのは空振りの多さではなく、そもそも振るべきでない球に手を出している打席の多さだった。フォームの問題ではなく、判断の問題。それが分かってから、練習の優先順位が変わった。</p>
+    <p style="margin-bottom:10px;">ところが、判断力を鍛える手段はグラウンドに行く以外にほとんど見当たらない。素振りには判断が含まれず、バッティングセンターは球種も球速も固定されている。「ランダムに球種が来て、見極めて、振るか決める」という一番鍛えたい部分だけが、日常のどこにも存在しなかった。</p>
+    <p style="margin-bottom:10px;">それならその部分だけをブラウザに閉じ込めてしまおう、というのがSWING!を作った動機。本物の打席の代わりにはならないし、そのつもりもない。ただ、移動中に3分、寝る前に1試合という頻度でも「見てから決める」回数は確実に増える。3イニング制にしたのも、1プレイを2〜3分で終わらせて日常に混ぜてほしかったから。</p>
+    <p style="margin-bottom:10px;">難易度を4段階にしたのは、野球経験の有無で必要な負荷がまったく違うと気づいたため。未経験の人にいきなり4球種は判断の材料が多すぎるし、経験者に広い判定ウィンドウを渡しても手応えがない。同じゲームで両方を成立させるには、球種の数と判定の厳しさを一緒に動かすのが一番シンプルだった。</p>
+    <p>成績を打撃成績記録ツールやMY PLAYERへ繋げているのも同じ発想で、ゲームの打率と実戦の打率を並べて眺めたとき、判断が原因なのか動作が原因なのかの切り分けができることがある。数字を一箇所に集めておくと、次に何を練習すべきかが決めやすくなる。</p>
   </div>
 
   <p style="margin-top:20px;font-size:11px;color:var(--muted);font-family:var(--display);letter-spacing:.08em;">
