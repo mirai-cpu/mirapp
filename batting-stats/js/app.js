@@ -1337,7 +1337,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <span class="game-date">${date}</span>
                 ${opponent ? `<span class="game-opponent">${opponent}</span>` : ''}
                 ${season   ? `<span class="game-season-tag">${season}</span>` : ''}
-                ${abs[0]?.weather?.emoji ? `<span class="wx-badge" title="${abs[0].weather.desc} 降水${abs[0].weather.pop}">${abs[0].weather.emoji} ${abs[0].weather.pop}</span>` : ''}
+                ${gameAbs[0]?.weather?.emoji ? `<span class="wx-badge" title="${gameAbs[0].weather.desc} 降水${gameAbs[0].weather.pop}">${gameAbs[0].weather.emoji} ${gameAbs[0].weather.pop}</span>` : ''}
               </div>
               <div class="game-summary">${summary}</div>
             </div>
