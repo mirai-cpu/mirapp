@@ -470,7 +470,7 @@
   <!-- 市区町村検索（Nominatim + Open-Meteo） -->
   <div class="selector-wrap" id="city-search-wrap" style="margin-bottom:10px;">
     <input type="text" id="city-input" placeholder="市区町村名を入力（例: 渋谷区、札幌市南区）"
-      style="flex:1;background:var(--surface);border:1px solid var(--border-2);border-radius:10px;color:var(--text);font-size:14px;padding:11px 14px;outline:none;transition:border-color .2s;font-family:'Noto Sans JP',sans-serif;"
+      style="flex:1;background:var(--surface);border:1px solid var(--border-2);border-radius:10px;color:var(--text);font-size:16px;padding:11px 14px;outline:none;transition:border-color .2s;font-family:'Noto Sans JP',sans-serif;"
       aria-label="市区町村名で検索">
     <button class="fetch-btn" id="city-fetch-btn" style="flex-shrink:0;">検索</button>
   </div>
@@ -1006,8 +1006,13 @@ async function doCityFetch() {
 
   try {
     // 1. Nominatim ジオコーディング
-    const geoUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query + ' 日本')}&format=json&limit=1&countrycodes=jp&accept-language=ja`;
-    const geoRes = await fetch(geoUrl, { headers: { 'User-Agent': 'SomiraiLab-Weather/1.0 (somirai.jp)' } });
+    // 注: Nominatimの共有CDNキャッシュはVaryにOriginを含めていないため、
+    // 人気の高い地名がキャッシュヒットするとCORSヘッダーの無いレスポンスが
+    // 返り、ブラウザ側でfetchが失敗することがある。毎回ユニークなクエリ
+    // パラメータを付与してキャッシュを回避し、常にCORSヘッダー付きの
+    // フレッシュなレスポンスを取得する。
+    const geoUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query + ' 日本')}&format=json&limit=1&countrycodes=jp&accept-language=ja&_cb=${Date.now()}`;
+    const geoRes = await fetch(geoUrl);
     if (!geoRes.ok) throw new Error('geocode_failed');
     const geoData = await geoRes.json();
     if (!geoData.length) throw new Error('city_not_found');
