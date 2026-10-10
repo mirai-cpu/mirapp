@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="野球のマジックナンバー計算機。試合数・自チームの勝数・2位チームの敗数を入力するだけで優勝マジックを自動計算。計算式、点灯の条件、引き分けの扱いも解説。登録不要・完全無料。">
+  <meta name="keywords" content="マジックナンバー 計算,マジックナンバー 計算方法,マジック点灯 とは,優勝マジック,野球 マジックナンバー 計算機">
+  <link rel="canonical" href="https://somirai.jp/magic-number-calculator/">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="マジックナンバー計算機【無料】勝数・敗数から優勝マジックを自動計算 | Somirai Lab">
+  <meta property="og:description" content="試合数・自チームの勝数・2位チームの敗数を入力するだけでマジックナンバーを自動計算。点灯の条件つき。登録不要・完全無料。">
+  <meta property="og:url" content="https://somirai.jp/magic-number-calculator/">
+  <meta property="og:site_name" content="Somirai Lab">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>マジックナンバー計算機【無料】優勝マジックを一発計算 | Somirai Lab</title>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+   {"@type":"Question","name":"マジックナンバーはどうやって計算しますか？","acceptedAnswer":{"@type":"Answer","text":"マジックナンバー = 全試合数 + 1 − 自チームの勝数 − 2位チームの敗数 で計算します。この数だけ自チームが勝つか2位チームが負ければ優勝が決まります。引き分けがある場合は目安の値になります。"}},
+   {"@type":"Question","name":"マジックはいつ点灯しますか？","acceptedAnswer":{"@type":"Answer","text":"マジックナンバーが自チームの残り試合数以下になると点灯します。点灯後は、自力で優勝を決められる状態になります。"}},
+   {"@type":"Question","name":"マジックナンバーが減らない日があるのはなぜですか？","acceptedAnswer":{"@type":"Answer","text":"自チームが負け、かつ2位チームが勝った日は、マジックは減りません。自チームの勝ちか2位チームの負けのどちらか一方で1つ、両方で2つ減ります。"}}
+  ]}
+  </script>
+  <style>
+    :root {
+      --bg: #070810; --surface: #0d0f18; --surface-alt: #141a22; --border: #1c2a3a;
+      --text: #eaecf4; --text-sec: #a8adc4; --text-mut: #555878;
+      --accent: #00e676; --accent-soft: rgba(0,230,118,0.1);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: 'Noto Sans JP', -apple-system, system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased; line-height: 1.7;
+    }
+    header {
+      display: flex; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--border);
+    }
+    header a { color: var(--text-sec); text-decoration: none; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+    main { max-width: 640px; margin: 0 auto; padding: 32px 20px 60px; }
+    h1 { font-size: 26px; font-weight: 900; margin: 0 0 8px; color: var(--accent); }
+    .lead { color: var(--text-sec); font-size: 14px; margin-bottom: 28px; }
+    .calc-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+      padding: 24px 20px; margin-bottom: 28px;
+    }
+    .field-row { display: flex; gap: 12px; margin-bottom: 14px; }
+    .field { flex: 1; }
+    .field label { display: block; font-size: 12px; color: var(--text-sec); margin-bottom: 6px; font-weight: 700; }
+    .field input {
+      width: 100%; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 8px;
+      padding: 12px 14px; color: var(--text); font-size: 16px; font-family: 'JetBrains Mono', monospace;
+    }
+    .field input:focus { outline: none; border-color: var(--accent); }
+    .result-box {
+      margin-top: 20px; padding: 20px; background: var(--accent-soft); border: 1px solid rgba(0,230,118,0.3);
+      border-radius: 12px; text-align: center;
+    }
+    .result-label { font-size: 11px; color: var(--text-sec); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+    .result-value { font-size: 40px; font-weight: 900; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+    .result-note { font-size: 12px; color: var(--text-mut); margin-top: 6px; }
+    .warn-note { font-size: 12px; color: #fbbf24; margin-top: 10px; display: none; }
+    h2 { font-size: 18px; font-weight: 700; margin: 36px 0 12px; color: var(--text); }
+    p { font-size: 14px; color: var(--text-sec); margin: 0 0 12px; }
+    .formula-box {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .callout {
+      background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.25); border-radius: 10px;
+      padding: 16px; font-size: 13px; color: var(--text-sec); margin-bottom: 16px;
+    }
+    .callout strong { color: #fbbf24; }
+    .faq-item { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+    .faq-item h3 { padding: 12px 14px; background: var(--surface); font-size: 13px; font-weight: 700; color: var(--text); margin: 0; }
+    .faq-item p { padding: 12px 14px; font-size: 12px; margin: 0; border-top: 1px solid var(--border); }
+    .cta-card {
+      display: flex; align-items: center; gap: 12px; margin-top: 28px; padding: 14px 16px;
+      background: rgba(0,230,118,0.06); border: 1px solid rgba(0,230,118,0.25); border-radius: 10px;
+      text-decoration: none; color: inherit;
+    }
+    .cta-card .cta-title { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
+    .cta-card .cta-desc { font-size: 11px; color: var(--text-mut); }
+    footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-mut); border-top: 1px solid var(--border); }
+    footer nav { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
+    footer a { color: var(--text-mut); text-decoration: underline; }
+    .field-row.three .field input{padding:12px 10px}
+  </style>
+</head>
+<body>
+  <header>
+    <nav aria-label="メインナビゲーション">
+      <a href="/"><svg viewBox="0 0 120 120" width="18" height="18" style="border-radius:5px;margin-right:6px;vertical-align:middle;"><defs><linearGradient id="hbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0a0f1a"/><stop offset="100%" stop-color="#080c14"/></linearGradient><linearGradient id="hco" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#34d399"/></linearGradient></defs><rect width="120" height="120" rx="26" fill="url(#hbg)"/><circle cx="60" cy="60" r="16" fill="url(#hco)"/></svg>Somirai Lab</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>マジックナンバー計算機</h1>
+    <p class="lead">全試合数・自チームの勝数・2位チームの敗数を入力するだけで、優勝マジックナンバーを自動計算します。登録不要・完全無料。</p>
+
+    <div class="calc-card">
+      <div class="field-row three">
+        <div class="field">
+          <label for="games">全試合数</label>
+          <input type="number" id="games" value="143" step="1" min="1" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="wins">自チームの勝数</label>
+          <input type="number" id="wins" placeholder="80" step="1" min="0" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="rivalLosses">2位の敗数</label>
+          <input type="number" id="rivalLosses" placeholder="55" step="1" min="0" inputmode="numeric">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="remain">自チームの残り試合数（任意・点灯判定用）</label>
+          <input type="number" id="remain" placeholder="30" step="1" min="0" inputmode="numeric">
+        </div>
+      </div>
+
+      <div class="result-box" id="result-box" style="display:none;">
+        <div class="result-label">マジックナンバー</div>
+        <div class="result-value" id="result-value">-</div>
+        <div class="result-note" id="result-note"></div>
+        <div class="warn-note" id="warn-note"></div>
+      </div>
+    </div>
+
+    <h2>マジックナンバーの計算式</h2>
+    <div class="formula-box">マジックナンバー ＝ 全試合数 ＋ 1 － 自チームの勝数 － 2位チームの敗数</div>
+    <p>
+      2位チームが残りを全勝したときの最大勝数は「全試合数 － 2位の敗数」です。自チームがそれを1つ上回れば優勝が確定するので、必要な勝利数は「全試合数 － 2位の敗数 ＋ 1 － 自チームの勝数」になります。これがマジックナンバーです。
+    </p>
+
+    <h2>マジックの「点灯」とは</h2>
+    <div class="callout">
+      <strong>マジックナンバーが自チームの残り試合数以下になると「点灯」します。</strong> 点灯すると、他チームの結果に関係なく自チームが残りを勝ち切れば優勝できる状態です。点灯前は、自分たちが全勝しても2位チームの結果次第で優勝を逃す可能性があります。
+    </div>
+    <p>
+      マジックは「自チームが勝つ」か「2位チームが負ける」ことで1つずつ減ります。自チームが勝って2位チームが負ければ一気に2つ減り、自チームが負けて2位チームが勝った日は減りません。
+    </p>
+
+    <a href="https://somirai.jp/order-maker/" class="cta-card" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'magic_calc',to:'order_maker'})">
+      <span style="font-size:22px;">📋</span>
+      <span>
+        <span class="cta-title" style="display:block;">優勝を狙うチームの打順を組む</span>
+        <span class="cta-desc">野球のスタメン・打順を無料で作成</span>
+      </span>
+    </a>
+    <a href="https://somirai.jp/risp-calculator/" class="cta-card" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'magic_calc',to:'risp_calc'})">
+      <span style="font-size:22px;">🧮</span>
+      <span>
+        <span class="cta-title" style="display:block;">他の野球計算機も使う</span>
+        <span class="cta-desc">得点圏打率・防御率・WHIPの計算機はこちら</span>
+      </span>
+    </a>
+
+    <h2>計算例で確認する</h2>
+    <p>
+      143試合制で、自チームが80勝、2位チームが55敗の場合を考えます。マジックナンバーは「143 ＋ 1 － 80 － 55 ＝ 9」です。自チームがあと9勝するか、2位チームが9敗するか、あるいはその合計が9に達した時点で優勝が決まります。
+    </p>
+    <p>
+      翌日、自チームが勝って2位チームも負ければ、勝数が81、敗数が56になり、マジックは「143 ＋ 1 － 81 － 56 ＝ 7」と一気に2つ減ります。逆に自チームが負けて2位チームが勝った場合は、数字は変わらず9のままです。残り試合が少なくなるほど、このわずかな差が優勝争いの行方を左右します。
+    </p>
+
+    <h2>引き分けがあるときの注意点</h2>
+    <p>
+      引き分けは勝敗に含まれないため、実際のマジックは単純な式からずれることがあります。日本のプロ野球では勝率で順位を決めるため、引き分けが多いチームがいる場合は、勝数ではなく勝率で比較する必要があります。この計算機の値は「引き分けがない場合の目安」として使ってください。厳密なマジックは、各チームの残り試合数や引き分け数を踏まえて、公式の発表で確認するのが確実です。
+    </p>
+
+    <h2>草野球・学生野球のリーグ戦でも使える</h2>
+    <p>
+      マジックナンバーはプロ野球だけの指標ではありません。草野球のリーグ戦や、高校・大学の春秋リーグでも、全試合数と各チームの勝敗が分かれば同じ式で計算できます。「あと何勝すれば優勝か」が数字で見えると、チームの目標が明確になり、残りの試合へのモチベーションにもつながります。2位チームの敗数に注目することで、直接対決のカードがどれほど重要かも分かります。
+    </p>
+    <p>
+      なお、総当たりではないリーグ戦では、直接対決の結果や得失点差が順位を決める場合があります。その際は大会の規定を確認したうえで、この計算機を目安として活用してください。
+    </p>
+
+    <h2>マジックナンバーの読み方と使いどころ</h2>
+    <p>
+      マジックナンバーは「優勝までの距離」を一つの数字で表したものです。ゲーム差は両チームの差を示しますが、残り試合数が考慮されません。一方マジックは、残り試合の多さや2位チームの負け数まで織り込んで、「あと何回の勝利（または相手の敗戦）が必要か」をはっきり示します。ゲーム差が同じでも、シーズン序盤と終盤ではマジックの意味合いがまったく異なります。
+    </p>
+    <p>
+      たとえば残り試合が多い時期のマジックは、いくら小さく見えても、まだ逆転の余地が大きい状態です。マジックが残り試合数を下回って点灯して初めて、「自力で優勝を決められる」という実質的な意味を持ち始めます。点灯していない間は、自分たちが勝ち続けても2位チームの結果次第で追いつかれる可能性があることを念頭に置きましょう。
+    </p>
+
+    <h2>マジックを減らすために意識したいこと</h2>
+    <p>
+      マジックを減らす方法は二つしかありません。自チームが勝つか、2位チームが負けるかです。自チームの勝利はコントロールできますが、2位チームの結果は自分たちでは動かせません。だからこそ、直接対決は他の試合の倍の価値を持ちます。自チームが勝てば自分の勝数が増え、同時に2位チームの敗数も増えるため、一試合でマジックが2つ減るからです。
+    </p>
+    <p>
+      逆にいえば、直接対決で負けると、自チームが勝つ機会を失うだけでなく、2位チームに勝ちを与えてしまいます。優勝争いの終盤では、日程表から直接対決のカードを確認し、先発ローテーションや打順をそこに合わせて組む戦略が有効です。打順の組み立てには、当サイトの打順メーカーも役立ちます。
+    </p>
+
+    <h2>2位チームの視点で見るトラジックナンバー</h2>
+    <p>
+      マジックナンバーの逆の考え方に、追う側が優勝を逃す「トラジックナンバー」があります。2位チームがあと何敗（または首位チームが何勝）すると、優勝の可能性が完全に消えるかを表す数字です。優勝争いを追う側のチームは、この数字が小さくなるほど、一試合の重みが増していきます。マジックとあわせて確認すると、首位と2位それぞれの立場から順位争いの緊迫感を把握できます。
+    </p>
+
+    <h2>この計算機の使い方</h2>
+    <p>
+      全試合数にはリーグの年間試合数（プロ野球なら143試合など）を入力します。続いて自チームの現在の勝数と、優勝を争う2位チームの現在の敗数を入力すると、マジックナンバーが表示されます。残り試合数を任意で入力すると、マジックが点灯しているかどうかも同時に判定します。入力内容は端末内で計算するだけで、サーバーには送信されません。
+    </p>
+
+    <h2>よくある質問</h2>
+    <div class="faq-item">
+      <h3>マジックが消滅するのはどんなときですか？</h3>
+      <p>2位以下のチームが残りを全勝すれば自チームの勝数を上回れる状態になると、マジックは消滅します。その後は、自チームの成績次第で再び点灯することもあります。</p>
+    </div>
+    <div class="faq-item">
+      <h3>マジックナンバーが0になったらどうなりますか？</h3>
+      <p>優勝が確定しています。計算式で0以下になった場合、他チームが残りを全勝しても自チームを上回れない状態です。</p>
+    </div>
+    <div class="faq-item">
+      <h3>3位以下のチームのマジックも計算できますか？</h3>
+      <p>この計算機は首位チームの優勝マジックを対象にしています。「2位の敗数」の欄には、優勝を争う最上位のライバルチームの敗数を入力してください。</p>
+    </div>
+  </main>
+
+  <footer>
+    <div>© 2026 <a href="https://somirai.jp/" style="color:var(--accent);text-decoration:none;font-weight:700;">Somirai Lab</a></div>
+    <nav aria-label="サイト内リンク">
+      <a href="https://somirai.jp/blog/">ブログ</a>
+      <a href="https://somirai.jp/about.html">About</a>
+      <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    </nav>
+  </footer>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-902VNDKEE9');
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-902VNDKEE9');
+  </script>
+  <script>
+    (function () {
+      var ids = ['games', 'wins', 'rivalLosses', 'remain'];
+      var el = {};
+      ids.forEach(function (i) { el[i] = document.getElementById(i); });
+      var $box = document.getElementById('result-box');
+      var $value = document.getElementById('result-value');
+      var $note = document.getElementById('result-note');
+      var $warn = document.getElementById('warn-note');
+
+      function num(e) { return e.value === '' ? NaN : parseFloat(e.value); }
+
+      function calc() {
+        var g = num(el.games), w = num(el.wins), rl = num(el.rivalLosses), rem = num(el.remain);
+        if (!isFinite(g) || g <= 0 || !isFinite(w) || w < 0 || !isFinite(rl) || rl < 0 || w > g || rl > g) {
+          $box.style.display = 'none';
+          return;
+        }
+        var m = g + 1 - w - rl;
+        $warn.style.display = 'none';
+        if (m <= 0) {
+          $value.textContent = '優勝確定';
+          $note.textContent = '2位チームが全勝しても自チームを上回れません';
+        } else {
+          $value.textContent = String(m);
+          $note.textContent = 'あと ' + m + ' 勝（または2位の敗戦）で優勝';
+          if (isFinite(rem) && rem >= 0) {
+            $warn.style.display = 'block';
+            if (m <= rem) {
+              $warn.style.color = '#00e676';
+              $warn.textContent = '🔥 マジック点灯中（残り' + rem + '試合 ≧ マジック' + m + '）';
+            } else {
+              $warn.style.color = '#fbbf24';
+              $warn.textContent = '未点灯：自力優勝には至っていません（残り' + rem + '試合 < マジック' + m + '）';
+            }
+          }
+        }
+        $box.style.display = 'block';
+        if (typeof gtag === 'function') gtag('event', 'magic_calculated', {});
+      }
+
+      ids.forEach(function (i) { el[i].addEventListener('input', calc); });
+    })();
+  </script>
+
+  <script>(function(){try{if(localStorage.getItem('somirai:seen')){}else{localStorage.setItem('somirai:seen','1');}var t=new Date(),ld=function(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};var today=ld(t),r=localStorage.getItem('somirai:streak'),s=r?JSON.parse(r):null;if(!s||s.lastDate!==today){var y=ld(new Date(Date.now()-864e5));localStorage.setItem('somirai:streak',JSON.stringify({lastDate:today,count:(s&&s.lastDate===y)?s.count+1:1}));}}catch(e){}})();</script>
+</body>
+</html>
