@@ -2056,12 +2056,12 @@ function drawLineupCard() {
     ctx.fillStyle = INK_SOFT;
     ctx.font = '700 18px sans-serif';
     ctx.textAlign = 'right';
-    ctx.fillText(r.pos, W - 60, rowY + 33);
+    ctx.fillText(r.pos, W - 84, rowY + 33);
     if (POS_NUM[r.pos]) {
-      ctx.beginPath(); ctx.arc(W - 30, rowY + 27, 11, 0, Math.PI * 2);
+      ctx.beginPath(); ctx.arc(W - 58, rowY + 27, 11, 0, Math.PI * 2);
       ctx.strokeStyle = INK_RED; ctx.lineWidth = 1.5; ctx.stroke();
       ctx.fillStyle = INK_RED; ctx.font = '700 13px monospace'; ctx.textAlign = 'center';
-      ctx.fillText(String(POS_NUM[r.pos]), W - 30, rowY + 31);
+      ctx.fillText(String(POS_NUM[r.pos]), W - 58, rowY + 31);
     }
     ctx.textAlign = 'left';
   });
