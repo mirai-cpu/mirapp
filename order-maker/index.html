@@ -508,18 +508,46 @@
     .field-title { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px; font-family: var(--mono); text-shadow: 0 0 6px rgba(0,230,118,0.3); }
     #field-svg { width: 100%; max-width: 400px; display: block; margin: 0 auto; }
 
-    /* ── Print ── */
-    .print-card { background: var(--surface); border: 1px solid var(--border-2); border-radius: var(--radius); padding: 20px; box-shadow: 0 2px 16px rgba(0,0,0,0.2); }
-    .print-title { font-size: 22px; font-weight: 900; margin-bottom: 4px; }
-    .print-meta { font-size: 12px; color: var(--muted); margin-bottom: 16px; font-family: 'JetBrains Mono', monospace; }
-    .print-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
-    .print-table th { font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: .06em; text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
-    .print-table td { padding: 10px 10px; font-size: 13px; border-bottom: 1px solid rgba(42,31,53,0.6); }
+    /* ── Print: 本物のスコアブック用紙 ── */
+    .print-card {
+      --paper:      #f3ecd9;
+      --ink:        #2b2415;
+      --ink-soft:   #6b5d44;
+      --ink-red:    #a8341f;
+      --rule:       #cdb98e;
+      position: relative;
+      background-color: var(--paper);
+      background-image:
+        radial-gradient(circle 6px at 29px 13%, rgba(20,15,5,.55) 0 5px, rgba(20,15,5,.1) 5px 6.5px, transparent 7px),
+        radial-gradient(circle 6px at 29px 50%, rgba(20,15,5,.55) 0 5px, rgba(20,15,5,.1) 5px 6.5px, transparent 7px),
+        radial-gradient(circle 6px at 29px 87%, rgba(20,15,5,.55) 0 5px, rgba(20,15,5,.1) 5px 6.5px, transparent 7px);
+      border: 1px solid #d9c89c;
+      border-radius: 3px;
+      padding: 22px 20px 20px 50px;
+      color: var(--ink);
+      box-shadow: 0 14px 26px rgba(0,0,0,.4), 0 2px 0 rgba(255,255,255,.5) inset;
+      transform: rotate(-.3deg);
+    }
+    .print-card + .print-card { transform: rotate(.25deg); }
+    .print-title { font-size: 22px; font-weight: 900; margin-bottom: 2px; color: var(--ink); font-family: 'Barlow', sans-serif; }
+    .print-meta { font-size: 12px; color: var(--ink-soft); margin-bottom: 14px; font-family: 'JetBrains Mono', monospace; letter-spacing: .03em; }
+    .print-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+    .print-table th { font-size: 10px; color: var(--ink-soft); font-weight: 700; letter-spacing: .08em; text-align: left; padding: 6px 8px; border-bottom: 1.5px solid var(--rule); text-transform: uppercase; }
+    .print-table td { padding: 9px 8px; font-size: 13px; border-bottom: 1px solid rgba(43,36,21,.14); color: var(--ink); }
     .print-table tr:last-child td { border-bottom: none; }
-    .print-table tr:hover td { background: rgba(0,230,118,0.03); }
-    .t-order { font-weight: 900; color: var(--yellow); text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 15px; }
-    .t-num { color: var(--accent); font-weight: 700; font-family: 'JetBrains Mono', monospace; }
-    .section-label { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin: 16px 0 8px; }
+    .print-table tr:nth-child(even) td { background: rgba(43,36,21,.035); }
+    .print-table tr > td:nth-child(3) { font-family: 'Noto Sans JP', sans-serif; font-weight: 400; letter-spacing: .01em; }
+    .t-order { font-weight: 900; color: var(--ink-red); text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 15px; }
+    .t-num { color: var(--ink-soft); font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+    .print-card .pos-chip { background: transparent; border: 1px solid var(--ink-soft); color: var(--ink); font-weight: 700; }
+    .print-card .pos-stamp {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 15px; height: 15px; margin-left: 4px; flex-shrink: 0;
+      border: 1.5px solid var(--ink-red); border-radius: 50%;
+      color: var(--ink-red); font-family: var(--mono); font-size: 9px; font-weight: 700;
+      vertical-align: middle; transform: rotate(-6deg);
+    }
+    .section-label { font-size: 11px; font-weight: 700; color: var(--ink-soft); letter-spacing: .1em; text-transform: uppercase; margin: 14px 0 6px; font-family: var(--mono); }
     .share-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
 
     /* ── Theme Modal ── */
@@ -574,7 +602,7 @@
     @media print {
       header, .tab-bar, .share-row, .field-wrap, .no-print { display: none !important; }
       body { background: #fff; color: #000; }
-      .print-card { border: none; padding: 0; background: none; box-shadow: none; }
+      .print-card { border: none; padding: 0; background: none; box-shadow: none; transform: none; }
       .print-table td, .print-table th { color: #000; border-color: #ccc; }
     }
     #starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
@@ -1244,6 +1272,9 @@
 <script>
 // ── Constants ──────────────────────
 const POSITIONS = ['投','捕','一','二','三','遊','左','中','右','DH'];
+// 伝統的な野球スコアブックの守備位置番号（①投手〜⑨右翼、DHは番号なし）
+const POS_NUM = {'投':1,'捕':2,'一':3,'二':4,'三':5,'遊':6,'左':7,'中':8,'右':9};
+function posStamp(pos) { return POS_NUM[pos] ? `<span class="pos-stamp">${POS_NUM[pos]}</span>` : ''; }
 
 const THEMES = {
   dark:    { name:'TACTICIAN', bg:'#070810', surface:'#0d0f18', card:'#0d0f18', border:'#1c1f30', border2:'#252840', accent:'#00e676', text:'#eaecf4', muted:'#555878', yellow:'#64ffda' },
@@ -1888,7 +1919,7 @@ function renderPrint() {
     if (!dname) return `<tr><td class="t-order">${i+1}</td><td colspan="3" style="color:var(--muted);font-size:12px">未設定</td></tr>`;
     const p = slot?.playerId ? players.find(x=>x.id===slot.playerId) : null;
     const numCell = p?.num ? '#'+p.num : (slot?.isGuest ? '助' : '—');
-    return `<tr><td class="t-order">${i+1}</td><td class="t-num">${numCell}</td><td>${esc(dname)}</td><td>${slot?.pos?`<span class="pos-chip">${slot.pos}</span>`:'—'}</td></tr>`;
+    return `<tr><td class="t-order">${i+1}</td><td class="t-num">${numCell}</td><td>${esc(dname)}</td><td>${slot?.pos?`<span class="pos-chip">${slot.pos}</span>${posStamp(slot.pos)}`:'—'}</td></tr>`;
   }).join('');
 
   const ps = document.getElementById('print-pitcher-section');
@@ -1918,7 +1949,7 @@ function renderMemberSheet() {
       return (Number.isFinite(na) ? na : Infinity) - (Number.isFinite(nb) ? nb : Infinity);
     });
   document.getElementById('member-sheet-tbody').innerHTML = benchPlayers.map(p =>
-    `<tr><td class="t-num">${p.num ? '#'+esc(p.num) : '—'}</td><td>${esc(p.name)}</td><td>${p.pos.map(x=>`<span class="pos-chip">${esc(x)}</span>`).join('') || '—'}</td></tr>`
+    `<tr><td class="t-num">${p.num ? '#'+esc(p.num) : '—'}</td><td>${esc(p.name)}</td><td>${p.pos.map(x=>`<span class="pos-chip">${esc(x)}</span>${posStamp(x)}`).join('') || '—'}</td></tr>`
   ).join('');
 }
 
@@ -1976,72 +2007,77 @@ function drawLineupCard() {
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
 
-  // 背景
-  const bg = ctx.createLinearGradient(0, 0, 0, H);
-  bg.addColorStop(0, '#0d0f18');
-  bg.addColorStop(1, '#070810');
-  ctx.fillStyle = bg;
+  // 背景（アイボリー紙）
+  const PAPER = '#f3ecd9', INK = '#2b2415', INK_SOFT = '#6b5d44', INK_RED = '#a8341f', RULE = '#cdb98e';
+  ctx.fillStyle = PAPER;
   ctx.fillRect(0, 0, W, H);
-  ctx.fillStyle = '#00e676';
-  ctx.fillRect(0, 0, W, 5);
+  // 綴じ穴（左端3箇所）
+  ctx.fillStyle = 'rgba(20,15,5,.5)';
+  [0.08, 0.5, 0.92].forEach(f => { ctx.beginPath(); ctx.arc(26, H * f, 6, 0, Math.PI * 2); ctx.fill(); });
 
   // タイトル
-  ctx.fillStyle = '#eaecf4';
-  ctx.font = '900 42px "Barlow", sans-serif';
+  ctx.fillStyle = INK;
+  ctx.font = '900 40px "Barlow", sans-serif';
   ctx.textAlign = 'left';
-  ctx.fillText(name, 40, 76);
-  ctx.fillStyle = '#a8adc4';
-  ctx.font = '400 20px sans-serif';
-  ctx.fillText(date ? fmtFull(date) : new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' }), 40, 108);
+  ctx.fillText(name, 56, 76);
+  ctx.fillStyle = INK_SOFT;
+  ctx.font = '500 18px monospace';
+  ctx.fillText(date ? fmtFull(date) : new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' }), 56, 106);
 
   // テーブルヘッダー
   let y = headerH;
-  ctx.strokeStyle = '#1c2a3a';
-  ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(40, y - 20); ctx.lineTo(W - 40, y - 20); ctx.stroke();
-  ctx.fillStyle = '#555878';
-  ctx.font = '700 15px monospace';
-  ctx.fillText('打順', 40, y - 30);
-  ctx.fillText('選手', 140, y - 30);
+  ctx.strokeStyle = RULE;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(56, y - 20); ctx.lineTo(W - 40, y - 20); ctx.stroke();
+  ctx.fillStyle = INK_SOFT;
+  ctx.font = '700 14px monospace';
+  ctx.fillText('打順', 56, y - 30);
+  ctx.fillText('選手', 156, y - 30);
   ctx.fillText('守備', W - 140, y - 30);
 
   // 打順テーブル
   rows.forEach((r, i) => {
     const rowY = y + i * rowH;
     if (i % 2 === 0) {
-      ctx.fillStyle = 'rgba(255,255,255,0.02)';
-      ctx.fillRect(40, rowY, W - 80, rowH);
+      ctx.fillStyle = 'rgba(43,36,21,.035)';
+      ctx.fillRect(56, rowY, W - 96, rowH);
     }
-    ctx.fillStyle = '#00e676';
+    ctx.fillStyle = INK_RED;
     ctx.font = '900 22px monospace';
     ctx.textAlign = 'center';
-    ctx.fillText(String(r.order), 65, rowY + 33);
+    ctx.fillText(String(r.order), 82, rowY + 33);
 
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#eaecf4';
-    ctx.font = '700 22px "Barlow", sans-serif';
+    ctx.fillStyle = INK;
+    ctx.font = '700 22px "Noto Sans JP", sans-serif';
     const numText = r.num ? r.num + ' ' : '';
-    ctx.fillText(numText + r.name, 140, rowY + 33);
+    ctx.fillText(numText + r.name, 156, rowY + 33);
 
-    ctx.fillStyle = '#a8adc4';
+    ctx.fillStyle = INK_SOFT;
     ctx.font = '700 18px sans-serif';
     ctx.textAlign = 'right';
     ctx.fillText(r.pos, W - 60, rowY + 33);
+    if (POS_NUM[r.pos]) {
+      ctx.beginPath(); ctx.arc(W - 30, rowY + 27, 11, 0, Math.PI * 2);
+      ctx.strokeStyle = INK_RED; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.fillStyle = INK_RED; ctx.font = '700 13px monospace'; ctx.textAlign = 'center';
+      ctx.fillText(String(POS_NUM[r.pos]), W - 30, rowY + 31);
+    }
     ctx.textAlign = 'left';
   });
 
   // 投手陣
   let py = y + rows.length * rowH + 20;
   if (pitcherRows.length) {
-    ctx.fillStyle = '#555878';
-    ctx.font = '700 15px monospace';
-    ctx.fillText('投手陣', 40, py);
+    ctx.fillStyle = INK_SOFT;
+    ctx.font = '700 14px monospace';
+    ctx.fillText('投手陣', 56, py);
     py += 30;
     pitcherRows.forEach((r) => {
-      ctx.fillStyle = '#fbbf24';
-      ctx.font = '700 20px "Barlow", sans-serif';
-      ctx.fillText(r.order + '番手  ' + r.name, 40, py + 20);
-      ctx.fillStyle = '#a8adc4';
+      ctx.fillStyle = INK_RED;
+      ctx.font = '700 20px "Noto Sans JP", sans-serif';
+      ctx.fillText(r.order + '番手  ' + r.name, 56, py + 20);
+      ctx.fillStyle = INK_SOFT;
       ctx.font = '400 16px sans-serif';
       ctx.textAlign = 'right';
       ctx.fillText(r.label, W - 60, py + 20);
@@ -2051,7 +2087,7 @@ function drawLineupCard() {
   }
 
   // フッター
-  ctx.fillStyle = '#555878';
+  ctx.fillStyle = INK_SOFT;
   ctx.font = '400 18px sans-serif';
   ctx.textAlign = 'center';
   ctx.fillText('⚾ TACTICIAN — somirai.jp/order-maker/', W / 2, H - 28);
