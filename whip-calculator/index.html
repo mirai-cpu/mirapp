@@ -102,6 +102,16 @@
     footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-mut); border-top: 1px solid var(--border); }
     footer nav { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
     footer a { color: var(--text-mut); text-decoration: underline; }
+    .multi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 22px 18px; margin-bottom: 28px; }
+    .multi-card h2 { margin-top: 0; }
+    .game-row { display: grid; grid-template-columns: 56px 1fr 1fr 1fr 32px; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .game-row .game-no { font-size: 12px; color: var(--text-sec); font-family: 'JetBrains Mono', monospace; }
+    .game-row input { width: 100%; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 8px; padding: 10px 8px; color: var(--text); font-size: 16px; font-family: 'JetBrains Mono', monospace; min-width: 0; }
+    .game-row input:focus { outline: none; border-color: var(--accent); }
+    .game-row .rm { background: none; border: 1px solid var(--border); color: var(--text-mut); border-radius: 8px; height: 38px; cursor: pointer; font-size: 16px; }
+    .game-head { display: grid; grid-template-columns: 56px 1fr 1fr 1fr 32px; gap: 8px; font-size: 11px; color: var(--text-mut); margin-bottom: 6px; }
+    .add-btn { background: var(--accent-soft); border: 1px solid rgba(0,230,118,0.3); color: var(--accent); border-radius: 8px; padding: 10px 14px; font-size: 13px; font-weight: 700; cursor: pointer; margin-top: 4px; }
+    @media (max-width: 420px) { .game-row, .game-head { grid-template-columns: 40px 1fr 1fr 1fr 28px; gap: 6px; } }
   </style>
 </head>
 <body>
@@ -136,6 +146,19 @@
         <div class="result-label">WHIP</div>
         <div class="result-value" id="result-value">-.--</div>
         <div class="result-note" id="result-note"></div>
+      </div>
+    </div>
+
+    <div class="multi-card" id="multi-card">
+      <h2>複数試合の通算WHIPを計算する</h2>
+      <p>試合ごとの数字を入力すると、全試合を合算した通算WHIPを出します。投球回は「6.1」「6.2」の表記のままで入力できます。1試合ずつの平均ではなく、合計の与四球・被安打を合計の投球回で割るので、実際のWHIPと一致します。</p>
+      <div class="game-head"><span></span><span>与四球</span><span>被安打</span><span>投球回</span><span></span></div>
+      <div id="game-rows"></div>
+      <button type="button" class="add-btn" id="add-game">＋ 試合を追加</button>
+      <div class="result-box" id="multi-result" style="display:none;">
+        <div class="result-label">通算WHIP</div>
+        <div class="result-value" id="multi-value">-.--</div>
+        <div class="result-note" id="multi-note"></div>
       </div>
     </div>
 
@@ -272,6 +295,70 @@
       $walks.addEventListener('input', calc);
       $hits.addEventListener('input', calc);
       $innings.addEventListener('input', calc);
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var $rows = document.getElementById('game-rows');
+      var $res = document.getElementById('multi-result');
+      var $val = document.getElementById('multi-value');
+      var $note = document.getElementById('multi-note');
+      var count = 0;
+
+      // 投球回を「アウト数」に変換（6.1 → 19, 6.2 → 20）。不正な値は null
+      function toOuts(raw) {
+        if (raw === '') return null;
+        var n = parseFloat(raw);
+        if (!isFinite(n) || n < 0) return null;
+        var whole = Math.floor(n);
+        var frac = Math.round((n - whole) * 10);
+        if (frac > 2) return null;
+        return whole * 3 + frac;
+      }
+      function fmtInnings(outs) {
+        return Math.floor(outs / 3) + (outs % 3 ? '.' + (outs % 3) : '');
+      }
+
+      function addRow() {
+        count++;
+        var row = document.createElement('div');
+        row.className = 'game-row';
+        row.innerHTML = '<span class="game-no">' + count + '試合目</span>' +
+          '<input type="number" class="g-bb" min="0" step="1" inputmode="numeric" placeholder="2" aria-label="' + count + '試合目 与四球">' +
+          '<input type="number" class="g-h" min="0" step="1" inputmode="numeric" placeholder="5" aria-label="' + count + '試合目 被安打">' +
+          '<input type="number" class="g-ip" min="0" step="0.1" inputmode="decimal" placeholder="6.1" aria-label="' + count + '試合目 投球回">' +
+          '<button type="button" class="rm" aria-label="この行を削除">×</button>';
+        row.querySelector('.rm').addEventListener('click', function () {
+          if ($rows.children.length > 1) { row.remove(); renumber(); calc(); }
+        });
+        row.addEventListener('input', calc);
+        $rows.appendChild(row);
+      }
+      function renumber() {
+        Array.prototype.forEach.call($rows.children, function (r, i) {
+          r.querySelector('.game-no').textContent = (i + 1) + '試合目';
+        });
+        count = $rows.children.length;
+      }
+
+      function calc() {
+        var bb = 0, h = 0, outs = 0, used = 0;
+        Array.prototype.forEach.call($rows.children, function (r) {
+          var vb = r.querySelector('.g-bb').value, vh = r.querySelector('.g-h').value, vi = r.querySelector('.g-ip').value;
+          var o = toOuts(vi), b = parseFloat(vb), x = parseFloat(vh);
+          if (o === null || !isFinite(b) || b < 0 || !isFinite(x) || x < 0) return;
+          bb += b; h += x; outs += o; used++;
+        });
+        if (used === 0 || outs <= 0) { $res.style.display = 'none'; return; }
+        $val.textContent = ((bb + h) / (outs / 3)).toFixed(2);
+        $note.textContent = used + '試合 ・ 与四球 ' + bb + ' ・ 被安打 ' + h + ' ・ 投球回 ' + fmtInnings(outs);
+        $res.style.display = 'block';
+        if (typeof gtag === 'function') gtag('event', 'whip_multi_calculated', {});
+      }
+
+      document.getElementById('add-game').addEventListener('click', addRow);
+      addRow(); addRow(); addRow();
     })();
   </script>
 
