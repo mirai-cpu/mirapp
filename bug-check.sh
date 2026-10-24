@@ -247,9 +247,14 @@ cross_check() {
     id=$(grep -oE 'ca-pub-[0-9]+' "$f" | head -1)
     pub_ids+=("${id:-なし}")
   done
-  local first_pub="${pub_ids[0]}"
+  # 広告タグを載せるページは意図的に絞っているため、タグ無し(なし)のサイトは比較対象から外す
+  local first_pub="なし"
+  for id in "${pub_ids[@]}"; do
+    [ "$id" != "なし" ] && { first_pub="$id"; break; }
+  done
   local pub_ok=1
   for i in "${!pub_ids[@]}"; do
+    [ "${pub_ids[$i]}" = "なし" ] && continue
     if [ "${pub_ids[$i]}" != "$first_pub" ]; then
       fail "AdSense publisher IDが不一致: ${LABELS[$i]} = ${pub_ids[$i]} (期待値: $first_pub)"
       pub_ok=0; all_ok=0
