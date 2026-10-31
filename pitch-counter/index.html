@@ -110,6 +110,18 @@
   .game .lines { font-size: .9375rem; color: var(--ink-sec); white-space: pre-wrap; }
   .game button { margin-top: 6px; min-height: 40px; background: none; border: 1px solid var(--ink-sec); border-radius: 4px; padding: 0 12px; }
 
+  .grp-label { font-size: .8125rem; color: var(--ink-sec); margin-top: 12px; }
+  .ab4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 6px; }
+  .ab4 button, .ab3 button { min-height: 52px; border: 2px solid var(--ink); border-radius: 4px; background: none; font-weight: 700; font-size: .9375rem; }
+  .ab3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 6px; }
+  .ab4 button.hit { background: var(--btn-bg); color: var(--btn-ink); border-color: var(--btn-bg); }
+  .my-now { display: flex; justify-content: space-between; gap: 8px; margin-top: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--ink); font-weight: 700; flex-wrap: wrap; }
+  .rbi { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+  .rbi button { width: 52px; min-height: 52px; border: 2px solid var(--ink); border-radius: 4px; background: none; font-weight: 700; font-size: 1.3rem; }
+  .rbi b { min-width: 2ch; text-align: center; font-size: 1.5rem; }
+  .send { margin-top: 22px; padding-top: 10px; border-top: 2px solid var(--ink); }
+  .send h3 { font-size: 1.05rem; }
+  .send .in { width: 100%; min-height: 48px; background: transparent; color: var(--ink); border: 2px solid var(--ink); border-radius: 4px; padding: 0 12px; font: inherit; margin-top: 6px; }
   details { margin-top: 28px; border-top: 1px solid var(--rule); }
   summary { min-height: 48px; display: flex; align-items: center; font-weight: 700; cursor: pointer; }
   details p { color: var(--ink-sec); font-size: .9375rem; padding-bottom: 12px; }
@@ -152,7 +164,8 @@
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" data-tab="pitch">投球</button>
     <button class="tab" role="tab" aria-selected="false" data-tab="score">スコア</button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="batters">打者成績</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="batters">相手打者</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="attack">攻撃</button>
     <button class="tab" role="tab" aria-selected="false" data-tab="history">履歴</button>
   </div>
 
@@ -230,6 +243,36 @@
     <button class="btn-main" id="copy" type="button">結果をコピーして共有する</button>
   </section>
 
+  <section class="panel" id="p-attack" hidden>
+    <p class="hint" style="margin-top:14px">自チームの攻撃を記録します。ここで記録した「自分の打席」だけを、打撃成績トラッカー(LUMBER)に追加できます。</p>
+    <div class="my-now"><span>いまの打者: <b id="myWho"></b></span><span>アウト <b id="myOuts">0</b></span><span><b id="myInn">1</b>回の攻撃</span></div>
+    <div class="grp-label">安打</div>
+    <div class="ab4" id="myHit"></div>
+    <div class="grp-label">出塁</div>
+    <div class="ab3" id="myOn"></div>
+    <div class="grp-label">アウト</div>
+    <div class="ab4" id="myOut"></div>
+    <div class="ab3" id="mySac" style="margin-top:8px"></div>
+    <div class="rbi"><span>この打席の打点</span><button id="rbiMinus" type="button" aria-label="打点を減らす">−</button><b id="rbiN">0</b><button id="rbiPlus" type="button" aria-label="打点を増やす">+</button></div>
+    <div class="actions"><button id="undo2" type="button">1つ戻す</button></div>
+    <table class="stats" id="myStats" aria-label="自チームの打者成績"></table>
+    <div class="send">
+      <h3>LUMBERに追加する</h3>
+      <p class="hint" style="margin-top:4px">あなた自身の打席だけを選んで、打撃成績トラッカーに入れます。相手打者の成績は入りません。</p>
+      <label class="lbl" for="sendWho" style="margin-top:10px;display:block">あなたの打順</label>
+      <select class="in" id="sendWho"></select>
+      <label class="lbl" for="oppTeam" style="margin-top:10px;display:block">相手チーム名(省略できます)</label>
+      <input class="in" id="oppTeam" maxlength="20" autocomplete="off">
+      <span class="lbl" style="margin-top:10px;display:block">相手投手の利き手</span>
+      <div class="seg" id="handSeg" role="group" aria-label="相手投手の利き手">
+        <button type="button" aria-pressed="true" data-h="R">右</button>
+        <button type="button" aria-pressed="false" data-h="L">左</button>
+      </div>
+      <button class="btn-main" id="sendBtn" type="button">この打席をLUMBERに追加する</button>
+      <p class="hint" id="sendMsg" role="status"></p>
+    </div>
+  </section>
+
   <section class="panel" id="p-history" hidden>
     <div id="histList"></div>
     <p class="hint">終えた試合は、この端末のブラウザにだけ保存されます(最大30試合)。</p>
@@ -271,17 +314,33 @@ const NO_AB = ['BB', 'HBP', 'sac'];
 const STRIKE_RES = ['looking', 'swing', 'foul'];
 const CELL = 60;
 
+const RES = [
+  { k: 'single', l: '単打', ab: 1, h: 1, out: 0 }, { k: 'double', l: '二塁打', ab: 1, h: 1, out: 0 }, { k: 'triple', l: '三塁打', ab: 1, h: 1, out: 0 }, { k: 'hr', l: '本塁打', ab: 1, h: 1, out: 0 },
+  { k: 'bb', l: '四球', ab: 0, h: 0, out: 0 }, { k: 'hbp', l: '死球', ab: 0, h: 0, out: 0 }, { k: 'e', l: '失策', ab: 1, h: 0, out: 0 },
+  { k: 'k', l: '三振', ab: 1, h: 0, out: 1 }, { k: 'go', l: 'ゴロ', ab: 1, h: 0, out: 1 }, { k: 'fo', l: 'フライ', ab: 1, h: 0, out: 1 }, { k: 'lo', l: 'ライナー', ab: 1, h: 0, out: 1 }, { k: 'dp', l: '併殺打', ab: 1, h: 0, out: 2 },
+  { k: 'sb', l: '犠打', ab: 0, h: 0, out: 1 }, { k: 'sf', l: '犠飛', ab: 0, h: 0, out: 1 }
+];
+const RES_BY = Object.fromEntries(RES.map(r => [r.k, r]));
+// スタメンメーカーの打順があれば、自チームの打者名に使う
+function ownLineup() {
+  try {
+    const order = JSON.parse(localStorage.getItem('sm_order') || '[]'), pl = JSON.parse(localStorage.getItem('sm_players') || '[]');
+    const by = new Map(pl.map(p => [p.id, p.name]));
+    return Array.from({ length: 9 }, (_, i) => by.get(order[i]) || (i + 1) + '番');
+  } catch (e) { return Array.from({ length: 9 }, (_, i) => (i + 1) + '番'); }
+}
+const freshMy = () => ({ names: ownLineup(), batter: 0, outs: 0, inning: 1, pas: [], rbi: 0, opp: '', hand: 'R', sendWho: 0 });
 const fresh = () => ({
   v: 1, date: new Date().toISOString().slice(0, 10), pitcher: '', limit: 70,
   pitches: [], pas: [], mode: 'two', type: 'fast', pending: null,
   balls: 0, strikes: 0, outs: 0, inning: 1, batter: 0,
   batters: ['1番', '2番', '3番', '4番', '5番', '6番', '7番', '8番', '9番'],
-  runs: { me: Array(9).fill(0), opp: Array(9).fill(0) }, sel: { team: 'me', i: 0 }, heat: false
+  runs: { me: Array(9).fill(0), opp: Array(9).fill(0) }, sel: { team: 'me', i: 0 }, heat: false, my: freshMy()
 });
 
 /* ---- 保存 ---- */
 function loadStore() {
-  try { const o = JSON.parse(localStorage.getItem(KEY)); if (o && o.cur && o.cur.v === 1) return { cur: o.cur, hist: Array.isArray(o.hist) ? o.hist : [] }; } catch (e) {}
+  try { const o = JSON.parse(localStorage.getItem(KEY)); if (o && o.cur && o.cur.v === 1) { if (!o.cur.my) o.cur.my = freshMy(); return { cur: o.cur, hist: Array.isArray(o.hist) ? o.hist : [] }; } } catch (e) {}
   return { cur: fresh(), hist: [] };
 }
 function saveStore() { try { localStorage.setItem(KEY, JSON.stringify({ cur: S, hist: HIST })); } catch (e) {} }
@@ -424,7 +483,8 @@ function summaryOf(g) {
     return `${pn}: ${ps.length}球(直球${f}・変化球${ps.length - f}) ストライク率${ps.length ? Math.round(st / ps.length * 100) : 0}% 対戦${pa.length}人 被安打${hits} 三振${cnt('K')} 四死球${cnt('BB') + cnt('HBP')}`;
   });
   const R = k => g.runs[k].reduce((a, b) => a + b, 0);
-  return { text: `【投球記録 ${g.date}】\n` + (lines.join('\n') || '記録なし') + `\nスコア 自${R('me')}-${R('opp')}相手`, lines };
+  const my = g.my && g.my.pas.length ? `\n自チームの攻撃: ${g.my.pas.length}打席 安打${g.my.pas.filter(a => RES_BY[a.code].h).length} 打点${g.my.pas.reduce((t, a) => t + (a.rbi || 0), 0)}` : '';
+  return { text: `【投球記録 ${g.date}】\n` + (lines.join('\n') || '記録なし') + my + `\nスコア 自${R('me')}-${R('opp')}相手`, lines };
 }
 $('#newGame').addEventListener('click', () => {
   if (!S.pitches.length && !S.pas.length) { $('#msg').textContent = 'まだ記録がありません。'; return; }
@@ -444,7 +504,7 @@ function drawBoard() {
     }
     return h + `<td class="tot">${S.runs[key].reduce((a, b) => a + b, 0)}</td><td>${hits}</td></tr>`;
   };
-  t.innerHTML = '<tr><th></th>' + [...Array(9)].map((_, i) => `<th>${i + 1}</th>`).join('') + '<th class="tot">R</th><th>H</th></tr>' + row('me', '自', '–') + row('opp', '相手', H);
+  t.innerHTML = '<tr><th></th>' + [...Array(9)].map((_, i) => `<th>${i + 1}</th>`).join('') + '<th class="tot">R</th><th>H</th></tr>' + row('me', '自', S.my.pas.filter(a => RES_BY[a.code].h).length) + row('opp', '相手', H);
   t.querySelectorAll('.cell').forEach(td => {
     const pick = () => { S.sel = { team: td.dataset.team, i: +td.dataset.i }; render(); };
     td.addEventListener('click', pick);
@@ -470,6 +530,63 @@ $('#copy').addEventListener('click', async () => {
     else { await navigator.clipboard.writeText(text); $('#copy').textContent = 'コピーしました'; setTimeout(() => $('#copy').textContent = '結果をコピーして共有する', 1800); }
   } catch (e) { $('#copy').textContent = 'コピーできませんでした。上の文を手でコピーしてください'; }
   if (typeof gtag === 'function') gtag('event', 'pitch_share');
+});
+
+/* ---- 攻撃(自チームの打席) ---- */
+const myLine = bi => {
+  const a = S.my.pas.filter(x => x.bi === bi);
+  return { pa: a.length, ab: a.filter(x => RES_BY[x.code].ab).length, h: a.filter(x => RES_BY[x.code].h).length, rbi: a.reduce((t, x) => t + (x.rbi || 0), 0),
+    bb: a.filter(x => x.code === 'bb' || x.code === 'hbp').length, k: a.filter(x => x.code === 'k').length };
+};
+function myCommit(code) {
+  snap();
+  const m = S.my, r = RES_BY[code];
+  m.pas.push({ bi: m.batter, code, rbi: m.rbi, sent: false });
+  m.batter = (m.batter + 1) % 9; m.rbi = 0; m.outs += r.out;
+  if (m.outs >= 3) { m.outs = 0; m.inning = Math.min(9, m.inning + 1); }
+  render();
+}
+function drawAttack() {
+  const m = S.my, put = (id, keys, cls) => {
+    const box = $(id); box.innerHTML = '';
+    keys.forEach(k => { const b = document.createElement('button'); b.type = 'button'; b.textContent = RES_BY[k].l; if (cls) b.className = cls; b.addEventListener('click', () => myCommit(k)); box.appendChild(b); });
+  };
+  put('#myHit', ['single', 'double', 'triple', 'hr'], 'hit'); put('#myOn', ['bb', 'hbp', 'e']);
+  put('#myOut', ['k', 'go', 'fo', 'lo']); put('#mySac', ['dp', 'sb', 'sf']);
+  $('#myWho').textContent = (m.batter + 1) + '番 ' + m.names[m.batter]; $('#myOuts').textContent = m.outs; $('#myInn').textContent = m.inning; $('#rbiN').textContent = m.rbi;
+  const avg = l => l.ab ? (l.h / l.ab).toFixed(3).replace(/^0/, '') : '.---';
+  $('#myStats').innerHTML = '<tr><th>打者</th><th>打数</th><th>安打</th><th>打点</th><th>四死球</th><th>三振</th><th>打率</th></tr>'
+    + m.names.map((n, i) => { const l = myLine(i); return `<tr class="${i === m.batter ? 'cur' : ''}"><td><input data-mi="${i}" value="${n.replace(/"/g, '&quot;')}" maxlength="12" aria-label="${i + 1}番の名前"></td><td>${l.ab}</td><td>${l.h}</td><td>${l.rbi}</td><td>${l.bb}</td><td>${l.k}</td><td>${avg(l)}</td></tr>`; }).join('');
+  $('#myStats').querySelectorAll('input').forEach(inp => inp.addEventListener('change', () => { S.my.names[+inp.dataset.mi] = inp.value.trim() || (+inp.dataset.mi + 1) + '番'; render(); }));
+  $('#sendWho').innerHTML = m.names.map((n, i) => `<option value="${i}">${i + 1}番 ${n.replace(/</g, '&lt;')}(${m.pas.filter(x => x.bi === i && !x.sent).length}打席)</option>`).join('');
+  $('#sendWho').value = m.sendWho; $('#oppTeam').value = m.opp;
+  document.querySelectorAll('#handSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.h === m.hand));
+}
+$('#rbiPlus').addEventListener('click', () => { S.my.rbi = Math.min(4, S.my.rbi + 1); render(); });
+$('#rbiMinus').addEventListener('click', () => { S.my.rbi = Math.max(0, S.my.rbi - 1); render(); });
+$('#undo2').addEventListener('click', () => $('#undo').click());
+$('#sendWho').addEventListener('change', () => { S.my.sendWho = +$('#sendWho').value; render(); });
+$('#oppTeam').addEventListener('change', () => { S.my.opp = $('#oppTeam').value.trim().slice(0, 20); render(); });
+document.querySelectorAll('#handSeg button').forEach(b => b.addEventListener('click', () => { S.my.hand = b.dataset.h; render(); }));
+// LUMBER(打撃成績トラッカー)の保存形式で、選んだ1人の打席だけを追加する
+$('#sendBtn').addEventListener('click', () => {
+  const bi = +$('#sendWho').value, list = S.my.pas.filter(a => a.bi === bi && !a.sent), msg = $('#sendMsg');
+  if (!list.length) { msg.textContent = 'この打順には、まだ追加していない打席がありません。'; return; }
+  if (!confirm(`${bi + 1}番 ${S.my.names[bi]} の ${list.length}打席を、LUMBERの成績に追加します。あなた自身の打席でよろしいですか。`)) return;
+  let arr;
+  try { arr = JSON.parse(localStorage.getItem('batting_stats_v1') || '[]'); if (!Array.isArray(arr)) throw new Error('format'); }
+  catch (e) { msg.textContent = 'LUMBERのデータを読めなかったため、追加を中止しました。'; return; }
+  const stamp = Date.now();
+  list.forEach((a, i) => {
+    arr.push({ id: stamp + '_' + Math.random().toString(36).slice(2, 5) + i, date: S.date, opponent: S.my.opp || '', pitcherHand: S.my.hand, result: a.code,
+      kType: null, infieldHit: false, fielderPos: null, direction: null, rbi: a.rbi || 0, memo: '投球数カウンターから', battingOrder: bi + 1, weather: null });
+    a.sent = true;
+  });
+  try { localStorage.setItem('batting_stats_v1', JSON.stringify(arr)); }
+  catch (e) { list.forEach(a => { a.sent = false; }); msg.textContent = '保存できませんでした(端末の保存容量を確認してください)。'; return; }
+  msg.innerHTML = `${list.length}打席をLUMBERに追加しました。<a href="/batting-stats/">LUMBERで確認する</a>(まちがえた打席は、LUMBER側で削除できます)`;
+  if (typeof gtag === 'function') gtag('event', 'pitch_to_lumber', { count: list.length });
+  render();
 });
 
 /* ---- 履歴 ---- */
@@ -501,7 +618,7 @@ function render() {
   $('#zoneWho').textContent = 'いまの打者: ' + S.batters[S.batter] + (S.heat ? '(分布は試合全体)' : '');
   $('#lastBat').textContent = last ? '前の打者: ' + S.batters[last.bi] + ' ' + AB_LABEL[last.code] + '(' + last.n + '球)' : '前の打者: まだいません';
   if ($('#pitcher').value !== S.pitcher) $('#pitcher').value = S.pitcher;
-  drawTypes(); drawZone(); drawBoard(); drawStats(); drawHistory(); saveStore();
+  drawTypes(); drawZone(); drawBoard(); drawStats(); drawAttack(); drawHistory(); saveStore();
 }
 $('#heat').addEventListener('click', () => { S.heat = !S.heat; render(); });
 $('#limit').addEventListener('change', () => { S.limit = Math.max(10, Math.min(200, +$('#limit').value || 70)); render(); });
@@ -515,7 +632,7 @@ $('#pitcher').addEventListener('change', () => {
 /* ---- タブ・テーマ・名簿 ---- */
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
   document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', x === t));
-  ['pitch', 'score', 'batters', 'history'].forEach(k => $('#p-' + k).hidden = k !== t.dataset.tab);
+  ['pitch', 'score', 'batters', 'attack', 'history'].forEach(k => $('#p-' + k).hidden = k !== t.dataset.tab);
 }));
 function applyTheme(th) {
   document.documentElement.setAttribute('data-theme', th);
