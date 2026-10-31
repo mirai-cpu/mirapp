@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="無料の打順メーカー。自分のチームの選手名を登録するだけで、野球のオーダー表・スタメン表が60秒で完成。印刷してそのまま試合で使えるほか、守備配置図つきでLINEにワンタップ共有も可能。草野球・少年野球に最適。スタメンシミュレーター(シュミレーター)としても使えて、打順の組み替えを何度でも試せます。登録不要・アプリ不要。">
   <meta name="keywords" content="スタメンシミュレーター,スタメンシュミレーター,野球 打順 シミュレーター,野球スタメン作成サイト,スタメン作成,野球オーダー作成,打順メーカー,スタメンメーカー,オーダー表,草野球,軟式野球,スタメン表,投手ローテ,野球オーダーアプリ,戦力整理メーカー">
-  <meta name="theme-color" content="#020805">
+  <meta name="theme-color" content="#F5F7F6">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
   <link rel="apple-touch-icon" href="/order-maker/icons/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=DotGothic16&display=swap" rel="stylesheet">
   <link rel="manifest" href="/order-maker/manifest.json">
   <link rel="apple-touch-icon" href="/order-maker/icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -139,20 +139,21 @@
        ============================================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:       #070810;
-      --surface:  #0d0f18;
-      --card:     #0d0f18;
-      --border:   #1c1f30;
-      --border-2: #252840;
-      --accent:   #00e676;
-      --text:     #eaecf4;
-      --muted:    #555878;
-      --green:    #00e676;
-      --red:      #ff5252;
-      --yellow:   #ffd740;
-      --mint:     #64ffda;
-      --radius:   14px;
-      --mono:     'JetBrains Mono', monospace;
+      --bg:       #F5F7F6;
+      --surface:  #FFFFFF;
+      --card:     #EEF2F0;
+      --border:   #D3DAD6;
+      --border-2: #C2CBC6;
+      --accent:   #1E6B38;
+      --on-accent: #FFFFFF;
+      --text:     #2B2420;
+      --muted:    #5B534D;
+      --green:    #3AA860;
+      --red:      #E85A5A;
+      --yellow:   #F5C400;
+      --mint:     #6FD39A;
+      --radius:   6px;
+      --mono:     'BIZ UDPGothic', sans-serif;
       --dot-color: #1e2035;
       --field-bg:        #010e04;
       --field-foul:      rgba(255,255,255,.55);
@@ -178,16 +179,16 @@
       100% { background-position: 200% 0; }
     }
     @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 8px rgba(0,230,118,0.2); }
-      50%      { box-shadow: 0 0 20px rgba(0,230,118,0.5); }
+      0%, 100% { }
+      50%      { }
     }
     @keyframes inputPulse {
       0%, 100% { border-color: var(--border); box-shadow: none; }
-      50% { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,230,118,0.18); }
+      50% { border-color: var(--accent); }
     }
     @keyframes btnRipple {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(0,230,118,0); }
-      50% { box-shadow: 0 0 0 8px rgba(0,230,118,0.18); }
+      0%, 100% { }
+      50% { }
     }
     @keyframes floatUp {
       0%, 100% { transform: translateY(0); }
@@ -198,19 +199,19 @@
     .empty-cta {
       display: flex; flex-direction: column; align-items: center;
       gap: 10px; padding: 28px 16px 24px; text-align: center; cursor: pointer;
-      border-radius: 10px; transition: background .2s;
+      border-radius: 6px; transition: background .2s;
     }
-    .empty-cta:hover { background: rgba(0,230,118,.03); }
+    .empty-cta:hover { background: rgba(58,168,96,.03); }
     .empty-cta-ball { font-size: 32px; animation: floatUp 2.5s ease-in-out infinite; line-height:1; }
     .empty-cta-title { font-size: 15px; font-weight: 700; color: var(--text); margin-top:2px; }
     .empty-cta-desc  { font-size: 12px; color: var(--muted); line-height: 1.6; }
     .empty-cta-link  {
       display: inline-flex; align-items: center; gap: 5px; margin-top: 4px;
       font-size: 12px; font-weight: 700; color: var(--accent);
-      border: 1px dashed rgba(0,230,118,.4); border-radius: 20px; padding: 6px 14px;
+      border: 1px dashed rgba(58,168,96,.4); border-radius: 6px; padding: 6px 14px;
       letter-spacing: .04em; transition: all .2s;
     }
-    .empty-cta:hover .empty-cta-link { background: rgba(0,230,118,.08); border-color: var(--accent); }
+    .empty-cta:hover .empty-cta-link { background: rgba(58,168,96,.08); border-color: var(--accent); }
     .step-badge {
       display: inline-flex; align-items: center; gap: 5px;
       font-size: 10px; font-weight: 700; letter-spacing: .12em; font-family: var(--mono);
@@ -228,38 +229,18 @@
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg); color: var(--text);
-      font-family: 'Barlow','Noto Sans JP','Hiragino Sans',system-ui,sans-serif;
+      font-family: 'BIZ UDPGothic','Hiragino Sans',system-ui,sans-serif;
       min-height: 100vh; display: flex; flex-direction: column;
       -webkit-tap-highlight-color: transparent;
-      background-image:
-        radial-gradient(ellipse at 50% 0%, rgba(0,230,118,.06) 0%, transparent 55%),
-        radial-gradient(ellipse at 85% 90%, rgba(0,230,118,.03) 0%, transparent 40%);
-    }
-    body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 0;
-      pointer-events: none;
-      background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
-      background-size: 28px 28px;
-      opacity: var(--dot-opacity, .5);
-    }
-    body::after {
-      content: '';
-      position: fixed; inset: 0; z-index: 0;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: .028;
     }
 
     /* ── Header ── */
     header {
-      background: rgba(7,8,16,.92);
-      border-bottom: 1px solid rgba(0,230,118,.12);
-      box-shadow: 0 1px 0 rgba(0,230,118,.12);
+      background: color-mix(in srgb, var(--bg) 96%, transparent);
+      border-bottom: 1px solid var(--border);
       padding: 0 16px; height: 52px;
       display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 100;
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     }
     .header-left { display: flex; align-items: center; gap: 10px; }
     .header-back { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .15s; }
@@ -269,20 +250,19 @@
     }
     .header-title-main {
       font-size: 24px; font-weight: 400; letter-spacing: 0.12em;
-      color: var(--accent); font-family: 'Bebas Neue', sans-serif;
-      text-shadow: 0 0 14px rgba(0,230,118,0.4), 0 0 28px rgba(0,230,118,0.12);
+      color: var(--accent); font-family: 'BIZ UDPGothic', sans-serif; font-weight: 700;
       line-height: 1;
     }
     .header-title-sub {
       font-size: 8px; font-weight: 700; letter-spacing: 0.2em;
       color: var(--muted); text-transform: uppercase;
-      line-height: 1.4; font-family: 'JetBrains Mono', monospace;
+      line-height: 1.4; font-family: 'BIZ UDPGothic', sans-serif;
     }
     .header-right { display: flex; gap: 6px; align-items: center; }
-    .btn-color { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 0; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; flex-shrink: 0; }
-    .btn-color:active { background: rgba(0,230,118,.08); }
+    .btn-color { background: none; border: 1px solid var(--border); border-radius: 4px; padding: 0; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; flex-shrink: 0; }
+    .btn-color:active { background: rgba(58,168,96,.08); }
     .btn-color-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 1.5px solid rgba(255,255,255,.2); transition: background .2s; display: block; }
-    .color-palette { display: none; position: fixed; background: var(--surface); border: 1px solid var(--border-2); border-radius: 12px; padding: 10px; gap: 8px; flex-wrap: wrap; width: 148px; z-index: 300; box-shadow: 0 8px 32px rgba(0,0,0,.6); }
+    .color-palette { display: none; position: fixed; background: var(--surface); border: 1px solid var(--border-2); border-radius: 6px; padding: 10px; gap: 8px; flex-wrap: wrap; width: 148px; z-index: 300; box-shadow: 0 8px 32px rgba(0,0,0,.6); }
     .color-palette.open { display: flex; }
     .palette-label { font-size: 9px; font-weight: 700; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; width: 100%; line-height: 1; font-family: var(--mono); pointer-events: none; }
     .palette-divider { width: 100%; height: 1px; background: var(--border-2); margin: 2px 0; }
@@ -290,21 +270,21 @@
     .palette-swatch:hover { transform: scale(1.15); }
     .palette-swatch.active { border-color: #fff; transform: scale(1.1); }
     .palette-swatch.bg-swatch { border-color: rgba(128,128,128,.4); }
-    .palette-swatch.bg-swatch.active { border-color: var(--accent); box-shadow: 0 0 6px rgba(0,230,118,.4); }
+    .palette-swatch.bg-swatch.active { border-color: var(--accent); }
     .star-toggle-btn { flex: 1; padding: 5px 4px; border-radius: 7px; font-size: 10px; font-weight: 700; background: transparent; border: 1.5px solid rgba(255,255,255,.12); color: var(--muted); cursor: pointer; letter-spacing: .04em; transition: background .15s, border-color .15s, color .15s; font-family: var(--mono); }
     .star-toggle-btn.active { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.4); color: var(--text); }
     .btn-icon {
-      width: 36px; height: 36px; border-radius: 10px;
-      background: rgba(0,230,118,0.04); border: 1px solid var(--border);
+      width: 36px; height: 36px; border-radius: 6px;
+      background: rgba(58,168,96,0.04); border: 1px solid var(--border);
       color: var(--muted); cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: all .2s;
     }
-    .btn-icon:hover { background: rgba(0,230,118,0.1); color: var(--accent); border-color: rgba(0,230,118,0.35); box-shadow: 0 0 10px rgba(0,230,118,0.15); }
+    .btn-icon:hover { background: rgba(58,168,96,0.1); color: var(--accent); border-color: rgba(58,168,96,0.35); }
 
     /* ── Buttons ── */
     .btn {
-      border: none; cursor: pointer; border-radius: 10px;
+      border: none; cursor: pointer; border-radius: 6px;
       font-size: 13px; font-weight: 700; padding: 8px 16px;
       transition: all .2s; font-family: inherit;
       letter-spacing: 0.01em;
@@ -312,18 +292,15 @@
     .btn:active { transform: scale(.97); }
     .btn-primary {
       background: var(--accent);
-      color: #0a0f0a;
+      color: var(--on-accent, #fff);
       border: 1px solid var(--accent);
       letter-spacing: 0.05em;
       font-family: var(--mono);
       font-size: 12px;
     }
-    .btn-primary:hover {
-      background: #00c45e;
-      border-color: #00c45e;
-    }
+    .btn-primary:hover { filter: brightness(1.08); }
     .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
-    .btn-ghost:hover { color: var(--text); border-color: rgba(0,230,118,0.35); background: rgba(0,230,118,0.05); }
+    .btn-ghost:hover { color: var(--text); border-color: rgba(58,168,96,0.35); background: rgba(58,168,96,0.05); }
     .btn-danger { background: rgba(255,82,82,.1); color: var(--red); border: 1px solid rgba(255,82,82,.18); }
     .btn-share {
       background: transparent;
@@ -346,12 +323,11 @@
       position: relative; transition: color .2s;
       white-space: nowrap; letter-spacing: 0.06em; text-transform: uppercase;
     }
-    .tab-btn.active { color: var(--accent); text-shadow: 0 0 8px rgba(0,230,118,0.4); }
+    .tab-btn.active { color: var(--accent); }
     .tab-btn.active::after {
       content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
       width: 28px; height: 2.5px; border-radius: 2px 2px 0 0;
-      background: linear-gradient(90deg, #00e676, #64ffda);
-      box-shadow: 0 0 8px rgba(0,230,118,0.4);
+      background: var(--accent);
     }
 
     /* ── Main ── */
@@ -367,7 +343,7 @@
     }
     .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
     .card-title { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; font-family: var(--mono); color: var(--text); text-transform: uppercase; }
-    .card-sub { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+    .card-sub { font-size: 11px; color: var(--muted); font-family: 'BIZ UDPGothic', sans-serif; }
 
     /* ── Form ── */
     .form-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
@@ -375,22 +351,22 @@
     label { font-size: 12px; color: var(--muted); font-weight: 700; letter-spacing: 0.02em; }
     input[type=text], input[type=number], input[type=date], select {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 8px; color: var(--text); font-size: 16px;
+      border-radius: 4px; color: var(--text); font-size: 16px;
       padding: 9px 12px; font-family: inherit; outline: none;
       transition: border-color .2s, box-shadow .2s; width: 100%;
     }
-    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,230,118,0.12); }
+    input:focus, select:focus { border-color: var(--accent); }
     select option { background: var(--surface); }
 
     /* ── Toggle ── */
-    .toggle-bar { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 14px; }
+    .toggle-bar { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 14px; }
     .toggle-label { font-size: 13px; font-weight: 700; flex: 1; }
     .toggle-desc { font-size: 12px; color: var(--muted); }
     .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
     .toggle input { opacity: 0; width: 0; height: 0; }
     .toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 999px; cursor: pointer; transition: background .2s; }
     .toggle-slider::before { content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%; background: #fff; top: 3px; left: 3px; transition: transform .2s; }
-    .toggle input:checked + .toggle-slider { background: linear-gradient(135deg, #00e676, #00b050); box-shadow: 0 0 8px rgba(0,230,118,0.3); }
+    .toggle input:checked + .toggle-slider { background: var(--accent); }
     .toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
 
     /* ── Roster ── */
@@ -400,14 +376,14 @@
       padding: 12px 14px; display: flex; align-items: center; gap: 10px;
       transition: border-color .2s;
     }
-    .roster-item:hover { border-color: rgba(0,230,118,0.35); box-shadow: 0 0 12px rgba(0,230,118,0.08); }
-    .roster-num { font-size: 16px; font-weight: 800; color: var(--accent); min-width: 28px; text-align: center; font-family: 'JetBrains Mono', monospace; }
+    .roster-item:hover { border-color: rgba(58,168,96,0.35); }
+    .roster-num { font-size: 16px; font-weight: 800; color: var(--accent); min-width: 28px; text-align: center; font-family: 'BIZ UDPGothic', sans-serif; }
     .roster-info { flex: 1; min-width: 0; }
     .roster-name { font-size: 14px; font-weight: 700; }
     .roster-pos { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
     .pos-chip {
       font-size: 10px; padding: 2px 8px; border-radius: 3px;
-      background: rgba(0,230,118,.06); border: 1px solid rgba(0,230,118,.2);
+      background: rgba(58,168,96,.06); border: 1px solid rgba(58,168,96,.2);
       color: var(--accent); font-weight: 700;
     }
     .roster-actions { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
@@ -429,13 +405,12 @@
     /* ── Pos Grid ── */
     .pos-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 6px; }
     .pos-toggle {
-      border: 1px solid var(--border); border-radius: 8px; padding: 8px 4px;
+      border: 1px solid var(--border); border-radius: 4px; padding: 8px 4px;
       text-align: center; cursor: pointer; font-size: 13px; font-weight: 700;
       transition: all .2s; background: var(--surface); color: var(--muted); user-select: none;
     }
     .pos-toggle.on {
-      background: rgba(0,230,118,.1); border-color: var(--accent); color: var(--accent);
-      box-shadow: 0 0 8px rgba(0,230,118,0.15);
+      background: rgba(58,168,96,.1); border-color: var(--accent); color: var(--accent);
     }
 
     /* ── Order ── */
@@ -444,19 +419,19 @@
     .order-header { display: grid; grid-template-columns: 16px 32px 1fr 100px 28px; gap: 8px; padding: 0 12px 8px; font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
     .order-slots { display: flex; flex-direction: column; gap: 7px; }
     .order-slot {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
       padding: 10px 12px; display: grid; grid-template-columns: 16px 32px 1fr 100px 28px;
       gap: 8px; align-items: center; transition: all .2s;
     }
-    .order-slot.filled { border-color: rgba(0,230,118,.25); background: rgba(0,230,118,.03); border-left: 3px solid rgba(0,230,118,.5); }
+    .order-slot.filled { border-color: rgba(58,168,96,.25); background: rgba(58,168,96,.03); border-left: 3px solid rgba(58,168,96,.5); }
     .order-slot.dragging { opacity: 0.35; }
-    .order-slot.drag-over { border-color: var(--accent) !important; background: rgba(0,230,118,.06); box-shadow: 0 0 14px rgba(0,230,118,0.2); }
+    .order-slot.drag-over { border-color: var(--accent) !important; background: rgba(58,168,96,.06); }
     .drag-handle { cursor: grab; color: var(--muted); font-size: 13px; display: flex; align-items: center; justify-content: center; touch-action: none; user-select: none; }
     .drag-handle:active { cursor: grabbing; }
-    .slot-num { font-size: 20px; font-weight: 900; color: var(--yellow); text-align: center; font-family: 'JetBrains Mono', monospace; }
+    .slot-num { font-size: 20px; font-weight: 900; color: var(--yellow); text-align: center; font-family: 'BIZ UDPGothic', sans-serif; }
     .slot-player select, .slot-pos select { width: 100%; background: var(--card); }
-    .guest-input { width: 100%; margin-top: 5px; font-size: 16px; background: var(--card); border: 1px dashed var(--accent); border-radius: 8px; color: var(--text); padding: 6px 10px; font-family: inherit; outline: none; }
-    .guest-input:focus { border-style: solid; box-shadow: 0 0 0 3px rgba(0,230,118,0.1); }
+    .guest-input { width: 100%; margin-top: 5px; font-size: 16px; background: var(--card); border: 1px dashed var(--accent); border-radius: 4px; color: var(--text); padding: 6px 10px; font-family: inherit; outline: none; }
+    .guest-input:focus { border-style: solid; }
     .slot-clear button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 15px; padding: 3px; border-radius: 5px; transition: color .15s; }
     .slot-clear button:hover { color: var(--red); }
 
@@ -465,47 +440,47 @@
     .saved-chips { display: flex; gap: 7px; flex-wrap: wrap; }
     .saved-chip {
       display: flex; align-items: center; gap: 6px;
-      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
       padding: 6px 12px; font-size: 12px; cursor: pointer; transition: all .2s;
     }
-    .saved-chip:hover { border-color: rgba(0,230,118,0.4); background: rgba(0,230,118,0.06); }
+    .saved-chip:hover { border-color: rgba(58,168,96,0.4); background: rgba(58,168,96,0.06); }
     .chip-del { color: var(--muted); font-size: 10px; }
     .chip-del:hover { color: var(--red); }
 
     /* ── Pitcher ── */
     .pitcher-list { display: flex; flex-direction: column; gap: 8px; }
     .pitcher-row {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
       padding: 12px 14px; display: grid; grid-template-columns: 28px 1fr auto;
       gap: 8px; align-items: center; transition: border-color .2s;
     }
-    .pitcher-row:hover { border-color: rgba(0,230,118,0.3); box-shadow: 0 0 10px rgba(0,230,118,0.07); }
-    .pitcher-order { font-size: 20px; font-weight: 900; color: var(--accent); text-align: center; font-family: 'JetBrains Mono', monospace; }
+    .pitcher-row:hover { border-color: rgba(58,168,96,0.3); }
+    .pitcher-order { font-size: 20px; font-weight: 900; color: var(--accent); text-align: center; font-family: 'BIZ UDPGothic', sans-serif; }
     .pitcher-actions { display: flex; gap: 5px; }
 
     /* ── Gantt ── */
     .gantt-wrap { overflow-x: auto; }
     .gantt-table { border-collapse: collapse; width: 100%; min-width: 320px; }
-    .gantt-table th { font-size: 11px; color: var(--muted); font-weight: 700; text-align: center; padding: 5px 2px; width: 32px; font-family: 'JetBrains Mono', monospace; }
+    .gantt-table th { font-size: 11px; color: var(--muted); font-weight: 700; text-align: center; padding: 5px 2px; width: 32px; font-family: 'BIZ UDPGothic', sans-serif; }
     .gantt-table td.g-name { font-size: 12px; font-weight: 700; white-space: nowrap; padding: 6px 8px 6px 0; max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
     .gantt-cell {
       width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 5px;
       cursor: pointer; transition: all .15s; background: var(--surface);
       position: relative;
     }
-    .gantt-cell:hover { background: rgba(0,230,118,0.08); border-color: var(--accent); }
-    .gantt-cell.filled { background: linear-gradient(135deg, #00e676, #00b050); border-color: #00e676; box-shadow: 0 0 6px rgba(0,230,118,0.3); }
-    .gantt-cell.pending { background: rgba(0,230,118,.12); border-color: var(--accent); border-style: dashed; }
+    .gantt-cell:hover { background: rgba(58,168,96,0.08); border-color: var(--accent); }
+    .gantt-cell.filled { background: var(--accent); border-color: #3AA860; }
+    .gantt-cell.pending { background: rgba(58,168,96,.12); border-color: var(--accent); border-style: dashed; }
     .gantt-cell.filled .inning-num { color: rgba(255,255,255,.8); }
-    .inning-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--muted); pointer-events: none; font-family: 'JetBrains Mono', monospace; }
+    .inning-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--muted); pointer-events: none; font-family: 'BIZ UDPGothic', sans-serif; }
 
     /* ── Extra DH slots ── */
     .extra-slot { border-color: rgba(110,231,183,.25) !important; }
     .extra-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 3px; background: rgba(110,231,183,.1); border: 1px solid rgba(110,231,183,.2); color: var(--mint); white-space: nowrap; }
 
     /* ── Field SVG ── */
-    .field-wrap { background: var(--field-bg); border: 1px solid rgba(0,230,118,0.4); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; box-shadow: 0 0 24px rgba(0,230,118,0.1); }
-    .field-title { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px; font-family: var(--mono); text-shadow: 0 0 6px rgba(0,230,118,0.3); }
+    .field-wrap { background: var(--field-bg); border: 1px solid rgba(58,168,96,0.4); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; }
+    .field-title { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px; font-family: var(--mono); }
     #field-svg { width: 100%; max-width: 400px; display: block; margin: 0 auto; }
 
     /* ── Print: 本物のスコアブック用紙 ── */
@@ -529,16 +504,16 @@
       transform: rotate(-.3deg);
     }
     .print-card + .print-card { transform: rotate(.25deg); }
-    .print-title { font-size: 22px; font-weight: 900; margin-bottom: 2px; color: var(--ink); font-family: 'Barlow', sans-serif; }
-    .print-meta { font-size: 12px; color: var(--ink-soft); margin-bottom: 14px; font-family: 'JetBrains Mono', monospace; letter-spacing: .03em; }
+    .print-title { font-size: 22px; font-weight: 900; margin-bottom: 2px; color: var(--ink); font-family: 'BIZ UDPGothic', sans-serif; }
+    .print-meta { font-size: 12px; color: var(--ink-soft); margin-bottom: 14px; font-family: 'BIZ UDPGothic', sans-serif; letter-spacing: .03em; }
     .print-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
     .print-table th { font-size: 10px; color: var(--ink-soft); font-weight: 700; letter-spacing: .08em; text-align: left; padding: 6px 8px; border-bottom: 1.5px solid var(--rule); text-transform: uppercase; }
     .print-table td { padding: 9px 8px; font-size: 13px; border-bottom: 1px solid rgba(43,36,21,.14); color: var(--ink); }
     .print-table tr:last-child td { border-bottom: none; }
     .print-table tr:nth-child(even) td { background: rgba(43,36,21,.035); }
-    .print-table tr > td:nth-child(3) { font-family: 'Noto Sans JP', sans-serif; font-weight: 400; letter-spacing: .01em; }
-    .t-order { font-weight: 900; color: var(--ink-red); text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 15px; }
-    .t-num { color: var(--ink-soft); font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+    .print-table tr > td:nth-child(3) { font-family: 'BIZ UDPGothic', sans-serif; font-weight: 400; letter-spacing: .01em; }
+    .t-order { font-weight: 900; color: var(--ink-red); text-align: center; font-family: 'BIZ UDPGothic', sans-serif; font-size: 15px; }
+    .t-num { color: var(--ink-soft); font-weight: 700; font-family: 'BIZ UDPGothic', sans-serif; }
     .print-card .pos-chip { background: transparent; border: 1px solid var(--ink-soft); color: var(--ink); font-weight: 700; }
     .print-card .pos-stamp {
       display: inline-flex; align-items: center; justify-content: center;
@@ -551,17 +526,17 @@
     .share-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
 
     /* ── Theme Modal ── */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 20px; backdrop-filter: blur(4px); }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
     .modal-overlay.hidden { display: none; }
-    .modal { background: var(--surface); border: 1px solid var(--border-2); border-radius: 16px; padding: 24px; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+    .modal { background: var(--surface); border: 1px solid var(--border-2); border-radius: 6px; padding: 24px; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
     .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
     .modal-title { font-size: 18px; font-weight: 800; }
     .modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 4px; transition: color .15s; }
     .modal-close:hover { color: var(--text); }
     .theme-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
-    .theme-opt { border: 2px solid transparent; border-radius: 12px; padding: 10px 6px; cursor: pointer; text-align: center; transition: all .2s; background: var(--surface); }
+    .theme-opt { border: 2px solid transparent; border-radius: 6px; padding: 10px 6px; cursor: pointer; text-align: center; transition: all .2s; background: var(--surface); }
     .theme-opt:hover { border-color: var(--muted); }
-    .theme-opt.selected { border-color: var(--accent); box-shadow: 0 0 10px rgba(0,230,118,0.25); }
+    .theme-opt.selected { border-color: var(--accent); }
     .theme-swatch { display: flex; gap: 4px; justify-content: center; margin-bottom: 6px; }
     .swatch-circle { width: 18px; height: 18px; border-radius: 50%; }
     .theme-name { font-size: 11px; font-weight: 700; color: var(--muted); }
@@ -616,6 +591,12 @@
       9%   { opacity: 0; transform: translate(100vw,45vw) rotate(22deg); }
       100% { transform: translate(100vw,45vw) rotate(22deg); opacity: 0; }
     }
+  
+    /* ── ライン引き(2026-11): 発光をやめ、白線と余白で見せる。色や背景の選択肢は、そのまま使える ── */
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .input-pulse, .btn-ripple { animation: none; }
+    .tab-btn.active { color: var(--accent); }
+    .tab-btn { letter-spacing: .02em; }
   </style>
 </head>
 <body>
@@ -623,131 +604,42 @@
 
 <!-- ── Landing Overlay（初回訪問のみ表示） ── -->
 <script>if(localStorage.getItem('sm_landing_done')){document.addEventListener('DOMContentLoaded',function(){var e=document.getElementById('tc-landing');if(e)e.remove();});}</script>
-<div id="tc-landing" style="
-  position:fixed;inset:0;z-index:9000;
-  background:#07090f;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:24px 22px 40px;
-  overflow-y:auto;
-">
+<div id="tc-landing">
   <style>
-    @keyframes tc-up { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
-    @keyframes tc-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
-    .tc-i { animation: tc-up 0.55s cubic-bezier(.22,1,.36,1) both; }
-    .tc-i:nth-child(1){animation-delay:.04s}
-    .tc-i:nth-child(2){animation-delay:.12s}
-    .tc-i:nth-child(3){animation-delay:.20s}
-    .tc-i:nth-child(4){animation-delay:.28s}
-    .tc-i:nth-child(5){animation-delay:.36s}
-    .tc-i:nth-child(6){animation-delay:.44s}
-    .tc-cta-btn { transition:transform .16s,box-shadow .16s; }
-    .tc-cta-btn:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(0,230,118,.45)!important; }
-    .tc-scroll { animation: tc-bounce 1.8s ease-in-out infinite; }
+    #tc-landing { position:fixed; inset:0; z-index:9000; background:var(--bg); color:var(--text); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px 22px 40px; overflow-y:auto; font-family:'BIZ UDPGothic','Hiragino Sans',system-ui,sans-serif; }
+    #tc-landing .tc-wrap { width:100%; max-width:400px; animation:tc-up .4s ease-out both; }
+    @keyframes tc-up { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+    #tc-landing h1 { font-size:clamp(44px,12vw,60px); font-weight:700; line-height:1.05; letter-spacing:-.01em; margin:0 0 6px; }
+    #tc-landing .tc-sub { font-size:15px; color:var(--muted); margin:0 0 10px; }
+    #tc-landing .tc-tag { font-size:19px; font-weight:700; line-height:1.5; margin:0 0 22px; }
+    #tc-landing .tc-cta { width:100%; min-height:56px; background:var(--accent); color:var(--on-accent, #fff); border:0; border-radius:4px; font:inherit; font-size:17px; font-weight:700; cursor:pointer; }
+    #tc-landing .tc-cta:hover { filter:brightness(1.08); }
+    #tc-landing .tc-guide { display:block; text-align:center; margin:12px 0 0; font-size:14px; }
+    #tc-landing .tc-guide a { color:var(--muted); text-underline-offset:3px; }
+    #tc-landing .tc-trust { list-style:none; display:flex; flex-wrap:wrap; gap:4px 16px; margin:18px 0 26px; padding:0; font-size:14px; color:var(--muted); }
+    #tc-landing .tc-trust li::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); margin-right:7px; vertical-align:1px; }
+    #tc-landing .tc-steps { list-style:none; display:flex; border:2px solid var(--text); border-radius:4px; margin:0 0 28px; padding:0; }
+    #tc-landing .tc-steps li { flex:1; text-align:center; padding:10px 4px; font-size:14px; font-weight:700; }
+    #tc-landing .tc-steps li + li { border-left:1px solid var(--border); }
+    #tc-landing .tc-steps b { display:block; font-size:20px; line-height:1.2; color:var(--accent); }
+    #tc-landing h2 { font-size:15px; font-weight:700; margin:0 0 6px; padding-top:10px; border-top:2px solid var(--text); }
+    #tc-landing .tc-feat { padding:10px 0; border-bottom:1px solid var(--border); }
+    #tc-landing .tc-feat b { display:block; font-size:15px; }
+    #tc-landing .tc-feat span { font-size:14px; color:var(--muted); line-height:1.6; }
+    #tc-landing .tc-foot { margin-top:22px; font-size:13px; color:var(--muted); text-align:center; }
+    #tc-landing .tc-foot a { color:var(--muted); text-underline-offset:3px; }
   </style>
-
-  <div style="width:100%;max-width:400px;">
-
-    <!-- label -->
-    <div class="tc-i" style="display:flex;align-items:center;gap:10px;margin-bottom:22px;font-size:10px;letter-spacing:.22em;color:#2a4a35;text-transform:uppercase;font-family:system-ui,sans-serif;">
-      <span style="display:block;width:24px;height:1px;background:#00e676;opacity:.7;"></span>
-      Baseball · Lineup · Share
-    </div>
-
-    <!-- title -->
-    <div class="tc-i">
-      <h1 style="font-family:'Barlow','Noto Sans JP',system-ui,sans-serif;font-size:clamp(48px,13vw,68px);font-weight:800;color:#e8f5ee;line-height:1.0;letter-spacing:-.02em;margin:0 0 8px;">TACTICIAN</h1>
-    </div>
-
-    <!-- subtitle -->
-    <div class="tc-i" style="font-size:13px;color:#3a6a4a;letter-spacing:.06em;margin-bottom:12px;font-family:system-ui,sans-serif;">
-      野球打順・スタメン作成ツール
-    </div>
-
-    <!-- tagline -->
-    <div class="tc-i" style="font-size:18px;color:#7abf95;line-height:1.5;margin-bottom:28px;font-family:'Noto Sans JP',system-ui,sans-serif;">
-      試合前の打順決め、60秒で完了。
-    </div>
-
-    <!-- CTA -->
-    <div class="tc-i" style="margin-bottom:14px;">
-      <button onclick="closeTcLanding()" class="tc-cta-btn" style="
-        display:inline-flex;align-items:center;gap:10px;
-        background:#00e676;color:#07090f;
-        padding:14px 30px;border-radius:4px;
-        font-size:15px;font-weight:800;border:none;cursor:pointer;
-        box-shadow:0 4px 22px rgba(0,230,118,.38);
-        letter-spacing:.01em;font-family:'Barlow',system-ui,sans-serif;
-        width:100%;justify-content:center;
-      ">今すぐ作成する →</button>
-    </div>
-
-    <!-- guide link -->
-    <div class="tc-i" style="text-align:center;margin-bottom:20px;margin-top:-6px;">
-      <a href="https://somirai.jp/blog/baseball-order-maker.html" target="_blank" rel="noopener" onclick="gtag('event','guide_link_click',{from:'tactician_landing'})" style="font-size:12px;color:#3a6a4a;text-decoration:none;font-family:system-ui,sans-serif;letter-spacing:.02em;">詳しい使い方を見る →</a>
-    </div>
-
-    <!-- trust tags -->
-    <div class="tc-i" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;">
-      <span style="font-size:11px;color:#2a4a35;background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.18);border-radius:3px;padding:4px 10px;font-family:system-ui,sans-serif;">登録不要</span>
-      <span style="font-size:11px;color:#2a4a35;background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.18);border-radius:3px;padding:4px 10px;font-family:system-ui,sans-serif;">完全無料</span>
-      <span style="font-size:11px;color:#2a4a35;background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.18);border-radius:3px;padding:4px 10px;font-family:system-ui,sans-serif;">スマホ対応</span>
-      <span style="font-size:11px;color:#2a4a35;background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.18);border-radius:3px;padding:4px 10px;font-family:system-ui,sans-serif;">印刷対応</span>
-    </div>
-
-    <!-- 3 steps -->
-    <div class="tc-i" style="display:flex;gap:0;margin-bottom:32px;background:rgba(0,230,118,.04);border:1px solid rgba(0,230,118,.10);border-radius:6px;overflow:hidden;">
-      <div style="flex:1;text-align:center;padding:11px 4px;border-right:1px solid rgba(0,230,118,.10);">
-        <div style="font-size:10px;color:#00e676;font-weight:700;margin-bottom:3px;font-family:system-ui,sans-serif;letter-spacing:.1em;">STEP 1</div>
-        <div style="font-size:12px;color:#5a9a70;font-family:'Noto Sans JP',system-ui,sans-serif;">選手を登録</div>
-      </div>
-      <div style="flex:1;text-align:center;padding:11px 4px;border-right:1px solid rgba(0,230,118,.10);">
-        <div style="font-size:10px;color:#00e676;font-weight:700;margin-bottom:3px;font-family:system-ui,sans-serif;letter-spacing:.1em;">STEP 2</div>
-        <div style="font-size:12px;color:#5a9a70;font-family:'Noto Sans JP',system-ui,sans-serif;">打順を組む</div>
-      </div>
-      <div style="flex:1;text-align:center;padding:11px 4px;">
-        <div style="font-size:10px;color:#00e676;font-weight:700;margin-bottom:3px;font-family:system-ui,sans-serif;letter-spacing:.1em;">STEP 3</div>
-        <div style="font-size:12px;color:#5a9a70;font-family:'Noto Sans JP',system-ui,sans-serif;">LINEで共有</div>
-      </div>
-    </div>
-
-    <!-- features -->
-    <div class="tc-i">
-      <div style="font-size:10px;letter-spacing:.18em;color:#2a4a35;text-transform:uppercase;margin-bottom:12px;font-family:system-ui,sans-serif;">できること</div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;margin-top:1px;">⚾</span>
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#c8e8d0;margin-bottom:2px;font-family:'Barlow',system-ui,sans-serif;">打順 + 守備配置を一括管理</div>
-            <div style="font-size:12px;color:#3a6a4a;line-height:1.6;font-family:'Noto Sans JP',system-ui,sans-serif;">1〜9番の打順と守備ポジションを同時に設定。DH制にも対応。</div>
-          </div>
-        </div>
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;margin-top:1px;">📋</span>
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#c8e8d0;margin-bottom:2px;font-family:'Barlow',system-ui,sans-serif;">スタメン表をLINEで即共有</div>
-            <div style="font-size:12px;color:#3a6a4a;line-height:1.6;font-family:'Noto Sans JP',system-ui,sans-serif;">守備配置図つきのスタメン表をワンタップでチームグループに送信。</div>
-          </div>
-        </div>
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;margin-top:1px;">🔄</span>
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#c8e8d0;margin-bottom:2px;font-family:'Barlow',system-ui,sans-serif;">投手ローテも管理できる</div>
-            <div style="font-size:12px;color:#3a6a4a;line-height:1.6;font-family:'Noto Sans JP',system-ui,sans-serif;">先発・中継ぎ・抑えの登板順と担当イニングをガントチャートで確認。</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- scroll hint -->
-    <div class="tc-i" style="text-align:center;margin-top:24px;">
-      <span class="tc-scroll" style="display:inline-block;font-size:16px;color:rgba(0,230,118,.3);">↓</span>
-    </div>
-
-    <!-- footer -->
-    <div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid rgba(0,230,118,.07);">
-      <p style="font-size:11px;color:#1a3a25;font-family:system-ui,sans-serif;">© 2026 TACTICIAN · <a href="https://somirai.jp/" style="color:#00e676;text-decoration:none;">Somirai Lab</a> · <a href="https://x.com/mira11554" target="_blank" rel="noopener" style="color:#00e676;text-decoration:none;">𝕏 お問い合わせ</a></p>
-    </div>
-
+  <div class="tc-wrap">
+    <h1>TACTICIAN</h1>
+    <p class="tc-sub">野球打順・スタメン作成ツール</p>
+    <p class="tc-tag">試合前の打順決め、60秒で完了。</p>
+    <button onclick="closeTcLanding()" class="tc-cta">今すぐ作成する</button>
+    <p class="tc-guide"><a href="https://somirai.jp/blog/baseball-order-maker.html" target="_blank" rel="noopener" onclick="gtag('event','guide_link_click',{from:'tactician_landing'})">詳しい使い方を見る →</a></p>
+    <ul class="tc-trust"><li>登録不要</li><li>完全無料</li><li>スマホ対応</li><li>印刷対応</li></ul>
+    <ol class="tc-steps"><li><b>1</b>選手を登録</li><li><b>2</b>打順を組む</li><li><b>3</b>LINEで共有</li></ol>
+    <h2>できること</h2>
+    <div class="tc-feat"><b>打順 + 守備配置を一括管理</b><span>1〜9番の打順と守備ポジションを同時に設定。DH制にも対応。</span></div><div class="tc-feat"><b>スタメン表をLINEで即共有</b><span>守備配置図つきのスタメン表をワンタップでチームグループに送信。</span></div><div class="tc-feat"><b>投手ローテも管理できる</b><span>先発・中継ぎ・抑えの登板順と担当イニングをガントチャートで確認。</span></div>
+    <p class="tc-foot">© 2026 TACTICIAN · <a href="https://somirai.jp/">Somirai Lab</a> · <a href="/contact.html">お問い合わせ</a></p>
   </div>
 </div>
 <!-- ── /Landing Overlay ── -->
@@ -767,9 +659,10 @@
       </button>
       <div class="color-palette" id="om-color-palette">
         <span class="palette-label">ACCENT</span>
+        <span class="palette-swatch" data-color="#3AA860" style="background:#3AA860" title="芝"></span>
         <span class="palette-swatch" data-color="#00e676" style="background:#00e676"></span>
         <span class="palette-swatch" data-color="#ffd700" style="background:#ffd700"></span>
-        <span class="palette-swatch" data-color="#60a5fa" style="background:#60a5fa"></span>
+        <span class="palette-swatch" data-color="#60a5fa" style="background:var(--accent)"></span>
         <span class="palette-swatch" data-color="#f472b6" style="background:#f472b6"></span>
         <span class="palette-swatch" data-color="#a78bfa" style="background:#a78bfa"></span>
         <span class="palette-swatch" data-color="#fb923c" style="background:#fb923c"></span>
@@ -777,6 +670,8 @@
         <span class="palette-swatch" data-color="#f87171" style="background:#f87171"></span>
         <div class="palette-divider"></div>
         <span class="palette-label">BG</span>
+        <span class="palette-swatch bg-swatch" data-bg="chalk" style="background:#F5F7F6" title="石灰"></span>
+        <span class="palette-swatch bg-swatch" data-bg="dirt"  style="background:#1A1512" title="黒土"></span>
         <span class="palette-swatch bg-swatch" data-bg="dark"  style="background:#070810" title="ダーク"></span>
         <span class="palette-swatch bg-swatch" data-bg="black" style="background:#080808" title="ブラック"></span>
         <span class="palette-swatch bg-swatch" data-bg="light" style="background:#f5f4f0" title="ライト"></span>
@@ -811,59 +706,59 @@
   <style>
     .wx-panel-handle { width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:12px auto 0; }
     .wx-panel-head { display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px; }
-    .wx-panel-title { font-family:'Barlow','Noto Sans JP',sans-serif;font-size:16px;font-weight:700;color:#c8e8d0;letter-spacing:.04em; }
+    .wx-panel-title { font-family:'BIZ UDPGothic',sans-serif;font-size:16px;font-weight:700;color:var(--text);letter-spacing:.04em; }
     .wx-ctrl-row { display:flex;gap:8px;align-items:center;padding:0 16px 14px; }
     .wx-ctrl-pref,.wx-ctrl-date {
-      background:rgba(255,255,255,.05);border:1px solid rgba(0,230,118,.2);border-radius:8px;
-      color:#c8e8d0;font-family:'Noto Sans JP',sans-serif;font-size:13px;padding:8px 10px;
+      background:rgba(255,255,255,.05);border:1px solid rgba(58,168,96,.2);border-radius: 4px;
+      color:var(--text);font-family:'BIZ UDPGothic', sans-serif;font-size:13px;padding:8px 10px;
       -webkit-appearance:none;appearance:none;outline:none;flex:1;
     }
     .wx-ctrl-pref option,.wx-ctrl-date option { background:#0d0f18; }
-    .wx-geo-btn { background:transparent;border:1px solid rgba(255,179,71,.4);border-radius:8px;color:#ffb347;font-family:'Noto Sans JP',sans-serif;font-size:12px;font-weight:700;padding:8px 10px;cursor:pointer;white-space:nowrap;flex-shrink:0; }
+    .wx-geo-btn { background:transparent;border:1px solid rgba(255,179,71,.4);border-radius: 4px;color:var(--accent);font-family:'BIZ UDPGothic', sans-serif;font-size:12px;font-weight:700;padding:8px 10px;cursor:pointer;white-space:nowrap;flex-shrink:0; }
     .wx-geo-btn:disabled { opacity:.5;cursor:wait; }
     .wx-fetch-btn {
-      background:var(--accent,#00e676);color:#07090f;border:none;border-radius:8px;
-      font-family:'Barlow',sans-serif;font-size:13px;font-weight:800;padding:8px 16px;
+      background:var(--accent,#3AA860);color:var(--bg);border:none;border-radius: 4px;
+      font-family:'BIZ UDPGothic', sans-serif;font-size:13px;font-weight:800;padding:8px 16px;
       cursor:pointer;white-space:nowrap;transition:opacity .15s;flex-shrink:0;
     }
     .wx-fetch-btn:disabled { opacity:.4;cursor:not-allowed; }
     .wx-cards-row { display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 16px 16px; }
     .wx-day-card {
-      background:rgba(255,255,255,.04);border:1px solid rgba(0,230,118,.12);border-radius:10px;
+      background:rgba(255,255,255,.04);border:1px solid rgba(58,168,96,.12);border-radius: 6px;
       padding:12px 8px;text-align:center;
     }
-    .wx-day-label { font-family:'Barlow',sans-serif;font-size:11px;color:rgba(0,230,118,.6);letter-spacing:.08em;margin-bottom:4px; }
+    .wx-day-label { font-family:'BIZ UDPGothic', sans-serif;font-size:11px;color:rgba(58,168,96,.6);letter-spacing:.08em;margin-bottom:4px; }
     .wx-day-emoji { font-size:28px;line-height:1;display:block;margin-bottom:5px; }
-    .wx-day-desc { font-size:10px;color:#3a6a4a;line-height:1.4;margin-bottom:6px;min-height:28px;
+    .wx-day-desc { font-size:10px;color:var(--muted);line-height:1.4;margin-bottom:6px;min-height:28px;
       display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
-    .wx-day-pop { font-family:'Barlow',sans-serif;font-size:20px;color:#c8e8d0;line-height:1; }
-    .wx-day-pop-unit { font-size:10px;color:#3a6a4a; }
-    .wx-day-temp { font-size:10px;color:#3a6a4a;margin-top:4px; }
-    .wx-day-cond { font-size:9px;padding:3px 6px;border-radius:8px;margin-top:6px;display:inline-block;font-family:'Barlow',sans-serif;font-weight:700; }
-    .wx-cond-ok   { background:rgba(0,230,118,.12);color:#00e676; }
+    .wx-day-pop { font-family:'BIZ UDPGothic', sans-serif;font-size:20px;color:var(--text);line-height:1; }
+    .wx-day-pop-unit { font-size:10px;color:var(--muted); }
+    .wx-day-temp { font-size:10px;color:var(--muted);margin-top:4px; }
+    .wx-day-cond { font-size:9px;padding:3px 6px;border-radius: 4px;margin-top:6px;display:inline-block;font-family:'BIZ UDPGothic', sans-serif;font-weight:700; }
+    .wx-cond-ok   { background:rgba(58,168,96,.12);color:#3AA860; }
     .wx-cond-warn { background:rgba(245,158,11,.12);color:#f59e0b; }
     .wx-cond-bad  { background:rgba(244,63,94,.12);color:#f43f5e; }
     .wx-history-section { padding:0 16px 20px; }
-    .wx-history-title { font-family:'Barlow',sans-serif;font-size:10px;letter-spacing:.14em;color:#2a4a35;text-transform:uppercase;margin-bottom:10px; }
-    .wx-history-item { display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(0,230,118,.07); }
-    .wx-hist-date { font-family:'Barlow',sans-serif;font-size:13px;color:#5a9a70;min-width:70px;flex-shrink:0; }
+    .wx-history-title { font-family:'BIZ UDPGothic', sans-serif;font-size:10px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:10px; }
+    .wx-history-item { display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(58,168,96,.07); }
+    .wx-hist-date { font-family:'BIZ UDPGothic', sans-serif;font-size:13px;color:var(--muted);min-width:70px;flex-shrink:0; }
     .wx-hist-emoji { font-size:18px;flex-shrink:0; }
     .wx-hist-info { flex:1;min-width:0; }
-    .wx-hist-desc { font-size:12px;color:#c8e8d0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
-    .wx-hist-meta { font-size:10px;color:#2a4a35; }
-    .wx-hist-pref { font-size:10px;color:#2a4a35;flex-shrink:0; }
-    .wx-msg { text-align:center;padding:24px;font-family:'Barlow',sans-serif;font-size:13px;color:#2a4a35; }
+    .wx-hist-desc { font-size:12px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+    .wx-hist-meta { font-size:10px;color:var(--muted); }
+    .wx-hist-pref { font-size:10px;color:var(--muted);flex-shrink:0; }
+    .wx-msg { text-align:center;padding:24px;font-family:'BIZ UDPGothic', sans-serif;font-size:13px;color:var(--muted); }
     .wx-msg.loading { animation:wx-spin 1s linear infinite; }
     @keyframes wx-spin { from{opacity:1} 50%{opacity:.3} to{opacity:1} }
-    .wx-day-sun { font-size:10px;color:#ffb347;margin-top:6px;font-family:'Barlow','Noto Sans JP',sans-serif;letter-spacing:.02em; }
-    .wx-sun-link { display:block;margin:0 16px 14px;padding:11px 14px;border:1px solid rgba(255,179,71,.35);border-radius:10px;color:#ffb347;font-size:12px;font-weight:700;text-align:center;text-decoration:none;background:rgba(255,179,71,.06); }
+    .wx-day-sun { font-size:10px;color:var(--accent);margin-top:6px;font-family:'BIZ UDPGothic',sans-serif;letter-spacing:.02em; }
+    .wx-sun-link { display:block;margin:0 16px 14px;padding:11px 14px;border:1px solid rgba(255,179,71,.35);border-radius: 6px;color:var(--accent);font-size:12px;font-weight:700;text-align:center;text-decoration:none;background:rgba(255,179,71,.06); }
     .wx-sun-link:hover { background:rgba(255,179,71,.12); }
-    .wx-source-note { text-align:center;font-size:10px;color:#1a3a25;padding:0 16px 14px;font-family:'Barlow',sans-serif;letter-spacing:.04em; }
+    .wx-source-note { text-align:center;font-size:10px;color:var(--muted);padding:0 16px 14px;font-family:'BIZ UDPGothic', sans-serif;letter-spacing:.04em; }
     @media (max-width:380px) { .wx-cards-row { gap:6px; } .wx-day-emoji { font-size:24px; } .wx-day-pop { font-size:18px; } }
   </style>
   <div class="wx-panel-handle"></div>
   <div class="wx-panel-head">
-    <span class="wx-panel-title">⛅ FORECAST — 試合日天気チェック</span>
+    <span class="wx-panel-title">FORECAST — 試合日天気チェック</span>
     <button onclick="toggleWeatherPanel()" style="background:none;border:none;color:#2a4a35;font-size:22px;cursor:pointer;padding:4px;" aria-label="閉じる">×</button>
   </div>
   <div class="wx-ctrl-row">
@@ -920,14 +815,14 @@
         <span class="card-title">登録選手一覧</span>
         <span class="card-sub" id="roster-count">0人</span>
       </div>
-      <p style="font-size:11px;color:#e8c468;margin:-4px 0 10px;font-family:var(--mono);" id="bench-count">ベンチ入り 0人</p>
-      <p style="font-size:11px;color:var(--muted);margin:-6px 0 12px;line-height:1.6;">⭐ 大会規定のベンチ入り人数に合わせて「ベンチ入り登録」を押すと、メンバー表（甲子園・大会形式）に出力できます。</p>
+      <p style="font-size:11px;color:var(--accent);margin:-4px 0 10px;font-family:var(--mono);" id="bench-count">ベンチ入り 0人</p>
+      <p style="font-size:11px;color:var(--muted);margin:-6px 0 12px;line-height:1.6;">大会規定のベンチ入り人数に合わせて「ベンチ入り登録」を押すと、メンバー表（甲子園・大会形式）に出力できます。</p>
       <div class="roster-list" id="roster-list">
         <div class="empty" onclick="focusAddForm()" style="cursor:pointer;padding:28px 16px;">
-          <div class="empty-icon">⚾</div>
+          
           <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;">選手を登録してオーダーを組もう</p>
           <p style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:14px;">上のフォームに名前を入れて<br>「追加する」をタップするだけ</p>
-          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.35);border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;color:var(--accent);font-family:var(--mono);">⬆ 選手を追加する</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.35);border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;color:var(--accent);font-family:var(--mono);">選手を追加する</div>
         </div>
       </div>
     </div>
@@ -954,13 +849,13 @@
       </div>
       <p style="font-size:11px;color:var(--accent);font-family:var(--mono);font-weight:700;margin-bottom:8px;letter-spacing:.04em">▸ 選手データのみ</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
-        <button class="btn btn-ghost" onclick="exportRoster()">⬇️ 書き出し</button>
-        <button class="btn btn-ghost" onclick="document.getElementById('roster-file-input').click()">⬆️ 読み込み</button>
+        <button class="btn btn-ghost" onclick="exportRoster()">書き出し</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('roster-file-input').click()">読み込み</button>
       </div>
       <p style="font-size:11px;color:var(--accent);font-family:var(--mono);font-weight:700;margin-bottom:8px;letter-spacing:.04em">▸ 完全バックアップ（打順・投手陣・保存済みオーダー含む）</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-ghost" onclick="exportFull()">⬇️ 完全バックアップ書き出し</button>
-        <button class="btn btn-ghost" onclick="document.getElementById('full-backup-file-input').click()">⬆️ バックアップから復元</button>
+        <button class="btn btn-ghost" onclick="exportFull()">完全バックアップ書き出し</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('full-backup-file-input').click()">バックアップから復元</button>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.8">
         機種変更やデータ移行に。完全バックアップには打順・投手陣・保存済みオーダーもすべて含まれます。
@@ -995,7 +890,7 @@
         </label>
       </div>
       <div class="saved-bar">
-        <button class="btn btn-primary btn-sm" onclick="saveLineup()">💾 保存</button>
+        <button class="btn btn-primary btn-sm" onclick="saveLineup()">保存</button>
         <button class="btn btn-ghost btn-sm" onclick="clearOrder()">クリア</button>
       </div>
       <div id="saved-chips" class="saved-chips"></div>
@@ -1181,37 +1076,37 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
         シェアする
       </button>
-      <button class="btn btn-ghost" onclick="shareImage()">🖼️ 画像で保存・共有</button>
-      <button class="btn btn-ghost" onclick="copyText()">📋 テキストコピー</button>
-      <button class="btn btn-ghost" onclick="window.print()">🖨️ 印刷</button>
+      <button class="btn btn-ghost" onclick="shareImage()">画像で保存・共有</button>
+      <button class="btn btn-ghost" onclick="copyText()">テキストコピー</button>
+      <button class="btn btn-ghost" onclick="window.print()">印刷</button>
       <button class="btn btn-ghost" onclick="switchTab('order')">← 戻る</button>
     </div>
 
-    <a href="https://somirai.jp/batting-stats/" class="no-print" style="display:flex;align-items:center;gap:12px;margin-top:16px;padding:12px 14px;background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.18);border-radius:8px;text-decoration:none;color:inherit;">
-      <span style="font-size:22px;flex-shrink:0;">⚾</span>
+    <a href="https://somirai.jp/batting-stats/" class="no-print" style="display:flex;align-items:center;gap:12px;margin-top:10px;padding:10px 14px;border-left:5px solid var(--accent);text-decoration:none;color:inherit;">
+
       <div style="min-width:0;">
-        <div style="font-size:12px;font-weight:700;color:#eaecf4;margin-bottom:2px;">打撃成績もつけてみよう</div>
-        <div style="font-size:11px;color:#555878;line-height:1.4;">LUMBER — 選手ごとの打撃スタッツを無料で管理</div>
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;">打撃成績もつけてみよう</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.4;">LUMBER — 選手ごとの打撃スタッツを無料で管理</div>
       </div>
-      <span style="font-size:12px;color:#00e676;flex-shrink:0;margin-left:auto;">→</span>
+      <span style="font-size:12px;color:var(--accent);flex-shrink:0;margin-left:auto;">→</span>
     </a>
 
-    <a href="https://somirai.jp/player/" class="no-print" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'tactician_complete'})" style="display:flex;align-items:center;gap:12px;margin-top:10px;padding:12px 14px;background:rgba(232,196,104,0.06);border:1px solid rgba(232,196,104,0.3);border-radius:8px;text-decoration:none;color:inherit;">
-      <span style="font-size:22px;flex-shrink:0;">⭐</span>
+    <a href="https://somirai.jp/player/" class="no-print" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'tactician_complete'})" style="display:flex;align-items:center;gap:12px;margin-top:10px;padding:10px 14px;border-left:5px solid var(--accent);text-decoration:none;color:inherit;">
+
       <div style="min-width:0;">
-        <div style="font-size:12px;font-weight:700;color:#e8c468;margin-bottom:2px;">MY PLAYERで選手ステータスを見る</div>
-        <div style="font-size:11px;color:#555878;line-height:1.4;">今のスタメン作成もステータスに反映されています</div>
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:2px;">MY PLAYERで選手ステータスを見る</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.4;">今のスタメン作成もステータスに反映されています</div>
       </div>
-      <span style="font-size:12px;color:#e8c468;flex-shrink:0;margin-left:auto;">→</span>
+      <span style="font-size:12px;color:var(--accent);flex-shrink:0;margin-left:auto;">→</span>
     </a>
 
-    <a href="https://somirai.jp/era-calculator/" class="no-print" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'tactician_complete',to:'era_calc'})" style="display:flex;align-items:center;gap:12px;margin-top:10px;padding:12px 14px;background:rgba(96,165,250,0.06);border:1px solid rgba(96,165,250,0.25);border-radius:8px;text-decoration:none;color:inherit;">
-      <span style="font-size:22px;flex-shrink:0;">🧮</span>
+    <a href="https://somirai.jp/era-calculator/" class="no-print" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'tactician_complete',to:'era_calc'})" style="display:flex;align-items:center;gap:12px;margin-top:10px;padding:10px 14px;border-left:5px solid var(--accent);text-decoration:none;color:inherit;">
+
       <div style="min-width:0;">
-        <div style="font-size:12px;font-weight:700;color:#60a5fa;margin-bottom:2px;">投手の防御率・WHIPも計算する</div>
-        <div style="font-size:11px;color:#555878;line-height:1.4;">投手ローテのメンバーの成績をすぐ計算できる無料ツール</div>
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:2px;">投手の防御率・WHIPも計算する</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.4;">投手ローテのメンバーの成績をすぐ計算できる無料ツール</div>
       </div>
-      <span style="font-size:12px;color:#60a5fa;flex-shrink:0;margin-left:auto;">→</span>
+      <span style="font-size:12px;color:var(--accent);flex-shrink:0;margin-left:auto;">→</span>
     </a>
   </section>
 
@@ -1223,7 +1118,7 @@
 <div class="modal-overlay hidden" id="theme-modal">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title">🎨 テーマ</span>
+      <span class="modal-title">テーマ</span>
       <button class="modal-close" onclick="closeModal('theme-modal')">✕</button>
     </div>
     <div class="theme-grid" id="theme-grid"></div>
@@ -1234,14 +1129,14 @@
 <div class="modal-overlay hidden" id="tutorial-modal">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title">📋 使い方</span>
+      <span class="modal-title">使い方</span>
       <button class="modal-close" onclick="closeModal('tutorial-modal')">✕</button>
     </div>
     <div class="tut-steps">
-      <div class="tut-step"><div class="step-num">1</div><div><div class="step-title">👥 選手を登録</div><div class="step-desc">「選手」タブで背番号・名前・守備可能ポジションを登録。後から編集できます。</div></div></div>
-      <div class="tut-step"><div class="step-num">2</div><div><div class="step-title">📋 オーダーを組む</div><div class="step-desc">「オーダー」タブで1〜9番に選手と守備位置をアサイン。DH制の切替も可能。</div></div></div>
-      <div class="tut-step"><div class="step-num">3</div><div><div class="step-title">⚾ 投手陣を設定</div><div class="step-desc">「投手陣」タブで先発・中継ぎ・抑えの登板順と担当イニングを設定。</div></div></div>
-      <div class="tut-step"><div class="step-num">4</div><div><div class="step-title">🖨️ スタメン表を共有</div><div class="step-desc">「スタメン表」タブで守備配置図を確認。「シェアする」でLINE・X・メールなど各アプリに送れます。</div></div></div>
+      <div class="tut-step"><div class="step-num">1</div><div><div class="step-title">選手を登録</div><div class="step-desc">「選手」タブで背番号・名前・守備可能ポジションを登録。後から編集できます。</div></div></div>
+      <div class="tut-step"><div class="step-num">2</div><div><div class="step-title">オーダーを組む</div><div class="step-desc">「オーダー」タブで1〜9番に選手と守備位置をアサイン。DH制の切替も可能。</div></div></div>
+      <div class="tut-step"><div class="step-num">3</div><div><div class="step-title">投手陣を設定</div><div class="step-desc">「投手陣」タブで先発・中継ぎ・抑えの登板順と担当イニングを設定。</div></div></div>
+      <div class="tut-step"><div class="step-num">4</div><div><div class="step-title">スタメン表を共有</div><div class="step-desc">「スタメン表」タブで守備配置図を確認。「シェアする」でLINE・X・メールなど各アプリに送れます。</div></div></div>
     </div>
     <div style="margin-top:24px">
       <button class="btn btn-primary" style="width:100%" onclick="closeModal('tutorial-modal')">始める</button>
@@ -1253,7 +1148,7 @@
 <div class="modal-overlay hidden" id="edit-modal">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title">✏️ 選手を編集</span>
+      <span class="modal-title">選手を編集</span>
       <button class="modal-close" onclick="closeModal('edit-modal')">✕</button>
     </div>
     <div class="form-row">
@@ -1296,6 +1191,16 @@ const THEMES = {
 
 // ── Bg Presets ──────────────────────
 const BG_PRESETS = {
+  chalk: {
+    bg: '#F5F7F6', surface: '#FFFFFF', card: '#EEF2F0', border: '#D3DAD6', border2: '#C2CBC6', text: '#2B2420', muted: '#5B534D', dotColor: '#D3DAD6', dotOpacity: '0',
+    fieldBg: '#E4F2E6', fieldFoul: 'rgba(0,0,0,.38)', fieldLine: 'rgba(0,0,0,.62)', fieldBase: 'rgba(255,255,255,.96)', fieldBaseStr: 'rgba(0,0,0,.3)', fieldRubber: 'rgba(255,255,255,.9)', fieldLabelBg: 'rgba(228,242,230,.92)', fieldLabelTxt: '#14532d', fieldPosEmpty: 'rgba(0,0,0,.12)',
+    fieldGrad: ['#4caf72','#2F8F4E','#1E6B38'], infieldGrad: ['#8A6F58','#6B5844','#4A3B30'],
+  },
+  dirt: {
+    bg: '#1A1512', surface: '#2B2420', card: '#2B2420', border: '#4B403A', border2: '#5B4F47', text: '#F5F7F6', muted: '#B9B1AA', dotColor: '#2B2420', dotOpacity: '0',
+    fieldBg: '#0E1A12', fieldFoul: 'rgba(255,255,255,.55)', fieldLine: 'rgba(255,255,255,.85)', fieldBase: 'rgba(255,255,255,.92)', fieldBaseStr: 'rgba(255,255,255,.5)', fieldRubber: 'rgba(255,255,255,.7)', fieldLabelBg: 'rgba(14,26,18,.88)', fieldLabelTxt: '#E4F5EA', fieldPosEmpty: 'rgba(0,0,0,.45)',
+    fieldGrad: ['#2F8F4E','#1E6B38','#14452A'], infieldGrad: ['#6B5844','#5A4636','#3F3026'],
+  },
   dark:  {
     bg: '#070810', surface: '#0d0f18', card: '#0d0f18', border: '#1c1f30', border2: '#252840', text: '#eaecf4', muted: '#555878', dotColor: '#1e2035', dotOpacity: '.5',
     fieldBg: '#010e04', fieldFoul: 'rgba(255,255,255,.55)', fieldLine: 'rgba(255,255,255,.85)', fieldBase: 'rgba(255,255,255,.92)', fieldBaseStr: 'rgba(255,255,255,.5)', fieldRubber: 'rgba(255,255,255,.7)', fieldLabelBg: 'rgba(1,16,5,.88)', fieldLabelTxt: '#d8f5e0', fieldPosEmpty: 'rgba(0,0,0,.45)',
@@ -1353,7 +1258,9 @@ function applyBg(key) {
     ig[1].setAttribute('stop-color', p.infieldGrad[1]);
     ig[2].setAttribute('stop-color', p.infieldGrad[2]);
   }
+  r.setProperty('--on-accent', ['light','white','chalk'].indexOf(key) >= 0 ? '#FFFFFF' : '#14110F');
   localStorage.setItem('om-bgPreset', key);
+  if (window.__omReapplyAccent) window.__omReapplyAccent();   // 明暗に合わせて、アクセント色を再適用
   document.querySelectorAll('#om-color-palette .bg-swatch').forEach(function(s) {
     s.classList.toggle('active', s.dataset.bg === key);
   });
@@ -1525,10 +1432,10 @@ function renderRoster() {
   if (benchCountEl) benchCountEl.textContent = `ベンチ入り ${benchIds.length}人`;
   if (!players.length) {
     el.innerHTML = `<div class="empty-cta" onclick="focusAddForm()" role="button" aria-label="選手追加フォームへ移動">
-      <div class="empty-cta-ball">⚾</div>
+      
       <div class="empty-cta-title">選手を登録してオーダーを組もう</div>
       <div class="empty-cta-desc">「選手」タブで名前を入力 → 「追加する」<br>登録後はここで打順・守備を設定できます</div>
-      <div class="empty-cta-link">⬆ 選手タブへ移動して追加する</div>
+      <div class="empty-cta-link">選手タブへ移動して追加する</div>
     </div>`;
     return;
   }
@@ -1544,7 +1451,7 @@ function renderRoster() {
       </div>
       <div class="roster-actions">
         <button class="absent-toggle${isAbsent ? ' is-absent' : ''}" onclick="toggleAbsent('${p.id}')" title="${isAbsent ? '欠席中（クリックで解除）' : '出席（クリックで欠席マーク）'}">${isAbsent ? '欠席' : '出席'}</button>
-        <button class="btn btn-xs" onclick="toggleBench('${p.id}')" aria-pressed="${isBench}" style="${isBench ? 'background:rgba(232,196,104,0.15);border:1px solid rgba(232,196,104,0.5);color:#e8c468;' : 'background:transparent;border:1px solid var(--border);color:var(--muted);'}" title="${isBench ? 'ベンチ入り登録済み（クリックで解除）' : 'クリックでベンチ入り登録'}">${isBench ? '★ ベンチ' : '☆ ベンチ'}</button>
+        <button class="btn btn-xs" onclick="toggleBench('${p.id}')" aria-pressed="${isBench}" style="${isBench ? 'background:rgba(232,196,104,0.15);border:1px solid rgba(232,196,104,0.5);color:var(--accent);' : 'background:transparent;border:1px solid var(--border);color:var(--muted);'}" title="${isBench ? 'ベンチ入り登録済み（クリックで解除）' : 'クリックでベンチ入り登録'}">${isBench ? '★ ベンチ' : '☆ ベンチ'}</button>
         <button class="btn btn-ghost btn-xs" onclick="openEdit('${p.id}')">編集</button>
         <button class="btn btn-danger btn-xs" onclick="removePlayer('${p.id}')">削除</button>
       </div>
@@ -1631,9 +1538,9 @@ function renderOrderSlots() {
     const playerSelect = `
       <select onchange="setPlayer(${i},this.value)">
         <option value="">— 選手 —</option>
-        <option value="__guest__" ${isGuest?'selected':''}>✏️ 助っ人（直接入力）</option>
+        <option value="__guest__" ${isGuest?'selected':''}>助っ人（直接入力）</option>
         ${activePlayers.map(p=>`<option value="${p.id}" ${slot.playerId===p.id?'selected':''}>${p.num?'#'+p.num+' ':''}${esc(p.name)}</option>`).join('')}
-        ${selP && absentIds.includes(selP.id) ? `<option value="${selP.id}" selected>⚠️ ${esc(selP.name)}（欠席中）</option>` : ''}
+        ${selP && absentIds.includes(selP.id) ? `<option value="${selP.id}" selected>${esc(selP.name)}（欠席中）</option>` : ''}
       </select>
       ${isGuest?`<input class="guest-input" type="text" placeholder="助っ人の名前" value="${esc(slot.guestName||'')}" oninput="setGuestName(${i},this.value)">`:''}`;
     const posSelect = `
@@ -1754,7 +1661,7 @@ function renderSavedChips() {
   el.innerHTML = lineups.map(l => `
     <div class="saved-chip" onclick="loadLineup('${l.id}')" title="クリックで「${esc(l.name)}」を読み込む">
       <span style="font-size:10px;font-weight:700;color:var(--accent);font-family:var(--mono);letter-spacing:.05em">読込</span>
-      📋 ${esc(l.name)}
+      ${esc(l.name)}
       ${l.date?`<span style="color:var(--muted);font-size:11px">${fmtShort(l.date)}</span>`:''}
       <span class="chip-del" onclick="event.stopPropagation();deleteLineup('${l.id}')" title="削除">✕</span>
     </div>
@@ -1984,7 +1891,7 @@ function buildText() {
       txt += `${i+1}番手  ${p?p.name:'—'}  ${pitcherInningLabel(pt)}\n`;
     });
   }
-  txt += '\n⚾ スタメンメーカー https://somirai.jp/order-maker/';
+  txt += '\nスタメンメーカー https://somirai.jp/order-maker/';
   return txt;
 }
 
@@ -2056,7 +1963,7 @@ function drawLineupCard() {
 
     ctx.textAlign = 'left';
     ctx.fillStyle = INK;
-    ctx.font = '700 22px "Noto Sans JP", sans-serif';
+    ctx.font = '700 22px "BIZ UDPGothic", "Hiragino Sans", sans-serif';
     const numText = r.num ? r.num + ' ' : '';
     ctx.fillText(numText + r.name, 156, rowY + 33);
 
@@ -2082,7 +1989,7 @@ function drawLineupCard() {
     py += 30;
     pitcherRows.forEach((r) => {
       ctx.fillStyle = INK_RED;
-      ctx.font = '700 20px "Noto Sans JP", sans-serif';
+      ctx.font = '700 20px "BIZ UDPGothic", "Hiragino Sans", sans-serif';
       ctx.fillText(r.order + '番手  ' + r.name, 56, py + 20);
       ctx.fillStyle = INK_SOFT;
       ctx.font = '400 16px sans-serif';
@@ -2097,7 +2004,7 @@ function drawLineupCard() {
   ctx.fillStyle = INK_SOFT;
   ctx.font = '400 18px sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('⚾ TACTICIAN — somirai.jp/order-maker/', W / 2, H - 28);
+  ctx.fillText('TACTICIAN — somirai.jp/order-maker/', W / 2, H - 28);
 
   return canvas;
 }
@@ -2115,7 +2022,7 @@ function shareImage() {
         navigator.share({
           files: [file],
           title: document.getElementById('lineup-name').value.trim() || 'スタメン',
-          text: '⚾ TACTICIANでスタメンを作成しました！ https://somirai.jp/order-maker/',
+          text: 'TACTICIANでスタメンを作成しました！ https://somirai.jp/order-maker/',
         }).catch(function () { /* user cancelled */ });
       } else {
         const url = URL.createObjectURL(blob);
@@ -2638,7 +2545,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ── Init ─────────────────────────────
-applyBg(localStorage.getItem('om-bgPreset') || 'light');
+// デザイン刷新(2026-11): 旧い既定(light)のままの人は、新しい既定(石灰)にする。自分で別の背景を選んでいた人は、そのまま
+if (localStorage.getItem('om-design') !== 'line-v1') {
+  if ((localStorage.getItem('om-bgPreset') || 'light') === 'light') localStorage.setItem('om-bgPreset', 'chalk');
+  localStorage.setItem('om-design', 'line-v1');
+}
+applyBg(localStorage.getItem('om-bgPreset') || 'chalk');
 document.getElementById('dh-toggle').checked = isDH;
 buildPosGrid('add-pos-grid', addPosSel);
 renderRoster();
@@ -2694,7 +2606,7 @@ if (players.length === 0 && window.innerWidth >= 768) {
       el.innerHTML = `
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
           <div style="flex:1">
-            <div style="font-size:13px;font-weight:700;margin-bottom:4px">📲 ホーム画面に追加できます</div>
+            <div style="font-size:13px;font-weight:700;margin-bottom:4px">ホーム画面に追加できます</div>
             <div id="pwa-ios-hint" style="font-size:12px;color:#a0a0b0">
               アプリのように使えます。
               <button id="pwa-steps-btn" style="background:none;border:none;color:#f0a855;font-size:12px;cursor:pointer;text-decoration:underline;padding:0 2px">手順を見る</button>
@@ -2717,12 +2629,12 @@ if (players.length === 0 && window.innerWidth >= 768) {
       el.innerHTML = `
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
           <div style="flex:1">
-            <div style="font-weight:700;margin-bottom:2px">📲 ホーム画面に追加できます</div>
+            <div style="font-weight:700;margin-bottom:2px">ホーム画面に追加できます</div>
             <div style="font-size:12px;color:#a0a0b0">アプリのように起動できます</div>
           </div>
           <div style="display:flex;gap:8px;flex-shrink:0">
-            <button id="pwa-install" style="background:#f0a855;color:#1c1c21;border:none;border-radius:6px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer">追加する</button>
-            <button id="pwa-dismiss" style="background:none;border:1px solid #3e3e4e;color:#a0a0b0;border-radius:6px;padding:6px 10px;font-size:12px;cursor:pointer">✕</button>
+            <button id="pwa-install" style="background:var(--accent);color:#1c1c21;border:none;border-radius:6px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer">追加する</button>
+            <button id="pwa-dismiss" style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:6px 10px;font-size:12px;cursor:pointer">✕</button>
           </div>
         </div>`;
       el.querySelector('#pwa-install').onclick = async function() {
@@ -2758,260 +2670,260 @@ if (players.length === 0 && window.innerWidth >= 768) {
     var b = document.createElement('div');
     b.id = 'ck-banner';
     b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#1a1220;color:#d4c4a8;font-size:13px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9999;border-top:1px solid rgba(251,191,36,.15)';
-    b.innerHTML = '<span>本サイトはGoogle AdSense・Google AnalyticsのためにCookieを使用しています。詳細は<a href="/privacy.html" style="color:#00e676">プライバシーポリシー</a>をご覧ください。</span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:transparent;color:#00e676;border:1px solid #00e676;border-radius:6px;padding:6px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">OK</button>';
+    b.innerHTML = '<span>本サイトはGoogle AdSense・Google AnalyticsのためにCookieを使用しています。詳細は<a href="/privacy.html" style="color:var(--accent)">プライバシーポリシー</a>をご覧ください。</span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:transparent;color:var(--accent);border:1px solid var(--accent);border-radius:6px;padding:6px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">OK</button>';
     document.body.appendChild(b);
   })();
 </script>
 <!-- ── アプリ説明（AdSense審査・SEO用テキストコンテンツ） ── -->
-<section aria-label="アプリ説明" style="padding:20px 16px;border-top:1px solid #1c1f30;background:#070810;position:relative;z-index:1;">
-  <h2 style="font-size:14px;font-weight:700;color:#00e676;margin-bottom:10px;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;">打順メーカー（TACTICIAN）とは</h2>
-  <p style="font-size:12px;color:#555878;line-height:1.8;margin-bottom:12px;">
+<section aria-label="アプリ説明" style="padding:20px 16px;border-top:1px solid var(--border);background:var(--bg);position:relative;z-index:1;">
+  <h2 style="font-size:14px;font-weight:700;color:var(--accent);margin-bottom:10px;font-family:var(--mono);letter-spacing:0.08em;">打順メーカー（TACTICIAN）とは</h2>
+  <p style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:12px;">
     打順メーカーTACTICIANは、草野球・軟式野球チーム向けの無料スタメン作成ツールです。打順・守備ポジション・投手ローテーションまで
     一画面でまとめて管理でき、作成したスタメン表をそのままLINEで共有できます。アプリのインストール不要でブラウザだけで使えます。
   </p>
-  <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin-bottom:8px;">主な機能</h3>
-  <ul style="font-size:12px;color:#555878;line-height:2;padding-left:0;list-style:none;">
-    <li>👥 選手名・背番号・ポジション・投打をまとめて登録・管理</li>
-    <li>📋 ドラッグ操作で直感的に打順・ポジションを設定</li>
-    <li>⚾ DH制（指名打者）に対応</li>
-    <li>🔄 投手ローテーションの管理・スケジュール作成</li>
-    <li>🗺️ 守備配置図でポジションを視覚的に確認</li>
-    <li>🖨️ 印刷用スタメン表を1クリックで生成</li>
-    <li>📤 スタメンをSNSでシェア</li>
-    <li>💾 データのエクスポート・インポートに対応（JSON形式）</li>
+  <h3 style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">主な機能</h3>
+  <ul style="font-size:12px;color:var(--muted);line-height:2;padding-left:0;list-style:none;">
+    <li>選手名・背番号・ポジション・投打をまとめて登録・管理</li>
+    <li>ドラッグ操作で直感的に打順・ポジションを設定</li>
+    <li>DH制（指名打者）に対応</li>
+    <li>投手ローテーションの管理・スケジュール作成</li>
+    <li>守備配置図でポジションを視覚的に確認</li>
+    <li>印刷用スタメン表を1クリックで生成</li>
+    <li>スタメンをSNSでシェア</li>
+    <li>データのエクスポート・インポートに対応（JSON形式）</li>
   </ul>
 </section>
 
 <!-- ── 使い方3ステップ ── -->
-<section aria-label="打順メーカーの使い方" style="padding:26px 16px;border-top:1px solid #1c1f30;background:#070810;position:relative;z-index:1;">
+<section aria-label="打順メーカーの使い方" style="padding:26px 16px;border-top:1px solid var(--border);background:var(--bg);position:relative;z-index:1;">
   <div style="max-width:640px;margin:0 auto;">
-    <h2 style="font-size:14px;font-weight:700;color:#00e676;margin-bottom:6px;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;">打順メーカーの使い方（3ステップ）</h2>
-    <p style="font-size:13px;color:#a8adc4;line-height:1.9;margin-bottom:16px;">
+    <h2 style="font-size:14px;font-weight:700;color:var(--accent);margin-bottom:6px;font-family:var(--mono);letter-spacing:0.08em;">打順メーカーの使い方（3ステップ）</h2>
+    <p style="font-size:13px;color:var(--muted);line-height:1.9;margin-bottom:16px;">
       初めての方でも3分でスタメン表が完成します。会員登録もアプリのインストールも不要で、入力したデータはお使いのブラウザ内にだけ保存されます。
     </p>
 
     <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
-      <div style="display:flex;gap:14px;background:#0d0f18;border:1px solid #1c2a3a;border-radius:10px;padding:14px 16px;">
-        <span style="flex-shrink:0;width:28px;height:28px;border-radius:4px;border:1.5px solid #00e676;color:#00e676;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;">1</span>
+      <div style="display:flex;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+        <span style="flex-shrink:0;width:28px;height:28px;border-radius:4px;border:1.5px solid var(--accent);color:var(--accent);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:var(--mono);">1</span>
         <div>
-          <div style="font-size:14px;font-weight:700;color:#eaecf4;margin-bottom:4px;">選手を登録する</div>
-          <div style="font-size:12px;color:#a8adc4;line-height:1.8;">「選手」タブで名前・背番号・守備できるポジションを登録します。控えを含めてチーム全員を先に登録しておくと、当日の欠席者を「欠」ボタンで外すだけでオーダーが組めるようになります。ポジションは複数選択できるので、兼任する選手も1人分の登録で済みます。</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">選手を登録する</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.8;">「選手」タブで名前・背番号・守備できるポジションを登録します。控えを含めてチーム全員を先に登録しておくと、当日の欠席者を「欠」ボタンで外すだけでオーダーが組めるようになります。ポジションは複数選択できるので、兼任する選手も1人分の登録で済みます。</div>
         </div>
       </div>
-      <div style="display:flex;gap:14px;background:#0d0f18;border:1px solid #1c2a3a;border-radius:10px;padding:14px 16px;">
-        <span style="flex-shrink:0;width:28px;height:28px;border-radius:4px;border:1.5px solid #00e676;color:#00e676;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;">2</span>
+      <div style="display:flex;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+        <span style="flex-shrink:0;width:28px;height:28px;border-radius:4px;border:1.5px solid var(--accent);color:var(--accent);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:var(--mono);">2</span>
         <div>
-          <div style="font-size:14px;font-weight:700;color:#eaecf4;margin-bottom:4px;">打順と守備を決める</div>
-          <div style="font-size:12px;color:#a8adc4;line-height:1.8;">「オーダー」タブで1番から9番までの枠に選手を割り当てます。左のハンドルをドラッグすれば打順の入れ替えは一瞬です。DH制のオン・オフ、助っ人のゲスト入力にも対応。決まったオーダーは名前を付けて保存でき、「対右投手」「Bチーム」など複数パターンを使い分けられます。</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">打順と守備を決める</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.8;">「オーダー」タブで1番から9番までの枠に選手を割り当てます。左のハンドルをドラッグすれば打順の入れ替えは一瞬です。DH制のオン・オフ、助っ人のゲスト入力にも対応。決まったオーダーは名前を付けて保存でき、「対右投手」「Bチーム」など複数パターンを使い分けられます。</div>
         </div>
       </div>
-      <div style="display:flex;gap:14px;background:#0d0f18;border:1px solid #1c2a3a;border-radius:10px;padding:14px 16px;">
-        <span style="flex-shrink:0;width:28px;height:28px;border-radius:4px;border:1.5px solid #00e676;color:#00e676;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;">3</span>
+      <div style="display:flex;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+        <span style="flex-shrink:0;width:28px;height:28px;border-radius:4px;border:1.5px solid var(--accent);color:var(--accent);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:var(--mono);">3</span>
         <div>
-          <div style="font-size:14px;font-weight:700;color:#eaecf4;margin-bottom:4px;">スタメン表を共有・印刷する</div>
-          <div style="font-size:12px;color:#a8adc4;line-height:1.8;">「スタメン表」タブを開くと、守備配置図つきの一覧が自動で生成されます。シェアボタンからLINEのチームグループへワンタップ送信、テキストコピー、そのまま印刷して審判に渡す紙のオーダー表としても使えます。投手ローテを設定していれば登板イニングも一緒に出力されます。</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">スタメン表を共有・印刷する</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.8;">「スタメン表」タブを開くと、守備配置図つきの一覧が自動で生成されます。シェアボタンからLINEのチームグループへワンタップ送信、テキストコピー、そのまま印刷して審判に渡す紙のオーダー表としても使えます。投手ローテを設定していれば登板イニングも一緒に出力されます。</div>
         </div>
       </div>
     </div>
 
-    <p style="font-size:12px;color:#555878;line-height:1.8;">
-      さらに詳しい手順は<a href="guide.html" style="color:#00e676;text-decoration:underline;">使い方ガイド</a>にまとめています。
+    <p style="font-size:12px;color:var(--muted);line-height:1.8;">
+      さらに詳しい手順は<a href="guide.html" style="color:var(--accent);text-decoration:underline;">使い方ガイド</a>にまとめています。
     </p>
   </div>
 </section>
 
 <!-- ── 打順理論の解説 ── -->
-<section aria-label="打順の組み方・打順理論" style="padding:26px 16px;border-top:1px solid #1c1f30;background:#070810;position:relative;z-index:1;">
+<section aria-label="打順の組み方・打順理論" style="padding:26px 16px;border-top:1px solid var(--border);background:var(--bg);position:relative;z-index:1;">
   <div style="max-width:640px;margin:0 auto;">
-    <h2 style="font-size:14px;font-weight:700;color:#00e676;margin-bottom:6px;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;">野球の打順の組み方 — 1番から9番までの役割</h2>
-    <p style="font-size:13px;color:#a8adc4;line-height:1.9;margin-bottom:18px;">
-      打順を組むうえで最初に押さえておきたいのは、<strong style="color:#eaecf4;">打順とは「打席数の配分」である</strong>という事実です。1番打者は9番打者より1試合あたり平均0.5打席ほど多く打席に立ちます。7イニング制の草野球でも、シーズンを通せば上位打線と下位打線では打席数に無視できない差が生まれます。つまり打順を決めるという行為は、「誰に多くチャンスを与えるか」を決める作業にほかなりません。以下、各打順の一般的な役割と、草野球・少年野球での現実的な考え方をまとめます。
+    <h2 style="font-size:14px;font-weight:700;color:var(--accent);margin-bottom:6px;font-family:var(--mono);letter-spacing:0.08em;">野球の打順の組み方 — 1番から9番までの役割</h2>
+    <p style="font-size:13px;color:var(--muted);line-height:1.9;margin-bottom:18px;">
+      打順を組むうえで最初に押さえておきたいのは、<strong style="color:var(--text);">打順とは「打席数の配分」である</strong>という事実です。1番打者は9番打者より1試合あたり平均0.5打席ほど多く打席に立ちます。7イニング制の草野球でも、シーズンを通せば上位打線と下位打線では打席数に無視できない差が生まれます。つまり打順を決めるという行為は、「誰に多くチャンスを与えるか」を決める作業にほかなりません。以下、各打順の一般的な役割と、草野球・少年野球での現実的な考え方をまとめます。
     </p>
 
-    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">1番：出塁率がすべて</h3>
-    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
-      1番打者に求められる最大の資質は、打率でも足の速さでもなく<strong style="color:#eaecf4;">出塁率</strong>です。初回だけは必ず走者なしで打席が回るため、まず塁に出ることがチームの得点確率を直接押し上げます。「1番＝俊足巧打」というイメージが根強いですが、盗塁が成功しても得点期待値の増加はわずかで、失敗したときの損失のほうが大きいというのがセイバーメトリクスの一般的な見解です。四球を選べる選手、簡単に凡退しない選手を置くのが正解に近くなります。
+    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">1番：出塁率がすべて</h3>
+    <p style="font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:14px;">
+      1番打者に求められる最大の資質は、打率でも足の速さでもなく<strong style="color:var(--text);">出塁率</strong>です。初回だけは必ず走者なしで打席が回るため、まず塁に出ることがチームの得点確率を直接押し上げます。「1番＝俊足巧打」というイメージが根強いですが、盗塁が成功しても得点期待値の増加はわずかで、失敗したときの損失のほうが大きいというのがセイバーメトリクスの一般的な見解です。四球を選べる選手、簡単に凡退しない選手を置くのが正解に近くなります。
     </p>
 
-    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">2番：つなぎ役から「二人目の主軸」へ</h3>
-    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
-      日本の伝統的な野球では、2番はバントや進塁打で1番を送る「つなぎ役」とされてきました。しかし近年のメジャーリーグでは、2番にチーム屈指の強打者を置く「<strong style="color:#eaecf4;">強打者2番</strong>」が主流になっています。理由はシンプルで、2番は3番より年間で約20打席多く回ってくるうえ、1番が出塁した直後という得点機会に絡みやすいからです。送りバントは確実にアウトを1つ献上する作戦であり、多くの局面で得点期待値を下げます。無死一塁からのバントは、1点勝負の終盤以外では慎重に選ぶべき手段です。
+    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">2番：つなぎ役から「二人目の主軸」へ</h3>
+    <p style="font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:14px;">
+      日本の伝統的な野球では、2番はバントや進塁打で1番を送る「つなぎ役」とされてきました。しかし近年のメジャーリーグでは、2番にチーム屈指の強打者を置く「<strong style="color:var(--text);">強打者2番</strong>」が主流になっています。理由はシンプルで、2番は3番より年間で約20打席多く回ってくるうえ、1番が出塁した直後という得点機会に絡みやすいからです。送りバントは確実にアウトを1つ献上する作戦であり、多くの局面で得点期待値を下げます。無死一塁からのバントは、1点勝負の終盤以外では慎重に選ぶべき手段です。
     </p>
 
-    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">3番：最強打者の定位置は本当にここか</h3>
-    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
+    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">3番：最強打者の定位置は本当にここか</h3>
+    <p style="font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:14px;">
       「チームで一番良い打者は3番」という常識は長く支持されてきましたが、データ上は必ずしも最適ではありません。3番打者は初回に限れば2アウト走者なしで打席が回るケースが最も多い打順で、得点圏に走者がいる場面の割合は4番より低いのです。とはいえ、走者を返す力と自分で出塁する力の両方が求められる打順であることに変わりはありません。打率・出塁率・長打率のバランスが取れた選手を置くのが定石です。
     </p>
 
-    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">4番：長打で走者を還す</h3>
-    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
-      4番は全打順のなかで<strong style="color:#eaecf4;">得点圏に走者を置いた状態で打席に立つ回数が最も多い</strong>打順です。したがって求められるのは長打力、なかでも外野の間を抜く二塁打・三塁打を打てる能力です。三振が多くても、単打を積み重ねるより一発で2点入れられる打者のほうがこの打順では価値を持ちます。草野球では「打球が飛ぶ人」を4番に置けば、自然とこの理屈に沿った並びになります。
+    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">4番：長打で走者を還す</h3>
+    <p style="font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:14px;">
+      4番は全打順のなかで<strong style="color:var(--text);">得点圏に走者を置いた状態で打席に立つ回数が最も多い</strong>打順です。したがって求められるのは長打力、なかでも外野の間を抜く二塁打・三塁打を打てる能力です。三振が多くても、単打を積み重ねるより一発で2点入れられる打者のほうがこの打順では価値を持ちます。草野球では「打球が飛ぶ人」を4番に置けば、自然とこの理屈に沿った並びになります。
     </p>
 
-    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">5番：4番を勝負させるための存在</h3>
-    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
-      5番の役割は打点だけではありません。5番に怖い打者がいれば相手投手は4番を敬遠しにくくなり、結果としてチーム全体の得点力が上がります。3番・4番・5番をまとめてクリーンナップと呼びますが、<strong style="color:#eaecf4;">クリーンナップの選び方は「上位3人を単純に並べる」ではなく「相手が逃げ場を失う並びにする」</strong>と考えると外しません。左右の打者を交互に配置して継投を難しくするのも有効な工夫です。
+    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">5番：4番を勝負させるための存在</h3>
+    <p style="font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:14px;">
+      5番の役割は打点だけではありません。5番に怖い打者がいれば相手投手は4番を敬遠しにくくなり、結果としてチーム全体の得点力が上がります。3番・4番・5番をまとめてクリーンナップと呼びますが、<strong style="color:var(--text);">クリーンナップの選び方は「上位3人を単純に並べる」ではなく「相手が逃げ場を失う並びにする」</strong>と考えると外しません。左右の打者を交互に配置して継投を難しくするのも有効な工夫です。
     </p>
 
-    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">6番・7番：第二のクリーンナップ</h3>
-    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
+    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">6番・7番：第二のクリーンナップ</h3>
+    <p style="font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:14px;">
       試合が中盤に入れば、打線は必ず一巡して6番・7番から始まるイニングが訪れます。ここが弱いと「下位で3人で終わり、上位が走者なしで迎える」という最悪の循環に陥ります。6番には長打力の残る選手、7番には出塁できる選手を置き、下位から上位へつなぐ流れを作るのが理想です。草野球では6番を「もう一人の4番」と位置づけると打線が途切れにくくなります。
     </p>
 
-    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">8番・9番：9番を「第二の1番」にする</h3>
-    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:18px;">
-      最も打力が低い選手を8番に、9番には出塁率がそこそこ高い選手を置く——これがメジャーでも採用される「<strong style="color:#eaecf4;">9番＝第二の1番</strong>」の考え方です。9番が塁に出れば、そのまま1番・2番・3番という最も得点力の高い並びにつながります。逆に9番に最弱打者を置くと、一巡した後の攻撃が毎回そこで途切れてしまいます。DH制を使わない草野球で投手が打席に立つ場合も、投手を9番ではなく8番に入れるだけで攻撃の効率は改善します。
+    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">8番・9番：9番を「第二の1番」にする</h3>
+    <p style="font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:18px;">
+      最も打力が低い選手を8番に、9番には出塁率がそこそこ高い選手を置く——これがメジャーでも採用される「<strong style="color:var(--text);">9番＝第二の1番</strong>」の考え方です。9番が塁に出れば、そのまま1番・2番・3番という最も得点力の高い並びにつながります。逆に9番に最弱打者を置くと、一巡した後の攻撃が毎回そこで途切れてしまいます。DH制を使わない草野球で投手が打席に立つ場合も、投手を9番ではなく8番に入れるだけで攻撃の効率は改善します。
     </p>
 
-    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">得点期待値という考え方</h3>
-    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
-      打順を考えるときの共通の物差しが<strong style="color:#eaecf4;">得点期待値</strong>です。これは「この走者状況・アウトカウントから、そのイニングで平均何点入るか」を過去の膨大な試合データから算出した数値で、無死走者なしを基準にすると、走者が進むほど、そしてアウトが少ないほど値は大きくなります。ここから導かれる原則はひとつ、<strong style="color:#eaecf4;">アウトはチームで27個しかない有限の資源であり、自分から差し出す作戦は原則として損</strong>だということです。送りバントや盗塁死が嫌われるのはこのためで、逆に四球を選ぶ、粘ってファウルで球数を稼ぐといった地味なプレーが評価されるのもこの物差しによります。
+    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">得点期待値という考え方</h3>
+    <p style="font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:14px;">
+      打順を考えるときの共通の物差しが<strong style="color:var(--text);">得点期待値</strong>です。これは「この走者状況・アウトカウントから、そのイニングで平均何点入るか」を過去の膨大な試合データから算出した数値で、無死走者なしを基準にすると、走者が進むほど、そしてアウトが少ないほど値は大きくなります。ここから導かれる原則はひとつ、<strong style="color:var(--text);">アウトはチームで27個しかない有限の資源であり、自分から差し出す作戦は原則として損</strong>だということです。送りバントや盗塁死が嫌われるのはこのためで、逆に四球を選ぶ、粘ってファウルで球数を稼ぐといった地味なプレーが評価されるのもこの物差しによります。
     </p>
 
-    <h3 style="font-size:13px;font-weight:700;color:#eaecf4;margin:0 0 6px;">草野球・少年野球での現実的な組み方</h3>
-    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:14px;">
-      プロと違い、草野球や少年野球では選手間の実力差が非常に大きくなります。この場合、理論よりも優先すべき実践的な指針が3つあります。第一に、<strong style="color:#eaecf4;">打てる選手をできるだけ上位に固める</strong>こと。差が大きいほど打席数の配分が結果に直結します。第二に、<strong style="color:#eaecf4;">初心者や苦手な選手を連続させない</strong>こと。3人続くと1イニングが確実に無得点で終わります。第三に、<strong style="color:#eaecf4;">守備位置と打順を切り離して考えない</strong>こと。守備の負担が大きい捕手や投手を上位に置くと、走塁で消耗して守備が乱れることがあります。TACTICIANでは打順と守備配置を同じ画面で確認できるので、この3点をまとめて調整できます。
+    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">草野球・少年野球での現実的な組み方</h3>
+    <p style="font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:14px;">
+      プロと違い、草野球や少年野球では選手間の実力差が非常に大きくなります。この場合、理論よりも優先すべき実践的な指針が3つあります。第一に、<strong style="color:var(--text);">打てる選手をできるだけ上位に固める</strong>こと。差が大きいほど打席数の配分が結果に直結します。第二に、<strong style="color:var(--text);">初心者や苦手な選手を連続させない</strong>こと。3人続くと1イニングが確実に無得点で終わります。第三に、<strong style="color:var(--text);">守備位置と打順を切り離して考えない</strong>こと。守備の負担が大きい捕手や投手を上位に置くと、走塁で消耗して守備が乱れることがあります。TACTICIANでは打順と守備配置を同じ画面で確認できるので、この3点をまとめて調整できます。
     </p>
 
-    <div style="padding:14px 16px;background:rgba(0,230,118,0.04);border:1px solid rgba(0,230,118,0.2);border-radius:10px;font-size:12px;color:#a8adc4;line-height:1.9;">
-      <strong style="color:#00e676;">組み方のコツ：</strong>迷ったら「出塁できる人を1番・2番・9番に、打球を飛ばせる人を4番・6番に」と決めてしまうのが最短ルートです。まずは1パターン作って保存し、試合を重ねながら微調整していくほうが、机上で完璧を目指すより早く最適解に近づきます。
+    <div style="padding:14px 16px;background:rgba(58,168,96,0.04);border:1px solid rgba(58,168,96,0.2);border-radius:10px;font-size:12px;color:var(--muted);line-height:1.9;">
+      <strong style="color:var(--accent);">組み方のコツ：</strong>迷ったら「出塁できる人を1番・2番・9番に、打球を飛ばせる人を4番・6番に」と決めてしまうのが最短ルートです。まずは1パターン作って保存し、試合を重ねながら微調整していくほうが、机上で完璧を目指すより早く最適解に近づきます。
     </div>
   </div>
 </section>
 
 <!-- ── FAQ（可視HTML／head内のFAQ構造化データと対応） ── -->
-<section aria-label="よくある質問" style="padding:26px 16px;border-top:1px solid #1c1f30;background:#070810;position:relative;z-index:1;">
+<section aria-label="よくある質問" style="padding:26px 16px;border-top:1px solid var(--border);background:var(--bg);position:relative;z-index:1;">
   <div style="max-width:640px;margin:0 auto;">
-    <h2 style="font-size:14px;font-weight:700;color:#00e676;margin-bottom:14px;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;">よくある質問（FAQ）</h2>
+    <h2 style="font-size:14px;font-weight:700;color:var(--accent);margin-bottom:14px;font-family:var(--mono);letter-spacing:0.08em;">よくある質問（FAQ）</h2>
 
     <div style="display:flex;flex-direction:column;gap:10px;">
-      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
-        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. 野球のスタメン作成サイトは無料で使えますか？</h3>
-        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. はい、TACTICIANは完全無料で使えます。アカウント登録不要で、ブラウザを開くだけでスタメン作成を始めることができます。</p>
+      <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:var(--card);font-size:13px;font-weight:700;color:var(--text);margin:0;">Q. 野球のスタメン作成サイトは無料で使えますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.9;margin:0;border-top:1px solid var(--border);">A. はい、TACTICIANは完全無料で使えます。アカウント登録不要で、ブラウザを開くだけでスタメン作成を始めることができます。</p>
       </div>
-      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
-        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. スマホでスタメン表を作れますか？</h3>
-        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. はい、スマホ・タブレット・PCのどのデバイスからでも利用できます。アプリのインストールは不要で、ブラウザだけで動作します。ホーム画面に追加すればアプリのように起動することもできます。</p>
+      <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:var(--card);font-size:13px;font-weight:700;color:var(--text);margin:0;">Q. スマホでスタメン表を作れますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.9;margin:0;border-top:1px solid var(--border);">A. はい、スマホ・タブレット・PCのどのデバイスからでも利用できます。アプリのインストールは不要で、ブラウザだけで動作します。ホーム画面に追加すればアプリのように起動することもできます。</p>
       </div>
-      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
-        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. 何人まで選手登録できますか？</h3>
-        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. 人数の上限はありません。草野球チーム・軟式野球チームのメンバーを全員登録してポジションや打順を自由に設定できます。控え選手も登録しておくと、当日の欠席者を外すだけでオーダーが完成します。</p>
+      <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:var(--card);font-size:13px;font-weight:700;color:var(--text);margin:0;">Q. 何人まで選手登録できますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.9;margin:0;border-top:1px solid var(--border);">A. 人数の上限はありません。草野球チーム・軟式野球チームのメンバーを全員登録してポジションや打順を自由に設定できます。控え選手も登録しておくと、当日の欠席者を外すだけでオーダーが完成します。</p>
       </div>
-      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
-        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. スタメン表を印刷・共有できますか？</h3>
-        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. はい、印刷用の一覧表を出力できます。またX（旧Twitter）やLINEなどSNSへのシェアや、データのエクスポートにも対応しています。</p>
+      <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:var(--card);font-size:13px;font-weight:700;color:var(--text);margin:0;">Q. スタメン表を印刷・共有できますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.9;margin:0;border-top:1px solid var(--border);">A. はい、印刷用の一覧表を出力できます。またX（旧Twitter）やLINEなどSNSへのシェアや、データのエクスポートにも対応しています。</p>
       </div>
-      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
-        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. DH制（指名打者）に対応していますか？</h3>
-        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. はい。オーダー画面でDHをオンにすると、守備につかない指名打者を打順に組み込めます。DHを使わない草野球のルールにもそのまま対応しています。</p>
+      <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:var(--card);font-size:13px;font-weight:700;color:var(--text);margin:0;">Q. DH制（指名打者）に対応していますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.9;margin:0;border-top:1px solid var(--border);">A. はい。オーダー画面でDHをオンにすると、守備につかない指名打者を打順に組み込めます。DHを使わない草野球のルールにもそのまま対応しています。</p>
       </div>
-      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
-        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. 入力したデータはどこに保存されますか？</h3>
-        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. お使いのブラウザ内（localStorage）にのみ保存され、外部サーバーへは送信されません。機種変更やブラウザの変更時は、JSONエクスポート機能でデータを書き出して移行してください。</p>
+      <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:var(--card);font-size:13px;font-weight:700;color:var(--text);margin:0;">Q. 入力したデータはどこに保存されますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.9;margin:0;border-top:1px solid var(--border);">A. お使いのブラウザ内（localStorage）にのみ保存され、外部サーバーへは送信されません。機種変更やブラウザの変更時は、JSONエクスポート機能でデータを書き出して移行してください。</p>
       </div>
-      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
-        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. 甲子園・大会形式のベンチ入りメンバー表は作れますか？</h3>
-        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. はい。「選手」タブで各選手を「ベンチ入り登録」すると、背番号順に並んだベンチ入りメンバー表が「スタメン表」タブに自動で追加されます。大会規定のベンチ入り人数に合わせて登録・印刷できます。</p>
+      <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:var(--card);font-size:13px;font-weight:700;color:var(--text);margin:0;">Q. 甲子園・大会形式のベンチ入りメンバー表は作れますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.9;margin:0;border-top:1px solid var(--border);">A. はい。「選手」タブで各選手を「ベンチ入り登録」すると、背番号順に並んだベンチ入りメンバー表が「スタメン表」タブに自動で追加されます。大会規定のベンチ入り人数に合わせて登録・印刷できます。</p>
       </div>
-      <div style="border:1px solid #1c2a3a;border-radius:10px;overflow:hidden;">
-        <h3 style="padding:12px 14px;background:#0d0f18;font-size:13px;font-weight:700;color:#eaecf4;margin:0;">Q. 野球のオーダー作成・スタメン作成サイトとして、他のサービスと何が違いますか？</h3>
-        <p style="padding:12px 14px;font-size:12px;color:#a8adc4;line-height:1.9;margin:0;border-top:1px solid #1c2a3a;">A. TACTICIANは野球のオーダー作成・スタメン作成に特化した無料サイトで、打順表だけでなく守備配置図・投手ローテーション・ベンチ入りメンバー表まで1画面で管理できます。控え選手を含めた戦力整理をしながら打順を組めるので、当日の欠席や継投の判断にもすぐ対応できます。</p>
+      <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+        <h3 style="padding:12px 14px;background:var(--card);font-size:13px;font-weight:700;color:var(--text);margin:0;">Q. 野球のオーダー作成・スタメン作成サイトとして、他のサービスと何が違いますか？</h3>
+        <p style="padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.9;margin:0;border-top:1px solid var(--border);">A. TACTICIANは野球のオーダー作成・スタメン作成に特化した無料サイトで、打順表だけでなく守備配置図・投手ローテーション・ベンチ入りメンバー表まで1画面で管理できます。控え選手を含めた戦力整理をしながら打順を組めるので、当日の欠席や継投の判断にもすぐ対応できます。</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ── 開発ノート ── -->
-<section aria-label="開発ノート" style="padding:26px 16px 30px;border-top:1px solid #1c1f30;background:#070810;position:relative;z-index:1;">
+<section aria-label="開発ノート" style="padding:26px 16px 30px;border-top:1px solid var(--border);background:var(--bg);position:relative;z-index:1;">
   <div style="max-width:640px;margin:0 auto;">
-    <h2 style="font-size:14px;font-weight:700;color:#00e676;margin-bottom:10px;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;">開発ノート — このツールを作った理由</h2>
-    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:12px;">
+    <h2 style="font-size:14px;font-weight:700;color:var(--accent);margin-bottom:10px;font-family:var(--mono);letter-spacing:0.08em;">開発ノート — このツールを作った理由</h2>
+    <p style="font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:12px;">
       TACTICIANは、草野球チームの試合前に毎回起きていた「打順どうする問題」を片付けるために作りました。集合場所でスマホのメモ帳に打順を書き、誰かが「あいつ今日来られないって」と言い出すたびに全部打ち直す。書き終わってLINEに貼ったら守備位置が抜けている。この往復を毎週やっていて、単純にもったいないと感じたのが出発点です。
     </p>
-    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:12px;">
-      作るうえで決めたことは3つあります。1つ目は<strong style="color:#eaecf4;">ログインを作らない</strong>こと。試合前の慌ただしいグラウンドでパスワードを思い出させるツールは使われません。2つ目は<strong style="color:#eaecf4;">データを外に出さない</strong>こと。チームメイトの名前が入るので、サーバーに置かずブラウザ内保存だけにしています。3つ目は<strong style="color:#eaecf4;">紙でも成立させる</strong>こと。審判に提出するオーダー表は今も紙が必要な場面があるため、印刷レイアウトを最初から作り込みました。
+    <p style="font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:12px;">
+      作るうえで決めたことは3つあります。1つ目は<strong style="color:var(--text);">ログインを作らない</strong>こと。試合前の慌ただしいグラウンドでパスワードを思い出させるツールは使われません。2つ目は<strong style="color:var(--text);">データを外に出さない</strong>こと。チームメイトの名前が入るので、サーバーに置かずブラウザ内保存だけにしています。3つ目は<strong style="color:var(--text);">紙でも成立させる</strong>こと。審判に提出するオーダー表は今も紙が必要な場面があるため、印刷レイアウトを最初から作り込みました。
     </p>
-    <p style="font-size:12px;color:#a8adc4;line-height:1.9;margin-bottom:12px;">
+    <p style="font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:12px;">
       公開後に一番反応があったのは、実は守備配置図でした。文字だけの打順表より、フィールド図に名前が載っているほうがチームに伝わるという当たり前のことに、作ってから気づかされました。天気チェック機能を後から足したのも「そもそも試合があるのか」を先に知りたいという実際の使われ方に合わせた結果です。
     </p>
-    <h3 style="font-size:12px;font-weight:700;color:#eaecf4;margin:18px 0 8px;font-family:'JetBrains Mono',monospace;letter-spacing:0.06em;">TACTICIANの更新履歴</h3>
-    <ul style="font-size:12px;color:#a8adc4;line-height:1.9;margin:0 0 14px 1.2em;padding:0;">
-      <li><strong style="color:#eaecf4;">2026年10月10日</strong> — スタメン表と画像書き出しをスコアブック風のデザインに刷新。守備位置にスコアブックの番号（投手=1〜右翼=9）を表示。</li>
-      <li><strong style="color:#eaecf4;">2026年8月15日</strong> — スタメン表を画像として書き出し、X・LINEなどに共有できる機能を追加。</li>
-      <li><strong style="color:#eaecf4;">2026年8月8日</strong> — 甲子園モード（背番号順のベンチ入りメンバー表）を追加。</li>
-      <li><strong style="color:#eaecf4;">2026年8月1日</strong> — 打順の考え方の解説・使い方・FAQ・この開発ノートを追加。</li>
+    <h3 style="font-size:12px;font-weight:700;color:var(--text);margin:18px 0 8px;font-family:var(--mono);letter-spacing:0.06em;">TACTICIANの更新履歴</h3>
+    <ul style="font-size:12px;color:var(--muted);line-height:1.9;margin:0 0 14px 1.2em;padding:0;">
+      <li><strong style="color:var(--text);">2026年10月10日</strong> — スタメン表と画像書き出しをスコアブック風のデザインに刷新。守備位置にスコアブックの番号（投手=1〜右翼=9）を表示。</li>
+      <li><strong style="color:var(--text);">2026年8月15日</strong> — スタメン表を画像として書き出し、X・LINEなどに共有できる機能を追加。</li>
+      <li><strong style="color:var(--text);">2026年8月8日</strong> — 甲子園モード（背番号順のベンチ入りメンバー表）を追加。</li>
+      <li><strong style="color:var(--text);">2026年8月1日</strong> — 打順の考え方の解説・使い方・FAQ・この開発ノートを追加。</li>
     </ul>
-    <p style="font-size:12px;color:#555878;line-height:1.9;">
-      個人開発のツールなので、要望や不具合の報告はいつでも歓迎です。<a href="https://x.com/mira11554" target="_blank" rel="noopener" style="color:#00e676;text-decoration:underline;">𝕏</a> から気軽に投げてください。
+    <p style="font-size:12px;color:var(--muted);line-height:1.9;">
+      個人開発のツールなので、要望や不具合の報告はいつでも歓迎です。<a href="/contact.html" style="color:var(--accent);text-decoration:underline;">お問い合わせ</a>から気軽に送ってください。
     </p>
   </div>
 </section>
 
-<section aria-label="打撃成績記録" style="background:#07090f;border-top:1px solid #1c1f30;padding:18px 16px;text-align:center;position:relative;z-index:1;">
-  <p style="font-size:11px;color:#555878;margin:0 0 10px;letter-spacing:.05em;">⚾ スタメンが決まったら、試合後の成績を記録しよう</p>
-  <a href="https://somirai.jp/batting-stats/" onclick="gtag('event','cross_tool_click',{from:'tactician_cta',to:'lumber'})" style="display:inline-flex;align-items:center;gap:6px;background:#0d2a18;color:#00e676;padding:10px 20px;border-radius:8px;text-decoration:none;border:1px solid rgba(0,230,118,.4);font-size:13px;font-weight:700;">⚾ LUMBER で打撃成績を記録 →</a>
+<section aria-label="打撃成績記録" style="background:var(--card);border-top:1px solid var(--border);padding:18px 16px;text-align:center;position:relative;z-index:1;">
+  <p style="font-size:11px;color:var(--muted);margin:0 0 10px;letter-spacing:.05em;">スタメンが決まったら、試合後の成績を記録しよう</p>
+  <a href="https://somirai.jp/batting-stats/" onclick="gtag('event','cross_tool_click',{from:'tactician_cta',to:'lumber'})" style="display:inline-flex;align-items:center;gap:6px;background:var(--card);color:var(--accent);padding:10px 20px;border-radius:8px;text-decoration:none;border:1px solid rgba(58,168,96,.4);font-size:13px;font-weight:700;">LUMBER で打撃成績を記録 →</a>
 </section>
 
-<a id="mp-card" href="https://somirai.jp/player/" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'tactician'})" style="display:none;align-items:center;gap:10px;max-width:480px;margin:16px auto 0;background:rgba(232,196,104,0.06);border:1px solid rgba(232,196,104,0.3);border-radius:10px;padding:12px 14px;text-decoration:none;">
-  <span style="font-size:18px;">⭐</span>
+<a id="mp-card" href="https://somirai.jp/player/" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'tactician'})" style="display:none;align-items:center;gap:10px;max-width:480px;margin:16px auto 0;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;text-decoration:none;">
+  <span style="font-size:18px;"></span>
   <span style="flex:1;">
-    <span style="display:block;font-size:12px;font-weight:700;color:#e8c468;">MY PLAYER</span>
-    <span style="display:block;font-size:11px;color:#a8adc4;">TACTICIANの利用状況もステータスに反映されています →</span>
+    <span style="display:block;font-size:12px;font-weight:700;color:var(--accent);">MY PLAYER</span>
+    <span style="display:block;font-size:11px;color:var(--muted);">TACTICIANの利用状況もステータスに反映されています →</span>
   </span>
 </a>
 <script>(function(){try{if(localStorage.getItem('somirai:seen')){var e=document.getElementById('mp-card');if(e)e.style.display='flex';}else{localStorage.setItem('somirai:seen','1');}function ld(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}var t=ld(new Date()),r=localStorage.getItem('somirai:streak'),s=r?JSON.parse(r):null;if(!s||s.lastDate!==t){var y=ld(new Date(Date.now()-864e5));localStorage.setItem('somirai:streak',JSON.stringify({lastDate:t,count:(s&&s.lastDate===y)?s.count+1:1}));}}catch(e){}})();</script>
 
-<section aria-label="関連ツール" style="background:#070810;border-top:1px solid #1c1f30;padding:28px 16px 20px;position:relative;z-index:1;">
-  <p style="font-size:10px;color:#555878;margin:0 0 16px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;text-align:center;">Somirai Lab の他のツール</p>
+<section aria-label="関連ツール" style="background:var(--bg);border-top:1px solid var(--border);padding:28px 16px 20px;position:relative;z-index:1;">
+  <p style="font-size:10px;color:var(--muted);margin:0 0 16px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;text-align:center;">Somirai Lab の他のツール</p>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:480px;margin:0 auto;">
-    <a href="https://somirai.jp/batting-stats/" onclick="gtag('event','cross_tool_click',{from:'tactician',to:'lumber'})" style="display:flex;flex-direction:column;gap:3px;background:#0d0f18;color:#eaecf4;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c2a3a;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c2a3a'">
-      <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">⚾ LUMBER</span>
-      <span style="font-size:10px;color:#555878;line-height:1.4;">打撃成績・チームスタッツ管理</span>
+    <a href="https://somirai.jp/batting-stats/" onclick="gtag('event','cross_tool_click',{from:'tactician',to:'lumber'})" style="display:flex;flex-direction:column;gap:3px;background:var(--card);color:var(--text);padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid var(--border);transition:border-color .15s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='#1c2a3a'">
+      <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">LUMBER</span>
+      <span style="font-size:10px;color:var(--muted);line-height:1.4;">打撃成績・チームスタッツ管理</span>
     </a>
-    <a href="https://somirai.jp/habit/" onclick="gtag('event','cross_tool_click',{from:'tactician',to:'temper'})" style="display:flex;flex-direction:column;gap:3px;background:#0d0f18;color:#eaecf4;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c2a3a;transition:border-color .15s;" onmouseover="this.style.borderColor='#f97316'" onmouseout="this.style.borderColor='#1c2a3a'">
-      <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">🔥 TEMPER</span>
-      <span style="font-size:10px;color:#555878;line-height:1.4;">習慣トラッカー・ストリーク管理</span>
+    <a href="https://somirai.jp/habit/" onclick="gtag('event','cross_tool_click',{from:'tactician',to:'temper'})" style="display:flex;flex-direction:column;gap:3px;background:var(--card);color:var(--text);padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid var(--border);transition:border-color .15s;" onmouseover="this.style.borderColor='#f97316'" onmouseout="this.style.borderColor='#1c2a3a'">
+      <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">TEMPER</span>
+      <span style="font-size:10px;color:var(--muted);line-height:1.4;">習慣トラッカー・ストリーク管理</span>
     </a>
-    <a href="https://somirai.jp/write/" onclick="gtag('event','cross_tool_click',{from:'tactician',to:'marginalia'})" style="display:flex;flex-direction:column;gap:3px;background:#0d0f18;color:#eaecf4;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c2a3a;transition:border-color .15s;" onmouseover="this.style.borderColor='#d4a853'" onmouseout="this.style.borderColor='#1c2a3a'">
-      <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">✏️ MARGINALIA</span>
-      <span style="font-size:10px;color:#555878;line-height:1.4;">メモ・ToDo管理・レベルアップ</span>
+    <a href="https://somirai.jp/write/" onclick="gtag('event','cross_tool_click',{from:'tactician',to:'marginalia'})" style="display:flex;flex-direction:column;gap:3px;background:var(--card);color:var(--text);padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid var(--border);transition:border-color .15s;" onmouseover="this.style.borderColor='#d4a853'" onmouseout="this.style.borderColor='#1c2a3a'">
+      <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">MARGINALIA</span>
+      <span style="font-size:10px;color:var(--muted);line-height:1.4;">メモ・ToDo管理・レベルアップ</span>
     </a>
-    <a href="https://somirai.jp/savings/" onclick="gtag('event','cross_tool_click',{from:'tactician',to:'kura'})" style="display:flex;flex-direction:column;gap:3px;background:#0d0f18;color:#eaecf4;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c2a3a;transition:border-color .15s;" onmouseover="this.style.borderColor='#fbbf24'" onmouseout="this.style.borderColor='#1c2a3a'">
-      <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">💰 KURA</span>
-      <span style="font-size:10px;color:#555878;line-height:1.4;">家計簿・貯蓄管理</span>
+    <a href="https://somirai.jp/savings/" onclick="gtag('event','cross_tool_click',{from:'tactician',to:'kura'})" style="display:flex;flex-direction:column;gap:3px;background:var(--card);color:var(--text);padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid var(--border);transition:border-color .15s;" onmouseover="this.style.borderColor='#fbbf24'" onmouseout="this.style.borderColor='#1c2a3a'">
+      <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">KURA</span>
+      <span style="font-size:10px;color:var(--muted);line-height:1.4;">家計簿・貯蓄管理</span>
     </a>
   </div>
 </section>
-<section aria-label="関連記事" style="background:#070810;border-top:1px solid #1c1f30;padding:24px 16px 20px;position:relative;z-index:1;">
-  <p style="font-size:10px;color:#555878;margin:0 0 14px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;text-align:center;">野球・スタメン管理の関連記事</p>
+<section aria-label="関連記事" style="background:var(--bg);border-top:1px solid var(--border);padding:24px 16px 20px;position:relative;z-index:1;">
+  <p style="font-size:10px;color:var(--muted);margin:0 0 14px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;text-align:center;">野球・スタメン管理の関連記事</p>
   <div style="display:flex;flex-direction:column;gap:8px;max-width:480px;margin:0 auto;">
-    <a href="https://somirai.jp/blog/baseball-order-sheet.html" onclick="gtag('event','blog_link_click',{from:'tactician',article:'order-sheet-guide'})" style="display:flex;align-items:center;gap:10px;background:#0d0f18;color:#eaecf4;padding:11px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c2a3a;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c2a3a'">
-      <span style="font-size:16px;flex-shrink:0;">📄</span>
-      <span style="font-size:12px;line-height:1.45;">野球のオーダー表とは？書き方・提出ルール<span style="display:block;font-size:10px;color:#555878;margin-top:2px;">記載項目・記入例・印刷して使える無料テンプレート</span></span>
+    <a href="https://somirai.jp/blog/baseball-order-sheet.html" onclick="gtag('event','blog_link_click',{from:'tactician',article:'order-sheet-guide'})" style="display:flex;align-items:center;gap:10px;background:var(--card);color:var(--text);padding:11px 13px;border-radius:8px;text-decoration:none;border:1px solid var(--border);transition:border-color .15s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='#1c2a3a'">
+
+      <span style="font-size:12px;line-height:1.45;">野球のオーダー表とは？書き方・提出ルール<span style="display:block;font-size:10px;color:var(--muted);margin-top:2px;">記載項目・記入例・印刷して使える無料テンプレート</span></span>
     </a>
-    <a href="https://somirai.jp/blog/baseball-order-maker.html" onclick="gtag('event','blog_link_click',{from:'tactician',article:'order-maker-guide'})" style="display:flex;align-items:center;gap:10px;background:#0d0f18;color:#eaecf4;padding:11px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c2a3a;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c2a3a'">
-      <span style="font-size:16px;flex-shrink:0;">📋</span>
-      <span style="font-size:12px;line-height:1.45;">野球オーダー作成サイトの使い方ガイド<span style="display:block;font-size:10px;color:#555878;margin-top:2px;">スタメン表・守備配置図を5分で完成させる方法</span></span>
+    <a href="https://somirai.jp/blog/baseball-order-maker.html" onclick="gtag('event','blog_link_click',{from:'tactician',article:'order-maker-guide'})" style="display:flex;align-items:center;gap:10px;background:var(--card);color:var(--text);padding:11px 13px;border-radius:8px;text-decoration:none;border:1px solid var(--border);transition:border-color .15s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='#1c2a3a'">
+
+      <span style="font-size:12px;line-height:1.45;">野球オーダー作成サイトの使い方ガイド<span style="display:block;font-size:10px;color:var(--muted);margin-top:2px;">スタメン表・守備配置図を5分で完成させる方法</span></span>
     </a>
-    <a href="https://somirai.jp/blog/baseball-stamen-guide.html" onclick="gtag('event','blog_link_click',{from:'tactician',article:'stamen-guide'})" style="display:flex;align-items:center;gap:10px;background:#0d0f18;color:#eaecf4;padding:11px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c2a3a;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c2a3a'">
-      <span style="font-size:16px;flex-shrink:0;">📝</span>
-      <span style="font-size:12px;line-height:1.45;">野球スタメン表の書き方・作り方<span style="display:block;font-size:10px;color:#555878;margin-top:2px;">守備ポジション番号の早見表・手書き手順</span></span>
+    <a href="https://somirai.jp/blog/baseball-stamen-guide.html" onclick="gtag('event','blog_link_click',{from:'tactician',article:'stamen-guide'})" style="display:flex;align-items:center;gap:10px;background:var(--card);color:var(--text);padding:11px 13px;border-radius:8px;text-decoration:none;border:1px solid var(--border);transition:border-color .15s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='#1c2a3a'">
+
+      <span style="font-size:12px;line-height:1.45;">野球スタメン表の書き方・作り方<span style="display:block;font-size:10px;color:var(--muted);margin-top:2px;">守備ポジション番号の早見表・手書き手順</span></span>
     </a>
-    <a href="https://somirai.jp/blog/baseball-batting-order.html" onclick="gtag('event','blog_link_click',{from:'tactician',article:'batting-order-guide'})" style="display:flex;align-items:center;gap:10px;background:#0d0f18;color:#eaecf4;padding:11px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c2a3a;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c2a3a'">
-      <span style="font-size:16px;flex-shrink:0;">⚾</span>
-      <span style="font-size:12px;line-height:1.45;">野球の打順の組み方 完全解説<span style="display:block;font-size:10px;color:#555878;margin-top:2px;">1〜9番の役割・クリーンナップの選び方</span></span>
+    <a href="https://somirai.jp/blog/baseball-batting-order.html" onclick="gtag('event','blog_link_click',{from:'tactician',article:'batting-order-guide'})" style="display:flex;align-items:center;gap:10px;background:var(--card);color:var(--text);padding:11px 13px;border-radius:8px;text-decoration:none;border:1px solid var(--border);transition:border-color .15s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='#1c2a3a'">
+
+      <span style="font-size:12px;line-height:1.45;">野球の打順の組み方 完全解説<span style="display:block;font-size:10px;color:var(--muted);margin-top:2px;">1〜9番の役割・クリーンナップの選び方</span></span>
     </a>
   </div>
 </section>
 
-<footer style="text-align:center;padding:16px;font-size:11px;color:#555878;background:#070810;border-top:1px solid #1c1f30;position:relative;z-index:1;">
-  <div>© 2026 <a href="/" style="color:#00e676;text-decoration:none;font-weight:700;">Somirai Lab</a></div>
+<footer style="text-align:center;padding:16px;font-size:11px;color:var(--muted);background:var(--bg);border-top:1px solid var(--border);position:relative;z-index:1;">
+  <div>© 2026 <a href="/" style="color:var(--accent);text-decoration:none;font-weight:700;">Somirai Lab</a></div>
   <nav aria-label="サイト内リンク" style="margin-top:4px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
-    <a href="guide.html" style="color:#555878;text-decoration:underline;">使い方ガイド</a>
-    <a href="https://somirai.jp/blog/" style="color:#555878;text-decoration:underline;">ブログ</a>
-    <a href="https://somirai.jp/about.html" style="color:#555878;text-decoration:underline;">About</a>
-    <a href="/privacy.html" style="color:#555878;text-decoration:underline;">プライバシーポリシー</a>
-    <a href="https://x.com/mira11554" target="_blank" rel="noopener" style="color:#555878;text-decoration:underline;">𝕏 お問い合わせ</a>
+    <a href="guide.html" style="color:var(--muted);text-decoration:underline;">使い方ガイド</a>
+    <a href="https://somirai.jp/blog/" style="color:var(--muted);text-decoration:underline;">ブログ</a>
+    <a href="https://somirai.jp/about.html" style="color:var(--muted);text-decoration:underline;">About</a>
+    <a href="/privacy.html" style="color:var(--muted);text-decoration:underline;">プライバシーポリシー</a>
+    <a href="/contact.html" style="color:var(--muted);text-decoration:underline;">お問い合わせ</a>
   </nav>
 </footer>
 
@@ -3041,6 +2953,7 @@ if (players.length === 0 && window.innerWidth >= 768) {
 <script>
 (function(){
   var COLOR_MAP = {
+    '#3AA860':'rgba(58,168,96,0.1)',
     '#00e676':'rgba(0,230,118,0.1)',
     '#ffd700':'rgba(255,215,0,0.1)',
     '#60a5fa':'rgba(96,165,250,0.1)',
@@ -3053,7 +2966,12 @@ if (players.length === 0 && window.innerWidth >= 768) {
   var btn = document.getElementById('om-btn-color');
   var palette = document.getElementById('om-color-palette');
   var dot = document.getElementById('om-color-dot');
-  var saved = localStorage.getItem('om-accentColor') || '#00e676';
+  var saved = localStorage.getItem('om-accentColor') || '#3AA860';
+  var currentAccent = saved;
+  // 明るい背景のとき、アクセント色は同じ色味の濃い色にして、文字として読めるようにする
+  var COLOR_LIGHT = { '#3AA860':'#1E6B38', '#00e676':'#1E6B38', '#ffd700':'#8A6A00', '#60a5fa':'#1D5FB8', '#f472b6':'#B02A6E', '#a78bfa':'#6A4FC9', '#fb923c':'#B45309', '#34d399':'#1E7A55', '#f87171':'#B91C1C' };
+  function isLightBg(){ return ['light','white','chalk'].indexOf(localStorage.getItem('om-bgPreset') || 'chalk') >= 0; }
+  window.__omReapplyAccent = function(){ applyColor(currentAccent); };
   applyColor(saved);
 
   btn.addEventListener('click', function(e){
@@ -3077,8 +2995,10 @@ if (players.length === 0 && window.innerWidth >= 768) {
   });
 
   function applyColor(c){
-    document.documentElement.style.setProperty('--accent', c);
-    document.documentElement.style.setProperty('--accent-soft', COLOR_MAP[c] || 'rgba(0,230,118,0.1)');
+    currentAccent = c;
+    var shown = (isLightBg() && COLOR_LIGHT[c]) || c;
+    document.documentElement.style.setProperty('--accent', shown);
+    document.documentElement.style.setProperty('--accent-soft', COLOR_MAP[c] || 'rgba(58,168,96,0.1)');
     if(dot) dot.style.background = c;
     document.querySelectorAll('#om-color-palette .palette-swatch[data-color]').forEach(function(s){
       s.classList.toggle('active', s.dataset.color === c);

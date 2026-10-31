@@ -4,8 +4,8 @@
   "description": "草野球・軟式野球向けのスタメン・打順・守備ポジション作成ツール",
   "start_url": "/order-maker/",
   "display": "standalone",
-  "background_color": "#1c1c21",
-  "theme_color": "#1c1c21",
+  "background_color": "#F5F7F6",
+  "theme_color": "#F5F7F6",
   "orientation": "portrait-primary",
   "lang": "ja",
   "icons": [
