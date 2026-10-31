@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9回制トレタイマー【無料】道具なしの野球トレーニングを試合のように | Somirai Lab</title>
+<meta name="description" content="1セットを1イニングに見立てて、表と裏で種目を切り替える野球のトレーニングタイマー。打者・投手・守備・走塁の目的別に、道具なしの種目つき。音と振動でお知らせ、9回が終わればゲームセット。登録不要・無料。">
+<meta name="keywords" content="野球 トレーニング タイマー,野球 冬トレ,道具なし 野球 トレーニング,インターバルタイマー 野球,少年野球 トレーニング">
+<link rel="canonical" href="https://somirai.jp/training-timer/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://somirai.jp/training-timer/">
+<meta property="og:title" content="9回制トレタイマー【無料】道具なしの野球トレを試合のように">
+<meta property="og:description" content="1セットが1イニング。表と裏で種目が変わり、9回でゲームセット。打者・投手・守備・走塁の目的別メニューつき。">
+<meta property="og:site_name" content="Somirai Lab">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#2B2420">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"9回制トレタイマー","url":"https://somirai.jp/training-timer/","description":"1セットを1イニングに見立て、表と裏で種目を切り替える野球のトレーニングタイマー。道具なしの種目つき。","applicationCategory":"SportsApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","author":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"}}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/tokens.css">
+<link rel="stylesheet" href="/shared/tool.css">
+<style>
+  .run[hidden], .setup[hidden], .done[hidden] { display: none; }
+  .inning-plate { width: 168px; height: 150px; margin: 18px auto 0; }
+  .inning-plate .n { font-size: 2.6rem; line-height: 1.1; font-weight: 700; }
+  .inning-plate .l { font-size: .9rem; }
+  .clock { margin-top: 14px; background: #14110F; border-radius: 4px; padding: 16px 12px 14px; text-align: center; }
+  .clock .phase { font-family: var(--board); color: #F5F7F6; font-size: 1.1rem; }
+  .clock .sec { font-family: var(--board); color: var(--liner); font-size: 6.4rem; line-height: 1.1; }
+  .clock.rest .sec { color: var(--sky); }
+  .now { margin-top: 16px; text-align: center; }
+  .now .name { font-size: 1.7rem; font-weight: 700; line-height: 1.4; }
+  .now .next { font-size: .9375rem; color: var(--ink-sec); margin-top: 4px; }
+  .sb { margin-top: 18px; overflow-x: auto; }
+  .sb table { border-collapse: collapse; width: 100%; text-align: center; font-family: var(--board); font-size: 1rem; }
+  .sb th, .sb td { padding: 4px 2px; min-width: 26px; }
+  .sb th { color: var(--ink-sec); font-weight: 400; }
+  .sb td.l { text-align: left; font-family: var(--body); font-size: .875rem; color: var(--ink-sec); }
+  .sb td.done { color: var(--turf); }
+  .sb td.cur { color: var(--ink); background: var(--liner); }
+  .sb td.pend { color: var(--rule); }
+  .ctl { display: flex; gap: 8px; margin-top: 18px; }
+  .ctl button { flex: 1; min-height: 56px; border: 2px solid var(--ink); border-radius: 4px; background: none; font-weight: 700; font-size: 1.05rem; }
+  .ctl .main { background: var(--btn-bg); border-color: var(--btn-bg); color: var(--btn-ink); flex: 2; }
+  .est { margin-top: 12px; font-weight: 700; }
+  .check { display: flex; align-items: center; gap: 10px; min-height: 48px; margin-top: 4px; }
+  .check input { width: 22px; height: 22px; accent-color: var(--turf-deep); }
+  .set-over { font-family: var(--body); font-size: 2.4rem; font-weight: 700; text-align: center; margin-top: 24px; }
+  .stat { display: flex; justify-content: space-between; border-bottom: 1px solid var(--rule); padding: 8px 0; }
+  .stat b { font-size: 1.2rem; }
+  .caution { margin-top: 16px; padding: 10px 12px; border-left: 5px solid var(--liner); font-size: .875rem; color: var(--ink-sec); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="/" class="nav-logo" aria-label="Somirai Lab トップへ">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#111114"/><stop offset="100%" stop-color="#0a0a0b"/></linearGradient><linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff6428"/><stop offset="100%" stop-color="#e84410"/></linearGradient></defs><rect width="120" height="120" rx="24" fill="url(#n1)"/><circle cx="60" cy="52" r="18" fill="url(#n2)"/><circle cx="56" cy="47" r="6" fill="#fff" opacity=".2"/><path d="M60 28 L63 46 L60 52 L57 46Z" fill="#ffb088" opacity=".7"/><path d="M36 52 L52 54 L60 52 L52 50Z" fill="#ffb088" opacity=".55"/><path d="M84 52 L68 54 L60 52 L68 50Z" fill="#ffb088" opacity=".55"/></svg>
+      <span>Somirai Lab</span>
+    </a>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
+  </div>
+
+  <header class="head">
+    <h1>9回制トレタイマー</h1>
+    <p class="sub">1セットが1イニング。道具なしで、表と裏を切り替えながら</p>
+  </header>
+
+  <!-- 設定 -->
+  <section class="setup" id="setup">
+    <div class="field">
+      <span class="lbl">目的</span>
+      <div class="seg" id="goalSeg" role="group" aria-label="目的"></div>
+    </div>
+    <div class="field" id="customWrap" hidden>
+      <label for="custom" class="lbl">種目(1行に1つ。順に使います)</label>
+      <textarea class="in" id="custom" style="min-height:120px" placeholder="スクワット&#10;プランク&#10;ランジ"></textarea>
+    </div>
+    <div class="field">
+      <span class="lbl">回数</span>
+      <div class="seg" id="innSeg" role="group" aria-label="回数">
+        <button type="button" aria-pressed="false" data-v="3">3回</button>
+        <button type="button" aria-pressed="false" data-v="5">5回</button>
+        <button type="button" aria-pressed="false" data-v="7">7回</button>
+        <button type="button" aria-pressed="true" data-v="9">9回</button>
+      </div>
+    </div>
+    <div class="field">
+      <span class="lbl">運動(秒)</span>
+      <div class="seg" id="workSeg" role="group" aria-label="運動の秒数">
+        <button type="button" aria-pressed="false" data-v="20">20</button>
+        <button type="button" aria-pressed="true" data-v="30">30</button>
+        <button type="button" aria-pressed="false" data-v="40">40</button>
+        <button type="button" aria-pressed="false" data-v="60">60</button>
+      </div>
+    </div>
+    <div class="field">
+      <span class="lbl">休憩(秒)</span>
+      <div class="seg" id="restSeg" role="group" aria-label="休憩の秒数">
+        <button type="button" aria-pressed="false" data-v="10">10</button>
+        <button type="button" aria-pressed="true" data-v="15">15</button>
+        <button type="button" aria-pressed="false" data-v="20">20</button>
+        <button type="button" aria-pressed="false" data-v="30">30</button>
+      </div>
+    </div>
+    <label class="check"><input type="checkbox" id="sound" checked> 音と振動でお知らせする</label>
+    <p class="est" id="est"></p>
+    <button class="btn-main" id="start" type="button">プレイボール</button>
+    <p class="caution">痛みや違和感があるときは、すぐに中止してください。成長期のお子さんは、無理のない回数と強さで行ってください。一般的な運動の目安であり、医療や指導の助言ではありません。</p>
+  </section>
+
+  <!-- 実行中 -->
+  <section class="run" id="run" hidden>
+    <div class="plate inning-plate" aria-live="polite"><span class="n" id="inn">1回表</span><span class="l" id="innSub">運動</span></div>
+    <div class="clock" id="clock"><div class="phase" id="phase">運動</div><div class="sec" id="sec">30</div></div>
+    <div class="now"><div class="name" id="exName"></div><div class="next" id="exNext"></div></div>
+    <div class="sb"><table id="sb" aria-label="イニングの進み具合"></table></div>
+    <div class="ctl">
+      <button type="button" id="stop">やめる</button>
+      <button type="button" id="skip">次へ</button>
+      <button type="button" class="main" id="pause">一時停止</button>
+    </div>
+  </section>
+
+  <!-- ゲームセット -->
+  <section class="done" id="done" hidden>
+    <p class="set-over">ゲームセット</p>
+    <div class="stat"><span>今回のメニュー</span><b id="dMenu"></b></div>
+    <div class="stat"><span>かかった時間</span><b id="dTime"></b></div>
+    <div class="stat"><span>今週やった日数</span><b id="dWeek"></b></div>
+    <div class="stat"><span>連続日数</span><b id="dStreak"></b></div>
+    <button class="btn-main" id="share" type="button">結果を共有する</button>
+    <button class="btn-sub" id="again" type="button">もう一度やる</button>
+    <button class="btn-sub" id="back" type="button">設定に戻る</button>
+  </section>
+
+  <details>
+    <summary>よくある質問</summary>
+    <p><b>なぜ9回制なのですか。</b><br>野球の試合のように「表と裏、9回」で区切ると、終わりが見えて最後まで続けやすくなります。少年野球向けに、3回・5回・7回も選べます。</p>
+    <p><b>画面を消すと止まりますか。</b><br>実行中は、対応している端末では画面を点けたままにします。ほかのアプリに切り替えても時間は進みますが、音が鳴らない場合があります。</p>
+    <p><b>記録はどこに保存されますか。</b><br>やった日の記録は、お使いの端末のブラウザの中だけに保存します。サーバーには送りません。</p>
+  </details>
+
+  <footer>
+    <a href="/privacy.html">プライバシーポリシー</a>
+    <a href="/">Somirai Lab トップ</a>
+    <a href="/habit/">TEMPER(習慣トラッカー)</a>
+    <a href="/pitch-counter/">投球数カウンター</a>
+  </footer>
+</div>
+
+<script src="/shared/tool.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const KEY = 'somirai-train-v1', LOG = 'somirai-train-log-v1';
+const MENUS = {
+  batter: { name: '打者',
+    top: ['立ったまま体幹回旋', 'シャドースイング(バットなし)', 'スクワット', 'ヒップヒンジ(お尻を引く)', 'スプリットスクワット(左右)', '腕立て伏せ(膝つきでもOK)', 'プランク', 'サイドプランク(左右)', 'もも上げ'],
+    bottom: ['股関節まわし', '片脚バランス(左右)', 'カーフレイズ', '肩甲骨まわし', 'ブリッジ', '四つ這いで背中をひねる', 'スクワット保持', 'クランチ', 'もも前・もも裏のストレッチ'] },
+  pitcher: { name: '投手',
+    top: ['肩甲骨を寄せる(立って)', '股関節まわし', '片脚バランス(左右)', 'スクワット', 'ヒップヒンジ(お尻を引く)', 'プランク', 'サイドプランク(左右)', 'ランジ(前後)', 'ブリッジ'],
+    bottom: ['胸のストレッチ(壁)', '肩まわし(小さく)', '体幹ひねり', 'カーフレイズ', '四つ這いで背骨まわし', 'クランチ', '寝て脚上げ', 'もも前のストレッチ', '深呼吸'] },
+  fielder: { name: '守備',
+    top: ['反応ステップ(その場で小刻み)', '横ステップ(左右)', 'ゴロ捕球の姿勢でキープ', 'シャッフル', 'バックステップ', 'スクワット', 'ランジ(前後)', 'もも上げ', '片脚バランス(左右)'],
+    bottom: ['股関節まわし', 'もも裏のストレッチ', 'アキレス腱伸ばし', '足首まわし', '体幹ひねり', 'プランク', 'カーフレイズ', '肩甲骨まわし', '深呼吸'] },
+  runner: { name: '走塁',
+    top: ['スタート姿勢をキープ', 'その場でもも上げ', 'スクワット', 'ランジ(前後)', 'カーフレイズ', '片脚バランス(左右)', 'その場で速い足踏み', 'ヒップヒンジ(お尻を引く)', 'プランク'],
+    bottom: ['足首まわし', 'アキレス腱伸ばし', 'もも前のストレッチ', 'もも裏のストレッチ', '股関節まわし', 'ブリッジ', 'クランチ', '深呼吸', '肩まわし'] },
+  custom: { name: '自分で入力' }
+};
+const C = Object.assign({ goal: 'batter', inn: 9, work: 30, rest: 15, sound: true, custom: '' }, Tool.load(KEY, {}));
+let run = null, ctx = null, wake = null, tickId = null;
+const vib = ms => { if (C.sound) Tool.buzz(ms); };
+
+/* ---- 設定画面 ---- */
+function drawSetup() {
+  $('#goalSeg').innerHTML = Object.entries(MENUS).map(([k, m]) => `<button type="button" aria-pressed="${k === C.goal}" data-k="${k}">${m.name}</button>`).join('');
+  $('#goalSeg').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { C.goal = b.dataset.k; drawSetup(); }));
+  $('#customWrap').hidden = C.goal !== 'custom';
+  [['innSeg', 'inn'], ['workSeg', 'work'], ['restSeg', 'rest']].forEach(([id, k]) => $('#' + id).querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.v === C[k])));
+  $('#sound').checked = C.sound; $('#custom').value = C.custom;
+  const n = C.inn * 2, total = n * C.work + (n - 1) * C.rest;
+  $('#est').textContent = `全部で ${Math.floor(total / 60)}分${String(total % 60).padStart(2, '0')}秒(${C.inn}回 × 表裏)`;
+  Tool.save(KEY, C);
+}
+[['innSeg', 'inn'], ['workSeg', 'work'], ['restSeg', 'rest']].forEach(([id, k]) => $('#' + id).querySelectorAll('button').forEach(b => b.addEventListener('click', () => { C[k] = +b.dataset.v; drawSetup(); })));
+$('#sound').addEventListener('change', () => { C.sound = $('#sound').checked; drawSetup(); });
+$('#custom').addEventListener('input', () => { C.custom = $('#custom').value; Tool.save(KEY, C); });
+
+/* ---- フェーズの組み立て ---- */
+function exercises() {
+  if (C.goal === 'custom') {
+    const l = C.custom.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+    return { top: l, bottom: l, shared: true };
+  }
+  return MENUS[C.goal];
+}
+function buildPhases() {
+  const ex = exercises(), ph = [];
+  let k = 0;
+  for (let i = 1; i <= C.inn; i++) for (const half of ['表', '裏']) {
+    const list = half === '表' ? ex.top : ex.bottom;
+    const name = ex.shared ? list[k++ % list.length] : list[(i - 1) % list.length];
+    ph.push({ type: 'work', inning: i, half, sec: C.work, name });
+    if (!(i === C.inn && half === '裏')) ph.push({ type: 'rest', inning: i, half, sec: C.rest, name: '休憩' });
+  }
+  ph.forEach((p, i) => { if (p.type === 'rest') p.next = ph[i + 1].name; });
+  return ph;
+}
+
+/* ---- 音・画面 ---- */
+function beep(freq, ms) {
+  if (!C.sound || !ctx) return;
+  try {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.frequency.value = freq; o.type = 'square'; g.gain.value = 0.08;
+    o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime + ms / 1000);
+  } catch (e) {}
+}
+async function lockScreen() { try { if (navigator.wakeLock) wake = await navigator.wakeLock.request('screen'); } catch (e) {} }
+function unlockScreen() { try { if (wake) wake.release(); } catch (e) {} wake = null; }
+document.addEventListener('visibilitychange', () => { if (run && !run.paused && document.visibilityState === 'visible') lockScreen(); });
+
+/* ---- 実行 ---- */
+function startRun() {
+  if (C.goal === 'custom' && !C.custom.split(/\r?\n/).some(s => s.trim())) { $('#est').textContent = '種目を1行以上入れてください。'; return; }
+  try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); } catch (e) {}
+  const phases = buildPhases();
+  run = { phases, idx: 0, endAt: Date.now() + phases[0].sec * 1000, paused: false, remMs: 0, lastSec: -1, startedAt: Date.now() };
+  $('#setup').hidden = true; $('#done').hidden = true; $('#run').hidden = false;
+  $('#pause').textContent = '一時停止';
+  lockScreen(); beep(1320, 350); vib(120);
+  clearInterval(tickId); tickId = setInterval(tick, 250); tick(); draw();
+  if (typeof gtag === 'function') gtag('event', 'train_start', { goal: C.goal, innings: C.inn });
+}
+function advance() {
+  run.idx++;
+  if (run.idx >= run.phases.length) { finish(); return false; }
+  run.endAt += run.phases[run.idx].sec * 1000; run.lastSec = -1;
+  const p = run.phases[run.idx]; beep(p.type === 'work' ? 1320 : 660, 350); vib(p.type === 'work' ? 120 : 60);
+  return true;
+}
+function tick() {
+  if (!run || run.paused) return;
+  const now = Date.now();
+  while (now >= run.endAt) { if (!advance()) return; }
+  const sec = Math.ceil((run.endAt - now) / 1000);
+  if (sec !== run.lastSec) { run.lastSec = sec; if (sec <= 3 && sec >= 1) beep(880, 120); draw(); }
+}
+function draw() {
+  const p = run.phases[run.idx], sec = run.paused ? Math.ceil(run.remMs / 1000) : Math.max(0, Math.ceil((run.endAt - Date.now()) / 1000));
+  $('#inn').textContent = `${p.inning}回${p.half}`;
+  $('#innSub').textContent = `全${C.inn}回`;
+  $('#phase').textContent = p.type === 'work' ? '運動' : '休憩';
+  $('#sec').textContent = sec;
+  $('#clock').className = 'clock' + (p.type === 'rest' ? ' rest' : '');
+  $('#exName').textContent = p.type === 'work' ? p.name : p.next;
+  $('#exNext').textContent = p.type === 'rest' ? '休憩中です。次はこの種目です' : (run.phases[run.idx + 2] ? '次: ' + run.phases[run.idx + 2].name : 'これが最後です');
+  // イニング表
+  const curIdx = run.phases.slice(0, run.idx + 1).filter(x => x.type === 'work').length - (p.type === 'work' ? 1 : 0); // 完了した運動の数(休憩中は直前の運動まで)
+  const cell = (i, half) => { const n = (i - 1) * 2 + (half === '表' ? 0 : 1); return n < curIdx ? '<td class="done">●</td>' : (p.type === 'work' && n === curIdx) ? '<td class="cur">▶</td>' : '<td class="pend">・</td>'; };
+  const head = '<tr><td class="l"></td>' + [...Array(C.inn)].map((_, i) => `<th>${i + 1}</th>`).join('') + '</tr>';
+  $('#sb').innerHTML = head + '<tr><td class="l">表</td>' + [...Array(C.inn)].map((_, i) => cell(i + 1, '表')).join('') + '</tr><tr><td class="l">裏</td>' + [...Array(C.inn)].map((_, i) => cell(i + 1, '裏')).join('') + '</tr>';
+}
+$('#pause').addEventListener('click', () => {
+  if (!run) return;
+  if (!run.paused) { run.remMs = Math.max(0, run.endAt - Date.now()); run.paused = true; $('#pause').textContent = '再開'; unlockScreen(); }
+  else { run.endAt = Date.now() + run.remMs; run.paused = false; $('#pause').textContent = '一時停止'; lockScreen(); }
+  draw();
+});
+$('#skip').addEventListener('click', () => { if (!run) return; const was = run.paused; run.endAt = Date.now(); run.paused = false; if (advance()) { run.endAt = Date.now() + run.phases[run.idx].sec * 1000; if (was) { run.paused = false; $('#pause').textContent = '一時停止'; } draw(); } });
+function quit() { clearInterval(tickId); tickId = null; unlockScreen(); run = null; $('#run').hidden = true; $('#done').hidden = true; $('#setup').hidden = false; }
+$('#stop').addEventListener('click', () => { if (confirm('ここでやめます。記録には残りません。よろしいですか。')) quit(); });
+
+/* ---- ゲームセット ---- */
+const ymd = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+function finish() {
+  clearInterval(tickId); tickId = null; unlockScreen();
+  const total = run.phases.reduce((a, p) => a + p.sec, 0);
+  beep(523, 300); setTimeout(() => beep(659, 300), 320); setTimeout(() => beep(784, 600), 640); vib(400);
+  const log = new Set(Tool.load(LOG, [])); log.add(ymd(new Date()));
+  const days = [...log].sort().slice(-120); Tool.save(LOG, days);
+  const today = new Date(), mon = new Date(today); mon.setDate(today.getDate() - ((today.getDay() + 6) % 7));
+  const week = days.filter(d => d >= ymd(mon)).length;
+  let streak = 0, d = new Date(today); if (!log.has(ymd(d))) d.setDate(d.getDate() - 1);
+  while (log.has(ymd(d))) { streak++; d.setDate(d.getDate() - 1); }
+  const menu = `${MENUS[C.goal].name} ${C.inn}回制`;
+  $('#dMenu').textContent = menu; $('#dTime').textContent = `${Math.floor(total / 60)}分${String(total % 60).padStart(2, '0')}秒`;
+  $('#dWeek').textContent = week + '日'; $('#dStreak').textContent = streak + '日';
+  $('#share').dataset.text = `【冬トレ ゲームセット】${menu}(運動${C.work}秒・休憩${C.rest}秒) ${$('#dTime').textContent}\n今週${week}日 / 連続${streak}日`;
+  run = null; $('#run').hidden = true; $('#done').hidden = false;
+  if (typeof gtag === 'function') gtag('event', 'train_finish', { goal: C.goal, innings: C.inn });
+}
+$('#share').addEventListener('click', () => Tool.share($('#share').dataset.text, $('#share')));
+$('#again').addEventListener('click', () => { $('#done').hidden = true; startRun(); });
+$('#back').addEventListener('click', () => { $('#done').hidden = true; $('#setup').hidden = false; });
+$('#start').addEventListener('click', startRun);
+
+drawSetup();
+Tool.initTheme(); Tool.initCookie();
+</script>
+</body>
+</html>

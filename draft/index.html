@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ドラフト会議【無料】草野球のチーム分け・当番くじ・打順くじ | Somirai Lab</title>
+<meta name="description" content="草野球・少年野球のチーム分け、当番決め、打順のくじ引きを、ドラフト形式の発表で。スタメンメーカーの名簿を読み込めば、守備位置が偏らないように振り分けます。登録不要・無料・スマホ対応。">
+<meta name="keywords" content="草野球 チーム分け,紅白戦 チーム分け,当番 くじ引き,打順 ランダム,野球 くじ引き,ドラフト会議 くじ">
+<link rel="canonical" href="https://somirai.jp/draft/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://somirai.jp/draft/">
+<meta property="og:title" content="ドラフト会議【無料】チーム分け・当番くじ・打順くじ">
+<meta property="og:description" content="名前を入れるだけ。ドラフト形式の発表で、チーム分けも当番決めも打順くじも。守備位置が偏らない振り分けつき。">
+<meta property="og:site_name" content="Somirai Lab">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#2B2420">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"ドラフト会議","url":"https://somirai.jp/draft/","description":"草野球・少年野球のチーム分け、当番くじ、打順くじをドラフト形式の発表で行う無料ツール。","applicationCategory":"SportsApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","author":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"}}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/tokens.css">
+<link rel="stylesheet" href="/shared/tool.css">
+<style>
+  .names-head { display: flex; align-items: center; gap: 16px; margin-top: 16px; }
+  .names-head .plate { flex: 0 0 104px; height: 96px; }
+  .names-head .plate .n { font-size: 2.4rem; line-height: 1; font-weight: 700; }
+  .names-head .plate .l { font-size: .75rem; }
+  .names-head .txt { flex: 1; font-size: .9375rem; color: var(--ink-sec); }
+  .teams { display: grid; gap: 12px; margin-top: 16px; }
+  .team { border: 2px solid var(--ink); border-radius: 4px; overflow: hidden; }
+  .team h3 { background: var(--turf-deep); color: #FFFFFF; font-size: .9375rem; padding: 6px 12px; display: flex; justify-content: space-between; }
+  .team ul { list-style: none; padding: 4px 12px 8px; }
+  .team li { padding: 5px 0; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; gap: 8px; }
+  .team li:last-child { border-bottom: 0; }
+  .team li small { color: var(--ink-sec); }
+  .skip { margin-top: 10px; }
+  .check { display: flex; align-items: center; gap: 10px; min-height: 48px; margin-top: 8px; }
+  .check input { width: 22px; height: 22px; accent-color: var(--turf-deep); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="/" class="nav-logo" aria-label="Somirai Lab トップへ">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#111114"/><stop offset="100%" stop-color="#0a0a0b"/></linearGradient><linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff6428"/><stop offset="100%" stop-color="#e84410"/></linearGradient></defs><rect width="120" height="120" rx="24" fill="url(#n1)"/><circle cx="60" cy="52" r="18" fill="url(#n2)"/><circle cx="56" cy="47" r="6" fill="#fff" opacity=".2"/><path d="M60 28 L63 46 L60 52 L57 46Z" fill="#ffb088" opacity=".7"/><path d="M36 52 L52 54 L60 52 L52 50Z" fill="#ffb088" opacity=".55"/><path d="M84 52 L68 54 L60 52 L68 50Z" fill="#ffb088" opacity=".55"/></svg>
+      <span>Somirai Lab</span>
+    </a>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
+  </div>
+
+  <header class="head">
+    <h1>ドラフト会議</h1>
+    <p class="sub">チーム分け・当番くじ・打順くじを、指名の発表のように</p>
+  </header>
+
+  <div class="names-head">
+    <div class="plate" aria-live="polite"><span class="n" id="count">0</span><span class="l">人</span></div>
+    <p class="txt">参加者の名前を、1行に1人ずつ入れてください。</p>
+  </div>
+  <div class="field">
+    <label for="names" class="lbl">参加者</label>
+    <textarea class="in" id="names" placeholder="山田&#10;佐藤&#10;鈴木" autocomplete="off"></textarea>
+    <button class="btn-sub" id="loadRoster" type="button">スタメンメーカーの選手を読み込む</button>
+    <p class="hint" id="rosterMsg"></p>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="team">チーム分け</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="duty">当番くじ</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="order">打順くじ</button>
+  </div>
+
+  <section class="panel" id="p-team">
+    <div class="field">
+      <span class="lbl">チーム数</span>
+      <div class="seg" id="teamSeg" role="group" aria-label="チーム数">
+        <button type="button" aria-pressed="true" data-n="2">2チーム</button>
+        <button type="button" aria-pressed="false" data-n="3">3チーム</button>
+        <button type="button" aria-pressed="false" data-n="4">4チーム</button>
+      </div>
+      <label class="check"><input type="checkbox" id="byPos" checked> 守備位置が偏らないように振り分ける</label>
+      <p class="hint" id="posHint"></p>
+      <label class="check"><input type="checkbox" id="draftStyle" checked> ドラフト形式で1人ずつ発表する</label>
+    </div>
+    <button class="btn-main" id="goTeam" type="button">ドラフトを始める</button>
+  </section>
+
+  <section class="panel" id="p-duty" hidden>
+    <div class="field">
+      <label for="roles" class="lbl">決めたい当番(1行に1つ。「×2」で人数を増やせます)</label>
+      <textarea class="in" id="roles" style="min-height:110px" placeholder="グラウンド整備&#10;ボール係×2&#10;会計"></textarea>
+    </div>
+    <button class="btn-main" id="goDuty" type="button">くじを引く</button>
+  </section>
+
+  <section class="panel" id="p-order" hidden>
+    <p class="hint">参加者をランダムに並べて、1番から順に打順を決めます。9人を超えた分は控えになります。</p>
+    <button class="btn-main" id="goOrder" type="button">打順を引く</button>
+  </section>
+
+  <div class="err" id="err" role="alert"></div>
+
+  <section id="result" hidden>
+    <ol class="reveal" id="reveal"></ol>
+    <button class="btn-sub skip" id="skip" type="button" hidden>すぐに全部見る</button>
+    <div id="final"></div>
+    <div class="btn-row" id="after" hidden>
+      <button class="btn-sub" id="again" type="button">もう一度引く</button>
+      <button class="btn-sub" id="copy" type="button">結果を共有する</button>
+    </div>
+  </section>
+
+  <details>
+    <summary>よくある質問</summary>
+    <p><b>守備位置が偏らないように、とは何ですか。</b><br>スタメンメーカーに登録した選手の守備可能位置を使い、同じポジションの選手が同じチームに集まらないよう割り振ります。名簿を読み込んでいない場合や、名前が一致しない選手は、位置を考えずにランダムに分けます。</p>
+    <p><b>くじは公平ですか。</b><br>端末の乱数(暗号用の乱数)を使って並べ替えています。結果を作為的に変えることはありません。</p>
+    <p><b>名前はどこに保存されますか。</b><br>お使いの端末のブラウザの中だけです。サーバーには送りません。</p>
+  </details>
+
+  <footer>
+    <a href="/privacy.html">プライバシーポリシー</a>
+    <a href="/">Somirai Lab トップ</a>
+    <a href="/order-maker/">スタメンメーカー</a>
+    <a href="/pitch-counter/">投球数カウンター</a>
+  </footer>
+</div>
+
+<script src="/shared/tool.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const KEY = 'somirai-draft-v1';
+const D = Object.assign({ names: '', roles: 'グラウンド整備\nボール係\n会計', teams: 2, byPos: true, draftStyle: true }, Tool.load(KEY, {}));
+const TEAM_NAME = ['A', 'B', 'C', 'D'];
+let lastText = '', timer = null;
+
+/* ---- 名前 ---- */
+function names() {
+  const seen = new Set(), out = [];
+  $('#names').value.split(/\r?\n/).map(s => s.trim()).filter(Boolean).forEach(n => { if (!seen.has(n)) { seen.add(n); out.push(n.slice(0, 20)); } });
+  return out;
+}
+function persist() {
+  D.names = $('#names').value; D.roles = $('#roles').value; D.byPos = $('#byPos').checked; D.draftStyle = $('#draftStyle').checked;
+  Tool.save(KEY, D);
+}
+function refresh() {
+  $('#count').textContent = names().length;
+  const ros = Tool.roster(), known = names().filter(n => ros.some(p => p.name === n && p.pos.length)).length;
+  $('#posHint').textContent = ros.length ? `名簿に守備位置がある選手: ${known}人 / ${names().length}人` : 'スタメンメーカーの名簿がないため、守備位置は使わずにランダムで分けます。';
+  persist();
+}
+$('#names').addEventListener('input', refresh);
+$('#roles').addEventListener('input', persist);
+$('#byPos').addEventListener('change', persist);
+$('#draftStyle').addEventListener('change', persist);
+$('#loadRoster').addEventListener('click', () => {
+  const ros = Tool.roster();
+  if (!ros.length) { $('#rosterMsg').textContent = 'スタメンメーカーの選手が見つかりません。先に選手を登録するか、名前を直接入力してください。'; return; }
+  $('#names').value = ros.map(p => p.name).join('\n');
+  $('#rosterMsg').textContent = ros.length + '人を読み込みました。';
+  refresh();
+});
+
+/* ---- タブ・チーム数 ---- */
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', x === t));
+  ['team', 'duty', 'order'].forEach(k => $('#p-' + k).hidden = k !== t.dataset.tab);
+  clearResult();
+}));
+document.querySelectorAll('#teamSeg button').forEach(b => b.addEventListener('click', () => {
+  D.teams = +b.dataset.n; syncSeg(); persist();
+}));
+function syncSeg() { document.querySelectorAll('#teamSeg button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.n === D.teams)); }
+
+/* ---- 結果表示(1行ずつ発表) ---- */
+function clearResult() {
+  clearTimeout(timer); timer = null;
+  $('#err').textContent = ''; $('#result').hidden = true; $('#reveal').innerHTML = ''; $('#final').innerHTML = ''; $('#after').hidden = true; $('#skip').hidden = true;
+}
+function addRow(it) {
+  const li = document.createElement('li');
+  li.innerHTML = `<span class="tag">${Tool.esc(it.tag)}</span><span class="who">${Tool.esc(it.who)}</span>`;
+  $('#reveal').appendChild(li);
+}
+function present(items, finish) {
+  clearResult();
+  $('#result').hidden = false;
+  const fast = Tool.reducedMotion() || (!$('#draftStyle').checked && !$('#p-team').hidden);
+  let i = 0;
+  const done = () => { clearTimeout(timer); timer = null; $('#skip').hidden = true; finish(); $('#after').hidden = false; };
+  const showAll = () => { while (i < items.length) addRow(items[i++]); done(); };
+  $('#skip').onclick = showAll;
+  if (fast || items.length === 0) { showAll(); return; }
+  $('#skip').hidden = false;
+  (function step() {
+    if (i >= items.length) { done(); return; }
+    addRow(items[i++]); Tool.buzz(20);
+    timer = setTimeout(step, 650);
+  })();
+  $('#result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+$('#again').addEventListener('click', () => {
+  const tab = document.querySelector('.tab[aria-selected="true"]').dataset.tab;
+  ({ team: goTeam, duty: goDuty, order: goOrder })[tab]();
+});
+$('#copy').addEventListener('click', () => { Tool.share(lastText, $('#copy')); if (typeof gtag === 'function') gtag('event', 'draft_share'); });
+
+/* ---- チーム分け ---- */
+function splitTeams(list, k, usePos) {
+  const ros = Tool.roster(), posOf = n => { const p = ros.find(r => r.name === n); return p && p.pos.length ? p.pos : []; };
+  const teams = Array.from({ length: k }, () => ({ members: [], pos: {}, main: {} }));
+  // 最終の人数差が1人以内になるよう、各チームの目標人数を先に決める(余りはランダムなチームへ)
+  const base = Math.floor(list.length / k), extra = list.length % k;
+  Tool.shuffle([...Array(k).keys()]).forEach((ti, i) => { teams[ti].target = base + (i < extra ? 1 : 0); });
+  // 守備位置の候補が少ない選手から先に配る(同数ならランダム)。位置が不明な選手は最後
+  const order = Tool.shuffle(list);
+  if (usePos) order.sort((a, b) => (posOf(a).length || 99) - (posOf(b).length || 99));
+  order.forEach(n => {
+    let cand = teams.filter(t => t.members.length < t.target);
+    const ps = usePos ? posOf(n) : [];
+    if (ps.length) {
+      // その選手が守れる位置のうち、チームに一番少ない位置の人数で比べる
+      const score = t => Math.min(...ps.map(p => t.pos[p] || 0));
+      const best = Math.min(...cand.map(score));
+      cand = cand.filter(t => score(t) === best);
+    }
+    const t = cand[Tool.randInt(cand.length)];
+    t.members.push(n);
+    if (ps.length) { const p = ps.slice().sort((x, y) => (t.pos[x] || 0) - (t.pos[y] || 0))[0]; t.pos[p] = (t.pos[p] || 0) + 1; t.main[n] = p; }
+  });
+  return teams;
+}
+function goTeam() {
+  persist();
+  const list = names(), k = D.teams;
+  if (list.length < k) { clearResult(); $('#err').textContent = `${k}チームに分けるには、${k}人以上の名前が必要です。`; return; }
+  const teams = splitTeams(list, k, $('#byPos').checked);
+  // 発表の順番: 1巡目はA→B→…、2巡目は逆順(蛇行)
+  const maxN = Math.max(...teams.map(t => t.members.length)), items = [];
+  for (let r = 0; r < maxN; r++) {
+    const idx = [...Array(k).keys()]; if (r % 2) idx.reverse();
+    idx.forEach(ti => { const who = teams[ti].members[r]; if (who) items.push({ tag: `${r + 1}巡目 ${TEAM_NAME[ti]}`, who }); });
+  }
+  lastText = '【チーム分け】\n' + teams.map((t, i) => `${TEAM_NAME[i]}チーム(${t.members.length}人): ${t.members.join('、')}`).join('\n');
+  present(items, () => {
+    $('#final').innerHTML = '<div class="teams">' + teams.map((t, i) => `<section class="team"><h3><span>${TEAM_NAME[i]}チーム</span><span>${t.members.length}人</span></h3><ul>${t.members.map(m => `<li><span>${Tool.esc(m)}</span><small>${Tool.esc((t.main && t.main[m]) || '')}</small></li>`).join('')}</ul></section>`).join('') + '</div>';
+  });
+  if (typeof gtag === 'function') gtag('event', 'draft_team', { teams: k, players: list.length });
+}
+$('#goTeam').addEventListener('click', goTeam);
+
+/* ---- 当番くじ ---- */
+function goDuty() {
+  persist();
+  const list = names(), slots = [];
+  $('#roles').value.split(/\r?\n/).map(s => s.trim()).filter(Boolean).forEach(line => {
+    const m = line.match(/^(.*?)\s*[×xX＊*]\s*(\d{1,2})$/), name = m ? m[1].trim() : line, n = m ? Math.min(+m[2], 20) : 1;
+    for (let i = 0; i < n; i++) slots.push(name);
+  });
+  if (!slots.length) { clearResult(); $('#err').textContent = '決めたい当番を1行以上入れてください。'; return; }
+  if (slots.length > list.length) { clearResult(); $('#err').textContent = `人数が足りません。当番が${slots.length}つに対して、参加者は${list.length}人です。`; return; }
+  const pick = Tool.shuffle(list).slice(0, slots.length);
+  const items = slots.map((s, i) => ({ tag: s, who: pick[i] }));
+  lastText = '【当番くじ】\n' + items.map(it => `${it.tag}: ${it.who}`).join('\n');
+  present(items, () => {});
+  if (typeof gtag === 'function') gtag('event', 'draft_duty', { slots: slots.length });
+}
+$('#goDuty').addEventListener('click', goDuty);
+
+/* ---- 打順くじ ---- */
+function goOrder() {
+  persist();
+  const list = names();
+  if (list.length < 2) { clearResult(); $('#err').textContent = '2人以上の名前を入れてください。'; return; }
+  const sh = Tool.shuffle(list);
+  const items = sh.map((n, i) => ({ tag: i < 9 ? `${i + 1}番` : '控え', who: n }));
+  lastText = '【打順くじ】\n' + items.map(it => `${it.tag} ${it.who}`).join('\n');
+  present(items, () => {});
+  if (typeof gtag === 'function') gtag('event', 'draft_order', { players: list.length });
+}
+$('#goOrder').addEventListener('click', goOrder);
+
+/* ---- 初期化 ---- */
+$('#names').value = D.names; $('#roles').value = D.roles; $('#byPos').checked = !!D.byPos; $('#draftStyle').checked = !!D.draftStyle;
+syncSeg(); refresh();
+Tool.initTheme(); Tool.initCookie();
+</script>
+</body>
+</html>

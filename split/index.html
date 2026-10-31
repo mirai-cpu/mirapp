@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>試合費用の割り勘【無料】草野球のグラウンド代・審判代を人数と区分で計算 | Somirai Lab</title>
+<meta name="description" content="草野球・少年野球の試合費用(グラウンド代・審判代・ボール代)を、一般・学生・助っ人などの区分ごとの係数で割り勘。端数の切り上げ、チーム会計の繰越、LINEに貼れる請求文まで自動で作れます。登録不要・無料。">
+<meta name="keywords" content="草野球 割り勘,試合費用 計算,グラウンド代 割り勘,審判代 割り勘,草野球 会費 計算,傾斜 割り勘">
+<link rel="canonical" href="https://somirai.jp/split/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://somirai.jp/split/">
+<meta property="og:title" content="試合費用の割り勘【無料】区分ごとの係数と繰越つき">
+<meta property="og:description" content="グラウンド代・審判代・ボール代を、一般・学生・助っ人の係数で割り勘。端数の切り上げと繰越、LINEの請求文つき。">
+<meta property="og:site_name" content="Somirai Lab">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#2B2420">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"試合費用の割り勘","url":"https://somirai.jp/split/","description":"草野球・少年野球の試合費用を、区分ごとの係数・端数の切り上げ・チーム会計の繰越つきで割り勘する無料ツール。","applicationCategory":"SportsApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","author":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"}}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/tokens.css">
+<link rel="stylesheet" href="/shared/tool.css">
+<style>
+  .sec { margin-top: 28px; padding-top: 6px; border-top: 2px solid var(--ink); }
+  .sec h2 { font-size: 1.05rem; margin-top: 8px; }
+  .exp .nm { flex: 1; }
+  .exp .amt { flex: 0 0 120px; text-align: right; }
+  .grp .gn { flex: 1; }
+  .grp .gc { flex: 0 0 76px; text-align: center; }
+  .grp .gk { flex: 0 0 76px; text-align: center; }
+  .grp-head { display: flex; gap: 8px; font-size: .8125rem; color: var(--ink-sec); margin-top: 10px; }
+  .grp-head span:nth-child(1) { flex: 1; } .grp-head span:nth-child(2), .grp-head span:nth-child(3) { flex: 0 0 76px; text-align: center; }
+  .grp-head .sp { flex: 0 0 0; }
+  .total-line { display: flex; justify-content: space-between; margin-top: 10px; font-weight: 700; }
+  .check { display: flex; align-items: center; gap: 10px; min-height: 48px; margin-top: 4px; }
+  .check input { width: 22px; height: 22px; accent-color: var(--turf-deep); }
+  .big { margin-top: 18px; display: grid; gap: 10px; }
+  .pay { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--rule); padding: 8px 0; }
+  .pay .g { font-size: 1.05rem; font-weight: 700; }
+  .pay .g small { font-weight: 400; color: var(--ink-sec); margin-left: 6px; }
+  .pay .yen { font-size: 2rem; font-weight: 700; line-height: 1.2; }
+  .kv { display: flex; justify-content: space-between; padding: 4px 0; color: var(--ink-sec); }
+  .kv b { color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="/" class="nav-logo" aria-label="Somirai Lab トップへ">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#111114"/><stop offset="100%" stop-color="#0a0a0b"/></linearGradient><linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff6428"/><stop offset="100%" stop-color="#e84410"/></linearGradient></defs><rect width="120" height="120" rx="24" fill="url(#n1)"/><circle cx="60" cy="52" r="18" fill="url(#n2)"/><circle cx="56" cy="47" r="6" fill="#fff" opacity=".2"/><path d="M60 28 L63 46 L60 52 L57 46Z" fill="#ffb088" opacity=".7"/><path d="M36 52 L52 54 L60 52 L52 50Z" fill="#ffb088" opacity=".55"/><path d="M84 52 L68 54 L60 52 L68 50Z" fill="#ffb088" opacity=".55"/></svg>
+      <span>Somirai Lab</span>
+    </a>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
+  </div>
+
+  <header class="head">
+    <h1>試合費用の割り勘</h1>
+    <p class="sub">区分ごとの係数で払う額を決め、LINEに貼れる請求文まで</p>
+  </header>
+
+  <section class="sec" aria-labelledby="h-exp">
+    <h2 id="h-exp">かかった費用</h2>
+    <div id="exps"></div>
+    <div class="chips" id="presets" aria-label="よく使う費用を追加"></div>
+    <button class="btn-sub" id="addExp" type="button">費用を1行足す</button>
+    <div class="total-line"><span>費用の合計</span><span id="total">¥0</span></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-grp">
+    <h2 id="h-grp">参加した人</h2>
+    <div class="grp-head" aria-hidden="true"><span>区分</span><span>人数</span><span>係数</span></div>
+    <div id="grps"></div>
+    <p class="hint">係数は、一般を1としたときの払う割合です。学生を半分にするなら0.5、払わない区分は0にします。</p>
+  </section>
+
+  <section class="sec" aria-labelledby="h-opt">
+    <h2 id="h-opt">端数とチーム会計</h2>
+    <span class="lbl" style="margin-top:8px">一人あたりの切り上げ単位</span>
+    <div class="seg" id="stepSeg" role="group" aria-label="切り上げ単位">
+      <button type="button" aria-pressed="false" data-s="1">1円</button>
+      <button type="button" aria-pressed="false" data-s="10">10円</button>
+      <button type="button" aria-pressed="true" data-s="100">100円</button>
+    </div>
+    <div class="field">
+      <label for="bal" class="lbl">チーム会計の繰越残高(円)</label>
+      <input class="in" id="bal" type="number" inputmode="numeric" min="0" step="1" value="0">
+      <label class="check"><input type="checkbox" id="useBal"> 今回の費用に繰越を充てる</label>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-res" aria-live="polite">
+    <h2 id="h-res">一人あたり</h2>
+    <div class="big" id="pays"></div>
+    <div id="kvs" style="margin-top:12px"></div>
+    <div class="err" id="err" role="alert"></div>
+    <div class="summary" id="line"></div>
+    <button class="btn-main" id="copy" type="button">請求文をコピーして共有する</button>
+    <button class="btn-sub" id="carry" type="button">余りを繰越残高に入れる</button>
+    <p class="hint" id="carryMsg"></p>
+  </section>
+
+  <details>
+    <summary>よくある質問</summary>
+    <p><b>係数とは何ですか。</b><br>一般の人が払う額を1としたときの割合です。たとえば学生を0.5にすると、学生は一般の半額になります。その分、一般の額が少し増えるよう、全体の合計から計算し直します。</p>
+    <p><b>余りはどうなりますか。</b><br>切り上げた分の集金額が、費用の合計を上回ることがあります。その余りは「繰越残高」に入れて、次回の費用に充てられます。</p>
+    <p><b>入力した金額は保存されますか。</b><br>お使いの端末のブラウザの中だけに保存します。サーバーには送りません。</p>
+  </details>
+
+  <footer>
+    <a href="/privacy.html">プライバシーポリシー</a>
+    <a href="/">Somirai Lab トップ</a>
+    <a href="/draft/">ドラフト会議</a>
+    <a href="/order-maker/">スタメンメーカー</a>
+  </footer>
+</div>
+
+<script src="/shared/tool.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const KEY = 'somirai-split-v1';
+const PRESETS = ['グラウンド代', '審判代', 'ボール代', '飲み物代', '保険・会場費'];
+const def = () => ({
+  exps: [{ n: 'グラウンド代', a: 0 }, { n: '審判代', a: 0 }],
+  grps: [{ n: '一般', c: 9, k: 1 }, { n: '学生', c: 0, k: 0.5 }, { n: '助っ人', c: 0, k: 1 }],
+  step: 100, bal: 0, useBal: false
+});
+let S = Object.assign(def(), Tool.load(KEY, {}));
+const yen = n => '¥' + Math.round(n).toLocaleString('ja-JP');
+const num = v => { const x = parseFloat(v); return Number.isFinite(x) && x >= 0 ? x : 0; };
+
+/* ---- 計算 ---- */
+function calc() {
+  const total = S.exps.reduce((a, e) => a + num(e.a), 0);
+  const bal = num(S.bal);
+  const use = S.useBal ? Math.min(bal, total) : 0;
+  const need = total - use;
+  const weight = S.grps.reduce((a, g) => a + Math.floor(num(g.c)) * num(g.k), 0);
+  const people = S.grps.reduce((a, g) => a + Math.floor(num(g.c)), 0);
+  if (!people || !weight) return { total, bal, use, need, pays: [], collected: 0, surplus: 0, people, weight, ok: false };
+  const unit = need / weight;
+  const pays = S.grps.map(g => ({ g, pay: num(g.k) > 0 && Math.floor(num(g.c)) > 0 ? Math.ceil(unit * num(g.k) / S.step - 1e-9) * S.step : 0 }));
+  const collected = pays.reduce((a, p) => a + p.pay * Math.floor(num(p.g.c)), 0);
+  return { total, bal, use, need, pays, collected, surplus: collected - need, people, weight, ok: true };
+}
+
+/* ---- 画面 ---- */
+function drawExps() {
+  $('#exps').innerHTML = S.exps.map((e, i) => `<div class="row-line exp"><input class="in nm" data-i="${i}" data-f="n" value="${Tool.esc(e.n)}" maxlength="16" aria-label="費用の名前"><input class="in amt" data-i="${i}" data-f="a" type="number" inputmode="numeric" min="0" step="1" value="${e.a || ''}" placeholder="0" aria-label="金額(円)"><button class="x" data-del="${i}" type="button" aria-label="この行を削除">×</button></div>`).join('');
+  $('#exps').querySelectorAll('input').forEach(inp => inp.addEventListener('input', () => { S.exps[+inp.dataset.i][inp.dataset.f] = inp.dataset.f === 'a' ? num(inp.value) : inp.value; update(false); }));
+  $('#exps').querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => { S.exps.splice(+b.dataset.del, 1); if (!S.exps.length) S.exps.push({ n: '', a: 0 }); drawExps(); update(false); }));
+}
+function drawGrps() {
+  $('#grps').innerHTML = S.grps.map((g, i) => `<div class="row-line grp"><input class="in gn" data-i="${i}" data-f="n" value="${Tool.esc(g.n)}" maxlength="10" aria-label="区分の名前"><input class="in gc" data-i="${i}" data-f="c" type="number" inputmode="numeric" min="0" step="1" value="${g.c}" aria-label="${Tool.esc(g.n)}の人数"><input class="in gk" data-i="${i}" data-f="k" type="number" inputmode="decimal" min="0" step="0.1" value="${g.k}" aria-label="${Tool.esc(g.n)}の係数"></div>`).join('');
+  $('#grps').querySelectorAll('input').forEach(inp => inp.addEventListener('input', () => { const g = S.grps[+inp.dataset.i], f = inp.dataset.f; g[f] = f === 'n' ? inp.value : num(inp.value); update(false); }));
+}
+function update(redraw) {
+  const r = calc();
+  $('#total').textContent = yen(r.total);
+  $('#bal').value = S.bal || 0; $('#useBal').checked = S.useBal;
+  document.querySelectorAll('#stepSeg button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.s === S.step));
+  $('#err').textContent = r.ok ? '' : '参加した人数と係数を入れると、金額が出ます。';
+  $('#pays').innerHTML = r.ok ? r.pays.filter(p => p.pay > 0 || num(p.g.k) === 0 && num(p.g.c) > 0).map(p => `<div class="pay"><span class="g">${Tool.esc(p.g.n)}<small>${Math.floor(num(p.g.c))}人 × 係数${num(p.g.k)}</small></span><span class="yen">${yen(p.pay)}</span></div>`).join('') : '';
+  if (r.ok && r.need <= 0) $('#pays').innerHTML = '<div class="pay"><span class="g">全員</span><span class="yen">¥0</span></div>';
+  $('#kvs').innerHTML = r.ok ? `<div class="kv"><span>費用の合計</span><b>${yen(r.total)}</b></div>${r.use ? `<div class="kv"><span>繰越を充当</span><b>−${yen(r.use)}</b></div>` : ''}<div class="kv"><span>集める金額</span><b>${yen(r.need)}</b></div><div class="kv"><span>集金の合計</span><b>${yen(r.collected)}</b></div><div class="kv"><span>余り(繰越にできる額)</span><b>${yen(r.surplus)}</b></div>` : '';
+  const date = new Date(), d = `${date.getMonth() + 1}/${date.getDate()}`;
+  const exps = S.exps.filter(e => num(e.a) > 0).map(e => `${e.n || '費用'} ${yen(e.a)}`).join('・');
+  $('#line').textContent = r.ok ? `【試合費用のお願い ${d}】\n費用の合計 ${yen(r.total)}${exps ? `(${exps})` : ''}\n${r.use ? `繰越 ${yen(r.use)} を充てました。\n` : ''}` + (r.need <= 0 ? '今回は繰越でまかなえるため、集金はありません。' : r.pays.filter(p => Math.floor(num(p.g.c)) > 0 && p.pay > 0).map(p => `${p.g.n} ${yen(p.pay)}`).join(' / ')) + '\nよろしくお願いします。' : '';
+  $('#copy').disabled = !r.ok;
+  $('#carry').disabled = !r.ok || (r.surplus <= 0 && !r.use);
+  Tool.save(KEY, S);
+}
+$('#presets').innerHTML = PRESETS.map(p => `<button class="chip" type="button" data-p="${p}">+ ${p}</button>`).join('');
+$('#presets').querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => {
+  const empty = S.exps.find(e => !e.n && !num(e.a)), ex = S.exps.find(e => e.n === b.dataset.p);
+  if (ex) return;
+  if (empty) empty.n = b.dataset.p; else S.exps.push({ n: b.dataset.p, a: 0 });
+  drawExps(); update(false);
+}));
+$('#addExp').addEventListener('click', () => { S.exps.push({ n: '', a: 0 }); drawExps(); update(false); });
+document.querySelectorAll('#stepSeg button').forEach(b => b.addEventListener('click', () => { S.step = +b.dataset.s; update(false); }));
+$('#bal').addEventListener('input', () => { S.bal = num($('#bal').value); update(false); });
+$('#useBal').addEventListener('change', () => { S.useBal = $('#useBal').checked; update(false); });
+$('#copy').addEventListener('click', () => { Tool.share($('#line').textContent, $('#copy'), 'コピーしました'); if (typeof gtag === 'function') gtag('event', 'split_share'); });
+$('#carry').addEventListener('click', () => {
+  const r = calc(); if (!r.ok) return;
+  const next = (S.useBal ? num(S.bal) - r.use : num(S.bal)) + r.surplus;
+  if (!confirm(`繰越残高を ${yen(S.bal)} から ${yen(next)} にします。よろしいですか。`)) return;
+  S.bal = next; S.useBal = false;
+  $('#carryMsg').textContent = `繰越残高を ${yen(next)} にしました。次回は「繰越を充てる」で使えます。`;
+  update(false);
+});
+
+drawExps(); drawGrps(); update(false);
+Tool.initTheme(); Tool.initCookie();
+</script>
+</body>
+</html>

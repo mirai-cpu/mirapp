@@ -1,0 +1,62 @@
+/* tool.css — ツール共通の部品(ライン引きのデザイン) /shared/tokens.css と一緒に使う */
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; font-size: .875rem; font-weight: 700; }
+.nav-logo svg { width: 24px; height: 24px; border-radius: 6px; }
+.head { margin-top: 14px; }
+.head h1 { font-size: 1.35rem; line-height: 1.3; }
+.head .sub { font-size: .875rem; color: var(--ink-sec); }
+
+.tabs { display: flex; margin-top: 16px; border-bottom: 2px solid var(--ink); }
+.tab { flex: 1; min-height: 48px; background: none; border: 0; font-weight: 700; color: var(--ink-sec); border-bottom: 5px solid transparent; margin-bottom: -2px; font-size: .9375rem; }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--liner); }
+.panel[hidden] { display: none; }
+
+.field { margin-top: 16px; }
+.field > label, .lbl { display: block; font-size: .875rem; color: var(--ink-sec); margin-bottom: 4px; }
+.in, textarea.in, select.in {
+  width: 100%; min-height: 48px; background: transparent; color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 4px; padding: 8px 12px; font: inherit; font-size: 1rem;
+}
+textarea.in { min-height: 140px; line-height: 1.7; resize: vertical; }
+select.in { appearance: auto; }
+.in:disabled { opacity: .5; }
+
+.seg { display: flex; margin-top: 8px; border: 2px solid var(--ink); border-radius: 4px; overflow: hidden; }
+.seg button { flex: 1; min-height: 48px; background: none; border: 0; font-size: .9375rem; font-weight: 700; }
+.seg button + button { border-left: 2px solid var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.chip { min-height: 44px; padding: 0 14px; background: none; border: 2px solid var(--rule); border-radius: 4px; font-weight: 700; }
+.chip:hover { border-color: var(--ink); }
+
+.btn-main { margin-top: 14px; min-height: 56px; width: 100%; background: var(--btn-bg); color: var(--btn-ink); border: 0; border-radius: 4px; font-weight: 700; font-size: 1.05rem; }
+.btn-main:disabled { opacity: .5; cursor: not-allowed; }
+.btn-sub { margin-top: 10px; min-height: 48px; width: 100%; background: none; border: 2px solid var(--ink); border-radius: 4px; font-weight: 700; }
+.btn-row { display: flex; gap: 8px; }
+.btn-row > button { flex: 1; }
+.hint { font-size: .875rem; color: var(--ink-sec); margin-top: 12px; }
+.err { margin-top: 12px; color: var(--alert); font-weight: 700; min-height: 1.7em; }
+
+.row-line { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.row-line .in { min-width: 0; }
+.row-line .x { flex: 0 0 48px; min-height: 48px; background: none; border: 2px solid var(--rule); border-radius: 4px; font-size: 1.1rem; font-weight: 700; }
+
+/* 結果の文面(LINEにそのまま貼れる) */
+.summary { margin-top: 16px; padding: 12px 14px; border: 2px solid var(--ink); border-radius: 4px; white-space: pre-wrap; font-size: .9375rem; line-height: 1.7; }
+
+/* ホームベース型: 1画面に1か所だけ使う見出し */
+.plate { background: var(--ink); color: var(--bg); clip-path: polygon(0 0, 100% 0, 100% 58%, 50% 100%, 0 58%); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 12px; }
+
+/* 発表の1行(出てくる瞬間だけ、少しだけ動く) */
+.reveal { list-style: none; margin-top: 12px; }
+.reveal li { display: flex; align-items: baseline; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); animation: stamp .16s ease-out; }
+.reveal .tag { flex: 0 0 8em; font-size: .875rem; color: var(--ink-sec); }
+.reveal .who { font-weight: 700; font-size: 1.15rem; }
+@keyframes stamp { from { transform: scale(1.12); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+details { margin-top: 28px; border-top: 1px solid var(--rule); }
+summary { min-height: 48px; display: flex; align-items: center; font-weight: 700; cursor: pointer; }
+details p { color: var(--ink-sec); font-size: .9375rem; padding-bottom: 12px; }
+footer { margin-top: 32px; padding-bottom: 72px; font-size: .8125rem; color: var(--ink-sec); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+footer a { text-underline-offset: 3px; }

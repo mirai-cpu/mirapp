@@ -48,7 +48,8 @@ check_html() {
   if grep -q 'ca-pub-9485428408605916' "$file"; then ok "AdSense あり"; else warn "AdSense なし（任意）"; fi
 
   # ── Cookie同意バナー ──────────────────────────────────────
-  if grep -q 'cookie_ok' "$file"; then ok "Cookieバナー あり"; else fail "Cookieバナー なし"; fi
+  # 共通部品(shared/tool.js の Tool.initCookie)経由のページも許可する
+  if grep -q -E 'cookie_ok|Tool\.initCookie' "$file"; then ok "Cookieバナー あり"; else fail "Cookieバナー なし"; fi
 
   # ── プライバシーポリシーリンク ─────────────────────────────
   if grep -q 'privacy' "$file"; then ok "プライバシーポリシーリンク あり"; else warn "プライバシーポリシーリンク なし"; fi
@@ -352,6 +353,9 @@ check_html "$BASE/batting-stats/index.html" "My Batting Stats"     "https://somi
 check_html "$BASE/order-maker/index.html"   "スタメンメーカー"       "https://somirai.jp/order-maker/"
 check_html "$BASE/sunset/index.html"        "日没タイムリミット"     "https://somirai.jp/sunset/"
 check_html "$BASE/pitch-counter/index.html" "投球数カウンター"       "https://somirai.jp/pitch-counter/"
+check_html "$BASE/draft/index.html"         "ドラフト会議"           "https://somirai.jp/draft/"
+check_html "$BASE/split/index.html"         "試合費用の割り勘"       "https://somirai.jp/split/"
+check_html "$BASE/training-timer/index.html" "9回制トレタイマー"     "https://somirai.jp/training-timer/"
 check_nextjs "$BASE/habit"                  "Habit Quest"          "https://somirai.jp/habit/"
 check_nextjs "$BASE/write"                  "Write Quest"          "https://somirai.jp/write/"
 check_nextjs "$BASE/savings"               "節約クエスト"           "https://somirai.jp/savings/"
