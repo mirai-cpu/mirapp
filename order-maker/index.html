@@ -853,6 +853,9 @@
     .wx-msg { text-align:center;padding:24px;font-family:'Barlow',sans-serif;font-size:13px;color:#2a4a35; }
     .wx-msg.loading { animation:wx-spin 1s linear infinite; }
     @keyframes wx-spin { from{opacity:1} 50%{opacity:.3} to{opacity:1} }
+    .wx-day-sun { font-size:10px;color:#ffb347;margin-top:6px;font-family:'Barlow','Noto Sans JP',sans-serif;letter-spacing:.02em; }
+    .wx-sun-link { display:block;margin:0 16px 14px;padding:11px 14px;border:1px solid rgba(255,179,71,.35);border-radius:10px;color:#ffb347;font-size:12px;font-weight:700;text-align:center;text-decoration:none;background:rgba(255,179,71,.06); }
+    .wx-sun-link:hover { background:rgba(255,179,71,.12); }
     .wx-source-note { text-align:center;font-size:10px;color:#1a3a25;padding:0 16px 14px;font-family:'Barlow',sans-serif;letter-spacing:.04em; }
     @media (max-width:380px) { .wx-cards-row { gap:6px; } .wx-day-emoji { font-size:24px; } .wx-day-pop { font-size:18px; } }
   </style>
@@ -2432,6 +2435,46 @@ function toggleWeatherPanel() {
   }
 }
 
+// 日没時刻(Open-Meteo)。{ 'YYYY-MM-DD': 'HH:MM' } を返す。取得できなければ空
+async function omWxSunsetRange(pref, from, to) {
+  const c = OM_WX_COORDS[pref];
+  if (!c) return {};
+  const today = new Date(); today.setHours(0,0,0,0);
+  const past = new Date(from+'T00:00:00') < today;
+  const host = past ? 'archive-api' : 'api';
+  const path = past ? 'v1/archive' : 'v1/forecast';
+  try {
+    const res = await fetch(`https://${host}.open-meteo.com/${path}?latitude=${c.lat}&longitude=${c.lon}&daily=sunset&timezone=Asia%2FTokyo&start_date=${from}&end_date=${to}`);
+    if (!res.ok) return {};
+    const d = await res.json();
+    const out = {};
+    (d.daily?.time||[]).forEach((t,i)=>{ const v=d.daily.sunset?.[i]; if (v) out[t]=v.split('T')[1]; });
+    return out;
+  } catch { return {}; }
+}
+// 天気カードに日没時刻を足し、日没ツールへのリンクを末尾に置く
+async function omWxAddSunset(el, pref, dates) {
+  const map = await omWxSunsetRange(pref, dates[0], dates[dates.length-1]);
+  if (!Object.keys(map).length) return;
+  el.querySelectorAll('.wx-day-card').forEach((card, i) => {
+    const t = map[dates[i]];
+    if (!t || card.querySelector('.wx-day-sun')) return;
+    const div = document.createElement('div');
+    div.className = 'wx-day-sun';
+    div.textContent = '日没 ' + t;
+    card.appendChild(div);
+  });
+  const today = new Date(); today.setHours(0,0,0,0);
+  const target = dates.find(d => new Date(d+'T00:00:00') >= today);
+  if (target && !el.querySelector('.wx-sun-link')) {
+    const a = document.createElement('a');
+    a.className = 'wx-sun-link';
+    a.href = `/sunset/?pref=${encodeURIComponent(pref)}&date=${target}`;
+    a.textContent = '日没までに9回終わる？ 開始時刻から計算する';
+    el.appendChild(a);
+  }
+}
+
 async function omWxFetch3Day(pref) {
   const officeCode = OM_WX_OFFICES[pref];
   const resultEl = document.getElementById('om-wx-result');
@@ -2469,6 +2512,7 @@ async function omWxFetch3Day(pref) {
       </div>`;
     }).join('');
     resultEl.innerHTML = `<div class="wx-cards-row">${days}</div>`;
+    omWxAddSunset(resultEl, pref, rawDates.map(d=>d.slice(0,10)));
   } catch {
     resultEl.innerHTML = '<div class="wx-msg">取得に失敗しました</div>';
   }
@@ -2536,6 +2580,7 @@ function omWxRenderSingle(el, w, pref, dateStr) {
       <span class="wx-day-cond ${_omWxCondClass(w.pop)}">${_omWxCondLabel(w.pop)}</span>
     </div>
   </div>`;
+  omWxAddSunset(el, pref, [dateStr]);
 }
 
 function omWxRenderHistory() {

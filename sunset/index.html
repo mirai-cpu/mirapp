@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>草野球の日没時刻と9回終了の目安【無料】日没タイムリミット計算機 | Somirai Lab</title>
+  <meta name="description" content="草野球・少年野球の試合日の日没時刻を市区町村・区単位で確認。開始時刻から9回まで日没に間に合うかを計算し、時間ごとの天気・気温・降水確率・風速も表示。照明のないグラウンド向け。登録不要・無料。">
+  <meta name="keywords" content="草野球 日没,野球 日没 時間,日没コールド,野球 試合 時間 計算,草野球 天気,少年野球 日没">
+  <link rel="canonical" href="https://somirai.jp/sunset/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://somirai.jp/sunset/">
+  <meta property="og:title" content="日没タイムリミット計算機【無料】9回まで日没に間に合う？">
+  <meta property="og:description" content="試合日・場所・開始時刻から、日没までに何回まで投げられるかを計算。市区町村・区単位の日没と時間ごとの天気つき。">
+  <meta property="og:site_name" content="Somirai Lab">
+  <meta name="theme-color" content="#120f26">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #120f26;
+      --surface: #1b1736;
+      --surface-alt: #25204a;
+      --border: #332d5e;
+      --text: #efeaff;
+      --text-sec: #b3abd6;
+      --text-mut: #877fb0;
+      --sun: #ff8a3d;
+      --sun-soft: rgba(255,138,61,.14);
+      --ok: #7ee0b5;
+      --ng: #ff6b7d;
+      --display: 'Dela Gothic One', sans-serif;
+      --body: 'Zen Kaku Gothic New', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body); line-height: 1.7; min-height: 100vh; }
+    main { max-width: 640px; margin: 0 auto; padding: 32px 16px 64px; }
+    h1 { font-family: var(--display); font-weight: 400; font-size: 1.5rem; line-height: 1.3; }
+    .lead { color: var(--text-sec); font-size: .9rem; margin-top: 8px; }
+
+    form { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.wide { grid-column: 1 / -1; }
+    label { font-size: .8rem; color: var(--text-sec); }
+    select, input { background: var(--surface-alt); color: var(--text); border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 14px; font: inherit; font-size: 1rem; width: 100%; color-scheme: dark; }
+    select:focus-visible, input:focus-visible, button:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+    .loc-row { display: flex; gap: 8px; }
+    .loc-row select { flex: 0 0 38%; }
+    .loc-row input { flex: 1; min-width: 0; }
+    .loc-status { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .place-now { font-size: .85rem; color: var(--text-sec); }
+    .place-now b { color: var(--text); font-weight: 700; }
+    .place { color: var(--sun); font-size: .9rem; font-weight: 700; margin-bottom: 6px; }
+    .btn-ghost { background: transparent; color: var(--text); border: 1.5px solid var(--border); border-radius: 999px; padding: 0 18px; font: inherit; font-size: .85rem; cursor: pointer; white-space: nowrap; }
+    .btn-ghost:hover { border-color: var(--sun); }
+    .go { grid-column: 1 / -1; background: var(--sun); color: #2a1300; border: 0; border-radius: 999px; padding: 15px; font: inherit; font-weight: 700; font-size: 1.05rem; cursor: pointer; }
+    .go:hover { filter: brightness(1.08); }
+    .go:disabled { opacity: .6; cursor: wait; }
+
+    #result { margin-top: 36px; display: none; }
+    #result.show { display: block; }
+    .verdict { font-family: var(--display); font-size: 2.1rem; line-height: 1.25; }
+    .verdict.ok { color: var(--ok); }
+    .verdict.ng { color: var(--ng); }
+    .verdict-sub { color: var(--text-sec); margin-top: 6px; font-size: .95rem; }
+
+    .sky-wrap { margin-top: 28px; }
+    .sky { position: relative; height: 84px; border-radius: 16px; overflow: hidden; }
+    .game { position: absolute; top: 14px; bottom: 14px; border-radius: 10px; background: rgba(18,15,38,.55); border: 1.5px solid rgba(255,255,255,.55); }
+    .tick { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,.35); }
+    .tick.over { background: rgba(255,107,125,.9); }
+    .sunline { position: absolute; top: 0; bottom: 0; width: 3px; background: var(--sun); box-shadow: 0 0 14px 2px var(--sun); }
+    .axis { position: relative; height: 22px; margin-top: 6px; font-size: .75rem; color: var(--text-mut); }
+    .axis span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+    .axis .sun-label { color: var(--sun); font-weight: 700; }
+
+    dl { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    dl div { background: var(--surface); border-radius: 16px; padding: 16px 18px; }
+    dt { font-size: .78rem; color: var(--text-mut); }
+    dd { font-family: var(--display); font-size: 1.5rem; margin-top: 2px; line-height: 1.3; }
+    dd small { font-family: var(--body); font-size: .8rem; color: var(--text-sec); margin-left: 4px; }
+
+    .hours-title { margin-top: 28px; font-size: .85rem; color: var(--text-sec); }
+    .hours { margin-top: 10px; display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x proximity; }
+    .hour { flex: 0 0 76px; background: var(--surface); border-radius: 16px; padding: 12px 6px; text-align: center; scroll-snap-align: start; }
+    .hour.after { opacity: .45; }
+    .hour .h { font-size: .78rem; color: var(--text-mut); }
+    .hour svg { width: 30px; height: 30px; margin: 6px auto 4px; display: block; }
+    .hour .t { font-family: var(--display); font-size: 1.05rem; }
+    .hour .p { font-size: .75rem; color: var(--text-sec); }
+    .hour .p.rain { color: #7cc4ff; font-weight: 700; }
+    .hour .w { font-size: .7rem; color: var(--text-mut); }
+    .note { margin-top: 24px; background: var(--sun-soft); border-radius: 16px; padding: 16px 18px; font-size: .9rem; color: var(--text-sec); }
+    .err { margin-top: 24px; color: var(--ng); font-size: .95rem; display: none; }
+    .err.show { display: block; }
+    .links { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: .85rem; }
+    .links a { color: var(--text-sec); text-decoration: underline; text-underline-offset: 3px; }
+    .links a:hover { color: var(--sun); }
+    footer { margin-top: 24px; font-size: .75rem; color: var(--text-mut); }
+    footer a { color: var(--text-sec); }
+    @media (max-width: 480px) { form, dl { grid-template-columns: 1fr; } .verdict { font-size: 1.7rem; } .loc-row { flex-direction: column; } .loc-row select { flex: none; } }
+    @media (prefers-reduced-motion: no-preference) {
+      .game { transition: left .5s ease, width .5s ease; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>9回まで日没に間に合う？</h1>
+  <p class="lead">試合日・場所・開始時刻を入れると、日没までに何イニング投げられるかを計算します。照明のないグラウンド向けです。</p>
+
+  <form id="form">
+    <div class="field wide">
+      <label for="pref">場所(都道府県と市区町村)</label>
+      <div class="loc-row">
+        <select id="pref"></select>
+        <input type="text" id="city" list="cityList" placeholder="市区町村(例: 新宿区、札幌市北区)" autocomplete="off">
+        <datalist id="cityList"></datalist>
+      </div>
+      <div class="loc-status">
+        <button type="button" class="btn-ghost" id="geo">現在地を使う</button>
+        <span class="place-now" id="placeNow">選択中: <b>東京都</b></span>
+      </div>
+    </div>
+    <div class="field">
+      <label for="date">試合日(16日先まで)</label>
+      <input type="date" id="date" required>
+    </div>
+    <div class="field">
+      <label for="start">開始時刻</label>
+      <input type="time" id="start" value="09:00" required>
+    </div>
+    <div class="field">
+      <label for="inning">1イニングの所要時間(分)</label>
+      <input type="number" id="inning" value="20" min="10" max="60" step="1" required>
+    </div>
+    <div class="field">
+      <label for="buffer">日没前の余裕(分)</label>
+      <input type="number" id="buffer" value="20" min="0" max="60" step="5" required>
+    </div>
+    <button class="go" id="go" type="submit">日没を調べる</button>
+  </form>
+
+  <p class="err" id="err" role="alert"></p>
+
+  <section id="result" aria-live="polite">
+    <p class="place" id="place"></p>
+    <p class="verdict" id="verdict"></p>
+    <p class="verdict-sub" id="verdictSub"></p>
+
+    <div class="sky-wrap">
+      <div class="sky" id="sky"></div>
+      <div class="axis" id="axis"></div>
+    </div>
+
+    <p class="hours-title" id="hoursTitle"></p>
+    <div class="hours" id="hours"></div>
+
+    <dl>
+      <div><dt>日没</dt><dd id="sunset"></dd></div>
+      <div><dt>9回終了の予定</dt><dd id="end"></dd></div>
+      <div><dt>終われるイニング数</dt><dd id="innings"></dd></div>
+      <div><dt>試合時間帯の天気</dt><dd id="wx"></dd></div>
+    </dl>
+
+    <p class="note" id="note"></p>
+  </section>
+
+  <nav class="links">
+    <a href="/weather/">試合日の天気チェッカー</a>
+    <a href="/order-maker/">打順メーカー</a>
+    <a href="/batting-stats/">打撃成績トラッカー</a>
+    <a href="/">Somirai Lab トップ</a>
+  </nav>
+
+  <footer>天気・日没データ: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>(無料API)。所要時間は目安で、実際の試合進行とは異なります。</footer>
+</main>
+
+<script>
+const PREFS = [
+  ['北海道',43.06,141.35],['青森',40.82,140.74],['岩手',39.70,141.15],['宮城',38.27,140.87],['秋田',39.72,140.10],
+  ['山形',38.24,140.36],['福島',37.75,140.47],['茨城',36.34,140.45],['栃木',36.57,139.88],['群馬',36.39,139.06],
+  ['埼玉',35.86,139.65],['千葉',35.61,140.12],['東京',35.69,139.69],['神奈川',35.45,139.64],['新潟',37.90,139.02],
+  ['富山',36.70,137.21],['石川',36.59,136.63],['福井',36.07,136.22],['山梨',35.66,138.57],['長野',36.65,138.18],
+  ['岐阜',35.39,136.72],['静岡',34.98,138.38],['愛知',35.18,136.91],['三重',34.73,136.51],['滋賀',35.00,135.87],
+  ['京都',35.02,135.76],['大阪',34.69,135.52],['兵庫',34.69,135.18],['奈良',34.69,135.83],['和歌山',34.23,135.17],
+  ['鳥取',35.50,134.24],['島根',35.47,133.05],['岡山',34.66,133.93],['広島',34.40,132.46],['山口',34.19,131.47],
+  ['徳島',34.07,134.56],['香川',34.34,134.04],['愛媛',33.84,132.77],['高知',33.56,133.53],['福岡',33.61,130.42],
+  ['佐賀',33.25,130.30],['長崎',32.74,129.87],['熊本',32.79,130.74],['大分',33.24,131.61],['宮崎',31.91,131.42],
+  ['鹿児島',31.56,130.56],['沖縄',26.21,127.68]
+];
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2, '0');
+const fmt = m => pad(Math.floor(m / 60)) + ':' + pad(Math.round(m % 60));
+const toMin = hhmm => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
+
+// 区の候補(東京23区と政令指定都市)。都道府県を選ぶと入力欄の候補に出る
+const W = s => s.split(' ');
+const WARDS = {
+  '北海道': { '札幌市': W('中央区 北区 東区 白石区 豊平区 南区 西区 厚別区 手稲区 清田区') },
+  '宮城': { '仙台市': W('青葉区 宮城野区 若林区 太白区 泉区') },
+  '埼玉': { 'さいたま市': W('西区 北区 大宮区 見沼区 中央区 桜区 浦和区 南区 緑区 岩槻区') },
+  '千葉': { '千葉市': W('中央区 花見川区 稲毛区 若葉区 緑区 美浜区') },
+  '東京': { '': W('千代田区 中央区 港区 新宿区 文京区 台東区 墨田区 江東区 品川区 目黒区 大田区 世田谷区 渋谷区 中野区 杉並区 豊島区 北区 荒川区 板橋区 練馬区 足立区 葛飾区 江戸川区') },
+  '神奈川': {
+    '横浜市': W('鶴見区 神奈川区 西区 中区 南区 保土ケ谷区 磯子区 金沢区 港北区 戸塚区 港南区 旭区 緑区 瀬谷区 栄区 泉区 青葉区 都筑区'),
+    '川崎市': W('川崎区 幸区 中原区 高津区 多摩区 宮前区 麻生区'),
+    '相模原市': W('緑区 中央区 南区')
+  },
+  '新潟': { '新潟市': W('北区 東区 中央区 江南区 秋葉区 南区 西区 西蒲区') },
+  '静岡': { '静岡市': W('葵区 駿河区 清水区'), '浜松市': W('中央区 浜名区 天竜区') },
+  '愛知': { '名古屋市': W('千種区 東区 北区 西区 中村区 中区 昭和区 瑞穂区 熱田区 中川区 港区 南区 守山区 緑区 名東区 天白区') },
+  '京都': { '京都市': W('北区 上京区 左京区 中京区 東山区 下京区 南区 右京区 伏見区 山科区 西京区') },
+  '大阪': {
+    '大阪市': W('北区 都島区 福島区 此花区 中央区 西区 港区 大正区 天王寺区 浪速区 西淀川区 淀川区 東淀川区 東成区 生野区 旭区 城東区 阿倍野区 住吉区 東住吉区 西成区 鶴見区 住之江区 平野区'),
+    '堺市': W('堺区 中区 東区 西区 南区 北区 美原区')
+  },
+  '兵庫': { '神戸市': W('東灘区 灘区 中央区 兵庫区 北区 長田区 須磨区 垂水区 西区') },
+  '岡山': { '岡山市': W('北区 中区 東区 南区') },
+  '広島': { '広島市': W('中区 東区 南区 西区 安佐南区 安佐北区 安芸区 佐伯区') },
+  '福岡': {
+    '北九州市': W('門司区 若松区 戸畑区 小倉北区 小倉南区 八幡東区 八幡西区'),
+    '福岡市': W('東区 博多区 中央区 南区 西区 城南区 早良区')
+  },
+  '熊本': { '熊本市': W('中央区 東区 西区 南区 北区') }
+};
+function fillCityList() {
+  const dl = $('cityList');
+  dl.innerHTML = '';
+  const cities = WARDS[PREFS[$('pref').value][0]] || {};
+  Object.entries(cities).forEach(([city, wards]) => {
+    if (city) dl.appendChild(Object.assign(document.createElement('option'), { value: city }));
+    wards.forEach(w => dl.appendChild(Object.assign(document.createElement('option'), { value: city + w })));
+  });
+}
+
+// 解決済みの場所。key が現在の入力と一致すれば再検索せずに使う
+let resolved = null;
+const prefFull = i => { const n = PREFS[i][0]; return n === '北海道' ? n : n === '東京' ? '東京都' : (n === '大阪' || n === '京都') ? n + '府' : n + '県'; };
+
+PREFS.forEach(([name], i) => {
+  const o = document.createElement('option');
+  o.value = i; o.textContent = prefFull(i);
+  if (name === '東京') o.selected = true;
+  $('pref').appendChild(o);
+});
+const keyOf = () => $('pref').value + '|' + $('city').value.trim();
+function setPlaceNow(label) { $('placeNow').innerHTML = '選択中: <b></b>'; $('placeNow').querySelector('b').textContent = label; }
+function currentLabel() { return prefFull($('pref').value) + $('city').value.trim(); }
+fillCityList();
+$('pref').addEventListener('change', () => { fillCityList(); $('geo').textContent = '現在地を使う'; setPlaceNow(currentLabel()); });
+$('city').addEventListener('input', () => { $('geo').textContent = '現在地を使う'; setPlaceNow(currentLabel()); });
+
+// 国土地理院の住所検索で市区町村の位置を取得
+async function geocodeCity() {
+  const q = currentLabel();
+  const res = await fetch('https://msearch.gsi.go.jp/address-search/AddressSearch?q=' + encodeURIComponent(q));
+  if (!res.ok) throw new Error('geocode');
+  const list = await res.json();
+  const hit = list.find(x => x.properties.title.startsWith(prefFull($('pref').value))) || list[0];
+  if (!hit) return null;
+  const [lon, lat] = hit.geometry.coordinates;
+  return { lat, lon, label: hit.properties.title };
+}
+
+// 国土地理院の逆ジオコーダで市区町村コードを取り、同梱の表(muni.json)で区まで含む地名にする
+let muniTable = null;
+async function reverseGeocode(lat, lon) {
+  const res = await fetch(`https://mreversegeocoder.gsi.go.jp/reverse-geocoder/LonLatToAddress?lat=${lat}&lon=${lon}`);
+  if (!res.ok) throw new Error('reverse');
+  const code = (await res.json()).results?.muniCd;
+  if (!code) throw new Error('reverse');
+  if (!muniTable) muniTable = await (await fetch('muni.json')).json();
+  const muni = muniTable[String(code).padStart(5, '0')];
+  if (!muni) throw new Error('reverse');
+  return { prefIdx: Math.floor(+code / 1000) - 1, muni };
+}
+
+$('geo').addEventListener('click', () => {
+  clearErr();
+  if (!navigator.geolocation) { showErr('このブラウザでは現在地を取得できません。都道府県と市区町村を入力してください。'); return; }
+  $('geo').textContent = '取得中…';
+  navigator.geolocation.getCurrentPosition(async p => {
+    const lat = p.coords.latitude, lon = p.coords.longitude;
+    try {
+      const r = await reverseGeocode(lat, lon);
+      if (r.prefIdx != null && PREFS[r.prefIdx]) { $('pref').value = r.prefIdx; fillCityList(); }
+      $('city').value = r.muni;
+      resolved = { key: keyOf(), lat, lon, label: currentLabel() };
+      setPlaceNow(resolved.label + '(現在地)');
+      $('geo').textContent = '現在地を使用中';
+    } catch (err) {
+      resolved = { key: keyOf(), lat, lon, label: '現在地' };
+      setPlaceNow('現在地(地名は取得できませんでした)');
+      $('geo').textContent = '現在地を使用中';
+    }
+  }, () => { $('geo').textContent = '現在地を使う'; showErr('現在地を取得できませんでした。都道府県と市区町村を入力してください。'); }, { timeout: 8000 });
+});
+
+(function initDate() {
+  const d = new Date();
+  const iso = x => x.getFullYear() + '-' + pad(x.getMonth() + 1) + '-' + pad(x.getDate());
+  $('date').value = iso(d);
+  $('date').min = iso(d);
+  const max = new Date(d); max.setDate(max.getDate() + 15);
+  $('date').max = iso(max);
+})();
+
+function showErr(msg) { $('err').textContent = msg; $('err').classList.add('show'); }
+function clearErr() { $('err').classList.remove('show'); }
+
+$('form').addEventListener('submit', async e => {
+  e.preventDefault();
+  clearErr();
+  const btn = $('go');
+  btn.disabled = true; btn.textContent = '調べています…';
+  try {
+    const date = $('date').value;
+    const place = await resolvePlace();
+    if (!place) { $('result').classList.remove('show'); showErr('「' + currentLabel() + '」が見つかりませんでした。市区町村名を確認してください。'); return; }
+    const coords = { lat: place.lat, lon: place.lon };
+    const url = 'https://api.open-meteo.com/v1/forecast'
+      + `?latitude=${coords.lat.toFixed(4)}&longitude=${coords.lon.toFixed(4)}`
+      + '&daily=sunset&hourly=temperature_2m,precipitation_probability,weather_code,wind_speed_10m&wind_speed_unit=ms'
+      + `&timezone=Asia%2FTokyo&start_date=${date}&end_date=${date}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('http');
+    const data = await res.json();
+    if (!data.daily || !data.daily.sunset || !data.daily.sunset[0]) throw new Error('nodata');
+    render(data, place.label);
+  } catch (err) {
+    $('result').classList.remove('show');
+    showErr('データを取得できませんでした。通信状況を確認して、もう一度試してください。');
+  } finally {
+    btn.disabled = false; btn.textContent = '日没を調べる';
+  }
+});
+
+async function resolvePlace() {
+  const key = keyOf();
+  if (resolved && resolved.key === key) return resolved;
+  if (!$('city').value.trim()) {
+    const [, lat, lon] = PREFS[$('pref').value];
+    resolved = { key, lat, lon, label: prefFull($('pref').value) };
+    return resolved;
+  }
+  const g = await geocodeCity();
+  if (!g) return null;
+  resolved = { key, lat: g.lat, lon: g.lon, label: g.label };
+  setPlaceNow(g.label);
+  return resolved;
+}
+
+// 天気コード(WMO)→ 種類・表示名。severity が大きいほど野球に不向き
+function wxInfo(code) {
+  if (code === 0) return { kind: 'sun', name: '快晴', sev: 0 };
+  if (code === 1) return { kind: 'sun', name: '晴れ', sev: 0 };
+  if (code === 2) return { kind: 'partly', name: '晴れ時々曇り', sev: 1 };
+  if (code === 3) return { kind: 'cloud', name: '曇り', sev: 1 };
+  if (code === 45 || code === 48) return { kind: 'fog', name: '霧', sev: 2 };
+  if (code >= 51 && code <= 57) return { kind: 'rain', name: '霧雨', sev: 3 };
+  if (code >= 61 && code <= 67) return { kind: 'rain', name: code >= 65 ? '強い雨' : '雨', sev: 4 };
+  if (code >= 71 && code <= 77) return { kind: 'snow', name: '雪', sev: 4 };
+  if (code >= 80 && code <= 82) return { kind: 'rain', name: 'にわか雨', sev: 4 };
+  if (code === 85 || code === 86) return { kind: 'snow', name: 'にわか雪', sev: 4 };
+  if (code >= 95) return { kind: 'thunder', name: '雷雨', sev: 5 };
+  return { kind: 'cloud', name: '曇り', sev: 1 };
+}
+const SUN = '#ffb347', CLOUD = '#c9c3ea', RAIN = '#7cc4ff';
+function wxIcon(kind) {
+  const cloud = (c, x = 0, y = 0) => `<path transform="translate(${x} ${y})" d="M9 21h13a5 5 0 0 0 .6-9.96A7 7 0 0 0 9.2 12.2 4.5 4.5 0 0 0 9 21z" fill="${c}"/>`;
+  const sun = (cx, cy, r) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${SUN}"/>`;
+  const rays = `<g stroke="${SUN}" stroke-width="2" stroke-linecap="round"><path d="M16 2v3M16 27v3M2 16h3M27 16h3M6.1 6.1l2.1 2.1M23.8 23.8l2.1 2.1M6.1 25.9l2.1-2.1M23.8 8.2l2.1-2.1"/></g>`;
+  const drops = `<g stroke="${RAIN}" stroke-width="2" stroke-linecap="round"><path d="M11 24l-1.5 4M16 24l-1.5 4M21 24l-1.5 4"/></g>`;
+  const body = {
+    sun: rays + sun(16, 16, 6),
+    partly: sun(12, 11, 5) + `<g stroke="${SUN}" stroke-width="2" stroke-linecap="round"><path d="M12 1.5v2M2.5 11h2M5.3 4.3l1.4 1.4M18.7 4.3l-1.4 1.4"/></g>` + cloud(CLOUD, 3, 5),
+    cloud: cloud(CLOUD, 0, 1),
+    fog: cloud(CLOUD, 0, -3) + `<g stroke="${CLOUD}" stroke-width="2" stroke-linecap="round"><path d="M6 24h20M9 28h14"/></g>`,
+    rain: cloud(CLOUD, 0, -4) + drops,
+    snow: cloud(CLOUD, 0, -4) + `<g fill="#fff"><circle cx="11" cy="26" r="1.6"/><circle cx="16" cy="28" r="1.6"/><circle cx="21" cy="26" r="1.6"/></g>`,
+    thunder: cloud('#9d95c9', 0, -4) + `<path d="M17 18l-5 8h4l-1.5 5 6.5-9h-4.2z" fill="${SUN}"/>`
+  }[kind];
+  return `<svg viewBox="0 0 32 32" aria-hidden="true">${body}</svg>`;
+}
+
+function render(data, label) {
+  $('place').textContent = label + 'の日没と天気';
+  const start = toMin($('start').value);
+  const per = +$('inning').value;
+  const buffer = +$('buffer').value;
+  const sunset = toMin(data.daily.sunset[0].split('T')[1]);
+  const limit = sunset - buffer;
+  const end9 = start + per * 9;
+  const done = Math.max(0, Math.min(9, Math.floor((limit - start) / per)));
+  const ok = end9 <= limit;
+
+  $('verdict').textContent = ok ? '9回まで間に合います' : (done >= 1 ? `${done}回で日没です` : '開始時点で日没に間に合いません');
+  $('verdict').className = 'verdict ' + (ok ? 'ok' : 'ng');
+  const margin = Math.abs(limit - end9);
+  $('verdictSub').textContent = ok
+    ? `9回終了の予定は日没の${buffer}分前から数えて、あと${margin}分の余裕があります。`
+    : `9回を終えるには、日没の${buffer}分前の時点から${margin}分足りません。`;
+
+  $('sunset').textContent = fmt(sunset);
+  $('end').innerHTML = fmt(end9) + (ok ? '' : '<small>日没後</small>');
+  $('innings').innerHTML = done + '<small>回まで</small>';
+
+  // 試合時間帯(開始〜日没 or 9回終了の早い方)の天気
+  const hours = data.hourly.time.map((t, i) => ({
+    h: +t.split('T')[1].slice(0, 2),
+    temp: data.hourly.temperature_2m[i], pop: data.hourly.precipitation_probability[i],
+    code: data.hourly.weather_code[i], wind: data.hourly.wind_speed_10m[i]
+  }));
+  const from = Math.floor(start / 60), to = Math.ceil(Math.min(end9, sunset) / 60);
+  const win = hours.filter(x => x.h >= from && x.h <= to && x.temp != null);
+  if (win.length) {
+    const worst = win.reduce((a, x) => wxInfo(x.code).sev > wxInfo(a.code).sev ? x : a, win[0]);
+    const pops = win.map(x => x.pop ?? 0), temps = win.map(x => x.temp);
+    $('wx').innerHTML = wxInfo(worst.code).name + '<small>' + Math.round(Math.min(...temps)) + '〜' + Math.round(Math.max(...temps)) + '℃ 降水' + Math.max(...pops) + '%</small>';
+  } else {
+    $('wx').textContent = '—';
+  }
+
+  // 時間ごとの天気(開始の1時間前〜9回終了か日没の遅い方まで)
+  const strip = hours.filter(x => x.h >= from && x.h <= Math.ceil(Math.max(end9, sunset) / 60) && x.temp != null);
+  $('hoursTitle').textContent = '時間ごとの天気(薄い表示は日没後)';
+  $('hours').innerHTML = strip.map(x => {
+    const w = wxInfo(x.code), pop = x.pop ?? 0;
+    return `<div class="hour${x.h * 60 >= sunset ? ' after' : ''}"><div class="h">${x.h}時</div>${wxIcon(w.kind)}<div class="t">${Math.round(x.temp)}℃</div><div class="p${pop >= 50 ? ' rain' : ''}">降水${pop}%</div><div class="w">${w.name}・風${Math.round(x.wind)}m/s</div></div>`;
+  }).join('');
+
+  drawSky(start, end9, sunset, per, limit);
+
+  $('note').textContent = ok
+    ? 'ギリギリの場合は、開始を早めるか、1イニングの所要時間を短くする(投球練習を省くなど)と余裕が増えます。'
+    : `開始を${fmt(start - (end9 - limit))}より前にすると、9回まで日没に間に合います。コールドや7回制の取り決めも選択肢です。`;
+
+  $('result').classList.add('show');
+}
+
+function drawSky(start, end9, sunset, per, limit) {
+  const a = Math.min(start, sunset) - 30;
+  const b = Math.max(end9, sunset) + 30;
+  const span = b - a;
+  const pct = m => ((m - a) / span * 100);
+  const sunP = pct(sunset);
+
+  // 昼の青 → 日没に向けて橙 → 日没後は藍
+  $('sky').style.background =
+    `linear-gradient(90deg, #4f8fd6 0%, #8fb7e0 ${Math.max(0, sunP - 28)}%, #ffb067 ${Math.max(0, sunP - 6)}%, #ff7a45 ${sunP}%, #5b2f6e ${Math.min(100, sunP + 8)}%, #1b1736 100%)`;
+
+  let html = `<div class="game" style="left:${pct(start)}%;width:${pct(end9) - pct(start)}%"></div>`;
+  for (let i = 1; i <= 9; i++) {
+    const t = start + per * i;
+    html += `<div class="tick${t > limit ? ' over' : ''}" style="left:${pct(t)}%"></div>`;
+  }
+  html += `<div class="sunline" style="left:calc(${sunP}% - 1.5px)"></div>`;
+  $('sky').innerHTML = html;
+
+  $('axis').innerHTML =
+    `<span style="left:${pct(start)}%">${fmt(start)}開始</span>` +
+    `<span class="sun-label" style="left:${Math.min(Math.max(sunP, 8), 92)}%;top:0">${fmt(sunset)}日没</span>`;
+  // 開始ラベルと日没ラベルが重なる場合は開始ラベルを左寄せ
+  if (Math.abs(sunP - pct(start)) < 18) $('axis').firstChild.style.left = Math.max(pct(start) - 8, 4) + '%';
+}
+
+// 他のアプリからのリンク用: ?pref=東京&city=新宿区&date=2026-11-01&start=09:00
+(function applyQuery() {
+  const q = new URLSearchParams(location.search);
+  const pref = q.get('pref');
+  if (!pref) return;
+  const idx = PREFS.findIndex(p => p[0] === pref.replace(/[都道府県]$/, '') || p[0] === pref);
+  if (idx < 0) return;
+  $('pref').value = idx;
+  fillCityList();
+  $('city').value = (q.get('city') || '').slice(0, 30);
+  const date = q.get('date');
+  if (date && date >= $('date').min && date <= $('date').max) $('date').value = date;
+  const start = q.get('start');
+  if (start && /^\d{2}:\d{2}$/.test(start)) $('start').value = start;
+  setPlaceNow(currentLabel());
+  $('form').requestSubmit();
+})();
+</script>
+</body>
+</html>

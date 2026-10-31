@@ -1092,6 +1092,26 @@ document.addEventListener('DOMContentLoaded', async () => {
       _fetchWeatherForDate();
     });
 
+    // 日没時刻と、日没ツールへのリンクを天気カードの下に足す
+    async function _wxAddSunset(w, pref, city, dateVal) {
+      const c = (w.lat != null && w.lon != null) ? { lat: w.lat, lon: w.lon } : WeatherModule.getPrefCoords(pref);
+      if (!c) return;
+      const t = await WeatherModule.getSunset(c.lat, c.lon, dateVal);
+      if (!t || _wxCurrentData?.date !== dateVal) return;
+      const row = document.createElement('div');
+      row.className = 'wx-sun';
+      row.appendChild(document.createTextNode('日没 ' + t));
+      if (!WeatherModule.isPast(dateVal)) {
+        const a = document.createElement('a');
+        const q = new URLSearchParams({ pref, date: dateVal });
+        if (city) q.set('city', city);
+        a.href = '/sunset/?' + q.toString();
+        a.textContent = '9回に間に合う？';
+        row.appendChild(a);
+      }
+      _wxBody.appendChild(row);
+    }
+
     async function _fetchWeatherForDate() {
       const dateVal = document.getElementById('input-date')?.value;
       if (!dateVal || !_wxBody) return;
@@ -1129,6 +1149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
             <span class="wx-source">${srcLabel}</span>
           </div>`;
+        _wxAddSunset(w, pref, city, dateVal);
       } catch {
         _wxBody.innerHTML = '<span class="wx-error">取得失敗</span>';
       }

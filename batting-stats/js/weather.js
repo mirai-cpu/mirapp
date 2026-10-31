@@ -290,10 +290,25 @@ const WeatherModule = (() => {
     if (result) {
       storeCache(cityName, dateStr, { ...result, cityName: geo.name });
     }
-    return result ? { ...result, cityName: geo.name } : null;
+    return result ? { ...result, cityName: geo.name, lat: geo.lat, lon: geo.lon } : null;
+  }
+
+  // ── 日没時刻（Open-Meteo）──────────────────────────────────
+  // 緯度経度と日付から 'HH:MM' を返す。取得できなければ null
+  function getPrefCoords(pref) { return PREF_COORDS[pref] || null; }
+  async function getSunset(lat, lon, dateStr) {
+    try {
+      const host = isPast(dateStr) ? 'archive-api.open-meteo.com/v1/archive' : 'api.open-meteo.com/v1/forecast';
+      const res = await fetch(`https://${host}?latitude=${lat.toFixed(4)}&longitude=${lon.toFixed(4)}&daily=sunset&timezone=Asia%2FTokyo&start_date=${dateStr}&end_date=${dateStr}`);
+      if (!res.ok) return null;
+      const d = await res.json();
+      const v = d.daily?.sunset?.[0];
+      return v ? v.split('T')[1] : null;
+    } catch { return null; }
   }
 
   return {
+    getPrefCoords, getSunset,
     getWeather, forecast3Day, getCacheHistory,
     getSavedPref, savePref,
     isPast, dateLabel, PREFS,
