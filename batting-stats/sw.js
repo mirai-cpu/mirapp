@@ -1,6 +1,6 @@
 // sw.js - Service Worker (Cache-First Strategy)
 
-const CACHE_NAME = 'batting-stats-v6';
+const CACHE_NAME = 'batting-stats-v7';
 const ASSETS = [
   '/batting-stats/',
   '/batting-stats/index.html',
@@ -16,7 +16,7 @@ const ASSETS = [
   '/batting-stats/locales/en.json',
   '/batting-stats/manifest.json',
   '/batting-stats/icons/icon.svg',
-  'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.7/chart.umd.min.js',
+  'https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js',
 ];
 
 self.addEventListener('install', event => {

@@ -39,12 +39,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     '#f87171': { accentBg: 'rgba(248,113,113,0.1)',  glow: '0 0 24px rgba(248,113,113,0.2)' },
   };
 
+  // 明るい背景のとき、アクセント色は同じ色味の濃い色にして、文字として読めるようにする
+  const COLOR_LIGHT = {
+    '#ffd700': '#8A6A00', '#64ffda': '#0F7D63', '#60a5fa': '#1D5FB8', '#f472b6': '#B02A6E',
+    '#a78bfa': '#6A4FC9', '#34d399': '#1E7A55', '#fb923c': '#B45309', '#f87171': '#B91C1C',
+  };
+  let currentAccent = '#ffd700';
+
   const BG_THEMES = {
+    '#1A1512': { mode:'dark',  surface:'#2B2420', border:'#4B403A', border2:'#5B4F47', text:'#F5F7F6', muted:'#B9B1AA', surface2:'rgba(43,36,32,0.5)' },
     '#070810': { mode:'dark',  surface:'#0d0f18', border:'#1c1f30', border2:'#252840', text:'#eaecf4', muted:'#555878', surface2:'rgba(18,21,34,0.5)' },
     '#000000': { mode:'dark',  surface:'#111111', border:'#1e1e1e', border2:'#282828', text:'#eaecf4', muted:'#555878', surface2:'rgba(255,255,255,0.04)' },
     '#0f172a': { mode:'dark',  surface:'#1e293b', border:'#334155', border2:'#475569', text:'#f1f5f9', muted:'#64748b', surface2:'rgba(255,255,255,0.04)' },
     '#0a0805': { mode:'dark',  surface:'#14110a', border:'#28221a', border2:'#352c20', text:'#f0e8d8', muted:'#6b5e48', surface2:'rgba(255,255,255,0.04)' },
     '#1a0a0a': { mode:'dark',  surface:'#2a1414', border:'#3a1c1c', border2:'#4a2424', text:'#f8e8e8', muted:'#785555', surface2:'rgba(255,255,255,0.04)' },
+    '#F5F7F6': { mode:'light', surface:'#E7ECE9', border:'rgba(43,36,32,0.14)', border2:'rgba(43,36,32,0.2)', text:'#2B2420', muted:'#5B534D', surface2:'rgba(43,36,32,0.04)' },
     '#ffffff': { mode:'light', surface:'#f1f5f9', border:'rgba(0,0,0,0.1)',  border2:'rgba(0,0,0,0.15)', text:'#0f172a', muted:'#64748b', surface2:'rgba(0,0,0,0.04)' },
     '#f8f6f3': { mode:'light', surface:'#edeae6', border:'rgba(0,0,0,0.1)',  border2:'rgba(0,0,0,0.15)', text:'#1c1917', muted:'#78716c', surface2:'rgba(0,0,0,0.04)' },
     '#faf7f2': { mode:'light', surface:'#efece5', border:'rgba(0,0,0,0.09)', border2:'rgba(0,0,0,0.13)', text:'#1c1917', muted:'#78716c', surface2:'rgba(0,0,0,0.04)' },
@@ -58,7 +67,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const savedColor   = localStorage.getItem('accentColor') || '#ffd700';
   applyColor(savedColor);
 
-  const savedBg = localStorage.getItem('bs-bgColor') || '#070810';
+  // デザイン刷新(2026-11): 旧い既定の背景のままの人は、新しい既定(黒土)にする。自分で別の色を選んでいた人は、そのまま
+  let savedBg = localStorage.getItem('bs-bgColor') || '#1A1512';
+  if (localStorage.getItem('bs-design') !== 'line-v1') {
+    if (savedBg === '#070810') savedBg = '#1A1512';
+    localStorage.setItem('bs-design', 'line-v1');
+  }
   applyBg(savedBg);
 
   colorBtn.addEventListener('click', (e) => {
@@ -87,7 +101,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   function applyColor(color) {
     const theme = COLOR_THEMES[color] || COLOR_THEMES['#ffd700'];
     const root = document.documentElement;
-    root.style.setProperty('--accent',     color);
+    currentAccent = color;
+    const shown = (root.getAttribute('data-theme') === 'light' && COLOR_LIGHT[color]) || color;
+    root.style.setProperty('--accent',     shown);
     root.style.setProperty('--accent-bg',  theme.accentBg);
     root.style.setProperty('--glow-gold',  theme.glow);
     if (colorDot) colorDot.style.background = color;
@@ -97,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function applyBg(color) {
-    const theme = BG_THEMES[color] || BG_THEMES['#070810'];
+    const theme = BG_THEMES[color] || BG_THEMES['#1A1512'];
     const root  = document.documentElement;
     root.setAttribute('data-theme', theme.mode);
     root.style.setProperty('--bg',        color);
@@ -112,6 +128,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     root.style.setProperty('--header-bg', `color-mix(in srgb, ${color} 92%, ${mix})`);
     root.style.setProperty('--tabbar-bg', `color-mix(in srgb, ${color} 95%, ${mix})`);
     localStorage.setItem('bs-bgColor', color);
+    applyColor(currentAccent);
     document.querySelectorAll('.bg-swatch').forEach(s =>
       s.classList.toggle('active', s.dataset.bg === color)
     );
