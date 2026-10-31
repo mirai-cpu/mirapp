@@ -65,7 +65,10 @@ check_html() {
   while IFS= read -r src; do
     [[ "$src" == http* ]] && continue
     [[ -z "$src" ]] && continue
-    if [ ! -f "$dir/$src" ]; then
+    # "/"始まりはサイトルート(このスクリプトのある場所)基準で確認する
+    local target="$dir/$src"
+    [[ "$src" == /* ]] && target="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)$src"
+    if [ ! -f "$target" ]; then
       fail "script src が存在しない: $src"
       missing_scripts=$((missing_scripts+1))
     fi

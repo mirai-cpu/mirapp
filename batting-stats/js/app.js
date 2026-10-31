@@ -1155,6 +1155,28 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
 
+    // 現在地ボタン: 都道府県と市区町村(区まで)を現在地に合わせて天気を取得
+    const _wxGeoBtn = document.getElementById('wx-geo-btn');
+    _wxGeoBtn?.addEventListener('click', async () => {
+      if (typeof SomiraiGeo === 'undefined') return;
+      _wxGeoBtn.disabled = true; _wxGeoBtn.textContent = '取得中…';
+      try {
+        const loc = await SomiraiGeo.locate();
+        if (loc.prefName) {
+          const opt = Array.from(_wxPrefSel.options).find(o => o.text === loc.prefName);
+          if (opt) { opt.selected = true; WeatherModule.savePref(_wxPrefSel.value); }
+          const cityInput = document.getElementById('wx-city-input');
+          if (cityInput) cityInput.value = loc.muni;
+        }
+        await _fetchWeatherForDate();
+      } catch (err) {
+        _wxBody.innerHTML = '<span class="wx-error"></span>';
+        _wxBody.firstChild.textContent = SomiraiGeo.errorMessage(err);
+      } finally {
+        _wxGeoBtn.disabled = false; _wxGeoBtn.textContent = '現在地';
+      }
+    });
+
     // 日付変更時に天気自動取得
     document.getElementById('input-date')?.addEventListener('change', _fetchWeatherForDate);
     document.getElementById('btn-today')?.addEventListener('click', () => {

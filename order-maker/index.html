@@ -819,6 +819,8 @@
       -webkit-appearance:none;appearance:none;outline:none;flex:1;
     }
     .wx-ctrl-pref option,.wx-ctrl-date option { background:#0d0f18; }
+    .wx-geo-btn { background:transparent;border:1px solid rgba(255,179,71,.4);border-radius:8px;color:#ffb347;font-family:'Noto Sans JP',sans-serif;font-size:12px;font-weight:700;padding:8px 10px;cursor:pointer;white-space:nowrap;flex-shrink:0; }
+    .wx-geo-btn:disabled { opacity:.5;cursor:wait; }
     .wx-fetch-btn {
       background:var(--accent,#00e676);color:#07090f;border:none;border-radius:8px;
       font-family:'Barlow',sans-serif;font-size:13px;font-weight:800;padding:8px 16px;
@@ -879,6 +881,7 @@
       <option>佐賀</option><option>長崎</option><option>熊本</option><option>大分</option>
       <option>宮崎</option><option>鹿児島</option><option>沖縄</option>
     </select>
+    <button class="wx-geo-btn" id="om-wx-geo-btn" type="button" onclick="omWxLocate()" aria-label="現在地の都道府県にする">現在地</button>
     <input type="date" class="wx-ctrl-date" id="om-wx-date" aria-label="日付">
     <button class="wx-fetch-btn" id="om-wx-fetch-btn" onclick="omWxFetch()">確認</button>
   </div>
@@ -1272,6 +1275,7 @@
   </div>
 </div>
 
+<script src="/shared/geo.js"></script>
 <script>
 // ── Constants ──────────────────────
 const POSITIONS = ['投','捕','一','二','三','遊','左','中','右','DH'];
@@ -2516,6 +2520,24 @@ async function omWxFetch3Day(pref) {
   } catch {
     resultEl.innerHTML = '<div class="wx-msg">取得に失敗しました</div>';
   }
+}
+
+// 現在地の都道府県を選んで天気を表示(このパネルは都道府県単位)
+async function omWxLocate() {
+  const btn = document.getElementById('om-wx-geo-btn');
+  const resultEl = document.getElementById('om-wx-result');
+  if (!btn || typeof SomiraiGeo === 'undefined') return;
+  btn.disabled = true; btn.textContent = '取得中…';
+  try {
+    const loc = await SomiraiGeo.locate();
+    if (!loc.prefName) throw Object.assign(new Error('reverse'), { code: 'unavailable' });
+    const sel = document.getElementById('om-wx-pref');
+    const opt = Array.from(sel.options).find(o => o.text === loc.prefName);
+    if (opt) opt.selected = true;
+    await omWxFetch();
+  } catch (err) {
+    if (resultEl) { resultEl.innerHTML = '<div class="wx-msg"></div>'; resultEl.firstChild.textContent = SomiraiGeo.errorMessage(err); }
+  } finally { btn.disabled = false; btn.textContent = '現在地'; }
 }
 
 async function omWxFetch() {

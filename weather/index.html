@@ -472,6 +472,7 @@
       style="flex:1;background:var(--surface);border:1px solid var(--border-2);border-radius:10px;color:var(--text);font-size:16px;padding:11px 14px;outline:none;transition:border-color .2s;font-family:'Noto Sans JP',sans-serif;"
       aria-label="市区町村名で検索">
     <button class="fetch-btn" id="city-fetch-btn" style="flex-shrink:0;">検索</button>
+    <button class="fetch-btn" id="geo-btn" type="button" style="flex-shrink:0;" aria-label="現在地の天気を表示">現在地</button>
   </div>
   <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;">
     <div style="flex:1;height:1px;background:var(--border-2);"></div>
@@ -722,6 +723,7 @@
 
 </div><!-- /page -->
 
+<script src="/shared/geo.js"></script>
 <script>
 // ── Starfield ────────────────────────────────────────────────
 (function(){
@@ -987,7 +989,9 @@ const DAY_JA = ['日','月','火','水','木','金','土'];
 function wmoToEmoji(c){if(c===0)return'☀️';if(c<=2)return'⛅';if(c<=3)return'☁️';if(c<=49)return'🌫️';if(c<=67)return'🌧️';if(c<=77)return'❄️';if(c<=82)return'🌧️';if(c<=86)return'❄️';return'⛈️';}
 function wmoToDesc(c){const m={0:'快晴',1:'晴れ',2:'晴れ時々くもり',3:'くもり',45:'霧',48:'霧',51:'小雨',53:'雨',55:'大雨',61:'雨',63:'雨',65:'大雨',71:'小雪',73:'雪',75:'大雪',77:'みぞれ',80:'にわか雨',81:'雨',82:'大雨',85:'にわか雪',86:'大雪',95:'雷雨'};return m[c]||'—';}
 
-async function doCityFetch() {
+async function doCityFetch(override) {
+  // override = { lat, lon, name }: 現在地ボタンから呼ばれた場合は地名検索を省く
+  const byLocation = !!(override && typeof override.lat === 'number');
   const cityInput = document.getElementById('city-input');
   const cityBtn   = document.getElementById('city-fetch-btn');
   const grid      = document.getElementById('cards-grid');
@@ -997,7 +1001,7 @@ async function doCityFetch() {
   const loading   = document.getElementById('loading-wrap');
 
   const query = cityInput.value.trim();
-  if (!query) { cityInput.focus(); return; }
+  if (!query && !byLocation) { cityInput.focus(); return; }
 
   grid.innerHTML = ''; banner.className = 'summary-banner'; errWrap.className = 'error-wrap';
   note.style.display = 'none'; cityBtn.disabled = true;
@@ -1010,15 +1014,20 @@ async function doCityFetch() {
     // 返り、ブラウザ側でfetchが失敗することがある。毎回ユニークなクエリ
     // パラメータを付与してキャッシュを回避し、常にCORSヘッダー付きの
     // フレッシュなレスポンスを取得する。
+    let lat, lon, cityName;
+    if (byLocation) {
+      lat = override.lat; lon = override.lon; cityName = override.name;
+    } else {
     const geoUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query + ' 日本')}&format=json&limit=1&countrycodes=jp&accept-language=ja&_cb=${Date.now()}`;
     const geoRes = await fetch(geoUrl);
     if (!geoRes.ok) throw new Error('geocode_failed');
     const geoData = await geoRes.json();
     if (!geoData.length) throw new Error('city_not_found');
 
-    const lat = parseFloat(geoData[0].lat);
-    const lon = parseFloat(geoData[0].lon);
-    const cityName = geoData[0].display_name.split(',').slice(0, 2).join(' ').trim();
+    lat = parseFloat(geoData[0].lat);
+    lon = parseFloat(geoData[0].lon);
+    cityName = geoData[0].display_name.split(',').slice(0, 2).join(' ').trim();
+    }
 
     // 2. Open-Meteo 7日予報（市区町村精度）
     const wxUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat.toFixed(4)}&longitude=${lon.toFixed(4)}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=7`;
@@ -1093,7 +1102,27 @@ async function doCityFetch() {
   }
 }
 
-document.getElementById('city-fetch-btn').addEventListener('click', doCityFetch);
+document.getElementById('city-fetch-btn').addEventListener('click', () => doCityFetch());
+
+// 現在地ボタン: 共通部品 /shared/geo.js で位置と地名(区まで)を取り、そのまま天気を表示
+document.getElementById('geo-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('geo-btn');
+  const input = document.getElementById('city-input');
+  const errWrap = document.getElementById('error-wrap');
+  btn.disabled = true; btn.textContent = '取得中…';
+  try {
+    const loc = await SomiraiGeo.locate();
+    const name = loc.label || '現在地';
+    input.value = loc.muni || '';
+    await doCityFetch({ lat: loc.lat, lon: loc.lon, name });
+    if (typeof gtag === 'function') gtag('event', 'geo_locate', { tool: 'forecast' });
+  } catch (err) {
+    errWrap.className = 'error-wrap show';
+    document.getElementById('error-msg').textContent = SomiraiGeo.errorMessage(err);
+  } finally {
+    btn.disabled = false; btn.textContent = '現在地';
+  }
+});
 document.getElementById('city-input').addEventListener('keydown', e => { if (e.key === 'Enter') doCityFetch(); });
 </script>
 

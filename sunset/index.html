@@ -180,6 +180,7 @@
   <footer>天気・日没データ: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>(無料API)。所要時間は目安で、実際の試合進行とは異なります。</footer>
 </main>
 
+<script src="/shared/geo.js"></script>
 <script>
 const PREFS = [
   ['北海道',43.06,141.35],['青森',40.82,140.74],['岩手',39.70,141.15],['宮城',38.27,140.87],['秋田',39.72,140.10],
@@ -267,48 +268,26 @@ async function geocodeCity() {
   return { lat, lon, label: hit.properties.title };
 }
 
-// 国土地理院の逆ジオコーダで市区町村コードを取り、同梱の表(muni.json)で区まで含む地名にする
-let muniTable = null;
-async function reverseGeocode(lat, lon) {
-  const res = await fetch(`https://mreversegeocoder.gsi.go.jp/reverse-geocoder/LonLatToAddress?lat=${lat}&lon=${lon}`);
-  if (!res.ok) throw new Error('reverse');
-  const code = (await res.json()).results?.muniCd;
-  if (!code) throw new Error('reverse');
-  if (!muniTable) muniTable = await (await fetch('muni.json')).json();
-  const muni = muniTable[String(code).padStart(5, '0')];
-  if (!muni) throw new Error('reverse');
-  return { prefIdx: Math.floor(+code / 1000) - 1, muni };
-}
-
-$('geo').addEventListener('click', () => {
+// 現在地 → 都道府県・市区町村(区まで)。共通部品 /shared/geo.js を使う
+$('geo').addEventListener('click', async () => {
   clearErr();
-  if (!navigator.geolocation) { showErr('このブラウザでは現在地を取得できません。都道府県と市区町村を入力してください。'); return; }
   $('geo').textContent = '取得中…';
-  navigator.geolocation.getCurrentPosition(async p => {
-    const lat = p.coords.latitude, lon = p.coords.longitude;
-    try {
-      const r = await reverseGeocode(lat, lon);
-      if (r.prefIdx != null && PREFS[r.prefIdx]) { $('pref').value = r.prefIdx; fillCityList(); }
-      $('city').value = r.muni;
-      resolved = { key: keyOf(), lat, lon, label: currentLabel() };
-      setPlaceNow(resolved.label + '(現在地)');
-      $('geo').textContent = '現在地を使用中';
-    } catch (err) {
-      resolved = { key: keyOf(), lat, lon, label: '現在地' };
+  try {
+    const loc = await SomiraiGeo.locate();
+    if (loc.prefIdx != null) {
+      $('pref').value = loc.prefIdx; fillCityList(); $('city').value = loc.muni;
+      resolved = { key: keyOf(), lat: loc.lat, lon: loc.lon, label: loc.label };
+      setPlaceNow(loc.label + '(現在地)');
+    } else {
+      resolved = { key: keyOf(), lat: loc.lat, lon: loc.lon, label: '現在地' };
       setPlaceNow('現在地(地名は取得できませんでした)');
-      $('geo').textContent = '現在地を使用中';
     }
-  }, () => { $('geo').textContent = '現在地を使う'; showErr('現在地を取得できませんでした。都道府県と市区町村を入力してください。'); }, { timeout: 8000 });
+    $('geo').textContent = '現在地を使用中';
+  } catch (err) {
+    $('geo').textContent = '現在地を使う';
+    showErr(SomiraiGeo.errorMessage(err) + '都道府県と市区町村を入力してください。');
+  }
 });
-
-(function initDate() {
-  const d = new Date();
-  const iso = x => x.getFullYear() + '-' + pad(x.getMonth() + 1) + '-' + pad(x.getDate());
-  $('date').value = iso(d);
-  $('date').min = iso(d);
-  const max = new Date(d); max.setDate(max.getDate() + 15);
-  $('date').max = iso(max);
-})();
 
 function showErr(msg) { $('err').textContent = msg; $('err').classList.add('show'); }
 function clearErr() { $('err').classList.remove('show'); }

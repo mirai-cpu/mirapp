@@ -1487,6 +1487,13 @@ textarea { resize: vertical; min-height: 64px; }
   display: flex; align-items: center; gap: 10px; width: 100%;
 }
 .wx-widget-body { flex-wrap: wrap; }
+.wx-geo-btn {
+  background: transparent; border: 1px solid var(--border-2); color: var(--text);
+  border-radius: 8px; padding: 5px 10px; font-size: 12px; cursor: pointer;
+  font-family: 'Noto Sans JP', sans-serif; white-space: nowrap;
+}
+.wx-geo-btn:hover { border-color: #ffb347; }
+.wx-geo-btn:disabled { opacity: .5; cursor: wait; }
 .wx-sun {
   width: 100%; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
