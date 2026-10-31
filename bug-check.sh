@@ -357,6 +357,7 @@ check_html "$BASE/era-calculator/index.html" "防御率計算機"         "https
 check_html "$BASE/whip-calculator/index.html" "WHIP計算機"         "https://somirai.jp/whip-calculator/"
 check_html "$BASE/risp-calculator/index.html" "得点圏打率計算機"     "https://somirai.jp/risp-calculator/"
 check_html "$BASE/magic-number-calculator/index.html" "マジックナンバー計算機" "https://somirai.jp/magic-number-calculator/"
+check_html "$BASE/weather/index.html"       "FORECAST"               "https://somirai.jp/weather/"
 check_html "$BASE/draft/index.html"         "ドラフト会議"           "https://somirai.jp/draft/"
 check_html "$BASE/split/index.html"         "試合費用の割り勘"       "https://somirai.jp/split/"
 check_html "$BASE/training-timer/index.html" "9回制トレタイマー"     "https://somirai.jp/training-timer/"

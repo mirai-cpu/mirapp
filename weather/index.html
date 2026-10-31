@@ -27,458 +27,146 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
 
+  <meta name="theme-color" content="#2B2420">
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=DotGothic16&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/tokens.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:        #070810;
-      --surface:   #0d0f1a;
-      --surface2:  #121525;
-      --border:    #1a1f35;
-      --border2:   #252a45;
-      --text:      #e8ecf5;
-      --muted:     #52587a;
-      --muted2:    #363b58;
+      --bar-clear: #2F8F4E; --bar-warn: #F5C400; --bar-rain: #D64545; --bar-snow: #5AA9DE;
+      --t-clear: #1E6B38; --t-warn: #8A5A00; --t-rain: #B02A37; --t-snow: #1F6A99;
+      --clear: var(--bar-clear); --warn: var(--bar-warn); --rain: var(--bar-rain); --snow: var(--bar-snow); --accent-rain: var(--bar-rain); --accent-warn: var(--bar-warn);
+      --ic-sun: #E69500; --ic-cloud: #8A95A1; --ic-rain: #2B7FC4; --ic-snow: #5AA9DE;
+      --accent: #1E6B38; --muted: var(--ink-sec); --text: var(--ink);
+    }
+    :root[data-theme="dark"] {
+      --t-clear: #6FD39A; --t-warn: #F5C400; --t-rain: #FF8A8A; --t-snow: #8CC8F0;
+      --ic-sun: #FFB347; --ic-cloud: #C9D1D9; --ic-rain: #7CC4FF; --ic-snow: #D9ECFF;
+      --accent: #6FD39A;
+    }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+      --t-clear: #6FD39A; --t-warn: #F5C400; --t-rain: #FF8A8A; --t-snow: #8CC8F0;
+      --ic-sun: #FFB347; --ic-cloud: #C9D1D9; --ic-rain: #7CC4FF; --ic-snow: #D9ECFF; --accent: #6FD39A;
+    } }
 
-      --clear:     #38bdf8;
-      --clear-bg:  rgba(56,189,248,.08);
-      --warn:      #f59e0b;
-      --warn-bg:   rgba(245,158,11,.08);
-      --rain:      #f43f5e;
-      --rain-bg:   rgba(244,63,94,.08);
-      --snow:      #a5b4fc;
-      --snow-bg:   rgba(165,180,252,.08);
+    .page { max-width: 600px; margin: 0 auto; padding: 16px 20px 72px; }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; font-size: .875rem; font-weight: 700; }
+    .nav-logo svg { width: 24px; height: 24px; border-radius: 6px; }
 
-      --accent:    #38bdf8;
-      --mono:      'JetBrains Mono', monospace;
-      --display:   'Bebas Neue', cursive;
-    }
+    .app-hero { padding: 20px 0 18px; }
+    .app-title { font-size: clamp(1.6rem, 7vw, 2rem); line-height: 1.2; font-weight: 700; letter-spacing: .02em; }
+    .app-sub { font-size: .9375rem; color: var(--ink-sec); margin-top: 4px; }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
+    .selector-wrap { display: flex; gap: 8px; align-items: stretch; margin-bottom: 10px; }
+    .in, .pref-select {
+      flex: 1; min-width: 0; min-height: 52px; background: transparent; color: var(--ink);
+      border: 2px solid var(--ink); border-radius: 4px; padding: 8px 12px; font: inherit; font-size: 1rem;
     }
-    @keyframes scanline {
-      0%   { transform: translateY(-100%); opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 1; }
-      100% { transform: translateY(400%); opacity: 0; }
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: .35; }
-    }
-    @keyframes starTwinkle {
-      from { opacity: 1; transform: scale(1); }
-      to   { opacity: .07; transform: scale(.5); }
-    }
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
-    html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Noto Sans JP', system-ui, sans-serif;
-      font-size: 15px;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-
-    /* ── dot grid ── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 0;
-      background-image: radial-gradient(circle, #1e2242 1px, transparent 1px);
-      background-size: 28px 28px;
-      opacity: .4;
-      pointer-events: none;
-      mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, black 20%, transparent 80%);
-      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, black 20%, transparent 80%);
-    }
-
-    #starfield {
-      position: fixed; inset: 0; z-index: 0;
-      pointer-events: none; overflow: hidden;
-    }
-
-    /* ── layout ── */
-    .page {
-      position: relative; z-index: 1;
-      min-height: 100svh;
-      display: flex; flex-direction: column;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 0 16px 80px;
-    }
-
-    /* ── header ── */
-    .site-nav {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 0 0;
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-    }
-    .site-nav a {
-      color: var(--muted); text-decoration: none;
-      display: inline-flex; align-items: center; gap: 6px;
-      transition: color .15s;
-    }
-    .site-nav a:hover { color: var(--text); }
-
-    .app-hero {
-      padding: 32px 0 28px;
-      animation: fadeUp .5s ease-out both;
-    }
-    .app-eyebrow {
-      font-family: var(--mono);
-      font-size: 10px; font-weight: 600;
-      letter-spacing: .18em; color: var(--accent);
-      text-transform: uppercase;
-      display: flex; align-items: center; gap: 8px;
-      margin-bottom: 8px;
-    }
-    .app-eyebrow::before {
-      content: '';
-      display: block; width: 18px; height: 1px;
-      background: var(--accent);
-    }
-    .app-title {
-      font-family: var(--display);
-      font-size: clamp(52px, 16vw, 80px);
-      letter-spacing: .06em; line-height: 1;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-    .app-sub {
-      font-size: 12px; color: var(--muted);
-      font-family: var(--mono); letter-spacing: .04em;
-    }
-
-    /* ── selector ── */
-    .selector-wrap {
-      display: flex; gap: 10px; align-items: stretch;
-      margin-bottom: 28px;
-      animation: fadeUp .5s .1s ease-out both;
-    }
-    .pref-select {
-      flex: 1;
-      background: var(--surface2);
-      border: 1px solid var(--border2);
-      border-radius: 10px;
-      color: var(--text);
-      font-family: 'Noto Sans JP', sans-serif;
-      font-size: 15px; font-weight: 500;
-      padding: 12px 14px;
-      -webkit-appearance: none;
-      appearance: none;
-      cursor: pointer;
-      transition: border-color .2s;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2352587a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      padding-right: 38px;
-    }
-    .pref-select:focus {
-      outline: none;
-      border-color: rgba(56,189,248,.4);
-      box-shadow: 0 0 0 3px rgba(56,189,248,.08);
-    }
-    .pref-select option { background: #0d0f1a; }
-
+    .pref-select { appearance: auto; }
+    .in:focus-visible, .pref-select:focus-visible { outline: 3px solid var(--liner); outline-offset: 2px; }
     .fetch-btn {
-      padding: 12px 22px;
-      background: var(--accent);
-      color: #070810;
-      border: none; border-radius: 10px;
-      font-family: var(--mono);
-      font-size: 13px; font-weight: 700;
-      letter-spacing: .04em;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: opacity .15s, transform .15s;
-      flex-shrink: 0;
+      min-height: 52px; padding: 0 18px; background: var(--btn-bg); color: var(--btn-ink); border: 0; border-radius: 4px;
+      font: inherit; font-size: .9375rem; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0;
     }
-    .fetch-btn:hover { opacity: .85; transform: translateY(-1px); }
-    .fetch-btn:active { transform: translateY(0); opacity: 1; }
-    .fetch-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+    .fetch-btn:hover { filter: brightness(1.08); }
+    .fetch-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .or { display: flex; align-items: center; gap: 10px; margin: 6px 0 10px; font-size: .8125rem; color: var(--ink-sec); }
+    .or::before, .or::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+    #fetch-btn { margin-bottom: 22px; }
 
-    /* ── loading ── */
-    .loading-wrap {
-      display: none; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 48px 0; gap: 16px;
-      animation: fadeUp .3s ease-out both;
-    }
+    .loading-wrap { display: none; align-items: center; justify-content: center; gap: 12px; padding: 32px 0; }
     .loading-wrap.show { display: flex; }
-    .radar {
-      width: 56px; height: 56px;
-      border: 2px solid var(--border2);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: rotate 1s linear infinite;
-    }
-    .loading-text {
-      font-family: var(--mono); font-size: 11px;
-      color: var(--muted); letter-spacing: .1em;
-      animation: pulse 1.4s ease-in-out infinite;
-    }
-
-    /* ── error ── */
-    .error-wrap {
-      display: none; text-align: center;
-      padding: 36px 20px;
-      background: rgba(244,63,94,.06);
-      border: 1px solid rgba(244,63,94,.2);
-      border-radius: 14px;
-      animation: fadeUp .3s ease-out both;
-    }
+    .radar { width: 28px; height: 28px; border: 3px solid var(--rule); border-top-color: var(--ink); border-radius: 50%; animation: rotate 1s linear infinite; }
+    .loading-text { font-size: .9375rem; color: var(--ink-sec); }
+    @keyframes rotate { to { transform: rotate(360deg); } }
+    .error-wrap { display: none; padding: 12px 14px; border-left: 5px solid var(--bar-rain); margin-bottom: 16px; }
     .error-wrap.show { display: block; }
-    .error-icon { font-size: 32px; margin-bottom: 12px; }
-    .error-msg { font-size: 13px; color: var(--muted); line-height: 1.7; }
+    .error-msg { font-size: .9375rem; color: var(--ink); }
 
-    /* ── forecast cards ── */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
+    /* 3日分: 電光掲示板のように、縦の罫線で区切る */
+    .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--ink); border-radius: 4px; margin-bottom: 18px; }
+    .cards-grid:empty { display: none; }
+    .day-card { position: relative; padding: 16px 10px 14px; text-align: center; border-top: 6px solid var(--card-accent, var(--rule)); opacity: 0; }
+    .day-card + .day-card { border-left: 1px solid var(--rule); }
+    .day-card.show { opacity: 1; }
+    .day-card.cond-clear { --card-accent: var(--bar-clear); }
+    .day-card.cond-warn  { --card-accent: var(--bar-warn); }
+    .day-card.cond-rain  { --card-accent: var(--bar-rain); }
+    .day-card.cond-snow  { --card-accent: var(--bar-snow); }
+    .card-day-label { font-size: .875rem; color: var(--ink-sec); }
+    .card-date { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; font-variant-numeric: tabular-nums; }
+    .card-date .dow { font-size: .8125rem; font-weight: 400; color: var(--ink-sec); margin-left: 3px; }
+    .card-icon { display: block; margin: 0 auto 6px; width: 40px; height: 40px; }
+    .card-icon svg { width: 40px; height: 40px; display: block; }
+    .card-desc { font-size: .8125rem; color: var(--ink-sec); line-height: 1.5; margin-bottom: 10px; min-height: 2.4em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-pop-row { margin-bottom: 10px; }
+    .card-pop-label { font-size: .75rem; color: var(--ink-sec); margin-bottom: 4px; }
+    .card-pop-bar-track { height: 6px; background: var(--rule); border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
+    .card-pop-bar-fill { height: 100%; border-radius: 3px; background: var(--fill-color, var(--bar-clear)); transition: width .6s ease; width: 0%; }
+    .card-pop-value { font-family: var(--board); font-size: 1.9rem; line-height: 1.1; color: var(--ink); }
+    .card-pop-unit { font-size: .8125rem; color: var(--ink-sec); margin-left: 1px; }
+    .card-temp { font-size: .875rem; color: var(--ink-sec); margin-bottom: 10px; font-variant-numeric: tabular-nums; }
+    .card-temp .hi { color: var(--t-rain); font-weight: 700; }
+    .card-temp .lo { color: var(--t-snow); font-weight: 700; }
+    .card-badge { display: inline-block; font-size: .8125rem; font-weight: 700; padding: 3px 8px; border: 2px solid currentColor; border-radius: 2px; line-height: 1.4; }
+    .badge-clear { color: var(--t-clear); } .badge-warn { color: var(--t-warn); } .badge-rain { color: var(--t-rain); } .badge-snow { color: var(--t-snow); }
 
-    .day-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px 12px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      opacity: 0;
-      transition: border-color .3s, box-shadow .3s;
-    }
-    .day-card.show {
-      animation: fadeUp .45s ease-out both;
-    }
-    .day-card:nth-child(1).show { animation-delay: .04s; }
-    .day-card:nth-child(2).show { animation-delay: .12s; }
-    .day-card:nth-child(3).show { animation-delay: .20s; }
+    .summary-banner { display: none; padding: 12px 14px; margin-bottom: 20px; border-left: 6px solid var(--rule); }
+    .summary-banner.show { display: block; }
+    .summary-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 2px; }
+    .summary-desc { font-size: .9375rem; color: var(--ink-sec); line-height: 1.6; }
+    .summary-desc .src { display: block; margin-top: 4px; font-size: .8125rem; }
+    .sb-clear { border-left-color: var(--bar-clear); } .sb-warn { border-left-color: var(--bar-warn); } .sb-rain { border-left-color: var(--bar-rain); }
+    .data-note { font-size: .8125rem; color: var(--ink-sec); margin: 4px 0 0; }
 
-    .day-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 3px;
-      border-radius: 14px 14px 0 0;
-      background: var(--card-accent, var(--border2));
-      transition: background .3s;
-    }
-
-    .day-card.cond-clear  { --card-accent: var(--clear); border-color: rgba(56,189,248,.25); }
-    .day-card.cond-warn   { --card-accent: var(--warn); border-color: rgba(245,158,11,.25); }
-    .day-card.cond-rain   { --card-accent: var(--rain); border-color: rgba(244,63,94,.25); }
-    .day-card.cond-snow   { --card-accent: var(--snow); border-color: rgba(165,180,252,.25); }
-
-    .card-day-label {
-      font-family: var(--mono);
-      font-size: 10px; font-weight: 600;
-      letter-spacing: .12em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
-    .card-date {
-      font-family: var(--display);
-      font-size: 22px; letter-spacing: .06em;
-      color: var(--text);
-      margin-bottom: 12px;
-    }
-    .card-emoji {
-      font-size: 34px; line-height: 1;
-      margin-bottom: 6px;
-      display: block;
-    }
-    .card-desc {
-      font-size: 10px; color: var(--muted);
-      line-height: 1.5;
-      margin-bottom: 12px;
-      min-height: 30px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .card-pop-row {
-      margin-bottom: 12px;
-    }
-    .card-pop-label {
-      font-family: var(--mono);
-      font-size: 9px; color: var(--muted);
-      letter-spacing: .08em; margin-bottom: 4px;
-    }
-    .card-pop-bar-track {
-      height: 4px; background: var(--border2);
-      border-radius: 2px; overflow: hidden;
-      margin-bottom: 4px;
-    }
-    .card-pop-bar-fill {
-      height: 100%;
-      border-radius: 2px;
-      background: var(--fill-color, var(--clear));
-      transition: width .6s cubic-bezier(.22,1,.36,1);
-      width: 0%;
-    }
-    .card-pop-value {
-      font-family: var(--display);
-      font-size: 26px; letter-spacing: .04em;
-      color: var(--fill-color, var(--clear));
-      line-height: 1;
-    }
-    .card-pop-unit {
-      font-family: var(--mono);
-      font-size: 11px; color: var(--muted);
-      margin-left: 1px;
-    }
-
-    .card-temp {
-      font-family: var(--mono);
-      font-size: 11px; color: var(--muted);
-      margin-bottom: 12px;
-    }
-    .card-temp .hi { color: var(--warn); font-weight: 700; }
-    .card-temp .lo { color: var(--clear); font-weight: 700; }
-
-    .card-badge {
-      font-family: var(--mono);
-      font-size: 9px; font-weight: 600;
-      letter-spacing: .06em;
-      padding: 4px 8px;
-      border-radius: 20px;
-      display: inline-block;
-      line-height: 1.3;
-    }
-    .badge-clear { background: rgba(56,189,248,.12); color: var(--clear); }
-    .badge-warn  { background: rgba(245,158,11,.12); color: var(--warn); }
-    .badge-rain  { background: rgba(244,63,94,.12); color: var(--rain); }
-    .badge-snow  { background: rgba(165,180,252,.12); color: var(--snow); }
-
-    /* ── summary banner ── */
-    .summary-banner {
-      display: none;
-      padding: 16px 18px;
-      border-radius: 12px;
-      margin-bottom: 28px;
-      animation: fadeUp .4s .3s ease-out both;
-      opacity: 0;
-    }
-    .summary-banner.show {
-      display: flex; opacity: 1;
-      align-items: center; gap: 14px;
-    }
-    .summary-icon { font-size: 28px; flex-shrink: 0; }
-    .summary-text { flex: 1; }
-    .summary-title {
-      font-size: 14px; font-weight: 700;
-      margin-bottom: 3px;
-    }
-    .summary-desc {
-      font-size: 12px; color: var(--muted); line-height: 1.5;
-    }
-    .sb-clear { background: var(--clear-bg); border: 1px solid rgba(56,189,248,.2); }
-    .sb-warn  { background: var(--warn-bg);  border: 1px solid rgba(245,158,11,.2); }
-    .sb-rain  { background: var(--rain-bg);  border: 1px solid rgba(244,63,94,.2); }
-
-    /* ── related tools ── */
-    .related-wrap {
-      margin-top: 8px;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-    }
-    .related-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px;
-      text-decoration: none;
-      color: var(--text);
-      font-size: 13px; font-weight: 700;
-      display: flex; flex-direction: column; gap: 3px;
-      transition: border-color .15s;
-    }
-    .related-card:hover { border-color: var(--border2); }
-    .related-card span { font-size: 10px; color: var(--muted); font-weight: 400; }
-
-    /* ── footer ── */
-    .app-footer {
-      margin-top: auto;
-      padding-top: 40px;
-      text-align: center;
-      font-family: var(--mono);
-      font-size: 10px; color: var(--muted2);
-      display: flex; flex-wrap: wrap; justify-content: center;
-      gap: 16px; letter-spacing: .04em;
-    }
-    .app-footer a {
-      color: var(--muted); text-decoration: none;
-      transition: color .15s;
-    }
-    .app-footer a:hover { color: var(--text); }
-
-    /* ── data source note ── */
-    .data-note {
-      text-align: center;
-      font-family: var(--mono);
-      font-size: 10px; color: var(--muted2);
-      padding: 16px 0 0;
-      letter-spacing: .04em;
-    }
-
-    @media (max-width: 380px) {
-      .cards-grid { gap: 7px; }
-      .day-card { padding: 13px 8px; }
-      .card-emoji { font-size: 28px; }
-      .card-pop-value { font-size: 22px; }
-      .card-date { font-size: 18px; }
-      .card-badge { font-size: 8px; padding: 3px 6px; }
-    }
+    /* 読み物 */
+    .prose { margin-top: 36px; padding-top: 8px; border-top: 2px solid var(--ink); }
+    .prose h2 { font-size: 1.2rem; line-height: 1.5; margin: 30px 0 10px; }
+    .prose h3 { font-size: 1.02rem; line-height: 1.5; margin: 22px 0 6px; }
+    .prose p { font-size: .9375rem; color: var(--ink-sec); line-height: 1.85; margin: 0 0 12px; }
+    .prose ul { font-size: .9375rem; color: var(--ink-sec); line-height: 1.85; margin: 0 0 12px; padding-left: 1.2em; }
+    .prose li + li { margin-top: 4px; }
+    .prose strong { color: var(--ink); }
+    .prose a { color: var(--ink); text-underline-offset: 3px; }
+    .callout { border-left: 5px solid var(--liner); padding: 8px 14px; margin: 18px 0; font-size: .9375rem; color: var(--ink-sec); line-height: 1.85; }
+    .faq-item { border-top: 1px solid var(--rule); padding: 12px 0 2px; }
+    .faq-item h3 { margin: 0 0 4px; }
+    .mp-card { display: none; align-items: center; gap: 10px; margin: 28px 0 0; padding: 10px 14px; border-left: 5px solid var(--liner); text-decoration: none; color: inherit; min-height: 56px; }
+    .mp-card b { display: block; }
+    .mp-card small { display: block; font-size: .875rem; color: var(--ink-sec); }
+    .related-wrap { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .related-card { padding: 10px 12px; border: 2px solid var(--rule); border-radius: 4px; text-decoration: none; color: var(--ink); font-size: .9375rem; font-weight: 700; display: flex; flex-direction: column; gap: 2px; min-height: 64px; }
+    .related-card:hover { border-color: var(--ink); }
+    .related-card span { font-size: .8125rem; color: var(--ink-sec); font-weight: 400; }
+    .related-h { font-size: .9375rem; font-weight: 700; margin-top: 30px; }
+    .app-footer { margin-top: 36px; padding-top: 18px; border-top: 2px solid var(--ink); font-size: .8125rem; color: var(--ink-sec); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+    .app-footer a { color: var(--ink-sec); text-underline-offset: 3px; }
+    @media (max-width: 380px) { .card-pop-value { font-size: 1.6rem; } .day-card { padding: 14px 6px 12px; } .related-wrap { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
-<div id="starfield" aria-hidden="true"></div>
-
 <div class="page">
 
   <!-- nav -->
-  <nav class="site-nav">
-    <a href="https://somirai.jp/">
-      <svg viewBox="0 0 120 120" width="18" height="18" style="border-radius:4px;flex-shrink:0"><defs><linearGradient id="nbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1220"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><linearGradient id="nco" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/></linearGradient></defs><rect width="120" height="120" rx="26" fill="url(#nbg)"/><circle cx="60" cy="48" r="14" fill="url(#nco)"/><path d="M60 26L62 42L60 48L58 42Z" fill="#fb923c" opacity=".85"/></svg>
-      Somirai Lab
-    </a>
-    <span>Data: 気象庁</span>
-  </nav>
+  <div class="nav">
+    <a href="https://somirai.jp/" class="nav-logo" aria-label="Somirai Lab トップへ"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#111114"/><stop offset="100%" stop-color="#0a0a0b"/></linearGradient><linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff6428"/><stop offset="100%" stop-color="#e84410"/></linearGradient></defs><rect width="120" height="120" rx="24" fill="url(#n1)"/><circle cx="60" cy="52" r="18" fill="url(#n2)"/><circle cx="56" cy="47" r="6" fill="#fff" opacity=".2"/><path d="M60 28 L63 46 L60 52 L57 46Z" fill="#ffb088" opacity=".7"/><path d="M36 52 L52 54 L60 52 L52 50Z" fill="#ffb088" opacity=".55"/><path d="M84 52 L68 54 L60 52 L68 50Z" fill="#ffb088" opacity=".55"/></svg><span>Somirai Lab</span></a>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
+  </div>
 
   <!-- hero -->
   <div class="app-hero">
-    <div class="app-eyebrow">Weather · Baseball · Ground Check</div>
     <h1 class="app-title">FORECAST</h1>
-    <p class="app-sub">野球試合日 天気チェッカー — 登録不要・無料</p>
+    <p class="app-sub">野球試合日 天気チェッカー。登録不要・無料</p>
   </div>
 
   <!-- 市区町村検索（Nominatim + Open-Meteo） -->
-  <div class="selector-wrap" id="city-search-wrap" style="margin-bottom:10px;">
-    <input type="text" id="city-input" placeholder="市区町村名を入力（例: 渋谷区、札幌市南区）"
-      style="flex:1;background:var(--surface);border:1px solid var(--border-2);border-radius:10px;color:var(--text);font-size:16px;padding:11px 14px;outline:none;transition:border-color .2s;font-family:'Noto Sans JP',sans-serif;"
-      aria-label="市区町村名で検索">
-    <button class="fetch-btn" id="city-fetch-btn" style="flex-shrink:0;">検索</button>
-    <button class="fetch-btn" id="geo-btn" type="button" style="flex-shrink:0;" aria-label="現在地の天気を表示">現在地</button>
+  <div class="selector-wrap" id="city-search-wrap">
+    <input type="text" id="city-input" class="in" placeholder="市区町村名（例: 渋谷区、札幌市南区）" aria-label="市区町村名で検索">
+    <button class="fetch-btn" id="city-fetch-btn">検索</button>
+    <button class="fetch-btn" id="geo-btn" type="button" aria-label="現在地の天気を表示">現在地</button>
   </div>
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;">
-    <div style="flex:1;height:1px;background:var(--border-2);"></div>
-    <span>または都道府県で確認</span>
-    <div style="flex:1;height:1px;background:var(--border-2);"></div>
-  </div>
+  <div class="or"><span>または都道府県で確認</span></div>
 
   <!-- 都道府県セレクター（従来） -->
   <div class="selector-wrap">
@@ -537,12 +225,11 @@
   <!-- loading -->
   <div class="loading-wrap" id="loading-wrap" role="status" aria-live="polite">
     <div class="radar" aria-hidden="true"></div>
-    <span class="loading-text">FETCHING WEATHER DATA...</span>
+    <span class="loading-text">天気を取得しています</span>
   </div>
 
   <!-- error -->
   <div class="error-wrap" id="error-wrap" role="alert">
-    <div class="error-icon">⚠️</div>
     <p class="error-msg" id="error-msg">データの取得に失敗しました。しばらくしてから再度お試しください。</p>
   </div>
 
@@ -558,199 +245,194 @@
   </p>
 
   <!-- about -->
-  <div style="margin-top:36px;max-width:480px;margin-left:auto;margin-right:auto;padding:0 4px;">
-    <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">このツールについて</p>
-    <div style="font-size:13px;color:var(--text);opacity:.8;line-height:1.85;">
-      <p style="margin-bottom:12px;">FORECASTは、都道府県を選ぶだけで試合当日の天気・降水確率・気温を素早く確認できる無料ツール。草野球や少年野球では雨天中止の判断を早めに知りたい場面が多いため、余計な情報を省いて「今日・明日の試合ができそうか」だけをすぐ確認できる画面にした。</p>
-      <p style="margin-bottom:12px;">データは気象庁の予報をそのまま使用しているため、テレビの天気予報と同じ精度で確認できる。降水確率が50%を超える時間帯があるかどうかは、試合開始時刻をずらすかどうかの判断材料にもなる。</p>
+  <div class="prose">
+    <h2>このツールについて</h2>
+    <div>
+      <p>FORECASTは、都道府県を選ぶだけで試合当日の天気・降水確率・気温を素早く確認できる無料ツール。草野球や少年野球では雨天中止の判断を早めに知りたい場面が多いため、余計な情報を省いて「今日・明日の試合ができそうか」だけをすぐ確認できる画面にした。</p>
+      <p>データは気象庁の予報をそのまま使用しているため、テレビの天気予報と同じ精度で確認できる。降水確率が50%を超える時間帯があるかどうかは、試合開始時刻をずらすかどうかの判断材料にもなる。</p>
       <p>グラウンドの水はけが悪い会場では、前日の降水量が翌日のコンディションに影響することも多い。試合前日の夜と当日朝の2回チェックしておくと、判断の精度が上がる。</p>
     </div>
   </div>
 
   <!-- ── 読み物：野球と天気 ── -->
-  <section aria-label="野球と天気の関係" style="margin-top:36px;padding-top:28px;border-top:1px solid var(--border);max-width:520px;margin-left:auto;margin-right:auto;">
-    <h2 style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;margin-bottom:14px;">野球と天気の関係 — 試合前に見るべきポイント</h2>
+  <section class="prose" aria-label="野球と天気の関係">
+    <h2>野球と天気の関係 — 試合前に見るべきポイント</h2>
 
-    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;">雨天中止はどう判断されるのか</h3>
-    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+    <h3>雨天中止はどう判断されるのか</h3>
+    <p>
       草野球や少年野球で試合の可否を最終的に決めるのは、グラウンドを管理する施設や当日の運営者です。全国共通の基準があるわけではありません。ただ、事前の見込みを立てる材料として降水確率が使われる場面は多く、実感としてはおおよそ次のような温度感で見られています。
     </p>
-    <ul style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin:0 0 12px;padding-left:1.15em;">
-      <li><strong style="color:var(--text);">30%未満</strong> — ほぼ予定どおり実施される</li>
-      <li><strong style="color:var(--text);">30〜50%</strong> — 実施の方向だが、当日朝の再確認が必要</li>
-      <li><strong style="color:var(--text);">50〜60%</strong> — 中止・順延の可能性が現実的に出てくる</li>
-      <li><strong style="color:var(--text);">60%以上</strong> — 前日夜のうちに中止連絡が回ることが多い</li>
+    <ul>
+      <li><strong>30%未満</strong> — ほぼ予定どおり実施される</li>
+      <li><strong>30〜50%</strong> — 実施の方向だが、当日朝の再確認が必要</li>
+      <li><strong>50〜60%</strong> — 中止・順延の可能性が現実的に出てくる</li>
+      <li><strong>60%以上</strong> — 前日夜のうちに中止連絡が回ることが多い</li>
     </ul>
-    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
-      ここで注意したいのが、降水確率は<strong style="color:var(--text);">「1mm以上の雨が降る確率」であって、雨の強さを表す数字ではない</strong>という点です。80%でも一日中霧雨程度なら試合は成立しますし、逆に30%でも短時間に強い雨が落ちればグラウンドは使えなくなります。数字だけを見ずに、予報文にある「にわか雨」「所により雷雨」といった表現とセットで判断するのが実務的です。
+    <p>
+      ここで注意したいのが、降水確率は<strong>「1mm以上の雨が降る確率」であって、雨の強さを表す数字ではない</strong>という点です。80%でも一日中霧雨程度なら試合は成立しますし、逆に30%でも短時間に強い雨が落ちればグラウンドは使えなくなります。数字だけを見ずに、予報文にある「にわか雨」「所により雷雨」といった表現とセットで判断するのが実務的です。
     </p>
 
-    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:18px 0 6px;">グラウンドコンディションは前日の雨で決まる</h3>
-    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+    <h3>グラウンドコンディションは前日の雨で決まる</h3>
+    <p>
       土のグラウンドは、当日が快晴でも前日の雨が残っていれば使用不可になります。水はけの良し悪しは会場ごとの差が非常に大きく、風通しのよい河川敷は比較的乾きが早い一方、建物に囲まれた校庭や、内野が固く踏み固められた市営グラウンドは水が抜けにくい傾向があります。
     </p>
-    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
-      つまり見るべきなのは当日の1点ではなく、<strong style="color:var(--text);">前日から当日にかけての連続した流れ</strong>です。FORECASTが今日・明日・明後日の3日分を並べて表示しているのは、この「前後関係」を一目で掴めるようにするためです。前日の降水確率が高い日程では、当日の朝に会場へ電話を入れるか、早めに現地を見に行く前提で動いたほうが空振りが減ります。
+    <p>
+      つまり見るべきなのは当日の1点ではなく、<strong>前日から当日にかけての連続した流れ</strong>です。FORECASTが今日・明日・明後日の3日分を並べて表示しているのは、この「前後関係」を一目で掴めるようにするためです。前日の降水確率が高い日程では、当日の朝に会場へ電話を入れるか、早めに現地を見に行く前提で動いたほうが空振りが減ります。
     </p>
 
-    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:18px 0 6px;">気温と湿度が選手のパフォーマンスに与える影響</h3>
-    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
-      気温が高いほど疲労は早く訪れますが、実は同じくらい重要なのが<strong style="color:var(--text);">湿度</strong>です。湿度が高いと汗が蒸発せず体温を下げる仕組みが働かないため、同じ30度でも体への負荷はまったく違います。環境省が公表している熱中症予防情報でも、気温単独ではなく湿度と輻射熱を組み合わせたWBGT（暑さ指数）が指標として使われているのは、この理由によります。
+    <h3>気温と湿度が選手のパフォーマンスに与える影響</h3>
+    <p>
+      気温が高いほど疲労は早く訪れますが、実は同じくらい重要なのが<strong>湿度</strong>です。湿度が高いと汗が蒸発せず体温を下げる仕組みが働かないため、同じ30度でも体への負荷はまったく違います。環境省が公表している熱中症予防情報でも、気温単独ではなく湿度と輻射熱を組み合わせたWBGT（暑さ指数）が指標として使われているのは、この理由によります。
     </p>
-    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:8px;">真夏の試合運営で押さえておきたい一般的な対策は次のとおりです。</p>
-    <ul style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin:0 0 12px;padding-left:1.15em;">
+    <p>真夏の試合運営で押さえておきたい一般的な対策は次のとおりです。</p>
+    <ul>
       <li>給水をイニング間に固定し、「喉が渇いてから」にしない</li>
       <li>ベンチにテントやタープで日陰を作る</li>
       <li>塩分を含む飲料やタブレットを用意しておく</li>
       <li>攻撃中の待機場所を炎天下に置かない</li>
       <li>顔が赤い・返事が遅い選手がいたら、本人が平気だと言っても休ませる</li>
     </ul>
-    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+    <p>
       逆に気温が低い日は、筋肉が硬いまま全力投球や全力疾走をして肉離れを起こしやすくなります。最高気温が10度を下回るような日は、ウォームアップの時間を普段より長めに取り、投手はキャッチボールの本数を増やしておきたいところです。気温は打球にも影響し、寒い日は空気の密度が上がるぶん飛距離が伸びにくくなります。
     </p>
 
-    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:18px 0 6px;">風向き・風速は打球と投球を変える</h3>
-    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:8px;">
+    <h3>風向き・風速は打球と投球を変える</h3>
+    <p>
       野球は屋外競技のなかでも風の影響を受けやすい部類に入ります。一般論として、次のような傾向が知られています。
     </p>
-    <ul style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin:0 0 12px;padding-left:1.15em;">
-      <li><strong style="color:var(--text);">向かい風</strong>（外野から本塁方向）— フライの飛距離が削られ、抜けるはずの外野フライが失速する</li>
-      <li><strong style="color:var(--text);">追い風</strong>（本塁から外野方向）— 同じ打球が一段階伸び、長打になりやすい</li>
-      <li><strong style="color:var(--text);">横風</strong> — 高く上がった内野フライの落下点が大きくずれる。強風の日に落球が増えるのはこれが原因</li>
-      <li><strong style="color:var(--text);">風速5m/s前後</strong>を超えると、変化球の軌道や高いフライの処理に体感でわかる差が出てくる</li>
+    <ul>
+      <li><strong>向かい風</strong>（外野から本塁方向）— フライの飛距離が削られ、抜けるはずの外野フライが失速する</li>
+      <li><strong>追い風</strong>（本塁から外野方向）— 同じ打球が一段階伸び、長打になりやすい</li>
+      <li><strong>横風</strong> — 高く上がった内野フライの落下点が大きくずれる。強風の日に落球が増えるのはこれが原因</li>
+      <li><strong>風速5m/s前後</strong>を超えると、変化球の軌道や高いフライの処理に体感でわかる差が出てくる</li>
     </ul>
-    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+    <p>
       これは戦術に落とし込める情報です。守る側なら、風が強い日に外野の守備位置を数歩前後させるだけで捕れる打球が変わります。打つ側なら、向かい風の日に大きなフライを狙うより、ゴロで内野の間を抜くほうが期待値は高くなります。投手であれば、追い風の日は高めの失投が長打に直結すると意識しておくだけで配球が変わります。
     </p>
 
-    <h3 style="font-size:13px;font-weight:700;color:var(--text);margin:18px 0 6px;">季節ごとの天気対策</h3>
-    <ul style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin:0 0 12px;padding-left:1.15em;">
-      <li><strong style="color:var(--text);">春（3〜5月）</strong> — 1日の気温差が大きい季節。朝は10度台でも昼は20度を超えることが珍しくないので、脱ぎ着できる服装が前提になります。強風の日も多く、フライの判断が難しい時期です。</li>
-      <li><strong style="color:var(--text);">梅雨（6〜7月）</strong> — 降水確率が高くても、雨雲が通過するタイミング次第で試合が成立することが最も多い時期。予報に加えて直前まで雨雲レーダーを見ておくと、無駄な中止判断を減らせます。</li>
-      <li><strong style="color:var(--text);">夏（7〜9月）</strong> — 熱中症対策が最優先。可能であれば開始時刻を朝一番か夕方に寄せ、日中の一番暑い時間帯を避けたいところです。給水回数を増やす運用も検討に値します。</li>
-      <li><strong style="color:var(--text);">秋（9〜11月）</strong> — 野球にはもっとも快適な季節ですが、日没が早くなります。照明のない会場では、試合開始時刻から逆算して何イニングできるかを事前に確認しておく必要があります。</li>
-      <li><strong style="color:var(--text);">冬（12〜2月）</strong> — 防寒に加えて、霜が溶けたあとのぬかるみに注意。朝は凍って硬かったグラウンドが、昼にはぐちゃぐちゃになることがあります。イレギュラーバウンドも増えるため、内野の守備位置は普段より前に取りすぎないほうが安全です。</li>
+    <h3>季節ごとの天気対策</h3>
+    <ul>
+      <li><strong>春（3〜5月）</strong> — 1日の気温差が大きい季節。朝は10度台でも昼は20度を超えることが珍しくないので、脱ぎ着できる服装が前提になります。強風の日も多く、フライの判断が難しい時期です。</li>
+      <li><strong>梅雨（6〜7月）</strong> — 降水確率が高くても、雨雲が通過するタイミング次第で試合が成立することが最も多い時期。予報に加えて直前まで雨雲レーダーを見ておくと、無駄な中止判断を減らせます。</li>
+      <li><strong>夏（7〜9月）</strong> — 熱中症対策が最優先。可能であれば開始時刻を朝一番か夕方に寄せ、日中の一番暑い時間帯を避けたいところです。給水回数を増やす運用も検討に値します。</li>
+      <li><strong>秋（9〜11月）</strong> — 野球にはもっとも快適な季節ですが、日没が早くなります。照明のない会場では、試合開始時刻から逆算して何イニングできるかを事前に確認しておく必要があります。</li>
+      <li><strong>冬（12〜2月）</strong> — 防寒に加えて、霜が溶けたあとのぬかるみに注意。朝は凍って硬かったグラウンドが、昼にはぐちゃぐちゃになることがあります。イレギュラーバウンドも増えるため、内野の守備位置は普段より前に取りすぎないほうが安全です。</li>
     </ul>
 
-    <div style="padding:14px 16px;background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.2);border-radius:10px;font-size:12.5px;color:#9ba1bb;line-height:1.9;">
-      <strong style="color:var(--accent);">チェックのコツ：</strong>前日の夜に「明日の降水確率」、当日の朝に「今日の予報の更新」の2回だけ見れば、判断の精度はかなり上がります。降水確率が40〜60%のグレーゾーンに入った日は、中止か実施かを決め打ちせず、集合時間を少し遅らせる・現地判断にすると連絡しておくほうがチーム全体の動きがスムーズになります。
+    <div class="callout">
+      <strong>チェックのコツ：</strong>前日の夜に「明日の降水確率」、当日の朝に「今日の予報の更新」の2回だけ見れば、判断の精度はかなり上がります。降水確率が40〜60%のグレーゾーンに入った日は、中止か実施かを決め打ちせず、集合時間を少し遅らせる・現地判断にすると連絡しておくほうがチーム全体の動きがスムーズになります。
     </div>
   </section>
 
   <!-- ── FAQ（head内のFAQPage構造化データと対応） ── -->
-  <section aria-label="よくある質問" style="margin-top:32px;padding-top:28px;border-top:1px solid var(--border);max-width:520px;margin-left:auto;margin-right:auto;">
-    <h2 style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;margin-bottom:14px;">よくある質問（FAQ）</h2>
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <div style="border:1px solid var(--border2);border-radius:10px;overflow:hidden;">
-        <h3 style="padding:12px 14px;background:var(--surface);font-size:12.5px;font-weight:700;color:var(--text);margin:0;">Q. 降水確率が何%から野球は中止になりますか？</h3>
-        <p style="padding:12px 14px;font-size:12px;color:#9ba1bb;line-height:1.9;margin:0;border-top:1px solid var(--border2);">A. 全国共通の基準はなく、最終判断はグラウンド管理者や当日の運営者が行います。目安としては30%未満なら予定どおり、30〜50%は当日朝に再確認、50%を超えると中止・順延が現実的になる、という温度感で見られることが多いです。降水確率は雨の強さを表す数字ではないため、予報文と併せて判断してください。</p>
+  <section class="prose" aria-label="よくある質問">
+    <h2>よくある質問（FAQ）</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <h3>Q. 降水確率が何%から野球は中止になりますか？</h3>
+        <p>A. 全国共通の基準はなく、最終判断はグラウンド管理者や当日の運営者が行います。目安としては30%未満なら予定どおり、30〜50%は当日朝に再確認、50%を超えると中止・順延が現実的になる、という温度感で見られることが多いです。降水確率は雨の強さを表す数字ではないため、予報文と併せて判断してください。</p>
       </div>
-      <div style="border:1px solid var(--border2);border-radius:10px;overflow:hidden;">
-        <h3 style="padding:12px 14px;background:var(--surface);font-size:12.5px;font-weight:700;color:var(--text);margin:0;">Q. 前日が雨で当日が晴れの予報なら試合はできますか？</h3>
-        <p style="padding:12px 14px;font-size:12px;color:#9ba1bb;line-height:1.9;margin:0;border-top:1px solid var(--border2);">A. 当日が快晴でも、前日の雨が土のグラウンドに残っていて使用不可になることがあります。水はけは会場差が大きく、河川敷は乾きやすい一方、建物に囲まれた校庭は水が抜けにくい傾向があります。当日だけでなく前日からの流れを続けて確認するのが確実です。</p>
+      <div class="faq-item">
+        <h3>Q. 前日が雨で当日が晴れの予報なら試合はできますか？</h3>
+        <p>A. 当日が快晴でも、前日の雨が土のグラウンドに残っていて使用不可になることがあります。水はけは会場差が大きく、河川敷は乾きやすい一方、建物に囲まれた校庭は水が抜けにくい傾向があります。当日だけでなく前日からの流れを続けて確認するのが確実です。</p>
       </div>
-      <div style="border:1px solid var(--border2);border-radius:10px;overflow:hidden;">
-        <h3 style="padding:12px 14px;background:var(--surface);font-size:12.5px;font-weight:700;color:var(--text);margin:0;">Q. 天気データはどこのものを使っていますか？</h3>
-        <p style="padding:12px 14px;font-size:12px;color:#9ba1bb;line-height:1.9;margin:0;border-top:1px solid var(--border2);">A. 都道府県で確認した場合は気象庁の予報データ（CC BY 4.0）を使用しています。市区町村名で検索した場合は、位置情報にNominatim（OpenStreetMap）、予報にOpen-Meteoを使用しています。いずれもテレビや天気アプリと同じ元データです。</p>
+      <div class="faq-item">
+        <h3>Q. 天気データはどこのものを使っていますか？</h3>
+        <p>A. 都道府県で確認した場合は気象庁の予報データ（CC BY 4.0）を使用しています。市区町村名で検索した場合は、位置情報にNominatim（OpenStreetMap）、予報にOpen-Meteoを使用しています。いずれもテレビや天気アプリと同じ元データです。</p>
       </div>
-      <div style="border:1px solid var(--border2);border-radius:10px;overflow:hidden;">
-        <h3 style="padding:12px 14px;background:var(--surface);font-size:12.5px;font-weight:700;color:var(--text);margin:0;">Q. 市区町村単位で調べられますか？</h3>
-        <p style="padding:12px 14px;font-size:12px;color:#9ba1bb;line-height:1.9;margin:0;border-top:1px solid var(--border2);">A. はい。画面上部の検索欄に「渋谷区」「札幌市南区」のように入力すると、その地点の予報を表示します。同じ県内でも山沿いと沿岸で天気が異なることがあるため、グラウンドのある市区町村で調べるほうが精度が上がります。</p>
+      <div class="faq-item">
+        <h3>Q. 市区町村単位で調べられますか？</h3>
+        <p>A. はい。画面上部の検索欄に「渋谷区」「札幌市南区」のように入力すると、その地点の予報を表示します。同じ県内でも山沿いと沿岸で天気が異なることがあるため、グラウンドのある市区町村で調べるほうが精度が上がります。</p>
       </div>
-      <div style="border:1px solid var(--border2);border-radius:10px;overflow:hidden;">
-        <h3 style="padding:12px 14px;background:var(--surface);font-size:12.5px;font-weight:700;color:var(--text);margin:0;">Q. 何日先まで確認できますか？登録は必要ですか？</h3>
-        <p style="padding:12px 14px;font-size:12px;color:#9ba1bb;line-height:1.9;margin:0;border-top:1px solid var(--border2);">A. 今日・明日・明後日の3日分を表示します。会員登録やアプリのインストールは不要で完全無料です。スマホ・タブレット・PCのブラウザからそのまま使えます。</p>
+      <div class="faq-item">
+        <h3>Q. 何日先まで確認できますか？登録は必要ですか？</h3>
+        <p>A. 今日・明日・明後日の3日分を表示します。会員登録やアプリのインストールは不要で完全無料です。スマホ・タブレット・PCのブラウザからそのまま使えます。</p>
       </div>
-      <div style="border:1px solid var(--border2);border-radius:10px;overflow:hidden;">
-        <h3 style="padding:12px 14px;background:var(--surface);font-size:12.5px;font-weight:700;color:var(--text);margin:0;">Q. 風が強い日は野球にどんな影響がありますか？</h3>
-        <p style="padding:12px 14px;font-size:12px;color:#9ba1bb;line-height:1.9;margin:0;border-top:1px solid var(--border2);">A. 一般に、本塁へ向かう向かい風はフライの飛距離を抑え、外野方向への追い風は同じ打球を長打に変えます。横風は高く上がったフライの落下点をずらすため、内野フライの処理が難しくなります。風速5m/s前後を超えると体感でわかる差が出るので、守備位置の微調整や狙う打球の種類を変える判断材料になります。</p>
+      <div class="faq-item">
+        <h3>Q. 風が強い日は野球にどんな影響がありますか？</h3>
+        <p>A. 一般に、本塁へ向かう向かい風はフライの飛距離を抑え、外野方向への追い風は同じ打球を長打に変えます。横風は高く上がったフライの落下点をずらすため、内野フライの処理が難しくなります。風速5m/s前後を超えると体感でわかる差が出るので、守備位置の微調整や狙う打球の種類を変える判断材料になります。</p>
       </div>
     </div>
   </section>
 
   <!-- ── 開発ノート ── -->
-  <section aria-label="開発ノート" style="margin-top:32px;padding-top:28px;border-top:1px solid var(--border);max-width:520px;margin-left:auto;margin-right:auto;">
-    <h2 style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;margin-bottom:12px;">開発ノート — このツールを作った理由</h2>
-    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+  <section class="prose" aria-label="開発ノート">
+    <h2>開発ノート — このツールを作った理由</h2>
+    <p>
       FORECASTは、試合前日の夜に何度も天気アプリを開き直していた自分のために作りました。既存の天気アプリは情報量が多く、週間予報・湿度・気圧・花粉と並ぶ画面のなかから「明日の降水確率」だけを探す作業が地味に面倒だったのが出発点です。知りたいことは一つ、「明日、野球ができるのか」だけでした。
     </p>
-    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
-      そこで決めたのは、<strong style="color:var(--text);">3日分だけを大きく出す</strong>ことと、<strong style="color:var(--text);">数字に判定をつける</strong>ことの2点です。降水確率50%と表示されても、それが実施できる数字なのか迷う人は多い。だから「野球日和」「要確認」「試合困難」というバッジを添えて、数字を見た瞬間に次の行動が決まるようにしました。天気の専門情報を増やすのではなく、判断までの距離を縮めるほうに寄せた設計です。
+    <p>
+      そこで決めたのは、<strong>3日分だけを大きく出す</strong>ことと、<strong>数字に判定をつける</strong>ことの2点です。降水確率50%と表示されても、それが実施できる数字なのか迷う人は多い。だから「野球日和」「要確認」「試合困難」というバッジを添えて、数字を見た瞬間に次の行動が決まるようにしました。天気の専門情報を増やすのではなく、判断までの距離を縮めるほうに寄せた設計です。
     </p>
-    <p style="font-size:12.5px;color:#9ba1bb;line-height:1.9;margin-bottom:12px;">
+    <p>
       公開後に一番要望が多かったのが市区町村での検索でした。都道府県単位だと、同じ県内でも山沿いと沿岸でまったく違う天気になることがあり、実際のグラウンドの天気とずれるという指摘です。これを受けて地点検索を追加し、気象庁の予報とOpen-Meteoの地点予報を使い分ける形にしました。3日分という表示範囲を変えなかったのは、週間予報を足すと結局「探す作業」が戻ってきてしまうからです。
     </p>
-    <p style="font-size:12px;color:var(--muted);line-height:1.9;">
-      個人開発のツールなので、要望や不具合の報告はいつでも歓迎です。<a href="https://x.com/mira11554" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;">𝕏</a> から気軽に投げてください。
-    </p>
+    <p>個人開発のツールなので、要望や不具合の報告はいつでも歓迎です。<a href="https://somirai.jp/contact.html">お問い合わせ</a>から気軽に送ってください。</p>
   </section>
 
-  <a id="mp-card" href="https://somirai.jp/player/" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'forecast'})" style="display:none;align-items:center;gap:10px;max-width:480px;margin:32px auto 0;background:rgba(232,196,104,0.06);border:1px solid rgba(232,196,104,0.3);border-radius:10px;padding:12px 14px;text-decoration:none;">
-    <span style="font-size:18px;">⭐</span>
-    <span style="flex:1;">
-      <span style="display:block;font-size:12px;font-weight:700;color:#e8c468;">MY PLAYER</span>
-      <span style="display:block;font-size:11px;color:var(--muted);">あなたの選手ステータスを見る →</span>
-    </span>
+  <a id="mp-card" class="mp-card" href="https://somirai.jp/player/" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'forecast'})">
+    <span><b>MY PLAYER</b><small>あなたの選手ステータスを見る</small></span>
   </a>
   <script>(function(){try{if(localStorage.getItem('somirai:seen')){var e=document.getElementById('mp-card');if(e)e.style.display='flex';}else{localStorage.setItem('somirai:seen','1');}function ld(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}var t=ld(new Date()),r=localStorage.getItem('somirai:streak'),s=r?JSON.parse(r):null;if(!s||s.lastDate!==t){var y=ld(new Date(Date.now()-864e5));localStorage.setItem('somirai:streak',JSON.stringify({lastDate:t,count:(s&&s.lastDate===y)?s.count+1:1}));}}catch(e){}})();</script>
 
   <!-- related tools -->
-  <div style="margin-top:32px;">
-    <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;text-align:center;">Somirai Lab の他のツール</p>
-    <div class="related-wrap">
-      <a href="https://somirai.jp/order-maker/" class="related-card" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'forecast',to:'tactician'})">
-        ⚾ スタメンを組む →
-        <span>TACTICIAN — 打順・守備配置作成</span>
-      </a>
-      <a href="https://somirai.jp/batting-stats/" class="related-card" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'forecast',to:'lumber'})">
-        📊 打撃成績を記録 →
-        <span>LUMBER — 打率・OPS自動計算</span>
-      </a>
-    </div>
+  <p class="related-h">Somirai Lab の他のツール</p>
+  <div class="related-wrap">
+    <a href="https://somirai.jp/order-maker/" class="related-card" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'forecast',to:'tactician'})">
+      スタメンを組む
+      <span>スタメンメーカー — 打順・守備配置作成</span>
+    </a>
+    <a href="https://somirai.jp/batting-stats/" class="related-card" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'forecast',to:'lumber'})">
+      打撃成績を記録
+      <span>LUMBER — 打率・OPS自動計算</span>
+    </a>
+    <a href="https://somirai.jp/sunset/" class="related-card">
+      日没までに何回できる？
+      <span>日没タイムリミット — 開始時刻から計算</span>
+    </a>
+    <a href="https://somirai.jp/pitch-counter/" class="related-card">
+      球数を記録する
+      <span>投球数カウンター — コースと球種</span>
+    </a>
   </div>
 
   <!-- footer -->
   <footer class="app-footer">
-    <nav aria-label="サイト内リンク" style="display:contents">
-      <a href="https://somirai.jp/">Somirai Lab</a>
-      <a href="https://somirai.jp/blog/">ブログ</a>
-      <a href="https://somirai.jp/about.html">About</a>
-      <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
-      <a href="https://x.com/mira11554" target="_blank" rel="noopener">𝕏 お問い合わせ</a>
-    </nav>
+    <a href="https://somirai.jp/">Somirai Lab</a>
+    <a href="https://somirai.jp/blog/">ブログ</a>
+    <a href="https://somirai.jp/about.html">About</a>
+    <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    <a href="https://somirai.jp/contact.html">お問い合わせ</a>
     <span>© 2026 Somirai Lab</span>
   </footer>
 
 </div><!-- /page -->
 
 <script src="/shared/geo.js"></script>
+<script src="/shared/tool.js"></script>
 <script>
-// ── Starfield ────────────────────────────────────────────────
-(function(){
-  var sf = document.getElementById('starfield');
-  var frag = document.createDocumentFragment();
-  function rand(s){ var x=Math.sin(s*127.1+311.7)*43758.5453; return x-Math.floor(x); }
-  for(var i=0;i<80;i++){
-    var el=document.createElement('div');
-    var x=rand(i*3+1)*100, y=rand(i*7+2)*100, sz=0.5+rand(i*11+3)*1.6;
-    var op=0.1+rand(i*13+4)*0.6, dur=2+rand(i*17+5)*4, del=rand(i*19+6)*10;
-    var r=rand(i*23+7), col=r<0.1?'#7dd3fc':r<0.25?'#bfdbfe':'#fff';
-    el.style.cssText='position:absolute;border-radius:50%;left:'+x+'%;top:'+y+'%;width:'+sz+'px;height:'+sz+'px;background:'+col+';opacity:'+op+';animation:starTwinkle '+dur+'s ease-in-out '+del+'s infinite alternate;';
-    frag.appendChild(el);
-  }
-  sf.appendChild(frag);
-})();
-
 // ── Weather logic ─────────────────────────────────────────────
 const DAY_NAMES = ['日','月','火','水','木','金','土'];
 
-function getWeatherEmoji(code) {
-  const c = parseInt(code, 10);
-  if (c >= 400) return '❄️';
-  if (c >= 300) return '🌧️';
-  if (c >= 200) return '☁️';
-  if (c >= 110) return '⛅';
-  return '☀️';
+// 天気アイコン(SVG)。色は CSS 変数で、明るい面・暗い面の両方で読める
+function jmaKind(code) { const c = parseInt(code, 10); return c >= 400 ? 'snow' : c >= 300 ? 'rain' : c >= 200 ? 'cloud' : c >= 110 ? 'partly' : 'sun'; }
+function wmoKind(c) { return c === 0 ? 'sun' : c <= 2 ? 'partly' : c <= 3 ? 'cloud' : c <= 49 ? 'fog' : c <= 67 ? 'rain' : c <= 77 ? 'snow' : c <= 82 ? 'rain' : c <= 86 ? 'snow' : 'thunder'; }
+function wxIconSvg(kind) {
+  const F = v => `style="fill:var(${v})"`, S = v => `style="stroke:var(${v})"`;
+  const cloud = (x, y, v) => `<path transform="translate(${x} ${y})" d="M9 21h13a5 5 0 0 0 .6-9.96A7 7 0 0 0 9.2 12.2 4.5 4.5 0 0 0 9 21z" ${F(v)}/>`;
+  const sun = (cx, cy, r) => `<circle cx="${cx}" cy="${cy}" r="${r}" ${F('--ic-sun')}/>`;
+  const rays = `<g ${S('--ic-sun')} stroke-width="2" stroke-linecap="round"><path d="M16 2v3M16 27v3M2 16h3M27 16h3M6.1 6.1l2.1 2.1M23.8 23.8l2.1 2.1M6.1 25.9l2.1-2.1M23.8 8.2l2.1-2.1"/></g>`;
+  const drops = `<g ${S('--ic-rain')} stroke-width="2" stroke-linecap="round"><path d="M11 24l-1.5 4M16 24l-1.5 4M21 24l-1.5 4"/></g>`;
+  const body = {
+    sun: rays + sun(16, 16, 6),
+    partly: sun(12, 11, 5) + `<g ${S('--ic-sun')} stroke-width="2" stroke-linecap="round"><path d="M12 1.5v2M2.5 11h2M5.3 4.3l1.4 1.4M18.7 4.3l-1.4 1.4"/></g>` + cloud(3, 5, '--ic-cloud'),
+    cloud: cloud(0, 1, '--ic-cloud'),
+    fog: cloud(0, -3, '--ic-cloud') + `<g ${S('--ic-cloud')} stroke-width="2" stroke-linecap="round"><path d="M6 24h20M9 28h14"/></g>`,
+    rain: cloud(0, -4, '--ic-cloud') + drops,
+    snow: cloud(0, -4, '--ic-cloud') + `<g ${F('--ic-snow')}><circle cx="11" cy="26" r="1.8"/><circle cx="16" cy="28" r="1.8"/><circle cx="21" cy="26" r="1.8"/></g>`,
+    thunder: cloud(0, -4, '--ic-cloud') + `<path d="M17 18l-5 8h4l-1.5 5 6.5-9h-4.2z" ${F('--ic-sun')}/>`
+  }[kind] || '';
+  return `<svg viewBox="0 0 32 32" aria-hidden="true">${body}</svg>`;
 }
 
 function conditionClass(pop) {
@@ -763,13 +445,13 @@ function conditionClass(pop) {
 
 function conditionLabel(pop, code) {
   const c = parseInt(code, 10);
-  if (c >= 400) return '❄️ 雪の可能性';
+  if (c >= 400) return '雪の可能性';
   if (pop === null || pop === undefined || pop === '---') return '— データなし';
   const p = parseInt(pop, 10);
-  if (p >= 60) return '❌ 試合困難';
-  if (p >= 50) return '❌ 雨の恐れ';
-  if (p >= 30) return '⚠️ 要確認';
-  return '✅ 野球日和';
+  if (p >= 60) return '試合困難';
+  if (p >= 50) return '雨の恐れ';
+  if (p >= 30) return '要確認';
+  return '野球日和';
 }
 
 function badgeClass(pop, code) {
@@ -882,8 +564,8 @@ function renderCards(result) {
     card.setAttribute('aria-label', `${dayNames[i]} ${monthStr}/${dateStr} ${day.desc} 降水確率${day.pop}%`);
     card.innerHTML = `
       <div class="card-day-label">${dayNames[i]}</div>
-      <div class="card-date">${monthStr}/${dateStr}<span style="font-family:'Noto Sans JP',sans-serif;font-size:12px;color:var(--muted);margin-left:3px;">${dowStr}</span></div>
-      <span class="card-emoji" role="img" aria-label="${day.desc}">${getWeatherEmoji(day.code)}</span>
+      <div class="card-date">${monthStr}/${dateStr}<span class="dow">${dowStr}</span></div>
+      <span class="card-icon" role="img" aria-label="${day.desc}">${wxIconSvg(jmaKind(day.code))}</span>
       <div class="card-desc">${day.desc || '—'}</div>
       <div class="card-pop-row">
         <div class="card-pop-label">降水確率</div>
@@ -917,20 +599,20 @@ function renderCards(result) {
   const banner = document.getElementById('summary-banner');
   let sbClass, sbIcon, sbTitle, sbDesc;
   if (maxPop >= 50) {
-    sbClass='sb-rain'; sbIcon='☔';
+    sbClass='sb-rain'; sbIcon='';
     sbTitle='週末は雨の可能性があります';
     sbDesc=`最大降水確率 ${maxPop}%。試合の中止・延期を検討してください。`;
   } else if (maxPop >= 30) {
-    sbClass='sb-warn'; sbIcon='⛅';
+    sbClass='sb-warn'; sbIcon='';
     sbTitle='天候に注意が必要です';
     sbDesc=`最大降水確率 ${maxPop}%。グラウンドの状況を事前に確認してください。`;
   } else {
-    sbClass='sb-clear'; sbIcon='⚾';
+    sbClass='sb-clear'; sbIcon='';
     sbTitle='絶好の野球日和です！';
     sbDesc=`最大降水確率 ${maxPop}%。スタメンを組んで試合に備えましょう。`;
   }
   banner.className = `summary-banner show ${sbClass}`;
-  banner.innerHTML = `<span class="summary-icon">${sbIcon}</span><div class="summary-text"><div class="summary-title">${sbTitle}</div><p class="summary-desc">${sbDesc}</p></div>`;
+  banner.innerHTML = `<div class="summary-text"><div class="summary-title">${sbTitle}</div><p class="summary-desc">${sbDesc}</p></div>`;
 
   // update time
   const note = document.getElementById('data-note');
@@ -986,7 +668,6 @@ window.addEventListener('load', doFetch);
 // ── 市区町村検索（Nominatim + Open-Meteo）───────────────────
 const DAY_JA = ['日','月','火','水','木','金','土'];
 
-function wmoToEmoji(c){if(c===0)return'☀️';if(c<=2)return'⛅';if(c<=3)return'☁️';if(c<=49)return'🌫️';if(c<=67)return'🌧️';if(c<=77)return'❄️';if(c<=82)return'🌧️';if(c<=86)return'❄️';return'⛈️';}
 function wmoToDesc(c){const m={0:'快晴',1:'晴れ',2:'晴れ時々くもり',3:'くもり',45:'霧',48:'霧',51:'小雨',53:'雨',55:'大雨',61:'雨',63:'雨',65:'大雨',71:'小雪',73:'雪',75:'大雪',77:'みぞれ',80:'にわか雨',81:'雨',82:'大雨',85:'にわか雪',86:'大雪',95:'雷雨'};return m[c]||'—';}
 
 async function doCityFetch(override) {
@@ -1057,8 +738,8 @@ async function doCityFetch(override) {
       card.className = `day-card cond-${day.cond}`;
       card.innerHTML = `
         <div class="card-day-label">${day.label}</div>
-        <div class="card-date">${day.dt.getMonth()+1}/${day.dt.getDate()}<span style="font-family:'Noto Sans JP',sans-serif;font-size:12px;color:var(--muted);margin-left:3px;">${DAY_JA[day.dt.getDay()]}</span></div>
-        <span class="card-emoji">${wmoToEmoji(day.code)}</span>
+        <div class="card-date">${day.dt.getMonth()+1}/${day.dt.getDate()}<span class="dow">${DAY_JA[day.dt.getDay()]}</span></div>
+        <span class="card-icon" role="img" aria-label="${wmoToDesc(day.code)}">${wxIconSvg(wmoKind(day.code))}</span>
         <div class="card-desc">${wmoToDesc(day.code)}</div>
         <div class="card-pop-row">
           <div class="card-pop-label">降水確率</div>
@@ -1066,7 +747,7 @@ async function doCityFetch(override) {
           <div><span class="card-pop-value" style="--fill-color:${day.fillColor}">${day.pop}</span><span class="card-pop-unit">%</span></div>
         </div>
         <div class="card-temp"><span class="hi">↑${day.tMax}°</span> <span class="lo">↓${day.tMin}°</span></div>
-        <span class="card-badge ${day.cond === 'rain' ? 'badge-rain' : day.cond === 'warn' ? 'badge-warn' : 'badge-clear'}">${day.pop >= 50 ? '❌ 試合困難' : day.pop >= 30 ? '⚠️ 要確認' : '✅ 野球日和'}</span>
+        <span class="card-badge ${day.cond === 'rain' ? 'badge-rain' : day.cond === 'warn' ? 'badge-warn' : 'badge-clear'}">${day.pop >= 50 ? '試合困難' : day.pop >= 30 ? '要確認' : '野球日和'}</span>
       `;
       grid.appendChild(card);
       requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -1080,11 +761,11 @@ async function doCityFetch(override) {
     const maxPop = Math.max(...days.map(d => d.pop));
     const sb = document.getElementById('summary-banner');
     let sbClass, sbIcon, sbTitle, sbDesc;
-    if (maxPop >= 50) { sbClass='sb-rain'; sbIcon='☔'; sbTitle=`${cityName}は雨の可能性あり`; sbDesc=`最大降水確率 ${maxPop}%。試合の中止・延期を検討してください。`; }
-    else if (maxPop >= 30) { sbClass='sb-warn'; sbIcon='⛅'; sbTitle=`${cityName}は天候に注意`; sbDesc=`最大降水確率 ${maxPop}%。グラウンド状況を事前確認してください。`; }
-    else { sbClass='sb-clear'; sbIcon='⚾'; sbTitle=`${cityName}は野球日和！`; sbDesc=`最大降水確率 ${maxPop}%。${cityName}でのびのびプレーできます。`; }
+    if (maxPop >= 50) { sbClass='sb-rain'; sbIcon=''; sbTitle=`${cityName}は雨の可能性あり`; sbDesc=`最大降水確率 ${maxPop}%。試合の中止・延期を検討してください。`; }
+    else if (maxPop >= 30) { sbClass='sb-warn'; sbIcon=''; sbTitle=`${cityName}は天候に注意`; sbDesc=`最大降水確率 ${maxPop}%。グラウンド状況を事前確認してください。`; }
+    else { sbClass='sb-clear'; sbIcon=''; sbTitle=`${cityName}は野球日和！`; sbDesc=`最大降水確率 ${maxPop}%。${cityName}でのびのびプレーできます。`; }
     sb.className = `summary-banner show ${sbClass}`;
-    sb.innerHTML = `<span class="summary-icon">${sbIcon}</span><div class="summary-text"><div class="summary-title">${sbTitle}</div><p class="summary-desc">${sbDesc}<br><small style="opacity:.6;font-size:11px;">データ: Open-Meteo / 位置: Nominatim (OSM)</small></p></div>`;
+    sb.innerHTML = `<div class="summary-text"><div class="summary-title">${sbTitle}</div><p class="summary-desc">${sbDesc}<br><small class="src">データ: Open-Meteo / 位置: Nominatim (OSM)</small></p></div>`;
 
     note.style.display = '';
     document.getElementById('updated-time').textContent = cityName;
@@ -1126,17 +807,7 @@ document.getElementById('geo-btn').addEventListener('click', async () => {
 document.getElementById('city-input').addEventListener('keydown', e => { if (e.key === 'Enter') doCityFetch(); });
 </script>
 
-<script>
-// Cookie banner
-(function(){
-  if(localStorage.getItem('cookie_ok'))return;
-  var b=document.createElement('div');
-  b.id='ck-banner';
-  b.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#050912;color:#5a6fa0;font-size:13px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9999;border-top:1px solid rgba(56,189,248,.12)';
-  b.innerHTML='<span>本サイトはGoogle AdSense・AnalyticsのためにCookieを使用しています。<a href="/privacy.html" style="color:#38bdf8">プライバシーポリシー</a></span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:transparent;color:#38bdf8;border:1px solid #38bdf8;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">OK</button>';
-  document.body.appendChild(b);
-})();
-</script>
+<script>Tool.initTheme(); Tool.initCookie();</script>
 
 </body>
 </html>
