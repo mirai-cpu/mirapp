@@ -350,6 +350,8 @@ echo "╚═══════════════════════�
 check_html "$BASE/index.html"               "somirai.jp トップ"    "https://somirai.jp/"
 check_html "$BASE/batting-stats/index.html" "My Batting Stats"     "https://somirai.jp/batting-stats/"
 check_html "$BASE/order-maker/index.html"   "スタメンメーカー"       "https://somirai.jp/order-maker/"
+check_html "$BASE/sunset/index.html"        "日没タイムリミット"     "https://somirai.jp/sunset/"
+check_html "$BASE/pitch-counter/index.html" "投球数カウンター"       "https://somirai.jp/pitch-counter/"
 check_nextjs "$BASE/habit"                  "Habit Quest"          "https://somirai.jp/habit/"
 check_nextjs "$BASE/write"                  "Write Quest"          "https://somirai.jp/write/"
 check_nextjs "$BASE/savings"               "節約クエスト"           "https://somirai.jp/savings/"

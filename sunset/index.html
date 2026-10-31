@@ -175,6 +175,7 @@
     <a href="/order-maker/">打順メーカー</a>
     <a href="/batting-stats/">打撃成績トラッカー</a>
     <a href="/">Somirai Lab トップ</a>
+    <a href="/privacy.html">プライバシーポリシー</a>
   </nav>
 
   <footer>天気・日没データ: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>(無料API)。所要時間は目安で、実際の試合進行とは異なります。</footer>
@@ -464,6 +465,16 @@ function drawSky(start, end9, sunset, per, limit) {
   if (start && /^\d{2}:\d{2}$/.test(start)) $('start').value = start;
   setPlaceNow(currentLabel());
   $('form').requestSubmit();
+})();
+</script>
+<script>
+(function(){
+  if(localStorage.getItem('cookie_ok')) return;
+  var b = document.createElement('div');
+  b.id = 'ck-banner';
+  b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#2B2420;color:#D5D9DD;font-size:12px;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9999;border-top:1px solid #4B403A;font-family:system-ui,sans-serif';
+  b.innerHTML = '<span>本サイトはGoogle AdSense・Google AnalyticsのためにCookieを使用しています。詳細は<a href="/privacy.html" style="color:#F5C400">プライバシーポリシー</a>をご覧ください。</span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:#3AA860;color:#14110F;border:none;border-radius:4px;padding:10px 18px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;min-height:44px">OK</button>';
+  document.body.appendChild(b);
 })();
 </script>
 </body>
