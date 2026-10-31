@@ -10,11 +10,12 @@
   <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#ff6428">
+  <meta name="theme-color" content="#0a0a0b">
   <link rel="canonical" href="https://somirai.jp/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/tokens.css">
 
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Somirai Lab","url":"https://somirai.jp/","description":"野球の成績管理から習慣トラッキングまで、無料で使えるWebツールの集積地","inLanguage":"ja","publisher":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"}}</script>
   <meta property="og:type" content="website">
@@ -30,1112 +31,297 @@
 
 
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:       #0a0a0b;
-      --surface:  #111114;
-      --surface2: #18181c;
-      --border:   #222228;
-      --border2:  #2e2e38;
-      --text:     #f2f2f4;
-      --textSec:  #9898a8;
-      --textMut:  #505060;
-      --accent:   #ff6428;
-      --accentDim: rgba(255,100,40,.12);
-      --radius:   16px;
-      --mono:     'JetBrains Mono', monospace;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Noto Sans JP', system-ui, sans-serif;
-      line-height: 1.7;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    h1, h2, h3, .display {
-      font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif;
-    }
-
-    /* dot grid bg */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: radial-gradient(circle, #2e2e3c 1px, transparent 1px);
-      background-size: 28px 28px;
-      opacity: 0.5;
-      pointer-events: none;
-      z-index: 0;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 30%, transparent 100%);
-      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 30%, transparent 100%);
-    }
-
-    /* grain texture */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23g)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.032;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ── Nav ── */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(10,10,11,.88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 32px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
-    .nav-logo-mark {
-      width: 28px; height: 28px;
-      border-radius: 7px;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-    .nav-logo-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: -.02em;
-      color: var(--text);
-    }
-
-    .nav-right { display: flex; gap: 2px; align-items: center; }
-    .nav-right a {
-      color: var(--textSec);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 6px 12px;
-      border-radius: 8px;
-      transition: color .15s, background .15s;
-      letter-spacing: .01em;
-    }
-    .nav-right a:hover { color: var(--text); background: var(--surface2); }
-
-    /* ── Hero ── */
-    .hero-outer {
-      position: relative;
-      z-index: 1;
-      border-bottom: 1px solid var(--border);
-      overflow: hidden;
-    }
-
-    /* Radial glow — top right amber */
-    .hero-outer::before {
-      content: '';
-      position: absolute;
-      top: -120px;
-      right: -80px;
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(circle, rgba(255,100,40,.11) 0%, rgba(255,140,60,.04) 45%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    /* Radial glow — bottom left cool */
-    .hero-outer::after {
-      content: '';
-      position: absolute;
-      bottom: -80px;
-      left: -100px;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(80,80,180,.08) 0%, transparent 65%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* Giant ghost wordmark behind hero */
+    .sky { position: relative; overflow: hidden; background: #0A0A0B; color: #FFFFFF; }
+    #starfield { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .sky-inner { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 16px 20px 44px; }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #FFFFFF; }
+    .nav-logo svg { width: 28px; height: 28px; border-radius: 7px; flex-shrink: 0; }
+    .nav-logo-name { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: -.02em; }
+    .sky .theme-btn { border-color: rgba(255,255,255,.7); color: #FFFFFF; }
+    .nav-links { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 8px; font-size: .875rem; }
+    .nav-links a { color: #D5D9DD; text-underline-offset: 4px; min-height: 32px; display: inline-flex; align-items: center; }
     .hero-ghost {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -48%);
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(120px, 18vw, 220px);
-      font-weight: 700;
-      letter-spacing: -.06em;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(255,100,40,.07);
-      white-space: nowrap;
-      pointer-events: none;
-      user-select: none;
-      z-index: 0;
-      line-height: 1;
+      position: absolute; top: 58%; left: 50%; transform: translate(-50%, -50%);
+      font-family: 'Space Grotesk', sans-serif; font-size: clamp(90px, 22vw, 200px); font-weight: 700; letter-spacing: -.06em;
+      color: transparent; -webkit-text-stroke: 1px rgba(255,100,40,.09); white-space: nowrap; pointer-events: none; user-select: none; line-height: 1;
     }
-
-    .hero-wrap {
-      position: relative;
-      z-index: 1;
-      padding: 88px 32px 72px;
-      max-width: 1080px;
-      margin: 0 auto;
-    }
-
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: .1em;
-      color: var(--accent);
-      margin-bottom: 24px;
-      text-transform: uppercase;
-    }
-    .hero-eyebrow::before {
-      content: '';
-      display: inline-block;
-      width: 20px;
-      height: 1px;
-      background: var(--accent);
-    }
-
-    /* Brand name — the star of the show */
-    .hero-brand {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(64px, 11vw, 148px);
-      font-weight: 700;
-      letter-spacing: -.055em;
-      line-height: .95;
-      color: var(--text);
-      margin-bottom: 8px;
-      margin-top: 0;
-      position: relative;
-    }
-    .hero-brand .brand-accent {
-      color: var(--accent);
-      position: relative;
-      display: inline-block;
-    }
-    /* Underline bar on "Lab" */
-    .hero-brand .brand-accent::after {
-      content: '';
-      position: absolute;
-      bottom: 4px;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: var(--accent);
-      border-radius: 3px;
-      opacity: .4;
-    }
-
-    .hero-tagline {
-      font-family: 'Noto Sans JP', sans-serif;
-      font-size: clamp(14px, 2vw, 20px);
-      font-weight: 500;
-      color: var(--textSec);
-      line-height: 1.6;
-      margin-bottom: 48px;
-      letter-spacing: .02em;
-    }
-
-    .hero-h1 {
-      font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif;
-      font-size: clamp(52px, 8vw, 96px);
-      font-weight: 700;
-      line-height: 1.05;
-      letter-spacing: -.04em;
-      color: var(--text);
-      margin-bottom: 12px;
-    }
-    .hero-h1-jp {
-      font-family: 'Noto Sans JP', sans-serif;
-      font-size: clamp(22px, 3.5vw, 42px);
-      font-weight: 700;
-      line-height: 1.4;
-      letter-spacing: -.02em;
-      color: var(--textSec);
-      margin-bottom: 48px;
-    }
-    .hero-h1 .accent { color: var(--accent); }
-
-    .hero-meta {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      flex-wrap: wrap;
-    }
-    .hero-tags {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .hero-tag {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: .06em;
-      color: var(--textMut);
-      padding: 5px 10px;
-      border: 1px solid var(--border2);
-      border-radius: 6px;
-      text-transform: uppercase;
-    }
-
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--accent);
-      color: #fff;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 12px 24px;
-      border-radius: 10px;
-      text-decoration: none;
-      letter-spacing: .01em;
-      transition: opacity .15s, transform .15s;
-    }
-    .hero-cta:hover { opacity: .85; transform: translateY(-2px); }
-    .hero-cta svg { transition: transform .15s; }
-    .hero-cta:hover svg { transform: translate(2px,-2px); }
-
-    /* ── Divider line ── */
-    .full-divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ── Stats strip ── */
-    .stats-strip {
-      position: relative;
-      z-index: 1;
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 32px;
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      border-bottom: 1px solid var(--border);
-    }
-    .stat {
-      padding: 32px 0;
-      border-right: 1px solid var(--border);
-    }
-    .stat:last-child { border-right: none; padding-left: 40px; }
-    .stat:nth-child(2) { padding-left: 40px; }
-    .stat-num {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 36px;
-      font-weight: 700;
-      letter-spacing: -.04em;
-      color: var(--text);
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-    .stat-num span { color: var(--accent); }
-    .stat-label {
-      font-size: 12px;
-      color: var(--textMut);
-      font-family: var(--mono);
-      letter-spacing: .05em;
-    }
-
-    /* ── Tools section ── */
-    .tools-wrap {
-      position: relative;
-      z-index: 1;
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 80px 32px 100px;
-    }
-
-    .section-label {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: .12em;
-      color: var(--textMut);
-      text-transform: uppercase;
-      margin-bottom: 32px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    /* Category block */
-    .cat-block { margin-bottom: 64px; }
-    .cat-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--textMut);
-      margin-bottom: 2px;
-      padding: 0 0 16px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* Tool row */
-    .tool-row {
-      display: grid;
-      grid-template-columns: 40px 1fr auto;
-      align-items: center;
-      gap: 24px;
-      padding: 28px 0;
-      border-bottom: 1px solid var(--border);
-      text-decoration: none;
-      color: var(--text);
-      transition: background .15s;
-      border-radius: 0;
-      position: relative;
-    }
-    .tool-row::before {
-      content: '';
-      position: absolute;
-      left: -32px;
-      right: -32px;
-      top: 0;
-      bottom: 0;
-      background: var(--surface);
-      opacity: 0;
-      transition: opacity .2s;
-    }
-    .tool-row:hover::before { opacity: 1; }
-    .tool-row > * { position: relative; z-index: 1; }
-
-    .tool-row.disabled { opacity: .35; pointer-events: none; }
-
-    .tool-num {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--textMut);
-      font-weight: 400;
-    }
-
-    .tool-info { display: flex; flex-direction: column; gap: 4px; }
-    .tool-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -.02em;
-      line-height: 1.1;
-      color: var(--text);
-      transition: color .15s;
-    }
-    .tool-row:hover .tool-name { color: var(--accent); }
-    .tool-sub {
-      font-family: 'Noto Sans JP', sans-serif;
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--textMut);
-      letter-spacing: .05em;
-      margin-top: 1px;
-      margin-bottom: 2px;
-    }
-
-    .tool-desc {
-      font-size: 13px;
-      color: var(--textSec);
-      line-height: 1.6;
-      max-width: 560px;
-    }
-
-    .tool-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-    .tool-badge {
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 6px;
-    }
-    .badge-live {
-      color: #34d399;
-      background: rgba(52,211,153,.1);
-      border: 1px solid rgba(52,211,153,.2);
-    }
-    .badge-soon {
-      color: var(--textMut);
-      background: var(--surface2);
-      border: 1px solid var(--border2);
-    }
-    .tool-arrow {
-      color: var(--textMut);
-      transition: color .15s, transform .15s;
-    }
-    .tool-row:hover .tool-arrow {
-      color: var(--accent);
-      transform: translate(3px,-3px);
-    }
-
-    .tool-guide-link {
-      display: block;
-      font-size: 11px;
-      color: var(--textMut);
-      text-decoration: none;
-      padding: 4px 0 14px 52px;
-      letter-spacing: 0.04em;
-      transition: color .15s;
-    }
-    .tool-guide-link:hover { color: var(--accent); }
-
-    /* ── Features strip ── */
-    .features-wrap {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-    }
-    .features-inner {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 32px;
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-    }
-    .feat {
-      padding: 48px 0;
-      border-right: 1px solid var(--border);
-    }
-    .feat:last-child { border-right: none; padding-left: 48px; }
-    .feat:nth-child(2) { padding-left: 48px; }
-    .feat-icon {
-      width: 36px; height: 36px;
-      margin-bottom: 20px;
-      color: var(--accent);
-    }
-    .feat-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 8px;
-      letter-spacing: -.01em;
-    }
-    .feat-desc {
-      font-size: 13px;
-      color: var(--textSec);
-      line-height: 1.75;
-    }
-
-    /* ── About section ── */
-    .about-wrap {
-      position: relative;
-      z-index: 1;
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 80px 32px 100px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-    .about-label {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: .12em;
-      color: var(--textMut);
-      text-transform: uppercase;
-      margin-bottom: 24px;
-    }
-    .about-heading {
-      font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif;
-      font-size: clamp(28px, 3vw, 40px);
-      font-weight: 700;
-      letter-spacing: -.03em;
-      line-height: 1.2;
-      color: var(--text);
-      margin-bottom: 20px;
-    }
-    .about-text {
-      font-size: 14px;
-      color: var(--textSec);
-      line-height: 1.9;
-      margin-bottom: 28px;
-    }
-    .about-link {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--accent);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      letter-spacing: .01em;
-      border-bottom: 1px solid rgba(255,100,40,.3);
-      padding-bottom: 2px;
-      transition: border-color .15s;
-    }
-    .about-link:hover { border-color: var(--accent); }
-
-    .about-tags {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .about-tag-row {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 20px 24px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-    }
-    .about-tag-icon {
-      width: 36px; height: 36px;
-      background: var(--accentDim);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      color: var(--accent);
-    }
-    .about-tag-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 2px;
-    }
-    .about-tag-sub {
-      font-size: 12px;
-      color: var(--textMut);
-    }
-
-    /* ── Footer ── */
-    footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid var(--border);
-      background: var(--surface);
-      padding: 40px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .footer-brand {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -.01em;
-    }
-    .footer-copy {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--textMut);
-      margin-top: 4px;
-    }
-    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
-    .footer-links a {
-      font-size: 12px;
-      color: var(--textSec);
-      text-decoration: none;
-      transition: color .15s;
-    }
-    .footer-links a:hover { color: var(--text); }
-
-    /* ── Animations ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .hero-wrap { animation: fadeUp .6s ease both; }
-    .hero-ghost { animation: fadeUp .8s ease both; }
-    .stats-strip { animation: fadeUp .6s .1s ease both; opacity: 0; animation-fill-mode: forwards; }
-
-    @keyframes starTwinkle {
-      from { opacity: 1; transform: scale(1); }
-      to   { opacity: 0.08; transform: scale(0.55); }
-    }
+    .hero-brand { position: relative; margin-top: 34px; font-family: 'Space Grotesk', sans-serif; font-size: clamp(54px, 13vw, 112px); font-weight: 700; letter-spacing: -.055em; line-height: .95; }
+    .hero-brand .brand-accent { color: #FF6428; position: relative; display: inline-block; }
+    .hero-brand .brand-accent::after { content: ''; position: absolute; bottom: 4px; left: 0; right: 0; height: 5px; background: #FF6428; border-radius: 3px; opacity: .4; }
+    .hero-tagline { margin-top: 14px; font-size: clamp(.95rem, 2.4vw, 1.2rem); font-weight: 700; line-height: 1.6; color: #E4E7EA; }
+    .hero-tagline span { display: block; font-size: .85em; opacity: .75; font-weight: 400; }
+    .hero-meta { margin-top: 26px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; }
+    .hero-cta { display: inline-flex; align-items: center; gap: 8px; min-height: 52px; padding: 0 24px; background: #FF6428; color: #14110F; font-weight: 700; text-decoration: none; border-radius: 4px; }
+    .hero-cta:hover { filter: brightness(1.08); }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .875rem; color: #D5D9DD; list-style: none; }
+    .hero-tags li::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #FF6428; margin-right: 8px; vertical-align: 1px; }
+    @keyframes starTwinkle { from { opacity: 1; transform: scale(1); } to { opacity: .08; transform: scale(.55); } }
     @keyframes shootStar {
-      0%   { transform: translate(0, 0) rotate(22deg); opacity: 0; }
-      3%   { opacity: 1; }
-      9%   { opacity: 0; transform: translate(100vw, 45vw) rotate(22deg); }
-      100% { transform: translate(100vw, 45vw) rotate(22deg); opacity: 0; }
+      0% { transform: translate(0, 0) rotate(22deg); opacity: 0; } 3% { opacity: 1; }
+      9% { opacity: 0; transform: translate(100vw, 45vw) rotate(22deg); } 100% { transform: translate(100vw, 45vw) rotate(22deg); opacity: 0; }
     }
 
-    #starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .wrap { max-width: 720px; padding-top: 12px; }
+    .sec-head { margin-top: 36px; }
+    .sec-head h2 { font-size: 1.35rem; line-height: 1.3; }
+    .sec-head p { margin-top: 4px; color: var(--ink-sec); font-size: .9375rem; }
+    .card { margin-top: 18px; border: 2px solid var(--ink); border-radius: 4px; overflow: hidden; }
+    .card-head { display: grid; grid-template-columns: 56px 1fr 56px; align-items: center; background: var(--turf-deep); color: #FFFFFF; font-weight: 700; font-size: .875rem; padding: 8px 0; text-align: center; }
+    .card-head span:nth-child(2) { text-align: left; }
+    .card.bench .card-head { background: var(--ink); color: var(--bg); }
+    .order { list-style: none; }
+    .order > li + li { border-top: 1px solid var(--rule); }
+    .slot { display: grid; grid-template-columns: 56px 1fr 56px; align-items: start; padding: 14px 0; text-decoration: none; color: inherit; min-height: 72px; }
+    .slot:hover, .slot:focus-visible { background: color-mix(in srgb, var(--turf) 12%, transparent); }
+    .no { justify-self: center; width: 40px; height: 40px; display: grid; place-items: center; font-weight: 700; font-size: 1.2rem; border: 2px solid var(--ink); border-radius: 2px; }
+    .bench .no { border-style: dashed; }
+    .nm { font-weight: 700; font-size: 1.05rem; padding-right: 8px; line-height: 1.5; }
+    .nm small { display: block; font-weight: 400; line-height: 1.55; }
+    .nm .sub { font-size: .875rem; color: var(--ink); margin-top: 2px; }
+    .nm .desc { font-size: .9375rem; color: var(--ink-sec); margin-top: 2px; }
+    .badge { display: inline-block; margin-left: 8px; padding: 0 8px; background: var(--liner); color: #2B2420; font-size: .75rem; font-weight: 700; border-radius: 2px; vertical-align: 2px; }
+    .kind { font-size: .8125rem; color: var(--ink-sec); text-align: center; padding-top: 4px; }
+    .guide { display: block; margin: -6px 0 12px 56px; font-size: .875rem; color: var(--ink-sec); text-underline-offset: 4px; }
 
-    /* ── Responsive ── */
-    @media (max-width: 768px) {
-      nav { padding: 0 20px; }
-      .nav-right a:not(:last-child) { display: none; }
-      .hero-wrap { padding: 60px 20px 52px; }
-      .hero-ghost { font-size: clamp(80px,20vw,140px); }
-      .hero-brand { font-size: clamp(52px,13vw,96px); }
-      .stats-strip { padding: 0 20px; grid-template-columns: 1fr 1fr 1fr; }
-      .stat:nth-child(2), .stat:last-child { padding-left: 20px; }
-      .stat-num { font-size: 26px; }
-      .tools-wrap { padding: 56px 20px 80px; }
-      .tool-row { grid-template-columns: 32px 1fr auto; gap: 16px; }
-      .tool-name { font-size: 18px; }
-      .features-inner { grid-template-columns: 1fr; padding: 0 20px; }
-      .feat, .feat:nth-child(2), .feat:last-child { padding: 32px 0; border-right: none; border-bottom: 1px solid var(--border); }
-      .feat:last-child { border-bottom: none; }
-      .about-wrap { grid-template-columns: 1fr; gap: 40px; padding: 60px 20px; }
-      footer { padding: 32px 20px; flex-direction: column; align-items: flex-start; gap: 20px; }
-      .tool-row::before { left: -20px; right: -20px; }
-    }
-    @media (max-width: 480px) {
-      .stats-strip { grid-template-columns: 1fr; border-bottom: 1px solid var(--border); }
-      .stat { border-right: none; border-bottom: 1px solid var(--border); padding: 24px 0; }
-      .stat:last-child { padding-left: 0; border-bottom: none; }
-      .stat:nth-child(2) { padding-left: 0; }
-    }
+    .feat-list { list-style: none; margin-top: 14px; }
+    .feat-list li { padding: 14px 0; border-top: 1px solid var(--rule); }
+    .feat-list li:last-child { border-bottom: 1px solid var(--rule); }
+    .feat-list b { display: block; font-size: 1.05rem; }
+    .feat-list span { color: var(--ink-sec); font-size: .9375rem; }
+    .about { margin-top: 40px; padding-top: 6px; border-top: 2px solid var(--ink); }
+    .about h2 { font-size: 1.35rem; line-height: 1.45; margin-top: 12px; }
+    .about p { margin-top: 12px; color: var(--ink-sec); }
+    .about .more { display: inline-block; margin-top: 10px; font-weight: 700; text-underline-offset: 4px; }
+    .about-tags { list-style: none; margin-top: 16px; }
+    .about-tags li { padding: 10px 0; border-top: 1px solid var(--rule); }
+    .about-tags b { display: block; }
+    .about-tags span { color: var(--ink-sec); font-size: .9375rem; }
+    footer.site { margin-top: 44px; padding: 20px 0 80px; border-top: 2px solid var(--ink); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px 24px; }
+    footer.site .brand { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+    footer.site .copy { font-size: .8125rem; color: var(--ink-sec); }
+    footer.site .links { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .875rem; align-items: center; }
+    footer.site .links a { text-underline-offset: 4px; min-height: 32px; display: inline-flex; align-items: center; }
   </style>
 </head>
 <body>
-
+<header class="sky">
   <div id="starfield" aria-hidden="true"></div>
-
-  <!-- Nav -->
-  <nav>
-    <a href="/" class="nav-logo">
-      <svg class="nav-logo-mark" viewBox="0 0 120 120" width="28" height="28">
-        <defs>
-          <linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#111114"/><stop offset="100%" stop-color="#0a0a0b"/></linearGradient>
-          <linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff6428"/><stop offset="100%" stop-color="#e84410"/></linearGradient>
-        </defs>
-        <rect width="120" height="120" rx="24" fill="url(#n1)"/>
-        <rect x="16" y="16" width="88" height="88" rx="14" fill="none" stroke="#ff6428" stroke-width="1.5" opacity=".15"/>
-        <circle cx="60" cy="52" r="18" fill="url(#n2)"/>
-        <circle cx="56" cy="47" r="6" fill="#fff" opacity=".2"/>
-        <path d="M60 28 L63 46 L60 52 L57 46Z" fill="#ffb088" opacity=".7"/>
-        <path d="M36 52 L52 54 L60 52 L52 50Z" fill="#ffb088" opacity=".55"/>
-        <path d="M84 52 L68 54 L60 52 L68 50Z" fill="#ffb088" opacity=".55"/>
-        <circle cx="88" cy="30" r="3" fill="#ff6428" opacity=".5"/>
-        <circle cx="32" cy="72" r="2.5" fill="#ff6428" opacity=".35"/>
-      </svg>
-      <span class="nav-logo-name">Somirai Lab</span>
-    </a>
-    <div class="nav-right">
-      <a href="#tools">ツール</a>
-      <a href="/blog/">ブログ</a>
-      <a href="/about.html">About</a>
-      <a href="/privacy.html">プライバシー</a>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <div class="hero-outer">
-    <div class="hero-ghost">Somirai Lab</div>
-    <div class="hero-wrap">
-      <div class="hero-eyebrow">登録不要 · 完全無料 · 今すぐ使える</div>
-      <h1 class="hero-brand">
-        Somirai&nbsp;<span class="brand-accent">Lab</span>
-      </h1>
-      <p class="hero-tagline">あなたの選択が、形になる。<br><span style="font-size:.85em;opacity:.7;">みんなの声が、開発の地図になる。</span></p>
-      <div class="hero-meta">
-        <a href="#tools" class="hero-cta">
-          ツールを選ぶ
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5M11.5 2.5V9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="hero-ghost" aria-hidden="true">Somirai Lab</div>
+  <div class="sky-inner">
+    <nav aria-label="サイトメニュー">
+      <div class="nav">
+        <a href="/" class="nav-logo" aria-label="Somirai Lab トップ">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <defs>
+            <linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#111114"/><stop offset="100%" stop-color="#0a0a0b"/></linearGradient>
+            <linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff6428"/><stop offset="100%" stop-color="#e84410"/></linearGradient>
+          </defs>
+          <rect width="120" height="120" rx="24" fill="url(#n1)"/>
+          <rect x="16" y="16" width="88" height="88" rx="14" fill="none" stroke="#ff6428" stroke-width="1.5" opacity=".15"/>
+          <circle cx="60" cy="52" r="18" fill="url(#n2)"/>
+          <circle cx="56" cy="47" r="6" fill="#fff" opacity=".2"/>
+          <path d="M60 28 L63 46 L60 52 L57 46Z" fill="#ffb088" opacity=".7"/>
+          <path d="M36 52 L52 54 L60 52 L52 50Z" fill="#ffb088" opacity=".55"/>
+          <path d="M84 52 L68 54 L60 52 L68 50Z" fill="#ffb088" opacity=".55"/>
+          <circle cx="88" cy="30" r="3" fill="#ff6428" opacity=".5"/>
+          <circle cx="32" cy="72" r="2.5" fill="#ff6428" opacity=".35"/>
+        </svg>
+          <span class="nav-logo-name">Somirai Lab</span>
         </a>
-        <div class="hero-tags">
-          <span class="hero-tag">完全無料</span>
-          <span class="hero-tag">登録不要</span>
-          <span class="hero-tag">データはブラウザ保存</span>
-        </div>
+        <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
       </div>
+      <div class="nav-links">
+        <a href="#tools">ツール</a>
+        <a href="/blog/">ブログ</a>
+        <a href="/about.html">About</a>
+        <a href="/privacy.html">プライバシー</a>
+      </div>
+    </nav>
+    <h1 class="hero-brand">Somirai&nbsp;<span class="brand-accent">Lab</span></h1>
+    <p class="hero-tagline">あなたの選択が、形になる。<span>みんなの声が、開発の地図になる。</span></p>
+    <div class="hero-meta">
+      <a href="#tools" class="hero-cta">ツールを選ぶ</a>
+      <ul class="hero-tags">
+        <li>完全無料</li>
+        <li>登録不要</li>
+        <li>データはブラウザ保存</li>
+      </ul>
     </div>
   </div>
+</header>
 
-  <!-- Stats strip -->
-  <hr class="full-divider">
-  <div class="stats-strip">
-    <div class="stat">
-      <div class="stat-num">6<span>+</span></div>
-      <div class="stat-label">公開・開発中ツール</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">¥<span>0</span></div>
-      <div class="stat-label">完全無料</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">Local</div>
-      <div class="stat-label">データはブラウザ内に保存</div>
-    </div>
-  </div>
-
-  <!-- Tools -->
-  <div class="tools-wrap" id="tools">
-    <div class="section-label">Tools</div>
-
-    <!-- Sports -->
-    <div class="cat-block">
-      <div class="cat-name">Sports</div>
-
-      <a href="batting-stats/" class="tool-row">
-        <span class="tool-num">01</span>
-        <div class="tool-info">
-          <div class="tool-name">LUMBER</div>
-          <div class="tool-sub">⚾ 野球 打撃成績トラッカー</div>
-          <div class="tool-desc">打席結果をその場で記録。打率・OPS・スプレーチャートなど、打撃データをビジュアルで確認できる野球成績管理ツール。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-      <a href="batting-stats/guide.html" class="tool-guide-link">📖 使い方ガイドを見る →</a>
-
-      <a href="order-maker/" class="tool-row">
-        <span class="tool-num">02</span>
-        <div class="tool-info">
-          <div class="tool-name">スタメンメーカー</div>
-          <div class="tool-sub">⚾ 野球 打順・守備配置作成</div>
-          <div class="tool-desc">打順・守備位置・投手陣を設定して球場図で確認。LINEやXへのシェアにも対応した監督目線のスタメン作成ツール。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-      <a href="order-maker/guide.html" class="tool-guide-link">📖 使い方ガイドを見る →</a>
+<main class="wrap">
+  <section id="tools" aria-labelledby="h-tools">
+    <div class="sec-head">
+      <h2 id="h-tools">ツール一覧</h2>
+      <p>草野球の道具から習慣づくりまで、18のツールを無料で使えます。</p>
     </div>
 
-    <!-- Habit -->
-    <div class="cat-block">
-      <div class="cat-name">Habit</div>
-
-      <a href="habit/" class="tool-row">
-        <span class="tool-num">03</span>
-        <div class="tool-info">
-          <div class="tool-name">TEMPER</div>
-          <div class="tool-sub">🔥 習慣トラッカー</div>
-          <div class="tool-desc">毎日の習慣を記録・可視化。レベルアップ・バッジ・ストリークで、続けることが楽しくなる習慣トラッキングツール。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-      <a href="habit/guide.html" class="tool-guide-link">📖 使い方ガイドを見る →</a>
-
-      <a href="write/" class="tool-row">
-        <span class="tool-num">04</span>
-        <div class="tool-info">
-          <div class="tool-name">MARGINALIA</div>
-          <div class="tool-sub">✏️ メモ・TODO管理</div>
-          <div class="tool-desc">書くたびにレベルアップするタイムライン型メモ。ToDo管理・色分けも可能な、書く習慣をゲーム感覚で続けるノートツール。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-      <a href="write/guide.html" class="tool-guide-link">📖 使い方ガイドを見る →</a>
+    <div class="card" role="group" aria-label="先発オーダー">
+      <div class="card-head"><span>打順</span><span>ツール</span><span>分類</span></div>
+      <ol class="order">
+      <li>
+        <a class="slot" href="order-maker/">
+          <span class="no">1</span>
+          <span class="nm">スタメンメーカー<small class="sub">野球 打順・守備配置作成</small><small class="desc">打順・守備位置・投手陣を設定して球場図で確認。LINEやXへのシェアにも対応した監督目線のスタメン作成ツール。</small></span>
+          <span class="kind">野球</span>
+        </a><a class="guide" href="order-maker/guide.html">スタメンメーカーの使い方ガイド</a>
+      </li>
+      <li>
+        <a class="slot" href="batting-stats/">
+          <span class="no">2</span>
+          <span class="nm">LUMBER<small class="sub">野球 打撃成績トラッカー</small><small class="desc">打席結果をその場で記録。打率・OPS・スプレーチャートなど、打撃データをビジュアルで確認できる野球成績管理ツール。</small></span>
+          <span class="kind">野球</span>
+        </a><a class="guide" href="batting-stats/guide.html">LUMBERの使い方ガイド</a>
+      </li>
+      <li>
+        <a class="slot" href="pitch-counter/">
+          <span class="no">3</span>
+          <span class="nm">投球数カウンター<span class="badge">新</span><small class="sub">コースと球種で球数を記録</small><small class="desc">ストライクゾーン9分割とボールゾーンにタップで記録。球種別・球数の上限管理・対戦打者数・スコア・打者成績まで1画面で。</small></span>
+          <span class="kind">野球</span>
+        </a>
+      </li>
+      <li>
+        <a class="slot" href="training-timer/">
+          <span class="no">4</span>
+          <span class="nm">9回制トレタイマー<span class="badge">新</span><small class="sub">道具なしの冬トレを試合のように</small><small class="desc">1セットを1イニングに見立て、表と裏で種目を切り替え。打者・投手・守備・走塁の目的別メニューつきで、9回でゲームセット。</small></span>
+          <span class="kind">トレ</span>
+        </a>
+      </li>
+      <li>
+        <a class="slot" href="draft/">
+          <span class="no">5</span>
+          <span class="nm">ドラフト会議<span class="badge">新</span><small class="sub">チーム分け・当番くじ・打順くじ</small><small class="desc">名前を入れるだけで、ドラフト形式の発表でチーム分け。スタメンメーカーの名簿があれば、守備位置が偏らないように振り分けます。</small></span>
+          <span class="kind">野球</span>
+        </a>
+      </li>
+      <li>
+        <a class="slot" href="split/">
+          <span class="no">6</span>
+          <span class="nm">試合費用の割り勘<span class="badge">新</span><small class="sub">グラウンド代・審判代をラクに集金</small><small class="desc">一般・学生・助っ人など区分ごとの係数で割り勘。端数の切り上げ、チーム会計の繰越、LINEに貼れる請求文まで自動で作ります。</small></span>
+          <span class="kind">会計</span>
+        </a>
+      </li>
+      <li>
+        <a class="slot" href="sunset/">
+          <span class="no">7</span>
+          <span class="nm">日没タイムリミット計算機<span class="badge">新</span><small class="sub">9回まで日没に間に合う？</small><small class="desc">試合日・場所・開始時刻から、日没までに何回まで投げられるかを計算。市区町村・区単位の日没時刻と、時間ごとの天気つき。</small></span>
+          <span class="kind">天気</span>
+        </a>
+      </li>
+      <li>
+        <a class="slot" href="weather/">
+          <span class="no">8</span>
+          <span class="nm">FORECAST<small class="sub">野球試合日 天気チェッカー</small><small class="desc">草野球・少年野球の試合日の天気を都道府県別に確認。気象庁データで降水確率・気温・グラウンドコンディション判定を表示。</small></span>
+          <span class="kind">天気</span>
+        </a>
+      </li>
+      <li>
+        <a class="slot" href="habit/">
+          <span class="no">9</span>
+          <span class="nm">TEMPER<small class="sub">習慣トラッカー</small><small class="desc">毎日の習慣を記録・可視化。レベルアップ・バッジ・ストリークで、続けることが楽しくなる習慣トラッキングツール。</small></span>
+          <span class="kind">習慣</span>
+        </a><a class="guide" href="habit/guide.html">TEMPERの使い方ガイド</a>
+      </li>
+      </ol>
     </div>
 
-    <!-- Life -->
-    <div class="cat-block">
-      <div class="cat-name">Lifestyle</div>
-
-      <a href="savings/" class="tool-row">
-        <span class="tool-num">05</span>
-        <div class="tool-info">
-          <div class="tool-name">KURA</div>
-          <div class="tool-sub">💰 ゲーム感覚の家計簿</div>
-          <div class="tool-desc">支出を5秒で記録してRPG風に見える化。「節約レベル」がステータスとして上がっていくゲーミフィケーション家計簿。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-      <a href="savings/guide.html" class="tool-guide-link">📖 使い方ガイドを見る →</a>
-
-      <a href="price-sim/" class="tool-row">
-        <span class="tool-num">06</span>
-        <div class="tool-info">
-          <div class="tool-name">VALE</div>
-          <div class="tool-sub">📉 物価上昇シミュレーター</div>
-          <div class="tool-desc">インフレで貯蓄の実質価値がどう変わるかをグラフで可視化。年数・インフレ率を設定して将来の購買力を確認できる。KURAデータ連携対応。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
+    <div class="card bench" role="group" aria-label="控え">
+      <div class="card-head"><span>控え</span><span>ツール</span><span>分類</span></div>
+      <ol class="order">
+      <li>
+        <a class="slot" href="savings/">
+          <span class="no">控</span>
+          <span class="nm">KURA<small class="sub">ゲーム感覚の家計簿</small><small class="desc">支出を5秒で記録してRPG風に見える化。「節約レベル」がステータスとして上がっていくゲーミフィケーション家計簿。</small></span>
+          <span class="kind">お金</span>
+        </a><a class="guide" href="savings/guide.html">KURAの使い方ガイド</a>
+      </li>
+      <li>
+        <a class="slot" href="write/">
+          <span class="no">控</span>
+          <span class="nm">MARGINALIA<small class="sub">メモ・TODO管理</small><small class="desc">書くたびにレベルアップするタイムライン型メモ。ToDo管理・色分けも可能な、書く習慣をゲーム感覚で続けるノートツール。</small></span>
+          <span class="kind">メモ</span>
+        </a><a class="guide" href="write/guide.html">MARGINALIAの使い方ガイド</a>
+      </li>
+      <li>
+        <a class="slot" href="price-sim/">
+          <span class="no">控</span>
+          <span class="nm">VALE<small class="sub">物価上昇シミュレーター</small><small class="desc">インフレで貯蓄の実質価値がどう変わるかをグラフで可視化。年数・インフレ率を設定して将来の購買力を確認できる。KURAデータ連携対応。</small></span>
+          <span class="kind">お金</span>
+        </a>
+      </li>
+      <li>
+        <a class="slot" href="swing/">
+          <span class="no">控</span>
+          <span class="nm">SWING!<small class="sub">打席反応ゲーム</small><small class="desc">ストレート・スライダー・カーブを見極めてスイング。タイミングバーでジャストミートを狙え。打率.300を目指す無料ブラウザゲーム。</small></span>
+          <span class="kind">ゲーム</span>
+        </a>
+      </li>
+      <li>
+        <a class="slot" href="player/" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'top_index'})">
+          <span class="no">控</span>
+          <span class="nm">MY PLAYER<span class="badge">新</span><small class="sub">選手ステータス</small><small class="desc">LUMBER・TACTICIAN・TEMPER・MARGINALIA・KURAの利用状況を、1人の選手のステータスとして可視化。全ツールを使うほど選手が育つ。</small></span>
+          <span class="kind">育成</span>
+        </a>
+      </li>
+      <li>
+        <a class="slot" href="era-calculator/">
+          <span class="no">控</span>
+          <span class="nm">防御率計算機<small class="sub">投球回・自責点から一発計算</small><small class="desc">投球回と自責点を入力するだけで防御率(ERA)を自動計算。計算式の解説と草野球・少年野球での目安つき。</small></span>
+          <span class="kind">計算</span>
+        </a>
+      </li>
+      <li>
+        <a class="slot" href="whip-calculator/">
+          <span class="no">控</span>
+          <span class="nm">WHIP計算機<small class="sub">与四球・被安打から一発計算</small><small class="desc">与四球・被安打・投球回を入力するだけでWHIPを自動計算。防御率計算機とセットで投手の実態を把握。</small></span>
+          <span class="kind">計算</span>
+        </a>
+      </li>
+      <li>
+        <a class="slot" href="risp-calculator/">
+          <span class="no">控</span>
+          <span class="nm">得点圏打率計算機<small class="sub">得点圏の安打数・打数から一発計算</small><small class="desc">得点圏での安打数・打数を入力するだけで得点圏打率を自動計算。サンプルサイズの注意点も解説。</small></span>
+          <span class="kind">計算</span>
+        </a>
+      </li>
+      <li>
+        <a class="slot" href="magic-number-calculator/">
+          <span class="no">控</span>
+          <span class="nm">マジックナンバー計算機<small class="sub">勝数・敗数から優勝マジックを一発計算</small><small class="desc">全試合数・自チームの勝数・2位の敗数を入力するだけでマジックナンバーを自動計算。点灯の条件も解説。</small></span>
+          <span class="kind">計算</span>
+        </a>
+      </li>
+      </ol>
     </div>
+  </section>
 
-    <!-- Weather -->
-    <div class="cat-block">
-      <div class="cat-name">Sports</div>
+  <section aria-label="特徴">
+    <ul class="feat-list">
+      <li><b>完全プライベート</b><span>入力データはサーバーに送信せず、あなたのブラウザにのみ保存されます。個人の記録が外部に渡ることはありません。</span></li>
+      <li><b>インストール不要</b><span>URLを開くだけで即使用可能。PWA対応でホーム画面に追加すれば、ネイティブアプリのように使えます。</span></li>
+      <li><b>続けたくなるUI</b><span>レベルアップ・バッジ・連続記録など、ゲームのような達成感で、習慣化・継続を自然にサポートします。</span></li>
+    </ul>
+  </section>
 
-      <a href="swing/" class="tool-row">
-        <span class="tool-num">07</span>
-        <div class="tool-info">
-          <div class="tool-name">SWING!</div>
-          <div class="tool-sub">⚾ 打席反応ゲーム</div>
-          <div class="tool-desc">ストレート・スライダー・カーブを見極めてスイング。タイミングバーでジャストミートを狙え。打率.300を目指す無料ブラウザゲーム。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
+  <section class="about" id="about">
+    <h2>自分が使いたいものを、<br>自分で作る。</h2>
+    <p>Somirai Lab は、個人開発者が「自分自身が欲しいと思ったツール」を少しずつ積み上げてきたWebサービスです。登録不要・ブラウザだけで完結する、シンプルで使いやすい無料Webツールを目指しています。</p>
+    <a href="/about.html" class="more">もっと詳しく</a>
+    <ul class="about-tags">
+      <li><b>登録不要・即使える</b><span>URLを開いた瞬間から使いはじめられます</span></li>
+      <li><b>データはブラウザ保存</b><span>外部サーバーには一切送信されません</span></li>
+      <li><b>完全無料・PWA対応</b><span>ホーム画面に追加してオフラインでも利用可能</span></li>
+    </ul>
+  </section>
 
-      <a href="weather/" class="tool-row">
-        <span class="tool-num">08</span>
-        <div class="tool-info">
-          <div class="tool-name">FORECAST</div>
-          <div class="tool-sub">⛅ 野球試合日 天気チェッカー</div>
-          <div class="tool-desc">草野球・少年野球の試合日の天気を都道府県別に確認。気象庁データで降水確率・気温・グラウンドコンディション判定を表示。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-
-      <a href="era-calculator/" class="tool-row">
-        <span class="tool-num">09</span>
-        <div class="tool-info">
-          <div class="tool-name">防御率計算機</div>
-          <div class="tool-sub">🧮 投球回・自責点から一発計算</div>
-          <div class="tool-desc">投球回と自責点を入力するだけで防御率(ERA)を自動計算。計算式の解説と草野球・少年野球での目安つき。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-
-      <a href="whip-calculator/" class="tool-row">
-        <span class="tool-num">10</span>
-        <div class="tool-info">
-          <div class="tool-name">WHIP計算機</div>
-          <div class="tool-sub">🧮 与四球・被安打から一発計算</div>
-          <div class="tool-desc">与四球・被安打・投球回を入力するだけでWHIPを自動計算。防御率計算機とセットで投手の実態を把握。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-
-      <a href="risp-calculator/" class="tool-row">
-        <span class="tool-num">11</span>
-        <div class="tool-info">
-          <div class="tool-name">得点圏打率計算機</div>
-          <div class="tool-sub">🧮 得点圏の安打数・打数から一発計算</div>
-          <div class="tool-desc">得点圏での安打数・打数を入力するだけで得点圏打率を自動計算。サンプルサイズの注意点も解説。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-
-      <a href="magic-number-calculator/" class="tool-row">
-        <span class="tool-num">12</span>
-        <div class="tool-info">
-          <div class="tool-name">マジックナンバー計算機</div>
-          <div class="tool-sub">🧮 勝数・敗数から優勝マジックを一発計算</div>
-          <div class="tool-desc">全試合数・自チームの勝数・2位の敗数を入力するだけでマジックナンバーを自動計算。点灯の条件も解説。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-
-      <a href="sunset/" class="tool-row">
-        <span class="tool-num">13</span>
-        <div class="tool-info">
-          <div class="tool-name">日没タイムリミット計算機</div>
-          <div class="tool-sub">🌇 9回まで日没に間に合う？</div>
-          <div class="tool-desc">試合日・場所・開始時刻から、日没までに何回まで投げられるかを計算。市区町村・区単位の日没時刻と、時間ごとの天気つき。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-
-      <a href="pitch-counter/" class="tool-row">
-        <span class="tool-num">14</span>
-        <div class="tool-info">
-          <div class="tool-name">投球数カウンター</div>
-          <div class="tool-sub">⚾ コースと球種で球数を記録</div>
-          <div class="tool-desc">ストライクゾーン9分割とボールゾーンにタップで記録。球種別・球数の上限管理・対戦打者数・スコア・打者成績まで1画面で。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-
-      <a href="draft/" class="tool-row">
-        <span class="tool-num">15</span>
-        <div class="tool-info">
-          <div class="tool-name">ドラフト会議</div>
-          <div class="tool-sub">🎯 チーム分け・当番くじ・打順くじ</div>
-          <div class="tool-desc">名前を入れるだけで、ドラフト形式の発表でチーム分け。スタメンメーカーの名簿があれば、守備位置が偏らないように振り分けます。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-
-      <a href="split/" class="tool-row">
-        <span class="tool-num">16</span>
-        <div class="tool-info">
-          <div class="tool-name">試合費用の割り勘</div>
-          <div class="tool-sub">💴 グラウンド代・審判代をラクに集金</div>
-          <div class="tool-desc">一般・学生・助っ人など区分ごとの係数で割り勘。端数の切り上げ、チーム会計の繰越、LINEに貼れる請求文まで自動で作ります。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-
-      <a href="training-timer/" class="tool-row">
-        <span class="tool-num">17</span>
-        <div class="tool-info">
-          <div class="tool-name">9回制トレタイマー</div>
-          <div class="tool-sub">⏱ 道具なしの冬トレを試合のように</div>
-          <div class="tool-desc">1セットを1イニングに見立て、表と裏で種目を切り替え。打者・投手・守備・走塁の目的別メニューつきで、9回でゲームセット。</div>
-        </div>
-        <div class="tool-right">
-          <span class="tool-badge badge-live">Live</span>
-          <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-    </div>
-
-    <!-- MY PLAYER -->
-    <a href="player/" class="tool-row" style="border:1px solid rgba(232,196,104,0.35);background:rgba(232,196,104,0.05);" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'top_index'})">
-      <span class="tool-num" style="color:#e8c468;">★</span>
-      <div class="tool-info">
-        <div class="tool-name" style="color:#e8c468;">MY PLAYER</div>
-        <div class="tool-sub">⚾ 選手ステータス</div>
-        <div class="tool-desc">LUMBER・TACTICIAN・TEMPER・MARGINALIA・KURAの利用状況を、1人の選手のステータスとして可視化。全ツールを使うほど選手が育つ。</div>
-      </div>
-      <div class="tool-right">
-        <span class="tool-badge badge-live" style="background:rgba(232,196,104,0.15);color:#e8c468;">New</span>
-        <svg class="tool-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-    </a>
-
-  </div>
-
-  <!-- Features strip -->
-  <div class="features-wrap">
-    <div class="features-inner">
-      <div class="feat">
-        <svg class="feat-icon" viewBox="0 0 36 36" fill="none"><rect x="6" y="6" width="24" height="24" rx="6" stroke="currentColor" stroke-width="1.5"/><path d="M12 18h12M18 12v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".4"/><circle cx="18" cy="18" r="3" fill="currentColor"/></svg>
-        <div class="feat-title">完全プライベート</div>
-        <div class="feat-desc">入力データはサーバーに送信せず、あなたのブラウザにのみ保存されます。個人の記録が外部に渡ることはありません。</div>
-      </div>
-      <div class="feat">
-        <svg class="feat-icon" viewBox="0 0 36 36" fill="none"><path d="M18 6l2.5 7.5H28l-6.25 4.5 2.5 7.5L18 21l-6.25 4.5 2.5-7.5L8 13.5h7.5L18 6z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        <div class="feat-title">インストール不要</div>
-        <div class="feat-desc">URLを開くだけで即使用可能。PWA対応でホーム画面に追加すれば、ネイティブアプリのように使えます。</div>
-      </div>
-      <div class="feat">
-        <svg class="feat-icon" viewBox="0 0 36 36" fill="none"><rect x="8" y="10" width="20" height="16" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="M13 18l3 3 7-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="feat-title">続けたくなるUI</div>
-        <div class="feat-desc">レベルアップ・バッジ・連続記録など、ゲームのような達成感で、習慣化・継続を自然にサポートします。</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- About -->
-  <div class="about-wrap" id="about">
+  <footer class="site">
     <div>
-      <div class="about-label">About</div>
-      <h2 class="about-heading">自分が使いたいものを、<br>自分で作る。</h2>
-      <p class="about-text">
-        Somirai Lab は、個人開発者が「自分自身が欲しいと思ったツール」を少しずつ積み上げてきたWebサービスです。登録不要・ブラウザだけで完結する、シンプルで使いやすい無料Webツールを目指しています。
-      </p>
-      <a href="/about.html" class="about-link">
-        もっと詳しく
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
+      <div class="brand">Somirai Lab</div>
+      <div class="copy">© 2026 Somirai Lab. All rights reserved.</div>
     </div>
-    <div class="about-tags">
-      <div class="about-tag-row">
-        <div class="about-tag-icon">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="9" r="2" fill="currentColor"/></svg>
-        </div>
-        <div>
-          <div class="about-tag-title">登録不要・即使える</div>
-          <div class="about-tag-sub">URLを開いた瞬間から使いはじめられます</div>
-        </div>
-      </div>
-      <div class="about-tag-row">
-        <div class="about-tag-icon">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L15 5V9C15 12.5 12 15.5 9 16C6 15.5 3 12.5 3 9V5L9 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-        </div>
-        <div>
-          <div class="about-tag-title">データはブラウザ保存</div>
-          <div class="about-tag-sub">外部サーバーには一切送信されません</div>
-        </div>
-      </div>
-      <div class="about-tag-row">
-        <div class="about-tag-icon">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="4" stroke="currentColor" stroke-width="1.4"/><path d="M6 9l2 2 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div>
-          <div class="about-tag-title">完全無料・PWA対応</div>
-          <div class="about-tag-sub">ホーム画面に追加してオフラインでも利用可能</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    <div>
-      <div class="footer-brand">Somirai Lab</div>
-      <div class="footer-copy">© 2026 Somirai Lab. All rights reserved.</div>
-    </div>
-    <div class="footer-links">
+    <div class="links">
       <a href="/privacy.html">プライバシーポリシー</a>
       <a href="#tools">ツール一覧</a>
       <a href="/blog/">ブログ</a>
@@ -1143,47 +329,30 @@
       <a href="/contact.html">お問い合わせ</a>
     </div>
   </footer>
+</main>
 
-  <script>
-    (function(){
-      function rand(s){var x=Math.sin(s*127.1+311.7)*43758.5453;return x-Math.floor(x);}
-      var sf=document.getElementById('starfield');
-      var frag=document.createDocumentFragment();
-      for(var i=0;i<108;i++){
-        var x=rand(i*3+1)*100,y=rand(i*7+2)*100;
-        var size=0.6+rand(i*11+3)*1.8;
-        var op=0.18+rand(i*13+4)*0.72;
-        var dur=1.8+rand(i*17+5)*3.8;
-        var del=rand(i*19+6)*11;
-        var r=rand(i*23+7);
-        var col=r<0.11?'#ffd88a':r<0.25?'#c5d8ff':'#fff';
-        var el=document.createElement('div');
-        el.style.cssText='position:absolute;border-radius:50%;left:'+x+'%;top:'+y+'%;width:'+size+'px;height:'+size+'px;background:'+col+';opacity:'+op+';'+(size>1.5?'box-shadow:0 0 '+(size*2)+'px '+col+';':'')+'animation:starTwinkle '+dur+'s ease-in-out '+del+'s infinite alternate;';
-        frag.appendChild(el);
-      }
-      for(var j=0;j<5;j++){
-        var sx=5+rand(j*31+1)*40,sy=rand(j*37+2)*55;
-        var len=70+rand(j*41+3)*80;
-        var cyc=10+rand(j*43+4)*8;
-        var sd=j*3+rand(j*47+5)*2;
-        var sh=document.createElement('div');
-        sh.style.cssText='position:absolute;height:1px;left:'+sx+'%;top:'+sy+'%;width:'+len+'px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.95) 40%,rgba(200,220,255,0.6) 80%,transparent);transform:rotate(22deg);transform-origin:left center;animation:shootStar '+cyc+'s linear '+sd+'s infinite;';
-        frag.appendChild(sh);
-      }
-      sf.appendChild(frag);
-    })();
-  </script>
-
-  <script>
-    (function(){
-      if(localStorage.getItem('cookie_ok')) return;
-      var b = document.createElement('div');
-      b.id = 'ck-banner';
-      b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#111114;color:#9898a8;font-size:12px;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9999;border-top:1px solid #222228;font-family:system-ui,sans-serif';
-      b.innerHTML = '<span>本サイトはGoogle AdSense・Google AnalyticsのためにCookieを使用しています。詳細は<a href="/privacy.html" style="color:#ff6428">プライバシーポリシー</a>をご覧ください。</span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:#ff6428;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0">OK</button>';
-      document.body.appendChild(b);
-    })();
-  </script>
-
+<script src="/shared/tool.js"></script>
+<script>
+(function () {
+  function rand(s) { var x = Math.sin(s * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+  var sf = document.getElementById('starfield'), frag = document.createDocumentFragment();
+  for (var i = 0; i < 108; i++) {
+    var x = rand(i * 3 + 1) * 100, y = rand(i * 7 + 2) * 100, size = 0.6 + rand(i * 11 + 3) * 1.8, op = 0.18 + rand(i * 13 + 4) * 0.72;
+    var dur = 1.8 + rand(i * 17 + 5) * 3.8, del = rand(i * 19 + 6) * 11, r = rand(i * 23 + 7);
+    var col = r < 0.11 ? '#ffd88a' : r < 0.25 ? '#c5d8ff' : '#fff';
+    var el = document.createElement('div');
+    el.style.cssText = 'position:absolute;border-radius:50%;left:' + x + '%;top:' + y + '%;width:' + size + 'px;height:' + size + 'px;background:' + col + ';opacity:' + op + ';' + (size > 1.5 ? 'box-shadow:0 0 ' + (size * 2) + 'px ' + col + ';' : '') + 'animation:starTwinkle ' + dur + 's ease-in-out ' + del + 's infinite alternate;';
+    frag.appendChild(el);
+  }
+  for (var j = 0; j < 5; j++) {
+    var sx = 5 + rand(j * 31 + 1) * 40, sy = rand(j * 37 + 2) * 55, len = 70 + rand(j * 41 + 3) * 80, cyc = 10 + rand(j * 43 + 4) * 8, sd = j * 3 + rand(j * 47 + 5) * 2;
+    var sh = document.createElement('div');
+    sh.style.cssText = 'position:absolute;height:1px;left:' + sx + '%;top:' + sy + '%;width:' + len + 'px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.95) 40%,rgba(200,220,255,0.6) 80%,transparent);transform:rotate(22deg);transform-origin:left center;animation:shootStar ' + cyc + 's linear ' + sd + 's infinite;';
+    frag.appendChild(sh);
+  }
+  sf.appendChild(frag);
+})();
+Tool.initTheme(); Tool.initCookie();
+</script>
 </body>
 </html>
