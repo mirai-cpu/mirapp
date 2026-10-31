@@ -1,0 +1,79 @@
+/* calc.css — 野球の計算機4つ(防御率・WHIP・得点圏打率・マジックナンバー)の共通スタイル
+   /shared/tokens.css と一緒に使う。答えは電光掲示板風の数字で見せる(このページでは1か所だけ)。 */
+:root {
+  /* 既存ページのインライン指定(var(--text-sec) など)を、新しい配色に対応させる */
+  --text: var(--ink);
+  --text-sec: var(--ink-sec);
+  --text-mut: var(--ink-sec);
+  --accent: #1E6B38;
+  --border: var(--rule);
+  --ok: #1E6B38;
+  --caution: #8A5A00;
+}
+:root[data-theme="dark"] { --accent: #6FD39A; --ok: #6FD39A; --caution: #F5C400; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --accent: #6FD39A; --ok: #6FD39A; --caution: #F5C400; } }
+
+header { max-width: 640px; margin: 0 auto; padding: 16px 20px 0; }
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; font-size: .875rem; font-weight: 700; }
+.nav-logo svg { width: 24px; height: 24px; border-radius: 6px; }
+
+main { max-width: 640px; margin: 0 auto; padding: 14px 20px 60px; }
+h1 { font-size: 1.5rem; line-height: 1.3; font-weight: 700; margin: 0 0 8px; color: var(--ink); }
+.lead { color: var(--ink-sec); font-size: .9375rem; margin-bottom: 20px; }
+h2 { font-size: 1.15rem; line-height: 1.5; font-weight: 700; margin: 34px 0 10px; color: var(--ink); }
+p { font-size: .9375rem; color: var(--ink-sec); margin: 0 0 12px; }
+strong { color: var(--ink); }
+
+/* 入力と答え: 箱で囲まず、太い罫線で区切る */
+.calc-card, .multi-card { border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); padding: 18px 0 20px; margin: 0 0 28px; }
+.multi-card h2 { margin-top: 0; }
+.field-row { display: flex; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.field { flex: 1; min-width: 120px; }
+.field label { display: block; font-size: .875rem; color: var(--ink-sec); margin-bottom: 4px; font-weight: 700; }
+.field input, .game-row input {
+  width: 100%; min-height: 52px; background: transparent; color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 4px; padding: 8px 12px; font: inherit; font-size: 1.1rem; font-variant-numeric: tabular-nums; min-width: 0;
+}
+.field input:focus-visible, .game-row input:focus-visible { outline: 3px solid var(--liner); outline-offset: 2px; }
+.field-row.three .field input { padding: 8px 10px; }
+
+/* 答えの表示(電光掲示板風) */
+.result-box { margin-top: 20px; padding: 18px 16px 16px; background: #14110F; border-radius: 4px; text-align: center; }
+.result-label { font-size: .875rem; color: #D5D9DD; margin-bottom: 2px; }
+.result-value { font-family: var(--board); font-size: 3.4rem; line-height: 1.25; color: var(--liner); word-break: keep-all; }
+.result-note { font-size: .875rem; color: #B9B1AA; margin-top: 6px; }
+
+.formula-box { border-left: 5px solid var(--liner); padding: 10px 14px; font-size: 1rem; color: var(--ink); margin-bottom: 16px; font-variant-numeric: tabular-nums; overflow-x: auto; }
+.benchmark-table { width: 100%; border-collapse: collapse; font-size: .9375rem; margin-bottom: 16px; }
+.benchmark-table td { padding: 10px 10px 10px 0; border-bottom: 1px solid var(--rule); color: var(--ink-sec); }
+.benchmark-table td:first-child { color: var(--ink); font-weight: 700; width: 96px; font-variant-numeric: tabular-nums; }
+
+.callout { border-left: 5px solid var(--liner); padding: 8px 14px; font-size: .9375rem; color: var(--ink-sec); margin-bottom: 16px; }
+.callout strong { color: var(--ink); }
+.warn-note { font-size: .9375rem; font-weight: 700; color: var(--caution); margin-top: 10px; display: none; }
+.warn-note.ok { color: var(--ok); }
+/* 黒い答えの欄の中では、明るい色で読ませる */
+.result-box .warn-note { color: var(--liner); }
+.result-box .warn-note.ok { color: #7EE0B5; }
+
+.faq-item { border-top: 1px solid var(--rule); padding: 12px 0 4px; margin: 0; }
+.faq-item h3 { font-size: 1rem; line-height: 1.5; font-weight: 700; margin: 0 0 4px; color: var(--ink); }
+.faq-item p { font-size: .9375rem; padding: 0; margin: 0 0 8px; border: 0; }
+
+.cta-card { display: flex; align-items: center; gap: 12px; margin-top: 18px; padding: 10px 14px; border-left: 5px solid var(--liner); text-decoration: none; color: inherit; min-height: 56px; }
+.cta-card:hover .cta-title { text-decoration: underline; text-underline-offset: 4px; }
+.cta-card .cta-title { font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.cta-card .cta-desc { font-size: .875rem; color: var(--ink-sec); }
+
+/* WHIP: 複数試合 */
+.game-head { display: grid; grid-template-columns: 64px 1fr 1fr 1fr 44px; gap: 6px; font-size: .8125rem; color: var(--ink-sec); margin-bottom: 6px; }
+.game-row { display: grid; grid-template-columns: 64px 1fr 1fr 1fr 44px; gap: 6px; align-items: center; margin-bottom: 8px; }
+.game-row .game-no { font-size: .9375rem; color: var(--ink-sec); font-variant-numeric: tabular-nums; }
+.game-row input { padding: 8px; min-height: 48px; }
+.game-row .rm { background: none; border: 2px solid var(--rule); color: var(--ink-sec); border-radius: 4px; height: 48px; width: 44px; cursor: pointer; font-size: 1.1rem; }
+.add-btn { background: none; border: 2px solid var(--ink); color: var(--ink); border-radius: 4px; min-height: 48px; padding: 0 16px; font-size: .9375rem; font-weight: 700; cursor: pointer; margin-top: 4px; }
+
+footer { max-width: 640px; margin: 0 auto; padding: 22px 20px 72px; font-size: .8125rem; color: var(--ink-sec); border-top: 2px solid var(--ink); text-align: left; }
+footer nav { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 6px; }
+footer a { color: var(--ink-sec); text-decoration: underline; text-underline-offset: 3px; }
