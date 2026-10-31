@@ -14,7 +14,7 @@
   <meta property="og:site_name" content="Somirai Lab">
   <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#04060f">
+  <meta name="theme-color" content="#1A1512">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
@@ -59,7 +59,7 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
 
@@ -67,24 +67,24 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #04060f;
-      --surface: #080c18;
-      --border:  #161e38;
-      --text:    #dde4f5;
-      --muted:   #3a4a7a;
-      --display: 'Bebas Neue', cursive;
+      --bg:      #1A1512;
+      --surface: #2B2420;
+      --border:  #4B403A;
+      --text:    #F5F7F6;
+      --muted:   #B9B1AA;
+      --display: 'BIZ UDPGothic', sans-serif;
       --mono:    monospace;
 
-      --col-straight: #f0f0ff;
-      --col-slider:   #60a5fa;
-      --col-curve:    #fbbf24;
-      --col-change:   #4ade80;
+      --col-straight: #F5F7F6;
+      --col-slider:   #8CC8F0;
+      --col-curve:    #FFB347;
+      --col-change:   #6FD39A;
 
-      --col-hit:      #4ade80;
-      --col-perfect:  #ffd700;
-      --col-hr:       #ff6b35;
-      --col-out:      #f43f5e;
-      --col-ball:     #38bdf8;
+      --col-hit:      #6FD39A;
+      --col-perfect:  #F5C400;
+      --col-hr:       #FF6428;
+      --col-out:      #FF7A7A;
+      --col-ball:     #8CC8F0;
       --col-strike:   #f59e0b;
     }
 
@@ -92,9 +92,7 @@
     @keyframes fadeIn   { from{opacity:0} to{opacity:1} }
     @keyframes popIn    { 0%{opacity:0;transform:scale(.5)} 70%{transform:scale(1.1)} 100%{opacity:1;transform:scale(1)} }
     @keyframes flash    { 0%,100%{opacity:0} 15%,85%{opacity:1} }
-    @keyframes glow     { 0%,100%{text-shadow:0 0 20px currentColor} 50%{text-shadow:0 0 60px currentColor,0 0 120px currentColor} }
-    @keyframes shake    { 0%,100%{transform:translate(0)} 20%{transform:translate(-6px,2px)} 40%{transform:translate(6px,-2px)} 60%{transform:translate(-4px,3px)} 80%{transform:translate(4px,-1px)} }
-    @keyframes particle { from{opacity:1;transform:translate(0,0) scale(1)} to{opacity:0;transform:translate(var(--px),var(--py)) scale(0)} }
+    @keyframes glow     { 0%,100%{transform:translate(0,0) scale(1)} to{opacity:0;transform:translate(var(--px),var(--py)) scale(0)} }
     @keyframes scanline { 0%{transform:translateY(-100%)} 100%{transform:translateY(100vh)} }
     @keyframes breathe  { 0%,100%{opacity:.6} 50%{opacity:1} }
     @keyframes markerMove { from{left:calc(100% - 8px)} to{left:calc(50% - 4px)} }
@@ -104,28 +102,12 @@
       height: 100%;
       background: var(--bg);
       color: var(--text);
-      font-family: 'Noto Sans JP', sans-serif;
+      font-family: 'BIZ UDPGothic', sans-serif;
       overflow: hidden;
       -webkit-font-smoothing: antialiased;
       touch-action: manipulation;
     }
-
-    /* ── Scanline overlay ── */
-    body::after {
-      content: '';
-      position: fixed; inset: 0; z-index: 9999; pointer-events: none;
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.06) 2px, rgba(0,0,0,.06) 4px);
-    }
-
-    /* ── Grain ── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 9998; pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: .025;
-    }
-
-    /* ── Game wrapper ── */
+/* ── Game wrapper ── */
     #game-wrap {
       position: fixed; inset: 0;
       display: flex; flex-direction: column;
@@ -136,7 +118,7 @@
     /* ── Header ── */
     #game-header {
       flex-shrink: 0;
-      background: rgba(8,12,24,.95);
+      background: rgba(43,36,32,.95);
       border-bottom: 1px solid var(--border);
       padding: 10px 16px;
       display: flex; align-items: center; justify-content: space-between;
@@ -155,7 +137,6 @@
       font-family: var(--display);
       font-size: 26px; letter-spacing: .1em;
       color: var(--col-perfect);
-      text-shadow: 0 0 20px rgba(255,215,0,.5);
       line-height: 1;
     }
     #header-stats {
@@ -215,22 +196,20 @@
       left: 50%; transform: translateX(-50%);
       bottom: 28%;
       width: 115px; height: 130px;
-      border: 2px solid rgba(56,189,248,.35);
-      background: rgba(56,189,248,.03);
+      border: 2px solid rgba(140,200,240,.35);
+      background: rgba(140,200,240,.03);
       border-radius: 4px;
-      box-shadow: 0 0 20px rgba(56,189,248,.1), inset 0 0 20px rgba(56,189,248,.05);
       transition: border-color .3s, box-shadow .3s;
     }
     #strike-zone.active {
-      border-color: rgba(56,189,248,.7);
-      box-shadow: 0 0 30px rgba(56,189,248,.25), inset 0 0 30px rgba(56,189,248,.1);
+      border-color: rgba(140,200,240,.7);
     }
-    #strike-zone.miss  { border-color: rgba(244,63,94,.5); }
-    #strike-zone.hit   { border-color: rgba(74,222,128,.8); box-shadow: 0 0 40px rgba(74,222,128,.4); }
+    #strike-zone.miss  { border-color: rgba(255,122,122,.5); }
+    #strike-zone.hit   { border-color: rgba(111,211,154,.8); }
     #sz-label {
       position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
       font-family: var(--display); font-size: 10px; letter-spacing: .14em;
-      color: rgba(56,189,248,.4); white-space: nowrap;
+      color: rgba(140,200,240,.4); white-space: nowrap;
     }
 
     /* Ball */
@@ -269,7 +248,6 @@
       font-family: var(--display);
       font-size: 52px; letter-spacing: .08em;
       text-align: center; line-height: 1;
-      text-shadow: 0 4px 20px currentColor;
     }
     #result-sub {
       font-size: 16px; letter-spacing: .12em;
@@ -300,7 +278,7 @@
     /* Count bar */
     #count-bar {
       flex-shrink: 0;
-      background: rgba(8,12,24,.97);
+      background: rgba(43,36,32,.97);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       padding: 8px 16px;
@@ -331,7 +309,7 @@
     /* Timing rail */
     #timing-section {
       flex-shrink: 0;
-      background: rgba(8,12,24,.97);
+      background: rgba(43,36,32,.97);
       padding: 10px 16px 8px;
       position: relative; z-index: 10;
     }
@@ -354,7 +332,6 @@
       width: 3px;
       background: var(--col-perfect);
       border-radius: 2px;
-      box-shadow: 0 0 10px var(--col-perfect);
       opacity: .6;
       z-index: 2;
     }
@@ -363,7 +340,7 @@
       position: absolute; top: 0; bottom: 0;
       left: 50%; transform: translateX(-50%);
       width: 60px;
-      background: rgba(255,215,0,.12);
+      background: rgba(245,196,0,.12);
       border-radius: 4px;
       transition: opacity .1s;
       opacity: 0;
@@ -377,7 +354,6 @@
       top: 50%; transform: translateY(-50%);
       left: calc(100% - 12px);
       background: radial-gradient(circle at 35% 30%, white, var(--marker-color, #f0f0f0));
-      box-shadow: 0 0 8px var(--marker-color, #f0f0f0);
       z-index: 3;
       display: none;
       pointer-events: none;
@@ -386,7 +362,7 @@
     /* Action area */
     #action-area {
       flex-shrink: 0;
-      background: rgba(8,12,24,.99);
+      background: rgba(43,36,32,.99);
       padding: 12px 16px 18px;
       position: relative; z-index: 10;
     }
@@ -394,7 +370,7 @@
       width: 100%;
       padding: 18px;
       background: linear-gradient(135deg, #1a2a1a, #0d1a0d);
-      border: 2px solid rgba(74,222,128,.3);
+      border: 2px solid rgba(111,211,154,.3);
       border-radius: 12px;
       color: var(--col-hit);
       font-family: var(--display);
@@ -408,12 +384,12 @@
     #swing-btn::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 50% 100%, rgba(74,222,128,.15) 0%, transparent 60%);
+      background: radial-gradient(ellipse at 50% 100%, rgba(111,211,154,.15) 0%, transparent 60%);
       pointer-events: none;
     }
     #swing-btn:active, #swing-btn.pressed {
       transform: scale(.97);
-      border-color: rgba(74,222,128,.8);
+      border-color: rgba(111,211,154,.8);
       background: linear-gradient(135deg, #243324, #162216);
     }
     #swing-btn.idle { color: var(--muted); border-color: rgba(255,255,255,.08); }
@@ -433,7 +409,7 @@
       position: fixed; inset: 0; z-index: 100;
       display: flex; flex-direction: column;
       align-items: center; justify-content: flex-start;
-      background: rgba(4,6,15,.92);
+      background: rgba(26,21,18,.92);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       padding: 24px;
@@ -449,9 +425,7 @@
       font-family: var(--display);
       font-size: clamp(64px, 20vw, 96px); letter-spacing: .1em;
       color: var(--col-perfect);
-      text-shadow: 0 0 40px rgba(255,215,0,.6), 0 0 80px rgba(255,215,0,.3);
       line-height: 1;
-      animation: glow 2s ease-in-out infinite;
     }
     #start-screen .tagline {
       font-size: 14px; color: var(--muted); margin: 8px 0 32px;
@@ -493,27 +467,25 @@
       padding: 8px 12px; cursor: pointer; text-align: center;
       transition: opacity .15s, border-color .15s;
     }
-    .pitcher-btn.active { border-color: #ffd700; color: #ffd700; }
+    .pitcher-btn.active { border-color: #F5C400; color: #F5C400; }
     .pitcher-btn.locked { opacity: .4; cursor: not-allowed; font-size: 11px; }
-    .pitcher-btn:not(.locked):hover { border-color: rgba(255,215,0,.5); }
+    .pitcher-btn:not(.locked):hover { border-color: rgba(245,196,0,.5); }
 
     .play-btn {
       background: var(--col-perfect);
-      color: #04060f;
+      color: #1A1512;
       border: none; border-radius: 12px;
       font-family: var(--display); font-size: 24px; letter-spacing: .12em;
       padding: 16px 56px; cursor: pointer;
-      box-shadow: 0 4px 24px rgba(255,215,0,.4);
       transition: transform .15s, box-shadow .15s;
     }
-    .play-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,215,0,.5); }
+    .play-btn:hover { transform: translateY(-2px); }
     .play-btn:active { transform: scale(.97); }
 
     /* Gameover screen */
     #gameover-screen h2 {
       font-family: var(--display); font-size: 40px; letter-spacing: .1em;
       color: var(--col-perfect); margin-bottom: 24px;
-      text-shadow: 0 0 30px rgba(255,215,0,.5);
     }
     .go-stats {
       width: 100%; max-width: 280px;
@@ -530,13 +502,12 @@
     #highscore-msg {
       font-family: var(--display); font-size: 14px; letter-spacing: .1em;
       color: var(--col-perfect); margin-bottom: 20px;
-      text-shadow: 0 0 20px rgba(255,215,0,.5);
       min-height: 22px;
       animation: breathe 1.5s ease-in-out infinite;
     }
     .go-btns { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 280px; }
     .go-btn-primary {
-      background: var(--col-hit); color: #04060f;
+      background: var(--col-hit); color: #1A1512;
       border: none; border-radius: 10px;
       font-family: var(--display); font-size: 20px; letter-spacing: .1em;
       padding: 14px; cursor: pointer;
@@ -564,6 +535,37 @@
     @supports (padding-bottom: env(safe-area-inset-bottom)) {
       #action-area { padding-bottom: calc(18px + env(safe-area-inset-bottom)); }
     }
+  
+    /* ── ライン引き: 芝と白線の見た目に。発光・走査線・ノイズはやめた(ゲームの配置と動きは変えない) ── */
+    #game-field { background: repeating-linear-gradient(0deg, #1E5A36 0 44px, #1B5232 44px 88px); }
+    #game-field::before { display: none; }
+    #mound { background: #5A4636; opacity: .95; }
+    #strike-zone { border: 3px solid rgba(245,247,246,.9); background: rgba(245,247,246,.05); border-radius: 2px; }
+    #strike-zone.active { border-color: #F5C400; }
+    #strike-zone.miss { border-color: #FF7A7A; }
+    #strike-zone.hit { border-color: #6FD39A; }
+    #sz-label { color: rgba(245,247,246,.8); }
+    #game-header, #count-bar, #timing-section, #action-area { background: #2B2420; }
+    #timing-rail { background: rgba(245,247,246,.14); border-radius: 3px; }
+    #timing-center { opacity: 1; width: 4px; background: #F5C400; }
+    #timing-window { background: rgba(245,196,0,.22); }
+    #timing-marker { background: var(--marker-color, #F5F7F6); }
+    #swing-btn { background: #3AA860; border: 0; border-radius: 4px; color: #14110F; }
+    #swing-btn::before { display: none; }
+    #swing-btn:active, #swing-btn.pressed { background: #2F8F4E; border: 0; }
+    #swing-btn.idle { background: transparent; color: #B9B1AA; border: 2px solid rgba(245,247,246,.28); }
+    #game-title { color: #F5C400; }
+    .overlay { background: #1A1512; backdrop-filter: none; -webkit-backdrop-filter: none; }
+    #start-screen h1 { color: #F5C400; animation: none; }
+    .play-btn { background: #F5C400; border-radius: 4px; }
+    .go-btn-primary { background: #3AA860; border-radius: 4px; color: #14110F; }
+    .go-btn-secondary, .go-stat, .pitch-chip, .how-to, .pitcher-btn { border-radius: 4px; }
+    .diff-btn { border-radius: 4px; }
+    .pitch-dot { box-shadow: none !important; }
+    #highscore-msg { animation: none; }
+    #game-title, .back-link, #header-stats, #header-avg, .count-label, #inning-display, #timing-label, #swing-btn, #last-pitch, #pitch-type-badge,
+    #start-screen h1, .tagline, .pitch-chip-name, .diff-btn, .pitcher-btn, .play-btn, #gameover-screen h2, .go-stat-label, .go-stat-value,
+    .go-btn-primary, .go-btn-secondary, #result-inner, #sz-label, #windup-text { font-weight: 700; }
   </style>
 </head>
 <body>
@@ -575,22 +577,22 @@
 
   <div class="pitch-legend">
     <div class="pitch-chip">
-      <div class="pitch-dot" style="background:#f0f0ff;box-shadow:0 0 6px #f0f0ff"></div>
+      <div class="pitch-dot" style="background:#F5F7F6"></div>
       <span class="pitch-chip-name">ストレート</span>
       <span class="pitch-chip-speed">FAST</span>
     </div>
     <div class="pitch-chip">
-      <div class="pitch-dot" style="background:#60a5fa;box-shadow:0 0 6px #60a5fa"></div>
+      <div class="pitch-dot" style="background:#8CC8F0"></div>
       <span class="pitch-chip-name">スライダー</span>
       <span class="pitch-chip-speed">BREAK→</span>
     </div>
     <div class="pitch-chip">
-      <div class="pitch-dot" style="background:#fbbf24;box-shadow:0 0 6px #fbbf24"></div>
+      <div class="pitch-dot" style="background:#FFB347"></div>
       <span class="pitch-chip-name">カーブ</span>
       <span class="pitch-chip-speed">DROP↓</span>
     </div>
     <div class="pitch-chip">
-      <div class="pitch-dot" style="background:#4ade80;box-shadow:0 0 6px #4ade80"></div>
+      <div class="pitch-dot" style="background:#6FD39A"></div>
       <span class="pitch-chip-name">チェンジアップ</span>
       <span class="pitch-chip-speed">SLOW</span>
     </div>
@@ -598,17 +600,17 @@
 
   <div class="how-to">
     ボールが近づいたら <strong>SWING !</strong><br>
-    タイミングバーの ⬛ が中央 ◆ に重なったら叩け<br>
+    タイミングバーの ■ が中央 ◆ に重なったら叩け<br>
     ボール球は見送れ — 4球で四球<br>
     3アウト × 3イニング = ゲーム終了
   </div>
 
   <!-- 難易度セレクター -->
   <div id="diff-selector" style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;justify-content:center;">
-    <button class="diff-btn" data-diff="easy"   style="background:rgba(74,222,128,.12);border:1.5px solid rgba(74,222,128,.5);color:#4ade80;">かんたん</button>
-    <button class="diff-btn active" data-diff="normal" style="background:rgba(255,215,0,.18);border:1.5px solid #ffd700;color:#ffd700;">ふつう</button>
-    <button class="diff-btn" data-diff="hard"   style="background:rgba(251,191,36,.12);border:1.5px solid rgba(251,191,36,.5);color:#fbbf24;">むずかしい</button>
-    <button class="diff-btn" data-diff="pro"    style="background:rgba(244,63,94,.12);border:1.5px solid rgba(244,63,94,.5);color:#f43f5e;">プロ</button>
+    <button class="diff-btn" data-diff="easy"   style="background:rgba(111,211,154,.12);border:1.5px solid rgba(111,211,154,.5);color:#6FD39A;">かんたん</button>
+    <button class="diff-btn active" data-diff="normal" style="background:rgba(245,196,0,.18);border:1.5px solid #F5C400;color:#F5C400;">ふつう</button>
+    <button class="diff-btn" data-diff="hard"   style="background:rgba(255,179,71,.12);border:1.5px solid rgba(255,179,71,.5);color:#FFB347;">むずかしい</button>
+    <button class="diff-btn" data-diff="pro"    style="background:rgba(255,122,122,.12);border:1.5px solid rgba(255,122,122,.5);color:#FF7A7A;">プロ</button>
   </div>
   <div id="diff-desc" style="font-size:12px;color:var(--muted);margin-bottom:20px;font-family:var(--display);letter-spacing:.08em;text-align:center;min-height:16px;">ストレート・カーブのみ / タイミング広め</div>
 
@@ -625,57 +627,57 @@
     <p style="font-family:var(--display);letter-spacing:.08em;font-size:10px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;text-align:center;">合言葉で対戦（ゴーストバトル）</p>
     <div style="display:flex;gap:6px;">
       <input id="ghost-input" type="text" placeholder="合言葉を入力" style="flex:1;min-width:0;background:rgba(255,255,255,.05);border:1px solid var(--border,#2a2f45);border-radius:6px;padding:8px 10px;color:var(--text,#fff);font-size:16px;">
-      <button id="ghost-set-btn" style="background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.4);color:#ffd700;border-radius:6px;padding:8px 12px;font-size:12px;cursor:pointer;white-space:nowrap;">セット</button>
+      <button id="ghost-set-btn" style="background:rgba(245,196,0,.12);border:1px solid rgba(245,196,0,.4);color:#F5C400;border-radius:6px;padding:8px 12px;font-size:12px;cursor:pointer;white-space:nowrap;">セット</button>
     </div>
     <p id="ghost-status" style="font-size:11px;color:var(--muted);margin-top:6px;text-align:center;min-height:14px;"></p>
   </div>
 
-  <div style="max-width:420px;margin:28px auto 0;padding:0 16px;font-size:13px;color:#8a92c0;line-height:1.9;text-align:left;">
-    <p style="font-family:var(--display);letter-spacing:.08em;font-size:10px;color:#ffd700;margin-bottom:8px;text-transform:uppercase;">このゲームについて</p>
+  <div style="max-width:420px;margin:28px auto 0;padding:0 16px;font-size:15px;color:#B9B1AA;line-height:1.9;text-align:left;">
+    <p style="font-family:var(--display);letter-spacing:.08em;font-size:14px;color:#F5C400;margin-bottom:8px;">このゲームについて</p>
     <p style="margin-bottom:10px;">SWING!は、実際の打席のように「球種を見極めてから振る」動体視力トレーニング風の反応ゲーム。ストレート・スライダー・カーブ・チェンジアップの4球種はそれぞれ球速とタイミングバーの動きが異なり、見た目の色と軌道で瞬時に判断する必要がある。</p>
-    <p style="margin-bottom:10px;">タイミングバーの ⬛ を中央の ◆ に合わせて振るのが基本。早すぎればファウルや空振り、遅すぎれば詰まった打球になりやすい。難易度が上がるほど球種の見分けが難しくなり、タイミングの許容範囲（判定ウィンドウ）も狭くなる。</p>
-    <p style="margin-bottom:24px;">3アウト×3イニングで試合終了となり、打率・安打数・本塁打数が記録される。プレイ後は「⚾ 打撃成績を記録する」からLUMBERに実際の試合成績を記録すれば、ゲームと実戦の両方のデータを一箇所で管理できる。</p>
+    <p style="margin-bottom:10px;">タイミングバーの ■ を中央の ◆ に合わせて振るのが基本。早すぎればファウルや空振り、遅すぎれば詰まった打球になりやすい。難易度が上がるほど球種の見分けが難しくなり、タイミングの許容範囲（判定ウィンドウ）も狭くなる。</p>
+    <p style="margin-bottom:24px;">3アウト×3イニングで試合終了となり、打率・安打数・本塁打数が記録される。プレイ後は「打撃成績を記録する」からLUMBERに実際の試合成績を記録すれば、ゲームと実戦の両方のデータを一箇所で管理できる。</p>
 
-    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#ffd700;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(255,215,0,.5);">動体視力と選球眼 — 打席の勝負は「振る前」に決まっている</h2>
+    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#F5C400;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(245,196,0,.5);">動体視力と選球眼 — 打席の勝負は「振る前」に決まっている</h2>
     <p style="margin-bottom:10px;">球速130km/hの投球が投手の手を離れてから捕手のミットに届くまで、およそ0.5秒。人間が「見えた」と認識してから体を動かし始めるまでの単純反応時間は0.2秒前後とされるため、打者が球種とコースを判断できる猶予は実質0.2〜0.3秒しか残らない。打席が「振る前に決まっている」と言われるのはこのためで、バットが出てからの修正はほとんど効かない。</p>
     <p style="margin-bottom:10px;">この短い時間で振るか見送るかを決める能力が、いわゆる選球眼。選球眼は視力そのものではなく、リリースの瞬間から数メートルの区間でボールの回転・高さ・軌道を読み取り、過去に見た球の記憶と照合する処理能力に近い。生まれつきの目の良さではなく経験の蓄積で決まる部分が大きいので、繰り返し見た球数がそのまま伸びしろになる。</p>
     <p style="margin-bottom:24px;">動体視力には、近づいてくる物体を見るKVA動体視力と、横方向に動く物体を目で追うDVA動体視力がある。打席で主に使うのは前者で、迫ってくる球の見かけの大きさの変化から距離とタイミングを推定する力。日常生活ではほとんど使わない能力のため、意識して使わないと鈍りやすい種類の感覚だと言われている。</p>
 
-    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#ffd700;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(255,215,0,.5);">球種の見分け方 — 初心者がまず見るべき3つのポイント</h2>
-    <p style="margin-bottom:6px;color:#c8cee8;font-weight:700;">1. リリース直後の高さ</p>
+    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#F5C400;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(245,196,0,.5);">球種の見分け方 — 初心者がまず見るべき3つのポイント</h2>
+    <p style="margin-bottom:6px;color:#F5F7F6;font-weight:700;">1. リリース直後の高さ</p>
     <p style="margin-bottom:12px;">変化球の多くは、ストレートよりわずかに高い軌道で出てくる。特にカーブはリリース位置が高く、山なりに入ってくるため、出だしの高さを見るだけでもかなり候補を絞り込める。逆に低い位置から真っ直ぐ来たらストレートの可能性が高い、という粗い二分でも打率は変わる。</p>
-    <p style="margin-bottom:6px;color:#c8cee8;font-weight:700;">2. 回転の見え方</p>
+    <p style="margin-bottom:6px;color:#F5F7F6;font-weight:700;">2. 回転の見え方</p>
     <p style="margin-bottom:12px;">ストレートはバックスピンがかかるため、縫い目が横一直線の帯のように見える。カーブは逆回転で、縫い目が一点に集まって「ドット」のような小さな点に見えることがある。スライダーは回転軸が傾くので、ボールの片側に小さな輪が浮かんで見える。この「ドットを探す」見極め方は、実際に多くの打者が使っている手がかり。</p>
-    <p style="margin-bottom:6px;color:#c8cee8;font-weight:700;">3. 腕の振りと球の速さのズレ</p>
+    <p style="margin-bottom:6px;color:#F5F7F6;font-weight:700;">3. 腕の振りと球の速さのズレ</p>
     <p style="margin-bottom:12px;">チェンジアップは、ストレートと同じ腕の振りで球速だけを落とす球種。腕は速く振れているのにボールが思ったより来ない、という違和感を覚えたらチェンジアップを疑う。この違和感は言葉にしにくいが、数を見ると体で分かるようになる典型的な感覚。</p>
     <p style="margin-bottom:24px;">初心者ほど球種を当てにいこうとして振り遅れる。まずは「速い球か、遅い球か」の二択まで単純化し、慣れてきたら変化の方向（横か、縦か）を足していく順番が上達の近道になる。全部を見分けようとするより、ひとつ判断軸を増やすほうが確実に打率へ跳ね返る。</p>
 
-    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#ffd700;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(255,215,0,.5);">反応ゲームを実際の練習に組み込む</h2>
+    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#F5C400;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(245,196,0,.5);">反応ゲームを実際の練習に組み込む</h2>
     <p style="margin-bottom:10px;">反応ゲームだけで打てるようにはならない。打席という動作から「判断」の部分だけを切り出して反復する道具、という位置づけで使うのが正しい。実際の練習と役割を分けると次のようになる。</p>
-    <p style="margin-bottom:6px;">・<strong style="color:#c8cee8;">素振り</strong> — 振る動作そのものを固める。判断が挟まらないぶん、フォームの再現性だけに集中できる。</p>
-    <p style="margin-bottom:6px;">・<strong style="color:#c8cee8;">トスバッティング</strong> — 短い距離・遅い球で、当てる感覚とミートポイントを確認する。</p>
-    <p style="margin-bottom:12px;">・<strong style="color:#c8cee8;">反応ゲーム</strong> — 判断と反応だけを、道具も場所も使わず高回数で回す。</p>
+    <p style="margin-bottom:6px;">・<strong style="color:#F5F7F6;">素振り</strong> — 振る動作そのものを固める。判断が挟まらないぶん、フォームの再現性だけに集中できる。</p>
+    <p style="margin-bottom:6px;">・<strong style="color:#F5F7F6;">トスバッティング</strong> — 短い距離・遅い球で、当てる感覚とミートポイントを確認する。</p>
+    <p style="margin-bottom:12px;">・<strong style="color:#F5F7F6;">反応ゲーム</strong> — 判断と反応だけを、道具も場所も使わず高回数で回す。</p>
     <p style="margin-bottom:24px;">おすすめは、練習前のウォームアップとして2〜3分プレイして目と判断を起こしておく使い方と、試合前夜に軽く回して「見極めてから振る」意識を思い出す使い方。逆に、疲れているときに長時間続けても判断が雑になるだけなので、1試合（3イニング）で切り上げるくらいがちょうどいい。短く、こまめに、が反応系トレーニングの原則。</p>
 
-    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#ffd700;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(255,215,0,.5);">4段階の難易度は何を鍛えるのか</h2>
-    <p style="margin-bottom:10px;"><strong style="color:#4ade80;">かんたん</strong> — ストレートとカーブのみ。タイミング判定も広め。「バーの中央で振る」というリズムそのものを体に入れる段階で、野球未経験の人やルールを把握したい人向け。</p>
-    <p style="margin-bottom:10px;"><strong style="color:#ffd700;">ふつう</strong> — スライダーが加わり、色と軌道で球種を見分ける必要が出てくる。判定ウィンドウは標準。選球眼を鍛える目的なら、この難易度を一番長くプレイすることになる。</p>
-    <p style="margin-bottom:10px;"><strong style="color:#fbbf24;">むずかしい</strong> — チェンジアップを含む全4球種。球速差が大きく、タイミングの許容範囲も狭まる。速い球を待ちながら遅い球にも対応するという、実際の打席で最も難しい状況の練習になる。</p>
-    <p style="margin-bottom:24px;"><strong style="color:#f43f5e;">プロ</strong> — 判定ウィンドウが最小。ボール球の割合も増えるため、振らない勇気が試される。ここで打率.250を超えられれば、見極めの精度はかなり高い。</p>
+    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#F5C400;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(245,196,0,.5);">4段階の難易度は何を鍛えるのか</h2>
+    <p style="margin-bottom:10px;"><strong style="color:#6FD39A;">かんたん</strong> — ストレートとカーブのみ。タイミング判定も広め。「バーの中央で振る」というリズムそのものを体に入れる段階で、野球未経験の人やルールを把握したい人向け。</p>
+    <p style="margin-bottom:10px;"><strong style="color:#F5C400;">ふつう</strong> — スライダーが加わり、色と軌道で球種を見分ける必要が出てくる。判定ウィンドウは標準。選球眼を鍛える目的なら、この難易度を一番長くプレイすることになる。</p>
+    <p style="margin-bottom:10px;"><strong style="color:#FFB347;">むずかしい</strong> — チェンジアップを含む全4球種。球速差が大きく、タイミングの許容範囲も狭まる。速い球を待ちながら遅い球にも対応するという、実際の打席で最も難しい状況の練習になる。</p>
+    <p style="margin-bottom:24px;"><strong style="color:#FF7A7A;">プロ</strong> — 判定ウィンドウが最小。ボール球の割合も増えるため、振らない勇気が試される。ここで打率.250を超えられれば、見極めの精度はかなり高い。</p>
 
-    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#ffd700;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(255,215,0,.5);">よくある質問</h2>
-    <p style="margin-bottom:4px;color:#c8cee8;font-weight:700;">Q. 野球未経験でも楽しめますか？</p>
+    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#F5C400;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(245,196,0,.5);">よくある質問</h2>
+    <p style="margin-bottom:4px;color:#F5F7F6;font-weight:700;">Q. 野球未経験でも楽しめますか？</p>
     <p style="margin-bottom:12px;">操作はボタンを押すだけなので楽しめる。難易度「かんたん」は2球種のみ・判定も広めなので、まずはタイミングを合わせるリズムを掴むところから始めてほしい。球種の見分けは「ふつう」以降で覚えれば十分。</p>
-    <p style="margin-bottom:4px;color:#c8cee8;font-weight:700;">Q. スマホでも遊べますか？会員登録は必要ですか？</p>
+    <p style="margin-bottom:4px;color:#F5F7F6;font-weight:700;">Q. スマホでも遊べますか？会員登録は必要ですか？</p>
     <p style="margin-bottom:12px;">スマホのブラウザでそのまま遊べる。アプリのインストールも会員登録も不要。縦画面・片手操作を前提にしているので、練習の待ち時間や移動中に1試合を数分で終えられる。</p>
-    <p style="margin-bottom:4px;color:#c8cee8;font-weight:700;">Q. 打率はどれくらいを目標にすればいいですか？</p>
+    <p style="margin-bottom:4px;color:#F5F7F6;font-weight:700;">Q. 打率はどれくらいを目標にすればいいですか？</p>
     <p style="margin-bottom:12px;">「ふつう」で打率.300が最初の目標。3打数に1本という計算で、球種を見てから振る判断が間に合っている状態の目安になる。「プロ」は判定が最も狭いので、.250を超えれば十分に高い水準。</p>
-    <p style="margin-bottom:4px;color:#c8cee8;font-weight:700;">Q. 実際の打撃練習の代わりになりますか？</p>
+    <p style="margin-bottom:4px;color:#F5F7F6;font-weight:700;">Q. 実際の打撃練習の代わりになりますか？</p>
     <p style="margin-bottom:12px;">代わりにはならない。スイング動作そのものは素振りやトスバッティングでしか鍛えられない。SWING!が担当するのは打席の中の判断だけなので、実際の練習と組み合わせて使ってほしい。</p>
-    <p style="margin-bottom:4px;color:#c8cee8;font-weight:700;">Q. プレイした成績は保存されますか？</p>
+    <p style="margin-bottom:4px;color:#F5F7F6;font-weight:700;">Q. プレイした成績は保存されますか？</p>
     <p style="margin-bottom:24px;">ブラウザ内にシーズン記録として保存され、次回起動時に累計成績が表示される。サーバーには送信しないため、同じ端末・同じブラウザで開いた場合のみ引き継がれる。実際の試合成績を残したい場合は、終了画面から打撃成績記録ツールへ。</p>
 
-    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#ffd700;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(255,215,0,.5);">開発ノート — なぜ「判断」だけを切り出したのか</h2>
+    <h2 style="font-family:var(--display);letter-spacing:.06em;font-size:14px;color:#F5C400;font-weight:400;margin-bottom:8px;padding-left:8px;border-left:2px solid rgba(245,196,0,.5);">開発ノート — なぜ「判断」だけを切り出したのか</h2>
     <p style="margin-bottom:10px;">バッティングセンターで打てないと、つい「スイングが悪いんだろう」と考えてしまう。けれど自分の打席を記録ツールで振り返ったとき、目立っていたのは空振りの多さではなく、そもそも振るべきでない球に手を出している打席の多さだった。フォームの問題ではなく、判断の問題。それが分かってから、練習の優先順位が変わった。</p>
     <p style="margin-bottom:10px;">ところが、判断力を鍛える手段はグラウンドに行く以外にほとんど見当たらない。素振りには判断が含まれず、バッティングセンターは球種も球速も固定されている。「ランダムに球種が来て、見極めて、振るか決める」という一番鍛えたい部分だけが、日常のどこにも存在しなかった。</p>
     <p style="margin-bottom:10px;">それならその部分だけをブラウザに閉じ込めてしまおう、というのがSWING!を作った動機。本物の打席の代わりにはならないし、そのつもりもない。ただ、移動中に3分、寝る前に1試合という頻度でも「見てから決める」回数は確実に増える。3イニング制にしたのも、1プレイを2〜3分で終わらせて日常に混ぜてほしかったから。</p>
@@ -699,13 +701,13 @@
   </div>
   <div id="highscore-msg"></div>
   <p id="go-season" style="font-size:12px;color:var(--muted);margin-top:8px;"></p>
-  <p id="go-unlock-msg" style="font-size:12px;color:#ffd700;margin-top:4px;font-weight:700;"></p>
+  <p id="go-unlock-msg" style="font-size:12px;color:#F5C400;margin-top:4px;font-weight:700;"></p>
   <p id="go-ghost-result" style="font-size:13px;margin-top:8px;font-weight:700;"></p>
   <div class="go-btns">
     <button class="go-btn-primary" id="retry-btn">もう一度プレイ</button>
-    <a id="share-btn" href="https://twitter.com/intent/tweet" target="_blank" rel="noopener" class="go-btn-secondary">🐦 結果をXでシェア →</a>
-    <a href="https://somirai.jp/batting-stats/" class="go-btn-secondary">⚾ 打撃成績を記録する →</a>
-    <a href="https://somirai.jp/player/" class="go-btn-secondary" style="color:#e8c468;" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'swing_gameover'})">⭐ MY PLAYERで能力を見る →</a>
+    <a id="share-btn" href="https://twitter.com/intent/tweet" target="_blank" rel="noopener" class="go-btn-secondary">結果をXでシェア →</a>
+    <a href="https://somirai.jp/batting-stats/" class="go-btn-secondary">打撃成績を記録する →</a>
+    <a href="https://somirai.jp/player/" class="go-btn-secondary" style="color:#F5C400;" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'swing_gameover'})">MY PLAYERで能力を見る →</a>
     <a href="https://somirai.jp/" class="go-btn-secondary" style="font-size:13px;">Somirai Lab トップへ</a>
   </div>
 </div>
@@ -716,7 +718,7 @@
   <!-- Header -->
   <header id="game-header">
     <div class="header-left">
-      <a href="https://somirai.jp/" class="back-link">◀ SOMIRAI</a>
+      <a href="https://somirai.jp/" class="back-link">← Somirai Lab</a>
       <div id="game-title">SWING!</div>
     </div>
     <div id="header-stats">
@@ -801,7 +803,7 @@
 
   <!-- Action area -->
   <div id="action-area">
-    <button id="swing-btn" class="idle" aria-label="スイング" disabled>⚾ SWING !</button>
+    <button id="swing-btn" class="idle" aria-label="スイング" disabled>SWING !</button>
     <div id="pitch-info-row">
       <span id="last-pitch">— 最初の投球を待て —</span>
       <span id="pitch-type-badge"></span>
@@ -818,26 +820,25 @@
   if(localStorage.getItem('cookie_ok'))return;
   var b=document.createElement('div');
   b.id='ck-banner';
-  b.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#04060f;color:#3a4a7a;font-size:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:10000;border-top:1px solid rgba(255,215,0,.15)';
-  b.innerHTML='<span>本サイトはCookieを使用しています。<a href="/privacy.html" style="color:#ffd700">詳細</a></span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:transparent;color:#ffd700;border:1px solid #ffd700;border-radius:5px;padding:4px 12px;font-size:12px;cursor:pointer;white-space:nowrap">OK</button>';
+  b.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#1A1512;color:#B9B1AA;font-size:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:10000;border-top:1px solid rgba(245,196,0,.15)';
+  b.innerHTML='<span>本サイトはCookieを使用しています。<a href="/privacy.html" style="color:#F5C400">詳細</a></span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:transparent;color:#F5C400;border:1px solid #F5C400;border-radius:5px;padding:4px 12px;font-size:12px;cursor:pointer;white-space:nowrap">OK</button>';
   document.body.appendChild(b);
 })();
 </script>
-<a id="mp-card" href="https://somirai.jp/player/" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'swing'})" style="display:none;align-items:center;gap:10px;max-width:420px;margin:0 auto;background:rgba(232,196,104,0.06);border:1px solid rgba(232,196,104,0.3);border-radius:10px;padding:12px 14px;text-decoration:none;">
-  <span style="font-size:18px;">⭐</span>
+<a id="mp-card" href="https://somirai.jp/player/" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'swing'})" style="display:none;align-items:center;gap:10px;max-width:420px;margin:0 auto;background:rgba(245,196,0,0.06);border:1px solid rgba(245,196,0,0.3);border-radius:10px;padding:12px 14px;text-decoration:none;">
   <span style="flex:1;">
-    <span style="display:block;font-size:12px;font-weight:700;color:#e8c468;">MY PLAYER</span>
-    <span style="display:block;font-size:11px;color:#8a92c0;">SWING!の成績もステータスに反映されています →</span>
+    <span style="display:block;font-size:12px;font-weight:700;color:#F5C400;">MY PLAYER</span>
+    <span style="display:block;font-size:11px;color:#B9B1AA;">SWING!の成績もステータスに反映されています →</span>
   </span>
 </a>
 <script>(function(){try{if(localStorage.getItem('somirai:seen')){var e=document.getElementById('mp-card');if(e)e.style.display='flex';}else{localStorage.setItem('somirai:seen','1');}function ld(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}var t=ld(new Date()),r=localStorage.getItem('somirai:streak'),s=r?JSON.parse(r):null;if(!s||s.lastDate!==t){var y=ld(new Date(Date.now()-864e5));localStorage.setItem('somirai:streak',JSON.stringify({lastDate:t,count:(s&&s.lastDate===y)?s.count+1:1}));}}catch(e){}})();</script>
-<footer style="text-align:center;padding:16px 14px 20px;font-size:11px;color:#3a4a7a;">
+<footer style="text-align:center;padding:16px 14px 20px;font-size:11px;color:#B9B1AA;">
   <nav aria-label="サイト内リンク" style="display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:6px;">
-    <a href="https://somirai.jp/" style="color:#ffd700;text-decoration:none;">Somirai Lab</a>
-    <a href="https://somirai.jp/batting-stats/" style="color:#3a4a7a;text-decoration:underline;">⚾ 打撃成績を記録</a>
-    <a href="https://somirai.jp/blog/" style="color:#3a4a7a;text-decoration:underline;">ブログ</a>
-    <a href="https://somirai.jp/about.html" style="color:#3a4a7a;text-decoration:underline;">About</a>
-    <a href="/privacy.html" style="color:#3a4a7a;text-decoration:underline;">プライバシーポリシー</a>
+    <a href="https://somirai.jp/" style="color:#F5C400;text-decoration:none;">Somirai Lab</a>
+    <a href="https://somirai.jp/batting-stats/" style="color:#B9B1AA;text-decoration:underline;">打撃成績を記録</a>
+    <a href="https://somirai.jp/blog/" style="color:#B9B1AA;text-decoration:underline;">ブログ</a>
+    <a href="https://somirai.jp/about.html" style="color:#B9B1AA;text-decoration:underline;">About</a>
+    <a href="/privacy.html" style="color:#B9B1AA;text-decoration:underline;">プライバシーポリシー</a>
   </nav>
   <span>© 2026 Somirai Lab</span>
 </footer>

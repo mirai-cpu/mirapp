@@ -36,10 +36,10 @@ function playStrike(){ playTone(220, 0.15, 'square', 0.1); }
 
 // ── Game config ──────────────────────────────────────────────
 const PITCHES = [
-  { name:'ストレート', key:'straight', baseSpeed:385, color:'#f0f0ff', glow:'rgba(240,240,255,0.7)' },
-  { name:'スライダー', key:'slider',   baseSpeed:455, color:'#60a5fa', glow:'rgba(96,165,250,0.7)'  },
-  { name:'カーブ',    key:'curve',    baseSpeed:585, color:'#fbbf24', glow:'rgba(251,191,36,0.7)'   },
-  { name:'チェンジアップ',key:'change',baseSpeed:660, color:'#4ade80', glow:'rgba(74,222,128,0.7)'  },
+  { name:'ストレート', key:'straight', baseSpeed:385, color:'#F5F7F6', glow:'rgba(245,247,246,0.7)' },
+  { name:'スライダー', key:'slider',   baseSpeed:455, color:'#8CC8F0', glow:'rgba(140,200,240,0.7)'  },
+  { name:'カーブ',    key:'curve',    baseSpeed:585, color:'#FFB347', glow:'rgba(255,179,71,0.7)'   },
+  { name:'チェンジアップ',key:'change',baseSpeed:660, color:'#6FD39A', glow:'rgba(111,211,154,0.7)'  },
 ];
 const TOTAL_OUTS = 9;
 
@@ -268,7 +268,7 @@ function startTimingAnim(pitch) {
 // ── Particles (HR) ───────────────────────────────────────────
 function spawnParticles() {
   $particles.innerHTML = '';
-  const colors = ['#ffd700','#ff6b35','#ff8c42','#ffab00','#fff176','#ffe082'];
+  const colors = ['#F5C400','#FF6428','#FFB347','#F5C400','#FFE082','#ffe082'];
   for (let i = 0; i < 28; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
@@ -302,7 +302,7 @@ function showResult(text, sub, color, isHR=false) {
   $resultText.className    = 'show';
   $resultText.style.opacity = '1';
   if (isHR) {
-    doFlash('rgba(255,107,53,0.3)', 200);
+    doFlash('rgba(255,100,40,0.3)', 200);
     spawnParticles();
   }
 }
@@ -430,12 +430,12 @@ function judge() {
     const isHR = Math.random() < 0.12;
     if (isHR) {
       S.hr++;
-      showResult('⚾ HOME RUN !!', 'PERFECT TIMING', 'var(--col-hr)', true);
-      doFlash('rgba(255,107,53,.25)', 300);
+      showResult('HOME RUN !!', 'PERFECT TIMING', 'var(--col-hr)', true);
+      doFlash('rgba(255,100,40,.25)', 300);
       playHR();
     } else {
-      showResult('⚾ HIT !', 'PERFECT !', 'var(--col-perfect)');
-      doFlash('rgba(255,215,0,.15)', 100);
+      showResult('HIT !', 'PERFECT !', 'var(--col-perfect)');
+      doFlash('rgba(245,196,0,.15)', 100);
       playHit();
     }
     szState('hit');
@@ -476,13 +476,13 @@ function handleOut(label, sub) {
   S.outs++;
   S.strikes = 0; S.balls = 0;
   showResult(label, sub, 'var(--col-out)');
-  doFlash('rgba(244,63,94,.12)', 120);
+  doFlash('rgba(255,122,122,.12)', 120);
   if (S.outs >= TOTAL_OUTS) { scheduleGameOver(); return; }
   scheduleNext(1600);
 }
 
 function handleWalk() {
-  showResult('⚡ 四球', '4 BALLS — 出塁', 'var(--col-ball)');
+  showResult('四球', '4 BALLS — 出塁', 'var(--col-ball)');
   playBall();
   S.balls = 0; S.strikes = 0;
   scheduleNext(1400);
@@ -593,7 +593,7 @@ function showGameOver() {
   const hsMsg = document.getElementById('highscore-msg');
   if (cur > prevVal && S.ab >= 3) {
     localStorage.setItem('swing-highscore', cur.toFixed(4));
-    hsMsg.textContent = '🏆 打率記録更新！最高: ' + avg;
+    hsMsg.textContent = '打率記録更新！最高: ' + avg;
   } else if (prevVal > 0) {
     hsMsg.textContent = `最高打率: .${String(Math.round(prevVal * 1000)).padStart(3,'0')}`;
   } else {
