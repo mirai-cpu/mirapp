@@ -71,6 +71,31 @@
     }
     stats.push({ key: 'tactician', label: '戦術', tool: 'TACTICIAN', url: 'https://somirai.jp/order-maker/', score: tacticianScore, detail: tacticianDetail, color: '#60a5fa' });
 
+    // 投球数カウンター 投球(記録した球数。現在の試合 + 保存した履歴)
+    var pitchData = safeReadJSON('somirai-pitch-v1');
+    var pitchScore = 0, pitchDetail = '未プレイ';
+    if (pitchData && pitchData.cur) {
+      var pitchTotal = Array.isArray(pitchData.cur.pitches) ? pitchData.cur.pitches.length : 0;
+      var pitchGames = pitchTotal > 0 ? 1 : 0;
+      (Array.isArray(pitchData.hist) ? pitchData.hist : []).forEach(function (h) {
+        if (h && h.game && Array.isArray(h.game.pitches) && h.game.pitches.length) { pitchTotal += h.game.pitches.length; pitchGames++; }
+      });
+      if (pitchTotal > 0) {
+        pitchScore = clamp(Math.round(pitchTotal / 300 * 100), 1, 100);
+        pitchDetail = pitchTotal + '球・' + pitchGames + '試合を記録';
+      }
+    }
+    stats.push({ key: 'pitch', label: '投球', tool: 'PITCH', url: 'https://somirai.jp/pitch-counter/', score: pitchScore, detail: pitchDetail, color: '#8CC8F0' });
+
+    // 9回制トレタイマー 鍛錬(トレをやった日数)
+    var trainLog = safeReadJSON('somirai-train-log-v1');
+    var trainScore = 0, trainDetail = '未プレイ';
+    if (Array.isArray(trainLog) && trainLog.length > 0) {
+      trainScore = clamp(Math.round(trainLog.length / 30 * 100), 1, 100);
+      trainDetail = 'トレ' + trainLog.length + '日';
+    }
+    stats.push({ key: 'train', label: '鍛錬', tool: 'TRAIN', url: 'https://somirai.jp/training-timer/', score: trainScore, detail: trainDetail, color: '#F5C400' });
+
     return stats;
   }
 

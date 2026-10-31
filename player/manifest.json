@@ -4,8 +4,8 @@
   "description": "Somirai Labの各ツールの利用状況から選手ステータスを可視化するMY PLAYER",
   "start_url": "/player/",
   "display": "standalone",
-  "background_color": "#070810",
-  "theme_color": "#070810",
+  "background_color": "#2B2420",
+  "theme_color": "#2B2420",
   "orientation": "portrait-primary",
   "lang": "ja",
   "icons": [

@@ -16,7 +16,7 @@
   <meta name="apple-mobile-web-app-title" content="MY PLAYER">
   <meta property="og:type" content="website">
   <meta property="og:title" content="MY PLAYER | Somirai Lab">
-  <meta property="og:description" content="TEMPER・MARGINALIA・KURA・LUMBER・TACTICIANの利用状況から、あなたの選手ステータスを可視化。全ツールを使うほど選手が育つ。">
+  <meta property="og:description" content="TEMPER・MARGINALIA・KURA・LUMBER・TACTICIAN・投球数カウンター・トレタイマーの利用状況から、あなたの選手ステータスを可視化。全ツールを使うほど選手が育つ。">
   <meta property="og:url" content="https://somirai.jp/player/">
   <meta property="og:site_name" content="Somirai Lab">
   <meta property="og:locale" content="ja_JP">
@@ -29,7 +29,9 @@
   <meta name="twitter:image" content="https://somirai.jp/icons/ogp-player.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=DotGothic16&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/tokens.css">
+  <link rel="stylesheet" href="/shared/tool.css">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -38,341 +40,265 @@
     gtag('config', 'G-902VNDKEE9');
   </script>
   <style>
-    :root {
-      --bg: #070810; --surface: #0d0f18; --border: #1c1f30;
-      --text: #eaecf4; --text-sec: #a8adc4; --text-mut: #555878;
-      --gold: #e8c468; --gold-soft: rgba(232,196,104,0.12);
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; background: var(--bg); color: var(--text);
-      font-family: 'Barlow', 'Noto Sans JP', sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-    header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 18px; border-bottom: 1px solid var(--border);
-    }
-    header nav { display: flex; align-items: center; gap: 8px; }
-    header a.back {
-      color: var(--text-sec); text-decoration: none; font-size: 13px;
-      display: inline-flex; align-items: center; gap: 6px;
-    }
-    main { max-width: 640px; margin: 0 auto; padding: 32px 20px 60px; }
-    .eyebrow {
-      font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em;
-      color: var(--gold); text-transform: uppercase; text-align: center; margin-bottom: 8px;
-    }
-    h1 {
-      font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 0.08em;
-      text-align: center; margin: 0 0 6px; color: var(--text);
-    }
-    .subtitle { text-align: center; font-size: 13px; color: var(--text-sec); margin-bottom: 32px; line-height: 1.7; }
-    .radar-wrap { display: flex; justify-content: center; margin-bottom: 28px; }
-    .stat-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
-    .stat-card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
-      padding: 14px 16px; display: flex; align-items: center; gap: 14px;
-      text-decoration: none; color: inherit; transition: border-color .15s;
-    }
-    .stat-card:hover { border-color: var(--gold); }
-    .stat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .stat-main { flex: 1; min-width: 0; }
-    .stat-label-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 3px; }
-    .stat-label { font-size: 13px; font-weight: 700; color: var(--text); }
-    .stat-tool { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-mut); letter-spacing: 0.06em; }
-    .stat-detail { font-size: 11px; color: var(--text-sec); }
-    .stat-score {
-      font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700;
-      color: var(--gold); flex-shrink: 0; min-width: 40px; text-align: right;
-    }
-    .note {
-      font-size: 11px; color: var(--text-mut); line-height: 1.9; text-align: center;
-      padding: 16px 12px; border-top: 1px solid var(--border);
-    }
-    footer {
-      text-align: center; padding: 16px; font-size: 11px; color: var(--text-mut);
-      border-top: 1px solid var(--border);
-    }
-    footer nav { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
-    footer a { color: var(--text-mut); text-decoration: underline; }
+    .wrap { max-width: 520px; }
+    .sub { text-align: left; }
+    .top { display: flex; align-items: center; gap: 16px; margin-top: 18px; }
+    .top .plate { flex: 0 0 132px; height: 120px; }
+    .top .plate .n { font-size: 3rem; line-height: 1; font-weight: 700; }
+    .top .plate .l { font-size: .8125rem; }
+    .top .meta { flex: 1; font-size: .9375rem; color: var(--ink-sec); line-height: 1.7; }
+    #streak-display { margin-top: 6px; font-weight: 700; color: var(--ink); display: none; }
+    .radar-wrap { display: flex; justify-content: center; margin: 14px 0 6px; }
+    #radar { width: 100%; max-width: 340px; height: auto; }
+    .stat-list { border-top: 2px solid var(--ink); margin-top: 8px; }
+    .stat-card { display: flex; align-items: center; gap: 14px; padding: 12px 2px; border-bottom: 1px solid var(--rule); min-height: 64px; text-decoration: none; color: inherit; }
+    .stat-card:hover, .stat-card:focus-visible { background: color-mix(in srgb, var(--turf) 12%, transparent); }
+    .stat-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; border: 2px solid var(--ink); }
+    .stat-main { flex: 1; min-width: 0; display: block; }
+    .stat-label-row { display: flex; align-items: baseline; gap: 8px; }
+    .stat-label { font-size: 1.05rem; font-weight: 700; }
+    .stat-tool { font-size: .8125rem; color: var(--ink-sec); }
+    .stat-detail { display: block; font-size: .9375rem; color: var(--ink-sec); }
+    .stat-score { font-family: var(--board); font-size: 1.9rem; line-height: 1; min-width: 3ch; text-align: right; color: var(--ink); }
+    .share-row { margin-top: 22px; }
+    #share-card-status { display: none; font-size: .875rem; color: var(--ink-sec); margin-top: 8px; }
+    .note { font-size: .875rem; color: var(--ink-sec); line-height: 1.85; margin-top: 22px; padding-top: 12px; border-top: 1px solid var(--rule); }
   </style>
 </head>
 <body>
-  <header>
-    <nav aria-label="メインナビゲーション">
-      <a href="/" class="back"><svg viewBox="0 0 120 120" width="18" height="18" style="border-radius:5px;"><defs><linearGradient id="hbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1220"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><linearGradient id="hco" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e8c468"/><stop offset="100%" stop-color="#c9a13f"/></linearGradient></defs><rect width="120" height="120" rx="26" fill="url(#hbg)"/><circle cx="60" cy="48" r="14" fill="url(#hco)"/><path d="M60 26 L62 42 L60 48 L58 42Z" fill="#f3dca0" opacity=".85"/></svg>Somirai Lab</a>
-    </nav>
+<div class="wrap">
+  <div class="nav">
+    <a href="/" class="nav-logo" aria-label="Somirai Lab トップへ"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#111114"/><stop offset="100%" stop-color="#0a0a0b"/></linearGradient><linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff6428"/><stop offset="100%" stop-color="#e84410"/></linearGradient></defs><rect width="120" height="120" rx="24" fill="url(#n1)"/><circle cx="60" cy="52" r="18" fill="url(#n2)"/><circle cx="56" cy="47" r="6" fill="#fff" opacity=".2"/><path d="M60 28 L63 46 L60 52 L57 46Z" fill="#ffb088" opacity=".7"/><path d="M36 52 L52 54 L60 52 L52 50Z" fill="#ffb088" opacity=".55"/><path d="M84 52 L68 54 L60 52 L68 50Z" fill="#ffb088" opacity=".55"/></svg><span>Somirai Lab</span></a>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
+  </div>
+
+  <header class="head">
+    <h1>MY PLAYER</h1>
+    <p class="sub">TEMPER・MARGINALIA・KURA・LUMBER・TACTICIAN・投球数カウンター・トレタイマーの利用状況から、あなたの選手ステータスを合成表示します。</p>
   </header>
 
-  <main>
-    <p class="eyebrow">My Player · Somirai Lab</p>
-    <h1>MY PLAYER</h1>
-    <p class="subtitle">TEMPER・MARGINALIA・KURA・LUMBER・TACTICIANの利用状況から、<br>あなたの選手ステータスを合成表示します。</p>
-
-    <p id="streak-display" aria-live="polite" style="display:none;text-align:center;font-size:13px;color:var(--gold);font-weight:700;margin-bottom:20px;"></p>
-
-    <div class="radar-wrap">
-      <svg id="radar" width="300" height="300" viewBox="0 0 300 300"></svg>
+  <div class="top">
+    <div class="plate" aria-live="polite"><span class="n" id="total">0</span><span class="l">総合</span></div>
+    <div class="meta">
+      <div>各ツールを使うほど、選手が育ちます。</div>
+      <p id="streak-display" aria-live="polite"></p>
     </div>
+  </div>
 
-    <div class="stat-list" id="stat-list"></div>
+  <div class="radar-wrap">
+    <svg id="radar" viewBox="0 0 340 340" role="img" aria-label="選手ステータスのレーダーチャート"></svg>
+  </div>
 
-    <div style="display:flex; justify-content:center; margin-bottom:24px;">
-      <button id="share-card-btn" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold-soft);border:1px solid rgba(232,196,104,0.45);color:var(--gold);font-size:13px;font-weight:700;padding:12px 22px;border-radius:24px;cursor:pointer;font-family:'Barlow',sans-serif;">
-        <span>🖼️</span> 選手カード画像を保存・シェア
-      </button>
-    </div>
-    <p id="share-card-status" style="display:none;text-align:center;font-size:12px;color:var(--text-mut);margin:-16px 0 20px;"></p>
+  <div class="stat-list" id="stat-list"></div>
 
-    <p class="note">
-      各ステータスは対応するツールの利用量（記録数・習慣の達成回数など）から簡易的に算出した目安です。<br>
-      データはすべてブラウザ内（localStorage）にのみ保存され、外部には送信されません。
-    </p>
-  </main>
+  <div class="share-row">
+    <button class="btn-sub" id="share-card-btn" type="button">選手カード画像を保存・シェア</button>
+    <p id="share-card-status" role="status"></p>
+  </div>
+
+  <p class="note">
+    各ステータスは、対応するツールの利用量(記録数・習慣の達成回数など)から簡易的に算出した目安です。<br>
+    データはすべてブラウザ内(localStorage)にのみ保存され、外部には送信されません。
+  </p>
 
   <footer>
-    <div>© 2026 <a href="https://somirai.jp/" style="color:var(--gold);text-decoration:none;font-weight:700;">Somirai Lab</a></div>
-    <nav aria-label="サイト内リンク">
-      <a href="https://somirai.jp/blog/">ブログ</a>
-      <a href="https://somirai.jp/about.html">About</a>
-      <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
-    </nav>
+    <a href="https://somirai.jp/">Somirai Lab</a>
+    <a href="https://somirai.jp/blog/">ブログ</a>
+    <a href="https://somirai.jp/about.html">About</a>
+    <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    <span>© 2026 Somirai Lab</span>
   </footer>
+</div>
 
-  <script src="/player/stats.js"></script>
-  <script>
-    function renderRadar(stats) {
-      var svg = document.getElementById('radar');
-      var cx = 150, cy = 150, maxR = 105;
-      var n = stats.length;
-      var ns = 'http://www.w3.org/2000/svg';
+<script src="/shared/tool.js"></script>
+<script src="/player/stats.js"></script>
+<script>
+  function renderRadar(stats) {
+    var svg = document.getElementById('radar');
+    var cx = 170, cy = 170, maxR = 112;
+    var n = stats.length;
+    var ns = 'http://www.w3.org/2000/svg';
+    function pointAt(i, r) {
+      var angle = -Math.PI / 2 + (i * 2 * Math.PI / n);
+      return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+    }
+    function el(name, attrs) { var e = document.createElementNS(ns, name); for (var k in attrs) e.setAttribute(k, attrs[k]); svg.appendChild(e); return e; }
 
-      function pointAt(i, r) {
-        var angle = -Math.PI / 2 + (i * 2 * Math.PI / n);
-        return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+    // 目盛りの輪(25/50/75/100)
+    [0.25, 0.5, 0.75, 1].forEach(function (frac) {
+      var pts = [];
+      for (var i = 0; i < n; i++) pts.push(pointAt(i, maxR * frac).join(','));
+      el('polygon', { points: pts.join(' '), fill: 'none', style: 'stroke:var(--rule)', 'stroke-width': frac === 1 ? 2 : 1 });
+    });
+    // 軸線とラベル
+    stats.forEach(function (s, i) {
+      var end = pointAt(i, maxR);
+      el('line', { x1: cx, y1: cy, x2: end[0], y2: end[1], style: 'stroke:var(--rule)' });
+      var lp = pointAt(i, maxR + 24);
+      var t = el('text', { x: lp[0], y: lp[1], 'text-anchor': 'middle', 'dominant-baseline': 'middle', 'font-size': 14, 'font-weight': 700, style: 'fill:var(--ink)', 'font-family': "'BIZ UDPGothic', sans-serif" });
+      t.textContent = s.label;
+    });
+    // 実際の値
+    var dataPts = stats.map(function (s, i) { return pointAt(i, maxR * (s.score / 100)); });
+    el('polygon', { points: dataPts.map(function (p) { return p.join(','); }).join(' '), style: 'fill:rgba(245,196,0,.28);stroke:var(--ink)', 'stroke-width': 3, 'stroke-linejoin': 'round' });
+    dataPts.forEach(function (p, i) {
+      el('circle', { cx: p[0], cy: p[1], r: 5, fill: stats[i].color, style: 'stroke:var(--ink)', 'stroke-width': 2 });
+    });
+  }
+
+  function renderList(stats) {
+    var list = document.getElementById('stat-list');
+    stats.forEach(function (s) {
+      var a = document.createElement('a');
+      a.className = 'stat-card';
+      a.href = s.url;
+      a.addEventListener('click', function () {
+        if (typeof gtag === 'function') gtag('event', 'player_stat_click', { tool: s.tool });
+      });
+      a.innerHTML =
+        '<span class="stat-dot" style="background:' + s.color + '"></span>' +
+        '<span class="stat-main">' +
+          '<span class="stat-label-row"><span class="stat-label">' + s.label + '</span><span class="stat-tool">' + s.tool + '</span></span>' +
+          '<span class="stat-detail">' + s.detail + '</span>' +
+        '</span>' +
+        '<span class="stat-score">' + s.score + '</span>';
+      list.appendChild(a);
+    });
+  }
+
+  var stats = SomiraiPlayer.computeStats();
+  renderRadar(stats);
+  renderList(stats);
+  document.getElementById('total').textContent = Math.round(stats.reduce(function (t, s) { return t + s.score; }, 0) / stats.length);
+  if (typeof gtag === 'function') {
+    gtag('event', 'player_view', { unique_tools_used: stats.filter(function (s) { return s.score > 0; }).length });
+  }
+
+  // 連続来訪ストリーク記録・表示
+  var currentStreakCount = 0;
+  (function () {
+    function ld(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+    try {
+      var today = ld(new Date());
+      var raw = localStorage.getItem('somirai:streak');
+      var streak = raw ? JSON.parse(raw) : null;
+      if (!streak || streak.lastDate !== today) {
+        var yesterday = ld(new Date(Date.now() - 864e5));
+        var count = (streak && streak.lastDate === yesterday) ? streak.count + 1 : 1;
+        streak = { lastDate: today, count: count };
+        localStorage.setItem('somirai:streak', JSON.stringify(streak));
       }
+      if (streak) currentStreakCount = streak.count;
+      if (streak && streak.count >= 2) {
+        var el = document.getElementById('streak-display');
+        el.textContent = streak.count + '日連続で来訪中';
+        el.style.display = 'block';
+      }
+    } catch (e) { /* localStorage unavailable */ }
+  })();
 
-      // grid rings
-      [0.25, 0.5, 0.75, 1].forEach(function (frac) {
-        var pts = [];
-        for (var i = 0; i < n; i++) pts.push(pointAt(i, maxR * frac).join(','));
-        var poly = document.createElementNS(ns, 'polygon');
-        poly.setAttribute('points', pts.join(' '));
-        poly.setAttribute('fill', 'none');
-        poly.setAttribute('stroke', '#1c1f30');
-        poly.setAttribute('stroke-width', '1');
-        svg.appendChild(poly);
-      });
+  // ── 選手カード画像の生成・シェア ──────────────────────────
+  function drawPlayerCard(stats, streakCount) {
+    var W = 1080, H = 1080, F = '"BIZ UDPGothic", "Hiragino Sans", sans-serif';
+    var canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    var ctx = canvas.getContext('2d');
 
-      // axis lines + labels
-      stats.forEach(function (s, i) {
-        var end = pointAt(i, maxR);
-        var line = document.createElementNS(ns, 'line');
-        line.setAttribute('x1', cx); line.setAttribute('y1', cy);
-        line.setAttribute('x2', end[0]); line.setAttribute('y2', end[1]);
-        line.setAttribute('stroke', '#1c1f30');
-        svg.appendChild(line);
+    ctx.fillStyle = '#2B2420';
+    ctx.fillRect(0, 0, W, H);
+    // 上下のライン
+    ctx.fillStyle = '#F5C400';
+    ctx.fillRect(0, 0, W, 10);
+    ctx.fillRect(0, H - 10, W, 10);
 
-        var labelPt = pointAt(i, maxR + 22);
-        var text = document.createElementNS(ns, 'text');
-        text.setAttribute('x', labelPt[0]); text.setAttribute('y', labelPt[1]);
-        text.setAttribute('text-anchor', 'middle');
-        text.setAttribute('dominant-baseline', 'middle');
-        text.setAttribute('fill', s.color);
-        text.setAttribute('font-size', '12');
-        text.setAttribute('font-weight', '700');
-        text.setAttribute('font-family', "'Barlow', sans-serif");
-        text.textContent = s.label;
-        svg.appendChild(text);
-      });
-
-      // data polygon
-      var dataPts = stats.map(function (s, i) {
-        return pointAt(i, maxR * (s.score / 100));
-      });
-      var poly = document.createElementNS(ns, 'polygon');
-      poly.setAttribute('points', dataPts.map(function (p) { return p.join(','); }).join(' '));
-      poly.setAttribute('fill', 'rgba(232,196,104,0.18)');
-      poly.setAttribute('stroke', '#e8c468');
-      poly.setAttribute('stroke-width', '2');
-      svg.appendChild(poly);
-
-      dataPts.forEach(function (p, i) {
-        var dot = document.createElementNS(ns, 'circle');
-        dot.setAttribute('cx', p[0]); dot.setAttribute('cy', p[1]);
-        dot.setAttribute('r', '3.5');
-        dot.setAttribute('fill', stats[i].color);
-        svg.appendChild(dot);
-      });
+    ctx.fillStyle = '#F5F7F6';
+    ctx.font = '700 72px ' + F;
+    ctx.textAlign = 'center';
+    ctx.fillText('MY PLAYER', W / 2, 112);
+    ctx.font = '400 24px ' + F;
+    ctx.fillStyle = '#B9B1AA';
+    ctx.fillText('Somirai Lab', W / 2, 152);
+    if (streakCount >= 2) {
+      ctx.font = '700 28px ' + F;
+      ctx.fillStyle = '#F5C400';
+      ctx.fillText(streakCount + '日連続来訪中', W / 2, 198);
     }
 
-    function renderList(stats) {
-      var list = document.getElementById('stat-list');
-      stats.forEach(function (s) {
-        var a = document.createElement('a');
-        a.className = 'stat-card';
-        a.href = s.url;
-        a.addEventListener('click', function () {
-          if (typeof gtag === 'function') gtag('event', 'player_stat_click', { tool: s.tool });
-        });
-        a.innerHTML =
-          '<span class="stat-dot" style="background:' + s.color + '"></span>' +
-          '<span class="stat-main">' +
-            '<span class="stat-label-row"><span class="stat-label">' + s.label + '</span><span class="stat-tool">' + s.tool + '</span></span>' +
-            '<span class="stat-detail">' + s.detail + '</span>' +
-          '</span>' +
-          '<span class="stat-score">' + s.score + '</span>';
-        list.appendChild(a);
-      });
+    // レーダーチャート
+    var cx = W / 2, cy = 525, maxR = 212;
+    var n = stats.length;
+    function pointAt(i, r) {
+      var angle = -Math.PI / 2 + (i * 2 * Math.PI / n);
+      return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
     }
-
-    var stats = SomiraiPlayer.computeStats();
-    renderRadar(stats);
-    renderList(stats);
-    if (typeof gtag === 'function') {
-      gtag('event', 'player_view', { unique_tools_used: stats.filter(function (s) { return s.score > 0; }).length });
-    }
-
-    // 連続来訪ストリーク記録・表示
-    var currentStreakCount = 0;
-    (function () {
-      function ld(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
-      try {
-        var today = ld(new Date());
-        var raw = localStorage.getItem('somirai:streak');
-        var streak = raw ? JSON.parse(raw) : null;
-        if (!streak || streak.lastDate !== today) {
-          var yesterday = ld(new Date(Date.now() - 864e5));
-          var count = (streak && streak.lastDate === yesterday) ? streak.count + 1 : 1;
-          streak = { lastDate: today, count: count };
-          localStorage.setItem('somirai:streak', JSON.stringify(streak));
-        }
-        if (streak) currentStreakCount = streak.count;
-        if (streak && streak.count >= 2) {
-          var el = document.getElementById('streak-display');
-          el.textContent = '🔥 ' + streak.count + '日連続で来訪中';
-          el.style.display = 'block';
-        }
-      } catch (e) { /* localStorage unavailable */ }
-    })();
-
-    // ── 選手カード画像の生成・シェア ──────────────────────────
-    function drawPlayerCard(stats, streakCount) {
-      var W = 1080, H = 1080;
-      var canvas = document.createElement('canvas');
-      canvas.width = W; canvas.height = H;
-      var ctx = canvas.getContext('2d');
-
-      // 背景
-      var bgGrad = ctx.createLinearGradient(0, 0, W, H);
-      bgGrad.addColorStop(0, '#0d0a06');
-      bgGrad.addColorStop(1, '#070810');
-      ctx.fillStyle = bgGrad;
-      ctx.fillRect(0, 0, W, H);
-
-      // 上下のゴールドライン
-      ctx.fillStyle = '#e8c468';
-      ctx.fillRect(0, 0, W, 6);
-      ctx.globalAlpha = 0.25;
-      ctx.fillRect(0, H - 6, W, 6);
-      ctx.globalAlpha = 1;
-
-      // タイトル
-      ctx.fillStyle = '#e8c468';
-      ctx.font = '900 64px Impact, "Arial Black", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('MY PLAYER', W / 2, 110);
-      ctx.font = '400 20px "JetBrains Mono", monospace';
-      ctx.fillStyle = '#a8adc4';
-      ctx.fillText('SOMIRAI LAB', W / 2, 145);
-
-      // ストリーク
-      if (streakCount >= 2) {
-        ctx.font = '700 26px "Barlow", sans-serif';
-        ctx.fillStyle = '#f3dca0';
-        ctx.fillText('🔥 ' + streakCount + '日連続来訪中', W / 2, 190);
-      }
-
-      // レーダーチャート
-      var cx = W / 2, cy = 470, maxR = 230;
-      var n = stats.length;
-      function pointAt(i, r) {
-        var angle = -Math.PI / 2 + (i * 2 * Math.PI / n);
-        return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
-      }
-      // グリッド
-      ctx.strokeStyle = '#2a2f45';
-      ctx.lineWidth = 2;
-      [0.25, 0.5, 0.75, 1].forEach(function (frac) {
-        ctx.beginPath();
-        for (var i = 0; i <= n; i++) {
-          var p = pointAt(i % n, maxR * frac);
-          if (i === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
-        }
-        ctx.stroke();
-      });
-      // 軸線・ラベル
-      stats.forEach(function (s, i) {
-        var end = pointAt(i, maxR);
-        ctx.beginPath();
-        ctx.moveTo(cx, cy); ctx.lineTo(end[0], end[1]);
-        ctx.stroke();
-        var lp = pointAt(i, maxR + 55);
-        ctx.fillStyle = s.color;
-        ctx.font = '700 28px "Barlow", sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(s.label, lp[0], lp[1]);
-      });
-      // データ多角形
+    ctx.strokeStyle = '#6B5E55';
+    ctx.lineWidth = 2;
+    [0.25, 0.5, 0.75, 1].forEach(function (frac) {
       ctx.beginPath();
-      stats.forEach(function (s, i) {
-        var p = pointAt(i, maxR * (s.score / 100));
+      for (var i = 0; i <= n; i++) {
+        var p = pointAt(i % n, maxR * frac);
         if (i === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
-      });
-      ctx.closePath();
-      ctx.fillStyle = 'rgba(232,196,104,0.22)';
-      ctx.fill();
-      ctx.strokeStyle = '#e8c468';
-      ctx.lineWidth = 5;
+      }
       ctx.stroke();
-      stats.forEach(function (s, i) {
-        var p = pointAt(i, maxR * (s.score / 100));
-        ctx.beginPath();
-        ctx.arc(p[0], p[1], 8, 0, Math.PI * 2);
-        ctx.fillStyle = s.color;
-        ctx.fill();
-      });
-
-      // スコア一覧
-      var listY = 800;
-      ctx.textAlign = 'left';
-      stats.forEach(function (s, i) {
-        var col = i % 2, row = Math.floor(i / 2);
-        var x = 90 + col * 470, y = listY + row * 60;
-        ctx.fillStyle = s.color;
-        ctx.beginPath(); ctx.arc(x, y - 8, 8, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#eaecf4';
-        ctx.font = '700 26px "Barlow", sans-serif';
-        ctx.fillText(s.label + ' (' + s.tool + ')', x + 20, y);
-        ctx.fillStyle = '#e8c468';
-        ctx.font = '900 26px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.fillText(s.score, x + 400, y);
-        ctx.textAlign = 'left';
-      });
-
-      // フッター
+    });
+    stats.forEach(function (s, i) {
+      var end = pointAt(i, maxR);
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(end[0], end[1]); ctx.stroke();
+      var lp = pointAt(i, maxR + 52);
+      ctx.fillStyle = '#F5F7F6';
+      ctx.font = '700 30px ' + F;
       ctx.textAlign = 'center';
-      ctx.font = '400 22px "Barlow", sans-serif';
-      ctx.fillStyle = '#555878';
-      ctx.fillText('somirai.jp/player/', W / 2, H - 40);
+      ctx.fillText(s.label, lp[0], lp[1] + 10);
+    });
+    ctx.beginPath();
+    stats.forEach(function (s, i) {
+      var p = pointAt(i, maxR * (s.score / 100));
+      if (i === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
+    });
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(245,196,0,0.30)';
+    ctx.fill();
+    ctx.strokeStyle = '#F5F7F6';
+    ctx.lineWidth = 6;
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+    stats.forEach(function (s, i) {
+      var p = pointAt(i, maxR * (s.score / 100));
+      ctx.beginPath(); ctx.arc(p[0], p[1], 10, 0, Math.PI * 2);
+      ctx.fillStyle = s.color; ctx.fill();
+      ctx.lineWidth = 3; ctx.strokeStyle = '#F5F7F6'; ctx.stroke();
+    });
 
-      return canvas;
-    }
+    // スコア一覧(2列)
+    var listY = 835;
+    ctx.textAlign = 'left';
+    stats.forEach(function (s, i) {
+      var col = i % 2, row = Math.floor(i / 2);
+      var x = 90 + col * 470, y = listY + row * 58;
+      ctx.fillStyle = s.color;
+      ctx.beginPath(); ctx.arc(x, y - 9, 9, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#F5F7F6';
+      ctx.font = '700 28px ' + F;
+      ctx.fillText(s.label + ' ' + s.tool, x + 24, y);
+      ctx.fillStyle = '#F5C400';
+      ctx.font = '700 30px ' + F;
+      ctx.textAlign = 'right';
+      ctx.fillText(String(s.score), x + 400, y);
+      ctx.textAlign = 'left';
+    });
 
-    document.getElementById('share-card-btn').addEventListener('click', function () {
-      var statusEl = document.getElementById('share-card-status');
+    ctx.textAlign = 'center';
+    ctx.font = '400 24px ' + F;
+    ctx.fillStyle = '#B9B1AA';
+    ctx.fillText('somirai.jp/player/', W / 2, H - 38);
+    return canvas;
+  }
+
+  document.getElementById('share-card-btn').addEventListener('click', function () {
+    var statusEl = document.getElementById('share-card-status');
+    // 書体の読み込みを待ってから描く(待てなくても、代わりの書体で描く)
+    var ready = (document.fonts && document.fonts.load) ? document.fonts.load('700 28px "BIZ UDPGothic"').catch(function () {}) : Promise.resolve();
+    ready.then(function () {
       try {
         var canvas = drawPlayerCard(stats, currentStreakCount);
         canvas.toBlob(function (blob) {
@@ -380,13 +306,8 @@
           var fileName = 'my-player-' + new Date().toISOString().slice(0, 10) + '.png';
           var file = new File([blob], fileName, { type: 'image/png' });
           if (typeof gtag === 'function') gtag('event', 'player_card_share', {});
-
           if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            navigator.share({
-              files: [file],
-              title: 'MY PLAYER',
-              text: 'Somirai LabのMY PLAYERで選手ステータスを可視化しました⚾ #SomiraiLab',
-            }).catch(function () { /* user cancelled */ });
+            navigator.share({ files: [file], title: 'MY PLAYER', text: 'Somirai LabのMY PLAYERで選手ステータスを可視化しました #SomiraiLab' }).catch(function () { /* user cancelled */ });
           } else {
             var url = URL.createObjectURL(blob);
             var a = document.createElement('a');
@@ -402,6 +323,9 @@
         statusEl.style.display = 'block';
       }
     });
-  </script>
+  });
+
+  Tool.initTheme(); Tool.initCookie();
+</script>
 </body>
 </html>
