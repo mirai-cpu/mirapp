@@ -155,7 +155,7 @@ const Share = (() => {
     const label      = _filterLabel(scopeVal, dateFrom, dateTo);
 
     const lines = [
-      `⚾ ${playerName} の打撃成績（${label}）`,
+      `${playerName} の打撃成績（${label}）`,
       '',
       `打率 ${Stats.fmtAvg(s.avg)} / 安打 ${s.h}本`,
       `OBP ${Stats.fmtRate(s.obp)} / SLG ${Stats.fmtRate(s.slg)} / OPS ${Stats.fmtOps(s.ops)}`,
@@ -211,7 +211,7 @@ const Share = (() => {
     if (_lastBlob) {
       try {
         await navigator.clipboard.write([new ClipboardItem({ 'image/png': _lastBlob })]);
-        _showToast('📋 画像をコピーしました！Xの投稿欄に画像を貼り付けてください', 4000);
+        _showToast('画像をコピーしました！Xの投稿欄に画像を貼り付けてください', 4000);
       } catch (_) {
         _showToast('Xが開きました。「ダウンロード」して画像を添付してください', 4500);
       }
@@ -309,8 +309,8 @@ const Share = (() => {
 
     // Background gradient
     const grad = ctx.createLinearGradient(0, 0, W, H);
-    grad.addColorStop(0, '#1a472a');
-    grad.addColorStop(1, '#0a2540');
+    grad.addColorStop(0, '#2B2420');
+    grad.addColorStop(1, '#1E1815');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, W, H);
 
@@ -336,7 +336,7 @@ const Share = (() => {
 
     // ── Type badge
     if (diag && diag.typeKey) {
-      ctx.fillStyle = '#EF9F27';
+      ctx.fillStyle = '#F5C400';
       ctx.font      = font(22, 600);
       ctx.fillText(I18n.t(diag.typeKey), 60, 120);
     }
@@ -354,7 +354,7 @@ const Share = (() => {
     ctx.fillText(I18n.t('stat.avg'), statsStartX, statsY + 26);
 
     // H・安打数（右・大）
-    ctx.fillStyle = '#3ecf8e';
+    ctx.fillStyle = '#6FD39A';
     ctx.font      = font(72, 800);
     ctx.textAlign = 'left';
     ctx.fillText(`${s.h}`, statsStartX + 220, statsY);
@@ -516,7 +516,7 @@ const Share = (() => {
     ctx.globalAlpha = 0.55;
 
     // outfield fan
-    ctx.fillStyle = '#16a34a';
+    ctx.fillStyle = '#1E6B38';
     ctx.beginPath();
     ctx.moveTo(150 * sx, 255 * sy);
     ctx.lineTo(5 * sx, 92 * sy);
@@ -525,7 +525,7 @@ const Share = (() => {
     ctx.fill();
 
     // infield diamond
-    ctx.fillStyle = '#fef9c3';
+    ctx.fillStyle = '#F5C400';
     ctx.beginPath();
     [[80,185],[150,115],[220,185],[150,255]].forEach(([px,py], i) =>
       i === 0 ? ctx.moveTo(px*sx, py*sy) : ctx.lineTo(px*sx, py*sy)
@@ -565,7 +565,7 @@ const Share = (() => {
       // ヒット（緑・前に描画）
       if (hc > 0) {
         const r = Math.round((9 + (hc / maxH) * 16) * sx);
-        ctx.fillStyle = 'rgba(62,207,142,0.92)';
+        ctx.fillStyle = 'rgba(111,211,154,0.92)';
         ctx.beginPath();
         ctx.arc(zc.cx * sx, zc.cy * sy, r, 0, Math.PI * 2);
         ctx.fill();

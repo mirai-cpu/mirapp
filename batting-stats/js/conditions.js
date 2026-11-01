@@ -58,19 +58,19 @@ const Conditions = (() => {
     }
 
     const conditionDefs = [
-      { key: '3', label: '😊 好調', color: '#16a34a' },
-      { key: '2', label: '😐 普通', color: '#2563eb' },
-      { key: '1', label: '😔 不調', color: '#dc2626' },
+      { key: '3', label: '好調', color: '#16a34a' },
+      { key: '2', label: '普通', color: '#2563eb' },
+      { key: '1', label: '不調', color: '#dc2626' },
     ];
     const weatherDefs = [
-      { key: 'sunny',  label: '☀️ 晴れ',  color: '#f59e0b' },
-      { key: 'cloudy', label: '☁️ 曇り', color: '#71717a' },
-      { key: 'rainy',  label: '🌧️ 雨',   color: '#2563eb' },
+      { key: 'sunny',  label: '晴れ',  color: '#f59e0b' },
+      { key: 'cloudy', label: '曇り', color: '#71717a' },
+      { key: 'rainy',  label: '雨',   color: '#2563eb' },
     ];
     const fatigueDefs = [
-      { key: '1', label: '💪 元気',  color: '#16a34a' },
-      { key: '2', label: '🙂 普通',  color: '#2563eb' },
-      { key: '3', label: '😴 疲労',  color: '#dc2626' },
+      { key: '1', label: '元気',  color: '#16a34a' },
+      { key: '2', label: '普通',  color: '#2563eb' },
+      { key: '3', label: '疲労',  color: '#dc2626' },
     ];
 
     function buildRows(defs, groups) {

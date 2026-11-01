@@ -158,25 +158,25 @@
       <!-- ウェルカムバナー（初訪問者のみ） -->
       <div id="welcome-banner" class="welcome-banner" style="display:none">
         <div class="welcome-banner-inner">
-          <span class="welcome-icon">⚾</span>
+          <span class="welcome-icon"></span>
           <div class="welcome-text">
             <strong>はじめての方へ</strong>
             <span>打席結果を選んで「記録する」を押すだけ。打率が自動計算されます。</span>
           </div>
-          <button class="welcome-close" id="welcome-close" aria-label="閉じる">✕</button>
+          <button class="welcome-close" id="welcome-close" aria-label="閉じる"></button>
         </div>
       </div>
 
       <!-- 初回記録完了バナー -->
       <div id="record-complete-banner" class="welcome-banner" style="display:none;background:linear-gradient(135deg, rgba(232,196,104,.10) 0%, rgba(232,196,104,.04) 100%);border-color:rgba(232,196,104,.3);">
         <div class="welcome-banner-inner">
-          <span class="welcome-icon">⭐</span>
+          <span class="welcome-icon"></span>
           <div class="welcome-text">
             <strong style="color:#e8c468;">記録完了！</strong>
             <span>この打撃感覚のままSWING!で腕試し、またはMY PLAYERで選手ステータスを確認できます。</span>
           </div>
           <a href="https://somirai.jp/swing/" style="color:#e8c468;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;margin-right:4px;" onclick="if(typeof gtag==='function')gtag('event','cross_tool_click',{from:'lumber_complete',to:'swing'})">SWING!→</a>
-          <button class="welcome-close" id="record-complete-close" aria-label="閉じる">✕</button>
+          <button class="welcome-close" id="record-complete-close" aria-label="閉じる"></button>
         </div>
       </div>
 
@@ -202,7 +202,7 @@
           <button type="button" id="wx-toggle-btn"
             style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 14px;color:var(--muted);font-size:12px;font-family:var(--mono);letter-spacing:.06em;width:100%;text-align:left;cursor:pointer;display:flex;align-items:center;gap:8px;transition:border-color .15s;"
             aria-expanded="false" aria-controls="wx-widget-group">
-            <span>⛅</span><span id="wx-toggle-label">試合日の天気を確認する</span>
+            <span></span><span id="wx-toggle-label">試合日の天気を確認する</span>
             <span id="wx-toggle-arrow" style="margin-left:auto;font-size:10px;transition:transform .2s;">▼</span>
           </button>
         </div>
@@ -330,25 +330,25 @@
             <div class="condition-row">
               <span class="condition-label">体調</span>
               <div class="condition-btn-group" id="cond-body-group">
-                <button type="button" class="cond-btn" data-cond-type="condition" data-cond-val="1">😔 不調</button>
-                <button type="button" class="cond-btn" data-cond-type="condition" data-cond-val="2">😐 普通</button>
-                <button type="button" class="cond-btn" data-cond-type="condition" data-cond-val="3">😊 好調</button>
+                <button type="button" class="cond-btn" data-cond-type="condition" data-cond-val="1">不調</button>
+                <button type="button" class="cond-btn" data-cond-type="condition" data-cond-val="2">普通</button>
+                <button type="button" class="cond-btn" data-cond-type="condition" data-cond-val="3">好調</button>
               </div>
             </div>
             <div class="condition-row">
               <span class="condition-label">天気</span>
               <div class="condition-btn-group" id="cond-weather-group">
-                <button type="button" class="cond-btn" data-cond-type="weather" data-cond-val="sunny">☀️ 晴れ</button>
-                <button type="button" class="cond-btn" data-cond-type="weather" data-cond-val="cloudy">☁️ 曇り</button>
-                <button type="button" class="cond-btn" data-cond-type="weather" data-cond-val="rainy">🌧️ 雨</button>
+                <button type="button" class="cond-btn" data-cond-type="weather" data-cond-val="sunny">晴れ</button>
+                <button type="button" class="cond-btn" data-cond-type="weather" data-cond-val="cloudy">曇り</button>
+                <button type="button" class="cond-btn" data-cond-type="weather" data-cond-val="rainy">雨</button>
               </div>
             </div>
             <div class="condition-row">
               <span class="condition-label">疲れ</span>
               <div class="condition-btn-group" id="cond-fatigue-group">
-                <button type="button" class="cond-btn" data-cond-type="fatigue" data-cond-val="1">💪 元気</button>
-                <button type="button" class="cond-btn" data-cond-type="fatigue" data-cond-val="2">🙂 普通</button>
-                <button type="button" class="cond-btn" data-cond-type="fatigue" data-cond-val="3">😴 疲労</button>
+                <button type="button" class="cond-btn" data-cond-type="fatigue" data-cond-val="1">元気</button>
+                <button type="button" class="cond-btn" data-cond-type="fatigue" data-cond-val="2">普通</button>
+                <button type="button" class="cond-btn" data-cond-type="fatigue" data-cond-val="3">疲労</button>
               </div>
             </div>
           </div>
@@ -407,11 +407,11 @@
         <div id="streak-row" style="display:none;gap:12px;margin-bottom:8px;" class="streak-row">
           <div class="streak-card" id="streak-current">
             <span class="streak-num" id="streak-current-num">0</span>
-            <span class="streak-label">🔥 現在の連続安打</span>
+            <span class="streak-label">現在の連続安打</span>
           </div>
           <div class="streak-card" id="streak-max">
             <span class="streak-num" id="streak-max-num">0</span>
-            <span class="streak-label">🏆 最長連続安打</span>
+            <span class="streak-label">最長連続安打</span>
           </div>
         </div>
 
@@ -640,14 +640,14 @@
     </p>
     <h3 style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">主な機能</h3>
     <ul style="font-size:12px;color:var(--muted);line-height:2;padding-left:0;list-style:none;">
-      <li>⚾ 打席結果を試合ごとに記録（安打・三振・四球・本塁打 など）</li>
-      <li>📊 打率・出塁率・長打率・OPS を自動計算・グラフ表示</li>
-      <li>🎯 シーズン目標の設定と達成度トラッキング</li>
-      <li>📅 打率の試合推移グラフで調子の波を把握</li>
-      <li>🗺️ 打球方向スプレーチャートで弱点を可視化</li>
-      <li>📤 成績カードを画像で生成してSNSにシェア</li>
-      <li>💾 データのエクスポート（CSV）に対応</li>
-      <li>🔒 全データはブラウザに保存。外部送信なし</li>
+      <li>打席結果を試合ごとに記録（安打・三振・四球・本塁打 など）</li>
+      <li>打率・出塁率・長打率・OPS を自動計算・グラフ表示</li>
+      <li>シーズン目標の設定と達成度トラッキング</li>
+      <li>打率の試合推移グラフで調子の波を把握</li>
+      <li>打球方向スプレーチャートで弱点を可視化</li>
+      <li>成績カードを画像で生成してSNSにシェア</li>
+      <li>データのエクスポート（CSV）に対応</li>
+      <li>全データはブラウザに保存。外部送信なし</li>
     </ul>
   </section>
 
@@ -790,7 +790,7 @@
   </section>
 
   <a id="mp-card" href="https://somirai.jp/player/" onclick="if(typeof gtag==='function')gtag('event','player_entry_click',{from:'lumber'})" style="display:none;align-items:center;gap:10px;max-width:480px;margin:20px auto 0;background:rgba(232,196,104,0.06);border:1px solid rgba(232,196,104,0.3);border-radius:10px;padding:12px 14px;text-decoration:none;">
-    <span style="font-size:18px;">⭐</span>
+    <span style="font-size:18px;"></span>
     <span style="flex:1;">
       <span style="display:block;font-size:12px;font-weight:700;color:#e8c468;">MY PLAYER</span>
       <span style="display:block;font-size:11px;color:#a8adc4;">LUMBERの利用状況もステータスに反映されています →</span>
@@ -802,19 +802,19 @@
     <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#555878;margin:0 0 14px;letter-spacing:.1em;font-weight:600;text-transform:uppercase;text-align:center;">Somirai Lab の他のツール</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:480px;margin:0 auto;">
       <a href="https://somirai.jp/order-maker/" onclick="gtag('event','cross_tool_click',{from:'lumber',to:'tactician'})" style="display:flex;flex-direction:column;gap:3px;background:#12152280;color:#c8cad8;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c1f30'">
-        <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">⚾ TACTICIAN</span>
+        <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">TACTICIAN</span>
         <span style="font-size:10px;color:#555878;line-height:1.4;">スタメン表・打順を無料で作成</span>
       </a>
       <a href="https://somirai.jp/habit/" onclick="gtag('event','cross_tool_click',{from:'lumber',to:'temper'})" style="display:flex;flex-direction:column;gap:3px;background:#12152280;color:#c8cad8;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#f97316'" onmouseout="this.style.borderColor='#1c1f30'">
-        <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">🔥 TEMPER</span>
+        <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">TEMPER</span>
         <span style="font-size:10px;color:#555878;line-height:1.4;">習慣トラッカー・ストリーク管理</span>
       </a>
       <a href="https://somirai.jp/write/" onclick="gtag('event','cross_tool_click',{from:'lumber',to:'marginalia'})" style="display:flex;flex-direction:column;gap:3px;background:#12152280;color:#c8cad8;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#d4a853'" onmouseout="this.style.borderColor='#1c1f30'">
-        <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">✏️ MARGINALIA</span>
+        <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">MARGINALIA</span>
         <span style="font-size:10px;color:#555878;line-height:1.4;">メモ・ToDo管理・レベルアップ</span>
       </a>
       <a href="https://somirai.jp/savings/" onclick="gtag('event','cross_tool_click',{from:'lumber',to:'kura'})" style="display:flex;flex-direction:column;gap:3px;background:#12152280;color:#c8cad8;padding:12px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#fbbf24'" onmouseout="this.style.borderColor='#1c1f30'">
-        <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">💰 KURA</span>
+        <span style="font-size:13px;font-weight:700;letter-spacing:.03em;">KURA</span>
         <span style="font-size:10px;color:#555878;line-height:1.4;">家計簿・貯蓄管理</span>
       </a>
     </div>
@@ -825,27 +825,27 @@
     <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#555878;margin:0 0 12px;letter-spacing:.1em;font-weight:600;text-transform:uppercase;text-align:center;">野球・スタメン管理の関連記事</p>
     <div style="display:flex;flex-direction:column;gap:7px;max-width:480px;margin:0 auto;">
       <a href="https://somirai.jp/era-calculator/" onclick="gtag('event','cross_tool_click',{from:'lumber',to:'era_calc'})" style="display:flex;align-items:center;gap:10px;background:#12152280;color:#c8cad8;padding:10px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c1f30'">
-        <span style="font-size:15px;flex-shrink:0;">🧮</span>
+        <span style="font-size:15px;flex-shrink:0;"></span>
         <span style="font-size:12px;line-height:1.45;">防御率計算機<span style="display:block;font-size:10px;color:#555878;margin-top:2px;">投手成績も気になる方はこちら（投球回・自責点から一発計算）</span></span>
       </a>
       <a href="https://somirai.jp/whip-calculator/" onclick="gtag('event','cross_tool_click',{from:'lumber',to:'whip_calc'})" style="display:flex;align-items:center;gap:10px;background:#12152280;color:#c8cad8;padding:10px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c1f30'">
-        <span style="font-size:15px;flex-shrink:0;">🧮</span>
+        <span style="font-size:15px;flex-shrink:0;"></span>
         <span style="font-size:12px;line-height:1.45;">WHIP計算機<span style="display:block;font-size:10px;color:#555878;margin-top:2px;">与四球・被安打から1イニングあたりの走者数を計算</span></span>
       </a>
       <a href="https://somirai.jp/risp-calculator/" onclick="gtag('event','cross_tool_click',{from:'lumber',to:'risp_calc'})" style="display:flex;align-items:center;gap:10px;background:#12152280;color:#c8cad8;padding:10px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c1f30'">
-        <span style="font-size:15px;flex-shrink:0;">🧮</span>
+        <span style="font-size:15px;flex-shrink:0;"></span>
         <span style="font-size:12px;line-height:1.45;">得点圏打率計算機<span style="display:block;font-size:10px;color:#555878;margin-top:2px;">得点圏の安打数・打数から一発計算</span></span>
       </a>
       <a href="https://somirai.jp/blog/baseball-batting-stats.html" onclick="gtag('event','blog_link_click',{from:'lumber',article:'batting-stats-guide'})" style="display:flex;align-items:center;gap:10px;background:#12152280;color:#c8cad8;padding:10px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c1f30'">
-        <span style="font-size:15px;flex-shrink:0;">📊</span>
+        <span style="font-size:15px;flex-shrink:0;"></span>
         <span style="font-size:12px;line-height:1.45;">野球の打撃成績を無料で管理する方法<span style="display:block;font-size:10px;color:#555878;margin-top:2px;">打率・OPS・出塁率を自動計算するツールの使い方</span></span>
       </a>
       <a href="https://somirai.jp/blog/baseball-order-maker.html" onclick="gtag('event','blog_link_click',{from:'lumber',article:'order-maker-guide'})" style="display:flex;align-items:center;gap:10px;background:#12152280;color:#c8cad8;padding:10px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c1f30'">
-        <span style="font-size:15px;flex-shrink:0;">📋</span>
+        <span style="font-size:15px;flex-shrink:0;"></span>
         <span style="font-size:12px;line-height:1.45;">野球オーダー作成サイトの使い方ガイド<span style="display:block;font-size:10px;color:#555878;margin-top:2px;">スタメン表・守備配置図を5分で完成させる方法</span></span>
       </a>
       <a href="https://somirai.jp/blog/baseball-batting-order.html" onclick="gtag('event','blog_link_click',{from:'lumber',article:'batting-order-guide'})" style="display:flex;align-items:center;gap:10px;background:#12152280;color:#c8cad8;padding:10px 13px;border-radius:8px;text-decoration:none;border:1px solid #1c1f30;transition:border-color .15s;" onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#1c1f30'">
-        <span style="font-size:15px;flex-shrink:0;">⚾</span>
+        <span style="font-size:15px;flex-shrink:0;"></span>
         <span style="font-size:12px;line-height:1.45;">野球の打順の組み方 完全解説<span style="display:block;font-size:10px;color:#555878;margin-top:2px;">1〜9番の役割・クリーンナップの選び方</span></span>
       </a>
     </div>
@@ -929,7 +929,7 @@
     <span class="pwa-banner-msg" data-i18n="pwa.bannerMsg">ホーム画面に追加するとアプリのように使えます</span>
     <div class="pwa-banner-actions">
       <button class="pwa-btn-add"   id="pwa-banner-add"   data-i18n="pwa.bannerAdd">追加する</button>
-      <button class="pwa-btn-close" id="pwa-banner-close" data-i18n="pwa.bannerClose" aria-label="閉じる">✕</button>
+      <button class="pwa-btn-close" id="pwa-banner-close" data-i18n="pwa.bannerClose" aria-label="閉じる"></button>
     </div>
   </div>
 
@@ -937,7 +937,7 @@
   <div class="modal-overlay" id="tutorial-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="tutorial-title">
     <div class="modal tutorial-modal">
       <div class="tutorial-slide">
-        <div class="tutorial-icon" id="tutorial-icon">⚾</div>
+        <div class="tutorial-icon" id="tutorial-icon"></div>
         <h2 class="tutorial-title" id="tutorial-title"></h2>
         <p class="tutorial-body" id="tutorial-body"></p>
       </div>

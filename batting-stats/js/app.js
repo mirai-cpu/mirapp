@@ -432,7 +432,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (typeof gtag === 'function') gtag('event', 'tool_used', { tool_name: 'batting-stats', action: 'record_atbat' });
       const isFirst = Storage.load().length === 1;
       if (isFirst) {
-        showToast('⚾ 記録完了！「成績」タブで打率を確認してみてください');
+        showToast('記録完了！「成績」タブで打率を確認してみてください');
         document.getElementById('welcome-banner')?.remove();
         const rcBanner = document.getElementById('record-complete-banner');
         if (rcBanner) rcBanner.style.display = '';
@@ -582,7 +582,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (filtered.length === 0) {
       statsTableContainer.innerHTML = `
         <div class="empty-hero">
-          <div class="empty-hero-icon">📊</div>
+          <div class="empty-hero-icon"></div>
           <div class="empty-hero-title">打席を記録すると、ここに成績が表示されます</div>
           <div class="empty-hero-preview">
             <div class="preview-stat"><span class="preview-num">.312</span><span class="preview-label">打率</span></div>
@@ -837,7 +837,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const msgStyle = `color:${color};font-size:12px;font-weight:600;margin-top:6px`;
       let msg;
       if (p.onTrack) {
-        msg = `🎉 目標打率 ${Stats.fmtAvg(p.targetAvg)} 達成中！`;
+        msg = `目標打率 ${Stats.fmtAvg(p.targetAvg)} 達成中！`;
       } else if (p.hitsNeededStreak !== undefined) {
         msg = `あと連続 ${p.hitsNeededStreak} 安打で目標打率に到達`;
       } else {
@@ -862,7 +862,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const color    = p.hitsRemaining === 0 ? '#16a34a' : '#2563eb';
       const pctWidth = p.hitsPct + '%';
       const msg = p.hitsRemaining === 0
-        ? `🎉 目標 ${p.targetHits} 安打達成！`
+        ? `目標 ${p.targetHits} 安打達成！`
         : `あと <strong>${p.hitsRemaining}</strong> 安打で目標達成`;
 
       html += `
@@ -1005,9 +1005,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     const COND_ICONS = {
-      condition: { 1: '😔', 2: '😐', 3: '😊' },
-      weather:   { sunny: '☀️', cloudy: '☁️', rainy: '🌧️' },
-      fatigue:   { 1: '💪', 2: '🙂', 3: '😴' },
+      condition: { 1: '不調', 2: '普通', 3: '好調' },
+      weather:   { sunny: '晴れ', cloudy: '曇り', rainy: '雨' },
+      fatigue:   { 1: '元気', 2: '普通', 3: '疲労' },
     };
 
     list.innerHTML = games.map(game => {
@@ -1019,7 +1019,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         game.cond.condition ? COND_ICONS.condition[game.cond.condition] : null,
         game.cond.weather   ? COND_ICONS.weather[game.cond.weather]     : null,
         game.cond.fatigue   ? COND_ICONS.fatigue[game.cond.fatigue]     : null,
-      ].filter(Boolean).join(' ');
+      ].filter(Boolean).join('・');
 
       const abBadges = game.abs.map(ab => {
         const label = RESULT_LABEL[ab.result] || ab.result;
@@ -1156,12 +1156,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const srcLabel = w.source === 'Archive' ? '過去' : w.source === 'OpenMeteo' ? '予報(市)' : '予報';
         _wxBody.innerHTML = `
           <div class="wx-card">
-            <span class="wx-emoji" role="img" aria-label="${w.desc}">${w.emoji}</span>
+            <span class="wx-emoji" role="img" aria-label="${w.desc}">${WeatherModule.icon(w.emoji)}</span>
             <div class="wx-info">
               <div class="wx-desc">${w.desc}</div>
               <div class="wx-meta">
-                <span class="wx-pop">☔ ${w.pop}</span>
-                ${w.tempMax !== '—' ? `🌡 ${w.tempMin !== '—' ? w.tempMin + '/' : ''}${w.tempMax}` : ''}
+                <span class="wx-pop">降水 ${w.pop}</span>
+                ${w.tempMax !== '—' ? `気温 ${w.tempMin !== '—' ? w.tempMin + '/' : ''}${w.tempMax}` : ''}
               </div>
             </div>
             <span class="wx-source">${srcLabel}</span>
@@ -1240,11 +1240,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const msgEl = banner?.querySelector('.pwa-banner-msg');
     const addBtn = banner?.querySelector('#pwa-banner-add');
     if (banner && msgEl) {
-      msgEl.innerHTML = '📲 <strong>ホーム画面に追加できます</strong> &nbsp;<button id="pwa-ios-steps-btn" style="background:none;border:none;color:#fff;font-size:12px;cursor:pointer;text-decoration:underline;padding:0 2px">手順を見る</button>';
+      msgEl.innerHTML = '<strong>ホーム画面に追加できます</strong> &nbsp;<button id="pwa-ios-steps-btn" style="background:none;border:none;color:#fff;font-size:12px;cursor:pointer;text-decoration:underline;padding:0 2px">手順を見る</button>';
       if (addBtn) addBtn.style.display = 'none';
       setTimeout(() => {
         document.getElementById('pwa-ios-steps-btn')?.addEventListener('click', () => {
-          if (msgEl) msgEl.innerHTML = '📲 <strong>ホーム画面に追加する方法</strong><ol style="font-size:12px;color:rgba(255,255,255,0.85);line-height:1.8;padding-left:18px;margin:4px 0 0">'+
+          if (msgEl) msgEl.innerHTML = '<strong>ホーム画面に追加する方法</strong><ol style="font-size:12px;color:rgba(255,255,255,0.85);line-height:1.8;padding-left:18px;margin:4px 0 0">'+
             '<li>Safari の画面下の <strong>共有ボタン（↑）</strong> をタップ</li>'+
             '<li><strong>「ホーム画面に追加」</strong> をタップ</li>'+
             '<li>名前を確認して <strong>「追加」</strong> をタップ</li></ol>';
@@ -1352,7 +1352,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (allAtBats.length === 0) {
       historyList.innerHTML = `
         <div class="empty-hero-history">
-          <div class="empty-hero-history-icon">📋</div>
+          <div class="empty-hero-history-icon"></div>
           <div class="empty-hero-history-title">まだ打席が記録されていません。<br>「記録」タブから最初の打席を記録してみましょう。</div>
           <a class="empty-hero-cta" href="#" onclick="document.querySelector('[data-tab=record]').click();return false;">記録タブへ →</a>
         </div>`;
@@ -1397,7 +1397,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <span class="game-date">${date}</span>
                 ${opponent ? `<span class="game-opponent">${opponent}</span>` : ''}
                 ${season   ? `<span class="game-season-tag">${season}</span>` : ''}
-                ${gameAbs[0]?.weather?.emoji ? `<span class="wx-badge" title="${gameAbs[0].weather.desc} 降水${gameAbs[0].weather.pop}">${gameAbs[0].weather.emoji} ${gameAbs[0].weather.pop}</span>` : ''}
+                ${gameAbs[0]?.weather?.emoji ? `<span class="wx-badge" title="${gameAbs[0].weather.desc} 降水${gameAbs[0].weather.pop}">${WeatherModule.icon(gameAbs[0].weather.emoji)} ${gameAbs[0].weather.pop}</span>` : ''}
               </div>
               <div class="game-summary">${summary}</div>
             </div>

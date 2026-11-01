@@ -40,6 +40,21 @@ const WeatherModule = (() => {
 
   const DAY_JA = ['日','月','火','水','木','金','土'];
 
+  // 保存データには絵文字が入っているので、表示するときだけ線画のSVGに置き換える
+  const _P = (d, extra) => `<svg class="wx-svg" viewBox="0 0 32 32" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}${extra || ''}</svg>`;
+  const _CLOUD = '<path d="M9 23h14a5 5 0 0 0 .6-9.96A7 7 0 0 0 10 12.5 5.3 5.3 0 0 0 9 23z"/>';
+  const _SUN = '<circle cx="16" cy="16" r="5" stroke="#E69500"/><path stroke="#E69500" d="M16 4v3M16 25v3M4 16h3M25 16h3M7.5 7.5l2 2M22.5 22.5l2 2M7.5 24.5l2-2M22.5 9.5l2-2"/>';
+  const ICONS = {
+    '☀️': _P(_SUN),
+    '⛅': _P('<circle cx="12" cy="11" r="4" stroke="#E69500"/><path stroke="#E69500" d="M12 3v2M4 11h2M6.3 5.3l1.4 1.4"/><path d="M12 26h12a4.2 4.2 0 0 0 .5-8.4A6 6 0 0 0 13 17.2 4.5 4.5 0 0 0 12 26z"/>'),
+    '☁️': _P(_CLOUD),
+    '🌫️': _P('<path d="M6 11h20M4 16h24M7 21h18M10 26h12"/>'),
+    '🌧️': _P(_CLOUD.replace('23h','18h').replace('a5 5 0 0 0 .6-9.96','a5 5 0 0 0 .6-9.96'), '<path stroke="#2B7FC4" d="M11 23l-1.5 4M17 23l-1.5 4M23 23l-1.5 4"/>'),
+    '❄️': _P('<path d="M16 4v24M5.6 10l20.8 12M5.6 22l20.8-12"/>'),
+    '⛈️': _P(_CLOUD.replace('23h','18h'), '<path stroke="#E69500" d="M17 19l-4 5h5l-3 5"/>'),
+  };
+  function icon(emoji) { return ICONS[emoji] || ''; }
+
   function jmaEmoji(code) {
     const c = parseInt(code, 10);
     if (c >= 400) return '❄️';
@@ -312,6 +327,7 @@ const WeatherModule = (() => {
     getWeather, forecast3Day, getCacheHistory,
     getSavedPref, savePref,
     isPast, dateLabel, PREFS,
+    icon,
     geocodeCity, fromOpenMeteoForecast, searchCityForecast, getCityWeatherForDate,
   };
 })();

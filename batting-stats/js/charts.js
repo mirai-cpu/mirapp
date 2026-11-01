@@ -1,6 +1,7 @@
 // charts.js - Dashboard chart rendering
 
 const Charts = (() => {
+  const _cv = (n, d) => getComputedStyle(document.documentElement).getPropertyValue(n).trim() || d;
   let _barChart   = null;
   let _trendChart = null;
   let _radarChart = null;
@@ -37,12 +38,12 @@ const Charts = (() => {
     const outNoK  = counts.out - kCount;
 
     const segments = [
-      { label: I18n.t('chart.segHit'),     value: counts.hit - hrCount, color: '#16a34a' },
-      { label: I18n.t('chart.segHr'),      value: hrCount,              color: '#f59e0b' },
-      { label: I18n.t('chart.segOut'),     value: outNoK,               color: '#9ca3af' },
-      { label: I18n.t('chart.segWalk'),    value: counts.walk,          color: '#2563eb' },
-      { label: I18n.t('chart.segK'),       value: kCount,               color: '#f87171' },
-      { label: I18n.t('chart.segSpecial'), value: counts.special,       color: '#d97706' },
+      { label: I18n.t('chart.segHit'),     value: counts.hit - hrCount, color: '#1E6B38' },
+      { label: I18n.t('chart.segHr'),      value: hrCount,              color: '#C99A00' },
+      { label: I18n.t('chart.segOut'),     value: outNoK,               color: '#8A8480' },
+      { label: I18n.t('chart.segWalk'),    value: counts.walk,          color: '#2B7FC4' },
+      { label: I18n.t('chart.segK'),       value: kCount,               color: '#D64545' },
+      { label: I18n.t('chart.segSpecial'), value: counts.special,       color: '#8A5A00' },
     ].filter(s => s.value > 0);
 
     _barChart = new Chart(canvas, {
@@ -210,7 +211,7 @@ const Charts = (() => {
           {
             label: 'AVG',
             data: games.map(g => g.avg),
-            borderColor: '#2563eb',
+            borderColor: '#2B7FC4',
             backgroundColor: 'transparent',
             borderWidth: 2,
             pointRadius: 4,
@@ -222,7 +223,7 @@ const Charts = (() => {
           {
             label: 'OPS',
             data: games.map(g => g.ops),
-            borderColor: '#d97706',
+            borderColor: '#8A5A00',
             backgroundColor: 'transparent',
             borderWidth: 2,
             pointRadius: 4,
@@ -235,7 +236,7 @@ const Charts = (() => {
           {
             label: '.250',
             data: Array(games.length).fill(0.250),
-            borderColor: '#9ca3af',
+            borderColor: '#8A8480',
             borderDash: [4, 4],
             borderWidth: 1,
             pointRadius: 0,
@@ -245,8 +246,8 @@ const Charts = (() => {
           {
             label: '移動平均(5)',
             data: movAvgData,
-            borderColor: '#16a34a',
-            backgroundColor: 'rgba(22,163,74,0.08)',
+            borderColor: '#1E6B38',
+            backgroundColor: 'rgba(30,107,56,0.08)',
             borderWidth: 2,
             pointRadius: 0,
             tension: 0.4,
@@ -257,7 +258,7 @@ const Charts = (() => {
           {
             label: '目標',
             data: showTarget ? Array(games.length).fill(targetVal) : [],
-            borderColor: '#ef4444',
+            borderColor: '#D64545',
             borderDash: [6, 3],
             borderWidth: 1.5,
             pointRadius: 0,
@@ -291,7 +292,7 @@ const Charts = (() => {
         scales: {
           x: {
             ticks: { font: { size: 11 } },
-            title: { display: true, text: I18n.t('trend.xAxis'), font: { size: 11 }, color: '#71717a' },
+            title: { display: true, text: I18n.t('trend.xAxis'), font: { size: 11 }, color: _cv('--muted', '#71717a') },
           },
           yAvg: {
             type: 'linear',
@@ -335,11 +336,11 @@ const Charts = (() => {
         labels: [I18n.t('diag.axisPower'), I18n.t('diag.axisMeet'), I18n.t('diag.axisEye')],
         datasets: [{
           data: [diag.power, diag.meet, diag.eye],
-          backgroundColor: 'rgba(37,99,235,0.15)',
-          borderColor: '#2563eb',
+          backgroundColor: 'rgba(43,127,196,0.15)',
+          borderColor: '#2B7FC4',
           borderWidth: 2,
           pointRadius: 5,
-          pointBackgroundColor: '#2563eb',
+          pointBackgroundColor: '#2B7FC4',
         }],
       },
       options: {
@@ -351,9 +352,9 @@ const Charts = (() => {
           r: {
             min: 0, max: 1,
             ticks: { display: false, stepSize: 0.25 },
-            pointLabels: { font: { size: 13, weight: '600' }, color: '#3f3f46' },
-            grid:      { color: 'rgba(0,0,0,0.08)' },
-            angleLines: { color: 'rgba(0,0,0,0.08)' },
+            pointLabels: { font: { size: 13, weight: '600' }, color: _cv('--text', '#3f3f46') },
+            grid:      { color: _cv('--border', 'rgba(0,0,0,0.08)') },
+            angleLines: { color: _cv('--border', 'rgba(0,0,0,0.08)') },
           },
         },
       },
