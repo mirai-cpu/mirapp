@@ -7,150 +7,60 @@
   <meta name="description" content="MARGINALIA（マルジナリア）の使い方ガイド。メモ投稿・ToDoビュー・カレンダー・バッジ収集・統計まで、書くだけでレベルアップする体験を完全解説します。">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://somirai.jp/write/guide.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=DotGothic16&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/tokens.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: system-ui, -apple-system, 'Hiragino Sans', sans-serif;
-      font-size: 15px;
-      line-height: 1.8;
-      color: #1a1410;
-      background: #f8f6f3;
-      padding: 24px 16px 80px;
-      max-width: 720px;
-      margin: 0 auto;
-    }
-    a { color: #f97316; }
-    .back {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 32px;
-      font-size: 13px;
-      color: #f97316;
-      text-decoration: none;
-      padding: 6px 14px;
-      border: 1px solid #e0dbd4;
-      border-radius: 20px;
-      transition: background 0.2s;
-    }
-    .back:hover { background: rgba(249,115,22,0.08); }
-    .hero {
-      text-align: center;
-      margin-bottom: 48px;
-      padding: 40px 20px;
-      border: 1px solid #e0dbd4;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #fff8f5 0%, #f8f6f3 100%);
-    }
-    .hero-icon { font-size: 48px; margin-bottom: 12px; }
-    .hero-title {
-      font-family: 'Georgia', serif;
-      font-size: 36px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      color: #f97316;
-      text-shadow: 0 0 20px rgba(249,115,22,0.2);
-      margin-bottom: 4px;
-      margin-top: 0;
-    }
-    .hero-sub {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #9c8c7e;
-      margin-bottom: 16px;
-    }
-    .hero-desc { font-size: 14px; color: #6b5e52; line-height: 1.7; max-width: 500px; margin: 0 auto; }
-    h2 {
-      font-size: 18px;
-      font-weight: 700;
-      color: #f97316;
-      margin: 40px 0 16px;
-      padding-left: 12px;
-      border-left: 3px solid #f97316;
-    }
-    h3 { font-size: 15px; font-weight: 700; color: #1a1410; margin: 24px 0 10px; }
-    p { color: #6b5e52; margin-bottom: 12px; }
+    body { max-width: 640px; margin: 0 auto; padding: 20px 20px 72px; font-size: 1rem; line-height: 1.85; }
+    a { text-underline-offset: 3px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+    .back { display: inline-flex; align-items: center; min-height: 48px; font-weight: 700; font-size: .9375rem; color: var(--ink); }
+    .hero { padding: 16px 0 20px; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); margin-bottom: 8px; }
+    .hero-title { font-size: 1.6rem; line-height: 1.3; font-weight: 700; margin: 0 0 2px; }
+    .hero-sub { font-size: .9375rem; font-weight: 700; color: var(--ink-sec); margin-bottom: 10px; }
+    .hero-desc { font-size: .9375rem; color: var(--ink-sec); margin: 0; }
+    h2 { font-size: 1.2rem; line-height: 1.5; font-weight: 700; margin: 40px 0 12px; padding-left: 12px; border-left: 5px solid var(--liner); }
+    h3 { font-size: 1rem; font-weight: 700; margin: 20px 0 6px; }
+    p { color: var(--ink-sec); font-size: .9375rem; margin-bottom: 12px; }
     .step-list { list-style: none; margin-bottom: 20px; }
-    .step-list li {
-      display: flex;
-      gap: 14px;
-      margin-bottom: 14px;
-      padding: 14px 16px;
-      background: #ffffff;
-      border: 1px solid #e0dbd4;
-      border-radius: 12px;
-    }
-    .step-num {
-      flex-shrink: 0;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #f97316;
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .step-body { flex: 1; }
-    .step-title { font-weight: 700; color: #1a1410; margin-bottom: 4px; font-size: 14px; }
-    .step-desc { color: #9c8c7e; font-size: 13px; line-height: 1.6; }
-    .feature-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-    @media (max-width: 500px) { .feature-grid { grid-template-columns: 1fr; } }
-    .feature-card {
-      padding: 16px;
-      background: #ffffff;
-      border: 1px solid #e0dbd4;
-      border-radius: 12px;
-    }
-    .feature-icon { font-size: 22px; margin-bottom: 6px; }
-    .feature-name { font-size: 13px; font-weight: 700; color: #1a1410; margin-bottom: 4px; }
-    .feature-desc { font-size: 12px; color: #9c8c7e; line-height: 1.5; }
-    .faq-item {
-      margin-bottom: 16px;
-      border: 1px solid #e0dbd4;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .faq-q { padding: 14px 16px; background: #ffffff; font-weight: 700; font-size: 14px; color: #1a1410; }
-    .faq-q::before { content: "Q. "; color: #f97316; }
-    .faq-a { padding: 12px 16px; font-size: 13px; color: #9c8c7e; line-height: 1.7; border-top: 1px solid #e0dbd4; background: #f1ede8; }
-    .faq-a::before { content: "A. "; color: #9c8c7e; font-weight: 700; }
-    .tip-box {
-      padding: 16px 18px;
-      background: rgba(249,115,22,0.06);
-      border: 1px solid rgba(249,115,22,0.2);
-      border-radius: 12px;
-      margin: 20px 0;
-      font-size: 13px;
-      color: #6b5e52;
-      line-height: 1.7;
-    }
-    .tip-box strong { color: #f97316; }
-    .footer-nav {
-      margin-top: 48px;
-      padding-top: 24px;
-      border-top: 1px solid #e0dbd4;
-      text-align: center;
-      font-size: 12px;
-      color: #9c8c7e;
-    }
-    .footer-nav a { color: #9c8c7e; margin: 0 8px; }
+    .step-list li { display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid var(--rule); }
+    .step-num { flex: 0 0 32px; height: 32px; background: var(--ink); color: var(--bg); font-size: .9375rem; font-weight: 700; display: flex; align-items: center; justify-content: center; border-radius: 4px; }
+    .step-title { font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+    .step-desc { color: var(--ink-sec); font-size: .9375rem; line-height: 1.8; }
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; margin-bottom: 20px; }
+    @media (max-width: 520px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature-card { padding: 12px 0; border-top: 1px solid var(--rule); }
+    .feature-icon { display: none; }
+    .feature-name { font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+    .feature-desc { font-size: .9375rem; color: var(--ink-sec); line-height: 1.75; }
+    .pos-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border-top: 2px solid var(--ink); margin-bottom: 20px; }
+    @media (max-width: 480px) { .pos-grid { grid-template-columns: repeat(2, 1fr); } }
+    .pos-card { padding: 10px 6px; border-bottom: 1px solid var(--rule); font-size: .9375rem; color: var(--ink); }
+    .pos-abbr { font-family: var(--board); color: var(--ink); font-weight: 700; margin-right: 6px; }
+    .stat-table, .category-table { width: 100%; border-collapse: collapse; font-size: .9375rem; margin-bottom: 20px; }
+    .stat-table th, .category-table th { text-align: left; padding: 8px 8px 8px 0; border-bottom: 2px solid var(--ink); font-size: .875rem; color: var(--ink-sec); }
+    .stat-table td, .category-table td { padding: 10px 8px 10px 0; border-bottom: 1px solid var(--rule); color: var(--ink); vertical-align: top; }
+    .faq-item { border-top: 1px solid var(--rule); padding: 12px 0 4px; }
+    .faq-q { font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .faq-q::before { content: "Q. "; color: var(--ink-sec); }
+    .faq-a { font-size: .9375rem; color: var(--ink-sec); line-height: 1.8; margin-bottom: 8px; }
+    .faq-a::before { content: "A. "; font-weight: 700; }
+    .tip-box { border-left: 5px solid var(--liner); padding: 6px 0 6px 14px; margin: 20px 0; font-size: .9375rem; color: var(--ink-sec); line-height: 1.8; }
+    .tip-box strong { color: var(--ink); }
+    strong { color: var(--ink); }
+    .footer-nav { margin-top: 40px; padding-top: 16px; border-top: 2px solid var(--ink); font-size: .875rem; color: var(--ink-sec); }
+    .footer-nav a { color: var(--ink-sec); }
   </style>
 </head>
 <body>
 
-  <a href="/write/" class="back">← MARGINALIA に戻る</a>
+  <div class="topbar">
+    <a href="/write/" class="back">← MARGINALIA に戻る</a>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
+  </div>
 
   <div class="hero">
-    <div class="hero-icon">✏️</div>
     <h1 class="hero-title">MARGINALIA</h1>
     <div class="hero-sub">メモアプリ — 使い方ガイド</div>
     <p class="hero-desc">書くだけでレベルアップするメモアプリ。メモ・日記・ToDoを自由に投稿して、連続記録やバッジ収集でモチベーションを維持できます。登録不要・完全無料。</p>
@@ -193,42 +103,34 @@
 
   <div class="feature-grid">
     <div class="feature-card">
-      <div class="feature-icon">✏️</div>
       <div class="feature-name">メモ・日記・ToDo投稿</div>
       <div class="feature-desc">テキストを自由に投稿。日記・アイデアメモ・やることリストなど何でも書けます。</div>
     </div>
     <div class="feature-card">
-      <div class="feature-icon">📋</div>
       <div class="feature-name">ToDoビュー</div>
       <div class="feature-desc">投稿内のチェックリスト形式のテキストを一覧表示。タップしてチェック完了できます。</div>
     </div>
     <div class="feature-card">
-      <div class="feature-icon">📅</div>
       <div class="feature-name">カレンダービュー</div>
       <div class="feature-desc">日付ごとの投稿をカレンダー形式で確認。書いた日が一目でわかります。</div>
     </div>
     <div class="feature-card">
-      <div class="feature-icon">🔥</div>
       <div class="feature-name">連続記録（ストリーク）</div>
       <div class="feature-desc">毎日書き続けると連続記録が伸びます。途切れないように書く習慣が自然と身につきます。</div>
     </div>
     <div class="feature-card">
-      <div class="feature-icon">⚡</div>
       <div class="feature-name">XP・レベルアップ</div>
       <div class="feature-desc">書くたびに経験値を獲得。レベルが上がるとランク称号が変わっていきます。</div>
     </div>
     <div class="feature-card">
-      <div class="feature-icon">🏆</div>
       <div class="feature-name">バッジ25種収集</div>
       <div class="feature-desc">投稿数・連続日数・文字数などの条件を達成するとバッジが解除されます。</div>
     </div>
     <div class="feature-card">
-      <div class="feature-icon">📊</div>
       <div class="feature-name">統計ビュー</div>
       <div class="feature-desc">累計投稿数・文字数・連続日数をグラフで確認。書く習慣の成長が見えます。</div>
     </div>
     <div class="feature-card">
-      <div class="feature-icon">🔒</div>
       <div class="feature-name">プライベート保存</div>
       <div class="feature-desc">データはすべてブラウザ内に保存。外部サーバーへの送信なし・完全無料。</div>
     </div>
@@ -272,5 +174,7 @@
     </p>
   </div>
 
+<script src="/shared/tool.js"></script>
+<script>Tool.initTheme();</script>
 </body>
 </html>
