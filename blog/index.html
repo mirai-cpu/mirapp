@@ -87,6 +87,8 @@
       .page-heading { font-size: 1.5rem; }
     }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/article.css">
 </head>
 <body>
 
@@ -97,6 +99,7 @@
     <a href="/blog/" class="active">ブログ</a>
     <a href="https://somirai.jp/about.html">About</a>
   </nav>
+  <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
 </header>
 
 <main class="page-wrapper">
@@ -261,5 +264,7 @@
   <p>&#169; 2026 Somirai Lab</p>
 </footer>
 
+<script src="/shared/tool.js"></script>
+<script>Tool.initTheme();</script>
 </body>
 </html>

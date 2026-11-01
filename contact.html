@@ -8,8 +8,7 @@
   <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#ff6428">
-  <link rel="canonical" href="https://somirai.jp/contact.html">
+    <link rel="canonical" href="https://somirai.jp/contact.html">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://somirai.jp/contact.html">
   <meta property="og:title" content="お問い合わせ — Somirai Lab">
@@ -326,6 +325,8 @@
       .cta-card-footer { padding: 20px 24px 24px; }
     }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/article.css">
 </head>
 <body>
 
@@ -353,6 +354,7 @@
       <a href="/#tools">ツール</a>
       <a href="/about.html">About</a>
       <a href="/privacy.html">プライバシー</a>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
     </div>
   </nav>
 
@@ -481,16 +483,8 @@
     </div>
   </footer>
 
-  <script>
-    (function(){
-      if(localStorage.getItem('cookie_ok')) return;
-      var b = document.createElement('div');
-      b.id = 'ck-banner';
-      b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#111114;color:#9898a8;font-size:12px;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9999;border-top:1px solid #222228;font-family:system-ui,sans-serif';
-      b.innerHTML = '<span>本サイトはGoogle AdSense・Google AnalyticsのためにCookieを使用しています。詳細は<a href="/privacy.html" style="color:#ff6428">プライバシーポリシー</a>をご覧ください。</span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:#ff6428;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0">OK</button>';
-      document.body.appendChild(b);
-    })();
-  </script>
 
+<script src="/shared/tool.js"></script>
+<script>Tool.initTheme(); Tool.initCookie();</script>
 </body>
 </html>

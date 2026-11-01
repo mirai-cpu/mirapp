@@ -1,0 +1,102 @@
+/* article.css — ブログ・固定ページ(about/contact/privacy)を「ライン引き」に寄せる上書き用スタイル
+   各ページのインラインCSSのあとに読み込む。色の変数を差し替え、光彩・角丸・大文字ラベルをなくす。 */
+:root {
+  --bg: #F5F7F6; --surface: #F5F7F6; --surface2: #F5F7F6;
+  --border: #C9D1CD; --border2: #C9D1CD;
+  --text: #2B2420; --text-sec: #5B534D; --text-mut: #5B534D;
+  --accent: #1E6B38; --accent-soft: transparent;
+  --radius: 4px;
+  --liner: #F5C400;
+  --btn-bg: #1E6B38; --btn-ink: #FFFFFF;
+  --ok-bg: #E4F2E9;
+}
+:root[data-theme="dark"] {
+  --bg: #2B2420; --surface: #2B2420; --surface2: #2B2420;
+  --border: #4B403A; --border2: #4B403A;
+  --text: #F5F7F6; --text-sec: #B9B1AA; --text-mut: #B9B1AA;
+  --accent: #6FD39A; --btn-bg: #3AA860; --btn-ink: #14110F; --ok-bg: #1F3A2A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #2B2420; --surface: #2B2420; --surface2: #2B2420;
+    --border: #4B403A; --border2: #4B403A;
+    --text: #F5F7F6; --text-sec: #B9B1AA; --text-mut: #B9B1AA;
+    --accent: #6FD39A; --btn-bg: #3AA860; --btn-ink: #14110F; --ok-bg: #1F3A2A;
+  }
+}
+body { font-family: 'BIZ UDPGothic', 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); }
+:focus-visible { outline: 3px solid var(--liner); outline-offset: 2px; }
+.theme-btn { min-height: 44px; padding: 0 12px; background: transparent; color: var(--text); border: 2px solid var(--text); border-radius: 4px; font: inherit; font-size: .8125rem; font-weight: 700; cursor: pointer; margin-left: 12px; white-space: nowrap; }
+
+/* ヘッダー・フッター: 面ではなく太い罫線で区切る */
+.site-header, .site-footer { background: var(--bg); }
+.site-header { border-bottom: 2px solid var(--text); }
+.site-footer { border-top: 2px solid var(--text); }
+.site-logo { font-size: 1.05rem; }
+.site-logo span { color: var(--text); }
+.header-nav a:hover, .site-footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.breadcrumb a:hover { color: var(--text); }
+
+/* 記事の見出し周り */
+.article-header { border-bottom: 2px solid var(--text); }
+.article-category { background: none; border: 0; border-left: 5px solid var(--liner); border-radius: 0; color: var(--text); letter-spacing: 0; text-transform: none; font-size: .875rem; padding: 2px 0 2px 10px; }
+.article-body h2 { border-left: 5px solid var(--liner); }
+.article-body ul li::before { border-radius: 0; width: 8px; height: 3px; top: 1.05em; background: var(--text); }
+.article-body ol li::before { background: var(--text); color: var(--bg); border-radius: 4px; width: 22px; height: 22px; font-size: .75rem; }
+.article-body a { color: var(--accent); text-underline-offset: 3px; }
+
+/* 囲み: カードではなく左の線 */
+.point-box, .highlight-box, .tool-card, .trap-card, .trouble-card, .order-card, .related-article, .tool-link, .phil-card {
+  background: transparent; border: 0; border-left: 5px solid var(--liner); border-radius: 0; box-shadow: none;
+}
+.point-box .box-label, .trouble-card .label, .trap-card .trap-label { color: var(--text); letter-spacing: 0; text-transform: none; font-size: .875rem; }
+.tool-icon, .related-article-icon { display: none; }
+.tool-badge { background: none; border: 2px solid var(--accent); color: var(--accent); border-radius: 4px; }
+.tool-feature { background: transparent; border: 0; border-top: 1px solid var(--border); border-radius: 0; padding: 10px 0; }
+.related-article:hover, .tool-link:hover { border-left-color: var(--accent); background: transparent; }
+
+/* ボタン */
+.cta-btn { background: var(--btn-bg); color: var(--btn-ink); border-radius: 4px; min-height: 48px; padding: 0 24px; box-shadow: none; }
+
+/* 手順の番号: 丸ではなく四角 */
+.step-list li::before { background: var(--text); color: var(--bg); border-radius: 4px; }
+.step-list li::after { background: var(--border); }
+
+/* 表 */
+.compare-table { border-radius: 0; }
+.compare-table th { background: transparent; color: var(--text); border-bottom: 2px solid var(--text); }
+.compare-table td { background: transparent; border-color: var(--border); }
+.compare-table td.good { color: var(--accent); font-weight: 700; }
+.compare-table td.bad { color: var(--text-sec); }
+.compare-table tr:first-child th:first-child, .compare-table tr:first-child th:last-child { border-radius: 0; }
+
+/* FAQ・目次・失敗例 */
+.faq-item, .failure-item { background: transparent; border-radius: 0; box-shadow: none; }
+.toc { background: transparent; border: 0; border-top: 2px solid var(--text); border-bottom: 1px solid var(--border); border-radius: 0; }
+.toc-title { color: var(--text); letter-spacing: 0; text-transform: none; }
+.toc ol li::before { background: none; color: var(--text); border-radius: 0; }
+.toc a:hover { color: var(--text); text-decoration: underline; }
+
+/* 固定ページ(about/contact/privacy): 光彩・大文字ラベル・装飾をやめる */
+.page-header::before, .page-header::after, .page-eyebrow::before { display: none !important; }
+.page-eyebrow { color: var(--text-sec); letter-spacing: 0; text-transform: none; font-family: inherit; }
+.page-h1 em { color: var(--text); font-style: normal; background: linear-gradient(transparent 62%, var(--liner) 62%); }
+.section-num { color: var(--text); font-family: inherit; }
+.section-h2::after { background: var(--text); }
+.nav-logo-mark { border-radius: 4px; }
+.nav-right a:hover { color: var(--text); }
+.info-row, .tool-item, .order-card { background: transparent; border-radius: 0; }
+.order-tag { border-radius: 4px; background: transparent; }
+.order-num { border-radius: 4px; box-shadow: none; }
+
+/* 固定ページ用の別名変数と背景の装飾 */
+:root { --textSec: var(--text-sec); --textMut: var(--text-sec); --accentDim: transparent; --mono: 'BIZ UDPGothic', 'Hiragino Sans', sans-serif; }
+body::before, body::after { display: none !important; }
+body > nav:not(.breadcrumb) { background: var(--bg); backdrop-filter: none; -webkit-backdrop-filter: none; border-bottom: 2px solid var(--text); }
+footer { background: var(--bg); border-top: 2px solid var(--text); }
+h1, h2, h3 { font-family: inherit; }
+.section-num, .page-eyebrow { display: none; }
+.article-card, .cat-card { background: transparent; border: 0; border-top: 1px solid var(--border); border-radius: 0; box-shadow: none; }
+.article-card:hover, .cat-card:hover { background: transparent; border-top-color: var(--text); transform: none; }
+.card-category { background: none; padding: 0; letter-spacing: 0; text-transform: none; color: var(--text-sec); }
+.cat-card-icon, .cta-card-eyebrow { display: none; }
