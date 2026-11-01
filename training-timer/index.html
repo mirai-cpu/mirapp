@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" data-tint="clay">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +29,7 @@
   .inning-plate { width: 168px; height: 150px; margin: 18px auto 0; }
   .inning-plate .n { font-size: 2.6rem; line-height: 1.1; font-weight: 700; }
   .inning-plate .l { font-size: .9rem; }
-  .clock { margin-top: 14px; background: #14110F; border-radius: 4px; padding: 16px 12px 14px; text-align: center; }
+  .clock { margin-top: 14px; background: #14110F; border-radius: var(--r); padding: 16px 12px 14px; text-align: center; }
   .clock .phase { font-family: var(--board); color: #F5F7F6; font-size: 1.1rem; }
   .clock .sec { font-family: var(--board); color: var(--liner); font-size: 6.4rem; line-height: 1.1; }
   .clock.rest .sec { color: var(--sky); }
@@ -45,7 +45,7 @@
   .sb td.cur { color: var(--ink); background: var(--liner); }
   .sb td.pend { color: var(--rule); }
   .ctl { display: flex; gap: 8px; margin-top: 18px; }
-  .ctl button { flex: 1; min-height: 56px; border: 2px solid var(--ink); border-radius: 4px; background: none; font-weight: 700; font-size: 1.05rem; }
+  .ctl button { flex: 1; min-height: 56px; border: 2px solid var(--ink); border-radius: var(--r); background: none; font-weight: 700; font-size: 1.05rem; }
   .ctl .main { background: var(--btn-bg); border-color: var(--btn-bg); color: var(--btn-ink); flex: 2; }
   .est { margin-top: 12px; font-weight: 700; }
   .check { display: flex; align-items: center; gap: 10px; min-height: 48px; margin-top: 4px; }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" data-tint="leather">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -38,7 +38,7 @@
     @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --real: #6FD39A; --loss: #FF8A8A; --nominal: #B9B1AA; --caution: #F5C400; } }
     .wrap { max-width: 640px; }
     .head h1 { font-size: 1.5rem; }
-    .kura-import-btn { width: 100%; min-height: 48px; display: flex; align-items: center; gap: 10px; padding: 0 14px; background: none; border: 2px solid var(--ink); border-radius: 4px; font-weight: 700; font-size: .9375rem; margin-top: 16px; }
+    .kura-import-btn { width: 100%; min-height: 48px; display: flex; align-items: center; gap: 10px; padding: 0 14px; background: none; border: 2px solid var(--ink); border-radius: var(--r); font-weight: 700; font-size: .9375rem; margin-top: 16px; }
     .kura-import-status { font-size: .875rem; color: var(--ink-sec); min-height: 22px; margin: 6px 0 0; }
     .kura-import-status.ok { color: var(--real); font-weight: 700; }
 
@@ -54,9 +54,9 @@
     input[type="range"]::-moz-range-thumb { width: 18px; height: 26px; background: var(--liner); border: 2px solid var(--ink); border-radius: 2px; }
     .amount-input-wrap { position: relative; }
     .amount-prefix { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1.1rem; font-weight: 700; color: var(--ink-sec); pointer-events: none; }
-    input[type="number"].amount-field { width: 100%; min-height: 52px; padding: 8px 12px 8px 30px; background: transparent; color: var(--ink); border: 2px solid var(--ink); border-radius: 4px; font: inherit; font-size: 1.15rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+    input[type="number"].amount-field { width: 100%; min-height: 52px; padding: 8px 12px 8px 30px; background: transparent; color: var(--ink); border: 2px solid var(--ink); border-radius: var(--r); font: inherit; font-size: 1.15rem; font-weight: 700; font-variant-numeric: tabular-nums; }
     input[type="number"].amount-field::-webkit-inner-spin-button, input[type="number"].amount-field::-webkit-outer-spin-button { -webkit-appearance: none; }
-    .calc-btn { width: 100%; min-height: 56px; margin-top: 4px; background: var(--btn-bg); color: var(--btn-ink); border: 0; border-radius: 4px; font-weight: 700; font-size: 1.05rem; }
+    .calc-btn { width: 100%; min-height: 56px; margin-top: 4px; background: var(--btn-bg); color: var(--btn-ink); border: 0; border-radius: var(--r); font-weight: 700; font-size: 1.05rem; }
 
     .result-summary, .chart-wrap, .milestone-wrap { display: none; margin-bottom: 24px; }
     .result-summary.show, .chart-wrap.show, .milestone-wrap.show { display: block; }
@@ -70,7 +70,7 @@
     .result-card-value.loss { color: var(--loss); }
     .result-card-sub { font-size: .8125rem; color: var(--ink-sec); margin-top: 2px; }
     /* 実質購買力だけを電光掲示板風に見せる(このページの主役) */
-    .board { margin-bottom: 14px; padding: 16px 16px 14px; background: #14110F; border-radius: 4px; text-align: center; }
+    .board { margin-bottom: 14px; padding: 16px 16px 14px; background: #14110F; border-radius: var(--r); text-align: center; }
     .board-label { font-size: .875rem; color: #D5D9DD; }
     .board-value { font-family: var(--board); font-size: 3rem; line-height: 1.25; color: var(--liner); word-break: keep-all; }
     .board-note { font-size: .875rem; color: #B9B1AA; margin-top: 2px; }

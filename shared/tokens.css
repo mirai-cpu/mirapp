@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&display=swap');
 /* ライン引き — 共通トークン(見本)
    黒土・石灰・芝・空・ラインカーの黄。線は情報を持つものにだけ使う。 */
 :root {
@@ -8,6 +9,7 @@
   --sky: #8CC8F0;
   --liner: #F5C400;
   --alert: #D64545;
+  --r: 12px;
 
   --bg: var(--chalk);
   --ink: var(--dirt);
@@ -19,6 +21,9 @@
   --btn-ink: #FFFFFF;
 
   --body: 'BIZ UDPGothic', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+  --round: 'Zen Maru Gothic', 'BIZ UDPGothic', 'Hiragino Maru Gothic ProN', sans-serif;
+  --tint: #2F7F4A;
+  --tint-deep: #226038;
   --board: 'DotGothic16', 'BIZ UDPGothic', monospace;
 }
 :root[data-theme="dark"] {
@@ -59,7 +64,41 @@ a { color: inherit; }
 .topbar .sub { font-size: .875rem; color: var(--ink-sec); }
 .theme-btn {
   min-height: 48px; min-width: 48px; padding: 0 14px;
-  background: transparent; border: 2px solid var(--ink); border-radius: 4px;
+  background: transparent; border: 2px solid var(--ink); border-radius: var(--r);
   font-size: .875rem; font-weight: 700;
 }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* ---- ベースボールの色(ツールごとの色 / 丸ゴシックの題字 / 芝刈りのしま) ---- */
+[data-tint="red"]     { --tint: #B8322A; }  /* 縫い目 */
+[data-tint="teal"]    { --tint: #1F7A74; }
+[data-tint="leather"] { --tint: #7F5A33; }  /* グラブの革 */
+[data-tint="gold"]    { --tint: #96700A; }
+[data-tint="navy"]    { --tint: #2F4B82; }  /* ナイター */
+[data-tint="purple"]  { --tint: #6A4C93; }
+[data-tint="orange"]  { --tint: #C9501F; }  /* 夕焼け */
+[data-tint="turf"]    { --tint: #2F7F4A; }  /* 芝 */
+[data-tint="clay"]    { --tint: #B5592A; }  /* 内野の土 */
+[data-tint="sky"]     { --tint: #2A6FA8; }
+[data-tint] {
+  --tint-deep: color-mix(in srgb, var(--tint) 82%, #000);
+  --btn-bg: var(--tint);
+  --btn-ink: #fff;
+  --ball: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23FBFAF6'/%3E%3Cpath d='M9 6c5 4 7 9 7 14s-2 10-7 14M31 6c-5 4-7 9-7 14s2 10 7 14' fill='none' stroke='%23D2382F' stroke-width='2' stroke-linecap='round' stroke-dasharray='1.6 3.4'/%3E%3C/svg%3E");
+}
+:root[data-theme="dark"][data-tint] { --btn-bg: color-mix(in srgb, var(--tint) 62%, #fff); --btn-ink: #14110F; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"])[data-tint] { --btn-bg: color-mix(in srgb, var(--tint) 62%, #fff); --btn-ink: #14110F; } }
+
+/* 題字: 芝刈りのしまの帯に、まるいゴシック。右端にボール */
+[data-tint] .head h1, [data-tint] main > h1, [data-tint] .app-title {
+  font-family: var(--round); font-weight: 900; letter-spacing: .02em; color: #fff;
+  padding: 14px 64px 14px 18px; margin-bottom: 10px; border-radius: var(--r);
+  background:
+    var(--ball) no-repeat right 14px center / 38px 38px,
+    repeating-linear-gradient(90deg, var(--tint) 0 30px, var(--tint-deep) 30px 60px);
+  outline: 2px solid rgba(255,255,255,.55); outline-offset: -7px;
+}
+[data-tint] .app-hero { padding-top: 14px; }
+/* 計算機の入力と答え: 上の罫線をツールの色に */
+[data-tint] .calc-card, [data-tint] .multi-card { border-top-color: var(--tint); border-top-width: 5px; }
+[data-tint] h2 { font-family: var(--round); }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" data-tint="orange">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,7 +38,7 @@
     form label { display: block; font-size: .875rem; color: var(--ink-sec); margin-bottom: 4px; font-weight: 700; }
     form select, form input[type="text"], form input[type="date"], form input[type="time"], form input[type="number"] {
       width: 100%; min-height: 52px; background: transparent; color: var(--ink); border: 2px solid var(--ink);
-      border-radius: 4px; padding: 8px 12px; font: inherit; font-size: 1rem; color-scheme: light dark;
+      border-radius: var(--r); padding: 8px 12px; font: inherit; font-size: 1rem; color-scheme: light dark;
     }
     form select:focus-visible, form input:focus-visible { outline: 3px solid var(--liner); outline-offset: 2px; }
     .loc-row { display: flex; gap: 8px; }
@@ -47,8 +47,8 @@
     .loc-status { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
     .place-now { font-size: .9375rem; color: var(--ink-sec); }
     .place-now b { color: var(--ink); }
-    .btn-ghost { background: transparent; color: var(--ink); border: 2px solid var(--ink); border-radius: 4px; min-height: 48px; padding: 0 16px; font: inherit; font-size: .9375rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
-    .go { grid-column: 1 / -1; background: var(--btn-bg); color: var(--btn-ink); border: 0; border-radius: 4px; min-height: 56px; font: inherit; font-weight: 700; font-size: 1.05rem; cursor: pointer; }
+    .btn-ghost { background: transparent; color: var(--ink); border: 2px solid var(--ink); border-radius: var(--r); min-height: 48px; padding: 0 16px; font: inherit; font-size: .9375rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .go { grid-column: 1 / -1; background: var(--btn-bg); color: var(--btn-ink); border: 0; border-radius: var(--r); min-height: 56px; font: inherit; font-weight: 700; font-size: 1.05rem; cursor: pointer; }
     .go:hover { filter: brightness(1.08); }
     .go:disabled { opacity: .6; cursor: wait; }
 
@@ -61,13 +61,13 @@
     .verdict-sub { color: var(--ink-sec); margin-top: 4px; font-size: .9375rem; }
 
     /* 日没を、電光掲示板風の数字で */
-    .board { margin-top: 18px; background: #14110F; border-radius: 4px; padding: 14px 16px 12px; text-align: center; }
+    .board { margin-top: 18px; background: #14110F; border-radius: var(--r); padding: 14px 16px 12px; text-align: center; }
     .board .lab { color: #D5D9DD; font-size: .875rem; }
     .board .big { font-family: var(--board); color: var(--liner); font-size: 3.4rem; line-height: 1.2; }
     .board .sub { color: #B9B1AA; font-size: .875rem; }
 
     .sky-wrap { margin-top: 18px; }
-    .sky { position: relative; height: 84px; border-radius: 4px; overflow: hidden; }
+    .sky { position: relative; height: 84px; border-radius: var(--r); overflow: hidden; }
     .game { position: absolute; top: 14px; bottom: 14px; border-radius: 2px; background: rgba(20,17,15,.55); border: 2px solid rgba(255,255,255,.85); }
     .tick { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,.55); }
     .tick.over { width: 2px; background: #FF6B6B; }
@@ -83,7 +83,7 @@
     dd small { font-size: .875rem; font-weight: 400; color: var(--ink-sec); margin-left: 6px; }
 
     .hours-title { margin-top: 22px; font-size: .9375rem; font-weight: 700; }
-    .hours { margin-top: 8px; display: flex; overflow-x: auto; border: 2px solid var(--ink); border-radius: 4px; scroll-snap-type: x proximity; }
+    .hours { margin-top: 8px; display: flex; overflow-x: auto; border: 2px solid var(--ink); border-radius: var(--r); scroll-snap-type: x proximity; }
     .hour { flex: 0 0 84px; padding: 10px 4px; text-align: center; scroll-snap-align: start; }
     .hour + .hour { border-left: 1px solid var(--rule); }
     .hour.after { opacity: .5; }

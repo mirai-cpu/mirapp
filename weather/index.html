@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" data-tint="sky">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -51,7 +51,7 @@
     .page { max-width: 600px; margin: 0 auto; padding: 16px 20px 72px; }
     .nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; font-size: .875rem; font-weight: 700; }
-    .nav-logo svg { width: 24px; height: 24px; border-radius: 6px; }
+    .nav-logo svg { width: 24px; height: 24px; border-radius: var(--r); }
 
     .app-hero { padding: 20px 0 18px; }
     .app-title { font-size: clamp(1.6rem, 7vw, 2rem); line-height: 1.2; font-weight: 700; letter-spacing: .02em; }
@@ -60,12 +60,12 @@
     .selector-wrap { display: flex; gap: 8px; align-items: stretch; margin-bottom: 10px; }
     .in, .pref-select {
       flex: 1; min-width: 0; min-height: 52px; background: transparent; color: var(--ink);
-      border: 2px solid var(--ink); border-radius: 4px; padding: 8px 12px; font: inherit; font-size: 1rem;
+      border: 2px solid var(--ink); border-radius: var(--r); padding: 8px 12px; font: inherit; font-size: 1rem;
     }
     .pref-select { appearance: auto; }
     .in:focus-visible, .pref-select:focus-visible { outline: 3px solid var(--liner); outline-offset: 2px; }
     .fetch-btn {
-      min-height: 52px; padding: 0 18px; background: var(--btn-bg); color: var(--btn-ink); border: 0; border-radius: 4px;
+      min-height: 52px; padding: 0 18px; background: var(--btn-bg); color: var(--btn-ink); border: 0; border-radius: var(--r);
       font: inherit; font-size: .9375rem; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0;
     }
     .fetch-btn:hover { filter: brightness(1.08); }
@@ -84,7 +84,7 @@
     .error-msg { font-size: .9375rem; color: var(--ink); }
 
     /* 3日分: 電光掲示板のように、縦の罫線で区切る */
-    .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--ink); border-radius: 4px; margin-bottom: 18px; }
+    .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--ink); border-radius: var(--r); margin-bottom: 18px; }
     .cards-grid:empty { display: none; }
     .day-card { position: relative; padding: 16px 10px 14px; text-align: center; border-top: 6px solid var(--card-accent, var(--rule)); opacity: 0; }
     .day-card + .day-card { border-left: 1px solid var(--rule); }
@@ -135,7 +135,7 @@
     .mp-card b { display: block; }
     .mp-card small { display: block; font-size: .875rem; color: var(--ink-sec); }
     .related-wrap { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .related-card { padding: 10px 12px; border: 2px solid var(--rule); border-radius: 4px; text-decoration: none; color: var(--ink); font-size: .9375rem; font-weight: 700; display: flex; flex-direction: column; gap: 2px; min-height: 64px; }
+    .related-card { padding: 10px 12px; border: 2px solid var(--rule); border-radius: var(--r); text-decoration: none; color: var(--ink); font-size: .9375rem; font-weight: 700; display: flex; flex-direction: column; gap: 2px; min-height: 64px; }
     .related-card:hover { border-color: var(--ink); }
     .related-card span { font-size: .8125rem; color: var(--ink-sec); font-weight: 400; }
     .related-h { font-size: .9375rem; font-weight: 700; margin-top: 30px; }

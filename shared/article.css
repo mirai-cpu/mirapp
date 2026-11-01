@@ -26,7 +26,7 @@
 }
 body { font-family: 'BIZ UDPGothic', 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); }
 :focus-visible { outline: 3px solid var(--liner); outline-offset: 2px; }
-.theme-btn { min-height: 44px; padding: 0 12px; background: transparent; color: var(--text); border: 2px solid var(--text); border-radius: 4px; font: inherit; font-size: .8125rem; font-weight: 700; cursor: pointer; margin-left: 12px; white-space: nowrap; }
+.theme-btn { min-height: 44px; padding: 0 12px; background: transparent; color: var(--text); border: 2px solid var(--text); border-radius: var(--r); font: inherit; font-size: .8125rem; font-weight: 700; cursor: pointer; margin-left: 12px; white-space: nowrap; }
 
 /* ヘッダー・フッター: 面ではなく太い罫線で区切る */
 .site-header, .site-footer { background: var(--bg); }
@@ -42,7 +42,7 @@ body { font-family: 'BIZ UDPGothic', 'Hiragino Sans', 'Noto Sans JP', sans-serif
 .article-category { background: none; border: 0; border-left: 5px solid var(--liner); border-radius: 0; color: var(--text); letter-spacing: 0; text-transform: none; font-size: .875rem; padding: 2px 0 2px 10px; }
 .article-body h2 { border-left: 5px solid var(--liner); }
 .article-body ul li::before { border-radius: 0; width: 8px; height: 3px; top: 1.05em; background: var(--text); }
-.article-body ol li::before { background: var(--text); color: var(--bg); border-radius: 4px; width: 22px; height: 22px; font-size: .75rem; }
+.article-body ol li::before { background: var(--text); color: var(--bg); border-radius: var(--r); width: 22px; height: 22px; font-size: .75rem; }
 .article-body a { color: var(--accent); text-underline-offset: 3px; }
 
 /* 囲み: カードではなく左の線 */
@@ -51,15 +51,15 @@ body { font-family: 'BIZ UDPGothic', 'Hiragino Sans', 'Noto Sans JP', sans-serif
 }
 .point-box .box-label, .trouble-card .label, .trap-card .trap-label { color: var(--text); letter-spacing: 0; text-transform: none; font-size: .875rem; }
 .tool-icon, .related-article-icon { display: none; }
-.tool-badge { background: none; border: 2px solid var(--accent); color: var(--accent); border-radius: 4px; }
+.tool-badge { background: none; border: 2px solid var(--accent); color: var(--accent); border-radius: var(--r); }
 .tool-feature { background: transparent; border: 0; border-top: 1px solid var(--border); border-radius: 0; padding: 10px 0; }
 .related-article:hover, .tool-link:hover { border-left-color: var(--accent); background: transparent; }
 
 /* ボタン */
-.cta-btn { background: var(--btn-bg); color: var(--btn-ink); border-radius: 4px; min-height: 48px; padding: 0 24px; box-shadow: none; }
+.cta-btn { background: var(--btn-bg); color: var(--btn-ink); border-radius: var(--r); min-height: 48px; padding: 0 24px; box-shadow: none; }
 
 /* 手順の番号: 丸ではなく四角 */
-.step-list li::before { background: var(--text); color: var(--bg); border-radius: 4px; }
+.step-list li::before { background: var(--text); color: var(--bg); border-radius: var(--r); }
 .step-list li::after { background: var(--border); }
 
 /* 表 */
@@ -83,11 +83,11 @@ body { font-family: 'BIZ UDPGothic', 'Hiragino Sans', 'Noto Sans JP', sans-serif
 .page-h1 em { color: var(--text); font-style: normal; background: linear-gradient(transparent 62%, var(--liner) 62%); }
 .section-num { color: var(--text); font-family: inherit; }
 .section-h2::after { background: var(--text); }
-.nav-logo-mark { border-radius: 4px; }
+.nav-logo-mark { border-radius: var(--r); }
 .nav-right a:hover { color: var(--text); }
 .info-row, .tool-item, .order-card { background: transparent; border-radius: 0; }
-.order-tag { border-radius: 4px; background: transparent; }
-.order-num { border-radius: 4px; box-shadow: none; }
+.order-tag { border-radius: var(--r); background: transparent; }
+.order-num { border-radius: var(--r); box-shadow: none; }
 
 /* 固定ページ用の別名変数と背景の装飾 */
 :root { --textSec: var(--text-sec); --textMut: var(--text-sec); --accentDim: transparent; --mono: 'BIZ UDPGothic', 'Hiragino Sans', sans-serif; }
