@@ -384,6 +384,7 @@ function wxIcon(kind) {
 }
 
 function render(data, label) {
+  if (typeof gtag === 'function') gtag('event', 'sunset_calc');
   $('place').textContent = label + 'の日没と天気';
   const start = toMin($('start').value);
   const per = +$('inning').value;
