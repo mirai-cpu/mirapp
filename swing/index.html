@@ -579,6 +579,15 @@
   }
   #game-title { font-family: var(--round); font-weight: 900; color: #fff; padding: 3px 12px; border-radius: 10px; background: repeating-linear-gradient(90deg, var(--tint) 0 20px, var(--tint-deep) 20px 40px); }
   #swing-btn, .play-btn { border-radius: 12px; }
+  /* 全体の色: 黒土を縫い目の赤で染める */
+  :root { --bg: color-mix(in srgb, var(--tint) 16%, #1A1512); --surface: color-mix(in srgb, var(--tint) 24%, #2B2420); --border: color-mix(in srgb, var(--tint) 40%, #4B403A); }
+  #game-header, #count-bar, #timing-section, #action-area { background: var(--surface); }
+  .overlay { background: var(--bg); }
+  #game-header { border-bottom: 3px solid var(--tint); }
+  #count-bar { border-top: 2px solid var(--tint); }
+  .pitch-chip, .how-to, .go-stat { border-color: var(--border); background: color-mix(in srgb, var(--tint) 12%, transparent); }
+  #gameover-screen h2 { font-family: var(--round); font-weight: 900; }
+  body::after { content:""; position: fixed; left:0; right:0; bottom:0; height:6px; z-index:5; pointer-events:none; background: repeating-linear-gradient(90deg, var(--tint) 0 30px, var(--tint-deep) 30px 60px); }
 </style>
 </head>
 <body>

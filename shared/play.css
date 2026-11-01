@@ -28,3 +28,13 @@ html[data-tint] #tc-landing .tc-wrap h1 {
   font-family: var(--round); font-weight: 900; color: #fff; display: inline-block; padding: 8px 64px 8px 22px; border-radius: var(--r);
   background: var(--ball) no-repeat right 14px center / 34px 34px, repeating-linear-gradient(90deg, var(--tint) 0 30px, var(--tint-deep) 30px 60px);
 }
+
+/* ---- 全体の色(LUMBER / TACTICIAN): 背景はプレイヤーが選ぶ色のまま、罫線・見出し・下の帯にツールの色 ---- */
+html[data-tint] .app-header, html[data-tint] header { border-bottom: 3px solid var(--tint); }
+html[data-tint] .tab-bar { border-top: 3px solid var(--tint); }
+html[data-tint] .stats-section-title, html[data-tint] .card-title { border-left: 6px solid var(--tint); padding-left: 10px; border-radius: 3px; }
+html[data-tint] .card { border-top: 4px solid var(--tint); }
+html[data-tint] body::after {
+  content: ""; position: fixed; left: 0; right: 0; bottom: 0; height: 6px; z-index: 5; pointer-events: none;
+  background: repeating-linear-gradient(90deg, var(--tint) 0 30px, var(--tint-deep) 30px 60px);
+}
