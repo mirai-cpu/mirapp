@@ -567,6 +567,19 @@
     #start-screen h1, .tagline, .pitch-chip-name, .diff-btn, .pitcher-btn, .play-btn, #gameover-screen h2, .go-stat-label, .go-stat-value,
     .go-btn-primary, .go-btn-secondary, #result-inner, #sz-label, #windup-text { font-weight: 700; }
   </style>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  /* 野球の色: 縫い目の赤の帯 + 丸ゴシックの題字 + 丸い角 */
+  :root { --tint: #B8322A; --tint-deep: #8F2620; --round: 'Zen Maru Gothic','BIZ UDPGothic','Hiragino Maru Gothic ProN',sans-serif;
+    --ball: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23FBFAF6'/%3E%3Cpath d='M9 6c5 4 7 9 7 14s-2 10-7 14M31 6c-5 4-7 9-7 14s2 10 7 14' fill='none' stroke='%23D2382F' stroke-width='2' stroke-linecap='round' stroke-dasharray='1.6 3.4'/%3E%3C/svg%3E"); }
+  #start-screen h1 {
+    font-family: var(--round); font-weight: 900; color: #fff; padding: 12px 74px 12px 26px; border-radius: 12px;
+    background: var(--ball) no-repeat right 16px center / 40px 40px, repeating-linear-gradient(90deg, var(--tint) 0 30px, var(--tint-deep) 30px 60px);
+    outline: 2px solid rgba(255,255,255,.55); outline-offset: -7px;
+  }
+  #game-title { font-family: var(--round); font-weight: 900; color: #fff; padding: 3px 12px; border-radius: 10px; background: repeating-linear-gradient(90deg, var(--tint) 0 20px, var(--tint-deep) 20px 40px); }
+  #swing-btn, .play-btn { border-radius: 12px; }
+</style>
 </head>
 <body>
 
