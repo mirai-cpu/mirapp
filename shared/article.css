@@ -127,13 +127,13 @@ h1, h2, h3 { font-family: inherit; }
   --tint-ink: color-mix(in srgb, var(--tint) 55%, #fff);
   --bg: color-mix(in srgb, var(--tint) 16%, #2B2420); --surface: var(--bg); --surface2: var(--bg);
   --border: color-mix(in srgb, var(--tint) 45%, #4B403A); --border2: var(--border);
-  --btn-bg: color-mix(in srgb, var(--tint) 62%, #fff); --btn-ink: #14110F;
+  --accent: var(--tint-ink); --liner: var(--tint-ink); --btn-bg: color-mix(in srgb, var(--tint) 62%, #fff); --btn-ink: #14110F;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"])[data-tint] {
   --tint-ink: color-mix(in srgb, var(--tint) 55%, #fff);
   --bg: color-mix(in srgb, var(--tint) 16%, #2B2420); --surface: var(--bg); --surface2: var(--bg);
   --border: color-mix(in srgb, var(--tint) 45%, #4B403A); --border2: var(--border);
-  --btn-bg: color-mix(in srgb, var(--tint) 62%, #fff); --btn-ink: #14110F;
+  --accent: var(--tint-ink); --liner: var(--tint-ink); --btn-bg: color-mix(in srgb, var(--tint) 62%, #fff); --btn-ink: #14110F;
 } }
 /* 短い題字(固定ページ・ブログ一覧): 芝刈りのしまの帯 + ボール */
 [data-tint] .page-h1, [data-tint] .page-heading {

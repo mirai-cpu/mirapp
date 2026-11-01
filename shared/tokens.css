@@ -162,3 +162,7 @@ a { color: inherit; }
   outline: 2px solid rgba(255,255,255,.55); outline-offset: -7px;
 }
 [data-tint] .hero { border-color: var(--tint); }
+
+/* ダークモード: 補助ボタンの文字は本文色で、読みやすく */
+:root[data-theme="dark"][data-tint] .btn-sub { color: var(--ink); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"])[data-tint] .btn-sub { color: var(--ink); } }
