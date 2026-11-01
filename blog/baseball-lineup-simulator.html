@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ja" data-tint="turf">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>打順シミュレーターの使い方｜試す前に知りたい「打席数」と出塁率の考え方 | Somirai Lab</title>
+  <meta name="description" content="野球の打順シミュレーター・スタメンシミュレーターで打順を試すときの考え方を解説。試合の総打席数で変わる打順ごとの打席数の早見表、出塁率を軸にした並べ方、3パターンの比較手順まで。登録不要の無料ツールで実際に試せます。">
+  <meta name="keywords" content="打順 シミュレーター,スタメン シミュレーター,野球 打順 シミュレーション,打順 出塁率,打順 打席数,最強2番,打順 組み方">
+  <link rel="canonical" href="https://somirai.jp/blog/baseball-lineup-simulator.html">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://somirai.jp/blog/baseball-lineup-simulator.html">
+  <meta property="og:title" content="打順シミュレーターの使い方｜試す前に知りたい「打席数」と出塁率の考え方">
+  <meta property="og:description" content="野球の打順シミュレーター・スタメンシミュレーターで打順を試すときの考え方を解説。試合の総打席数で変わる打順ごとの打席数の早見表、出塁率を軸にした並べ方、3パターンの比較手順まで。登録不要の無料ツールで実際に試せます。">
+  <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "打順シミュレーターの使い方｜試す前に知りたい「打席数」と出塁率の考え方",
+    "description": "野球の打順シミュレーター・スタメンシミュレーターで打順を試すときの考え方を解説。試合の総打席数で変わる打順ごとの打席数の早見表、出塁率を軸にした並べ方、3パターンの比較手順まで。登録不要の無料ツールで実際に試せます。",
+    "datePublished": "2026-11-01",
+    "dateModified": "2026-11-01",
+    "author": { "@type": "Person", "name": "Somirai", "url": "https://somirai.jp/about.html" },
+    "publisher": { "@type": "Organization", "name": "Somirai Lab", "url": "https://somirai.jp/" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://somirai.jp/blog/baseball-lineup-simulator.html" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "打順シミュレーターは何を基準に並べ替えれば良いですか？", "acceptedAnswer": { "@type": "Answer", "text": "出塁率の高い順に上位へ置くのが出発点です。出塁率は安打・四球・死球で塁に出る割合で、打席が多く回る上位打線ほど、その差が得点機会の数に効いてきます。そこから足の速さ、長打力、左右の並びを足して微調整します。打率だけで決めると、四球で出塁できる打者を過小評価しがちです。" } },
+      { "@type": "Question", "name": "少年野球や草野球でも、打順で結果は変わりますか？", "acceptedAnswer": { "@type": "Answer", "text": "変わる部分と変わらない部分があります。1試合の打席数が少ないため、打順の差で生まれる打席の増減はプロより小さくなります。一方で、打席数が少ない分、上位3人が1打席多く立つ試合もあり、その3人に誰を置くかは影響します。細かい最適化より、出塁できる打者を上位に集め、守備位置の穴を作らないことが先です。" } },
+      { "@type": "Question", "name": "2番に強打者を置く『最強2番』は草野球でも有効ですか？", "acceptedAnswer": { "@type": "Answer", "text": "セイバーメトリクスの研究では、最も打てる打者を上位（1〜2番）に置くほうが、従来の「4番最強」より得点期待値が高いとされています。ただし差は小さく、チームの人数や役割分担のしやすさで判断して構いません。送りバントを多用しない前提の話なので、チームの方針とあわせて考えてください。" } },
+      { "@type": "Question", "name": "シミュレーターで作った打順はそのまま使って良いですか？", "acceptedAnswer": { "@type": "Answer", "text": "ツールが示すのは並べ替えた結果の見た目と守備の重複チェックまでで、実際の得点力を保証するものではありません。作った案を紅白戦や練習試合で2〜3試合試し、出塁した打者の後ろでどう得点につながったかを記録して、次の案に反映するのが確実です。" } }
+    ]
+  }
+  </script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0b; --surface: #111114; --surface2: #18181c;
+      --border: #222228; --text: #e2e8f0; --text-sec: #94a3b8;
+      --text-mut: #475569; --accent: #ff6428; --accent-soft: rgba(255,100,40,0.12);
+      --radius: 16px;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+
+    .site-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+    .site-logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
+    .site-logo span { color: var(--accent); }
+    .header-nav { margin-left: auto; display: flex; gap: 16px; }
+    .header-nav a { color: var(--text-sec); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+    .header-nav a:hover { color: var(--text); }
+
+    .breadcrumb { max-width: 860px; margin: 0 auto; padding: 12px 24px; font-size: 0.8rem; color: var(--text-mut); }
+    .breadcrumb a { color: var(--text-mut); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 6px; }
+
+    .page-wrapper { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .article-header { padding: 32px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+    .article-category { display: inline-block; background: var(--accent-soft); color: var(--accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 16px; }
+    .article-title { font-family: 'Noto Sans JP', sans-serif; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; margin-bottom: 20px; }
+    .article-meta { display: flex; align-items: center; gap: 16px; font-size: 0.85rem; color: var(--text-mut); }
+
+    .toc { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin: 0 0 40px; }
+    .toc-title { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; margin-bottom: 14px; }
+    .toc ol { list-style: none; padding: 0; margin: 0; counter-reset: toc-counter; }
+    .toc ol li { counter-increment: toc-counter; padding: 4px 0 4px 24px; position: relative; font-size: 0.88rem; }
+    .toc ol li::before { content: counter(toc-counter); position: absolute; left: 0; top: 4px; font-size: 0.72rem; font-weight: 700; color: var(--accent); background: var(--accent-soft); width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .toc a { color: var(--text-sec); text-decoration: none; }
+    .toc a:hover { color: var(--text); }
+
+    .article-body { font-size: 1rem; line-height: 1.9; }
+    .article-body h2 { font-size: 1.4rem; font-weight: 700; color: var(--text); margin: 56px 0 20px; padding-left: 16px; border-left: 3px solid var(--accent); line-height: 1.4; }
+    .article-body h2:first-of-type { margin-top: 0; }
+    .article-body h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin: 36px 0 12px; }
+    .article-body p { color: var(--text-sec); margin-bottom: 20px; }
+    .article-body p strong { color: var(--text); font-weight: 700; }
+    .article-body ul, .article-body ol { margin: 0 0 20px 0; padding-left: 0; list-style: none; }
+    .article-body ul li, .article-body ol li { color: var(--text-sec); padding: 6px 0 6px 24px; position: relative; }
+    .article-body ul li::before { content: ''; position: absolute; left: 0; top: 14px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .article-body ol { counter-reset: ol-counter; }
+    .article-body ol li { counter-increment: ol-counter; }
+    .article-body ol li::before { content: counter(ol-counter); position: absolute; left: 0; top: 6px; font-size: 0.75rem; font-weight: 700; color: var(--accent); background: var(--accent-soft); width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    .point-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin: 28px 0; }
+    .point-box .box-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
+    .point-box p { margin-bottom: 0; }
+    .point-box ul { margin-bottom: 0; }
+
+    .highlight-box { background: var(--accent-soft); border: 1px solid rgba(255,100,40,0.25); border-radius: var(--radius); padding: 20px 24px; margin: 28px 0; }
+    .highlight-box p { margin-bottom: 0; color: var(--text); }
+
+    .tool-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin: 36px 0; }
+    .tool-card-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+    .tool-icon { width: 48px; height: 48px; background: var(--accent-soft); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .tool-name { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .tool-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; font-weight: 700; color: #4ade80; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); padding: 3px 8px; border-radius: 6px; }
+    .tool-desc { color: var(--text-sec); font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
+    .tool-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 24px; }
+    .tool-feature { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 0.85rem; color: var(--text-sec); }
+    .tool-feature strong { display: block; color: var(--text); font-size: 0.8rem; margin-bottom: 3px; }
+    .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.95rem; padding: 12px 28px; border-radius: 999px; text-decoration: none; transition: opacity 0.2s; }
+    .cta-btn:hover { opacity: 0.85; }
+
+    .phase-grid { display: grid; gap: 12px; margin: 28px 0; }
+    .phase-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; display: grid; grid-template-columns: 60px 1fr; gap: 14px; align-items: start; }
+    .phase-num { width: 60px; height: 44px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.78rem; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; text-align: center; line-height: 1.3; }
+    .phase-num.secondary { background: var(--surface2); color: var(--text-sec); border: 1px solid var(--border); }
+    .phase-info .phase-title { font-weight: 700; color: var(--text); margin-bottom: 4px; font-size: 0.95rem; }
+    .phase-info .phase-role { font-size: 0.78rem; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; margin-bottom: 6px; }
+    .phase-info p { font-size: 0.88rem; color: var(--text-sec); margin-bottom: 0; line-height: 1.7; }
+    .phase-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .phase-tag { font-size: 0.7rem; font-weight: 600; padding: 3px 8px; border-radius: 6px; background: var(--surface2); color: var(--text-sec); border: 1px solid var(--border); }
+    .phase-tag.key { background: var(--accent-soft); color: var(--accent); border-color: rgba(255,100,40,0.25); }
+
+    .failure-list { counter-reset: failure-counter; list-style: none; padding: 0; margin: 0 0 28px; }
+    .failure-item { counter-increment: failure-counter; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 20px 20px 56px; position: relative; margin-bottom: 12px; }
+    .failure-item::before { content: counter(failure-counter); position: absolute; left: 16px; top: 18px; width: 28px; height: 28px; background: #ef4444; color: #fff; font-weight: 700; font-size: 0.82rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .failure-item .failure-title { font-weight: 700; color: var(--text); margin-bottom: 6px; font-size: 0.95rem; }
+    .failure-item p { font-size: 0.88rem; color: var(--text-sec); margin-bottom: 0; line-height: 1.7; }
+    .failure-item .fix { margin-top: 10px; padding: 8px 12px; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); border-radius: 8px; font-size: 0.82rem; color: #4ade80; }
+    .failure-item .fix strong { color: #4ade80; }
+
+    .step-list { counter-reset: step-counter; list-style: none; padding: 0; margin: 0 0 28px; }
+    .step-list li { counter-increment: step-counter; position: relative; padding: 0 0 28px 52px; color: var(--text-sec); }
+    .step-list li::before { content: counter(step-counter); position: absolute; left: 0; top: 0; width: 32px; height: 32px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.85rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .step-list li::after { content: ''; position: absolute; left: 15px; top: 32px; bottom: 0; width: 2px; background: var(--border); }
+    .step-list li:last-child::after { display: none; }
+    .step-list li strong { display: block; color: var(--text); font-weight: 700; margin-bottom: 6px; }
+
+    .compare-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 0.9rem; }
+    .compare-table th, .compare-table td { padding: 12px 16px; border: 1px solid var(--border); text-align: left; }
+    .compare-table th { background: var(--surface2); color: var(--text); font-weight: 700; font-size: 0.82rem; }
+    .compare-table td { color: var(--text-sec); background: var(--surface); }
+    .compare-table td.good { color: #4ade80; font-weight: 600; }
+    .compare-table td.bad { color: #f87171; }
+    .compare-table tr:first-child th:first-child { border-radius: 10px 0 0 0; }
+    .compare-table tr:first-child th:last-child { border-radius: 0 10px 0 0; }
+    .table-scroll { overflow-x: auto; }
+
+    .faq-section { margin: 12px 0; }
+    .faq-item { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+    .faq-q { background: var(--surface); padding: 16px 20px; font-weight: 700; color: var(--text); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 12px; }
+    .faq-q::before { content: 'Q'; color: var(--accent); font-weight: 700; font-size: 0.9rem; background: var(--accent-soft); width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .faq-a { background: var(--surface2); padding: 16px 20px 16px 54px; color: var(--text-sec); font-size: 0.92rem; line-height: 1.8; }
+
+    .related-article { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin: 20px 0; display: flex; align-items: center; gap: 16px; text-decoration: none; transition: border-color 0.2s; }
+    .related-article:hover { border-color: var(--accent); }
+    .related-article-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .related-article-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; margin-bottom: 4px; }
+    .related-article-title { font-size: 0.95rem; font-weight: 700; color: var(--text); line-height: 1.5; }
+
+    .site-footer { background: var(--surface); border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 0.85rem; color: var(--text-mut); margin-top: 80px; }
+    .site-footer a { color: var(--text-mut); text-decoration: none; margin: 0 10px; }
+    .site-footer a:hover { color: var(--text); }
+    .site-footer .footer-links { margin-bottom: 16px; }
+
+    @media (max-width: 600px) {
+      .page-wrapper { padding: 0 16px 60px; }
+      .article-header { padding: 24px 0 32px; }
+      .tool-features { grid-template-columns: 1fr 1fr; }
+      .phase-card { grid-template-columns: 52px 1fr; gap: 10px; }
+      .phase-num { width: 52px; height: 40px; font-size: 0.7rem; }
+      .compare-table { font-size: 0.8rem; }
+      .compare-table th, .compare-table td { padding: 10px 10px; }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/article.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="https://somirai.jp/" class="site-logo">Somirai<span>.</span>jp</a>
+  <nav class="header-nav">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/order-maker/">スタメンメーカー</a>
+    <a href="https://somirai.jp/blog/">ブログ</a>
+  </nav>
+  <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
+</header>
+
+<nav class="breadcrumb" aria-label="パンくずリスト">
+  <a href="https://somirai.jp/">ホーム</a>
+  <span>›</span>
+  <a href="https://somirai.jp/blog/">ブログ</a>
+  <span>›</span>
+  打順シミュレーターの使い方
+</nav>
+
+<main class="page-wrapper">
+  <article>
+
+    <header class="article-header">
+      <div class="article-category">野球・スポーツ</div>
+      <h1 class="article-title">打順シミュレーターの使い方｜試す前に知りたい「打席数」と出塁率の考え方</h1>
+      <div class="article-meta">
+        <time datetime="2026-11-01">2026年11月1日</time>
+        <span>約3,500字 · 読了約7分</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="目次">
+      <div class="toc-title">目次</div>
+      <ol>
+        <li><a href="#what">打順シミュレーターで分かること・分からないこと</a></li>
+        <li><a href="#plate">打順で変わるのは「打席数」：早見表</a></li>
+        <li><a href="#obp">並べ方の出発点は出塁率</a></li>
+        <li><a href="#steps">3パターンを作って比べる手順</a></li>
+        <li><a href="#tool">スタメンメーカーで試す</a></li>
+        <li><a href="#faq">よくある質問（FAQ）</a></li>
+        <li><a href="#summary">まとめ</a></li>
+      </ol>
+    </nav>
+
+    <div class="article-body">
+
+      <p>「スタメンシミュレーター」「打順シミュレーター」と検索する人の多くは、メンバーを並べ替えながら、しっくりくる打順を探したい人です。ただ、並べ替えを何度も試すだけでは、良い打順かどうかを判断する物差しがありません。</p>
+
+      <p>この記事では、打順を試す前に知っておくと判断が早くなる2つの考え方、<strong>打順ごとの打席数の違い</strong>と<strong>出塁率を軸にした並べ方</strong>を、数字で整理します。そのうえで、無料ツールで3パターンを比べる手順を紹介します。</p>
+
+      <div class="highlight-box">
+        <p><strong>この記事で分かること：</strong>シミュレーターで確認できること・できないこと / 試合の総打席数別の「打順ごとの打席数」早見表 / 出塁率を軸にした並べ方 / 3パターンを比べる手順</p>
+      </div>
+
+      <h2 id="what">打順シミュレーターで分かること・分からないこと</h2>
+
+      <p>ブラウザの打順シミュレーターで確認できるのは、主に次の3点です。</p>
+
+      <ul>
+        <li>選んだメンバーを並べたときの<strong>見た目</strong>（1番から9番、控え、投手）</li>
+        <li>守備位置の<strong>重複・抜け</strong>（同じポジションに2人、空きポジション）</li>
+        <li>案ごとの<strong>差分</strong>（誰がどこに動いたか）</li>
+      </ul>
+
+      <p>一方、「この打順なら何点取れる」という予測は、ツールだけでは出せません。実際の得点は、投手との相性、その日の調子、走塁判断など、入力できない要素で大きく動くからです。だからこそ、並べ替える前に<strong>何を基準に比べるか</strong>を決めておく必要があります。</p>
+
+      <h2 id="plate">打順で変わるのは「打席数」：早見表</h2>
+
+      <p>打順の位置が決める最も確実な違いは、<strong>1試合で何回打席に立てるか</strong>です。打席は先頭の1番から順に回るので、その試合の総打席数をNとすると、次のように決まります。</p>
+
+      <div class="point-box">
+        <div class="box-label">打席数の決まり方</div>
+        <ul>
+          <li>N ÷ 9 の<strong>商</strong>が、全員が最低限立つ打席数</li>
+          <li>N ÷ 9 の<strong>あまり</strong>の人数だけ、1番から順に<strong>もう1打席多く</strong>立つ</li>
+          <li>例：総打席数30 → 30 ÷ 9 = 3 あまり 3。全員3打席＋<strong>1〜3番だけ4打席</strong></li>
+        </ul>
+      </div>
+
+      <p>少年野球などの7回制では、1試合の総打席数が27〜36程度になる試合が多いはずです。9回制なら36〜45程度が目安です（点が入る試合ほど増えます）。それぞれの早見表を並べます。</p>
+
+      <p><strong>7回制の目安（総打席数27〜36）</strong></p>
+      <table class="compare-table"><thead><tr><th>その試合の総打席数</th><th>打席が1回多い打順</th><th>各打順の打席数</th></tr></thead><tbody><tr><td>27</td><td>なし（全員同じ）</td><td>3回</td></tr><tr><td>30</td><td>1〜3番</td><td>1〜3番は4回、ほかは3回</td></tr><tr><td>33</td><td>1〜6番</td><td>1〜6番は4回、ほかは3回</td></tr><tr><td>36</td><td>なし（全員同じ）</td><td>4回</td></tr></tbody></table>
+
+      <p><strong>9回制の目安（総打席数36〜45）</strong></p>
+      <table class="compare-table"><thead><tr><th>その試合の総打席数</th><th>打席が1回多い打順</th><th>各打順の打席数</th></tr></thead><tbody><tr><td>36</td><td>なし（全員同じ）</td><td>4回</td></tr><tr><td>39</td><td>1〜3番</td><td>1〜3番は5回、ほかは4回</td></tr><tr><td>42</td><td>1〜6番</td><td>1〜6番は5回、ほかは4回</td></tr><tr><td>45</td><td>なし（全員同じ）</td><td>5回</td></tr></tbody></table>
+
+      <p>表のとおり、総打席数が少ない試合では、<strong>上位の数人だけが1打席多く立つ</strong>ことがよく起きます。1打席の差は小さく見えても、出塁できる打者がその1打席を持つかどうかで、試合の得点機会が変わります。逆に、総打席数がちょうど9の倍数の試合では全員が同じ回数立つので、打順の差は打席数の面では出ません。</p>
+
+      <div class="highlight-box">
+        <p><strong>ここから言えること：</strong>打線の上のほうは、下のほうより打席が多く回りやすい。だから、出塁できる打者を上位に集める意味がある。</p>
+      </div>
+
+      <h2 id="obp">並べ方の出発点は出塁率</h2>
+
+      <p>打席が多く回る上位には、<strong>塁に出る確率が高い打者</strong>を置くのが基本です。ここで見る指標は打率ではなく出塁率です。</p>
+
+      <p class="formula-box">出塁率 ＝（安打 ＋ 四球 ＋ 死球）÷（打数 ＋ 四球 ＋ 死球 ＋ 犠飛）</p>
+
+      <p>打率が低くても四球を選べる打者は、出塁率が高くなります。ソフトボールや少年野球では四球が多く出るため、この差が打率以上に効きやすい場面があります。</p>
+
+      <p>セイバーメトリクスの研究（『The Book』などが知られています）では、<strong>最も打てる打者を4番ではなく上位（1〜2番）に置いたほうが、得点期待値は高い</strong>という結論が示されています。ただし、打順を最適にしても差はごく小さいとされ、人数が少なく試合数も限られるアマチュアでは、誤差に埋もれやすい点に注意してください。優先順位は次の順が現実的です。</p>
+
+      <ol>
+        <li>守備位置の穴を作らない（守れない選手を無理に入れない）</li>
+        <li>出塁率の高い打者を上位に集める</li>
+        <li>走力・長打力・左右の並びで微調整する</li>
+      </ol>
+
+      <p>記録がない場合は、練習試合の10打席程度でも構いません。打席ごとに「安打・四球・凡打」を数えるだけで、出塁率の目安は出ます。成績を残す方法は、<a href="https://somirai.jp/blog/baseball-batting-stats.html">打撃成績をブラウザで管理する方法</a>にまとめています。</p>
+
+      <h2 id="steps">3パターンを作って比べる手順</h2>
+
+      <p>シミュレーターで一番役に立つのは、方針の違う案を<strong>3つ並べて比べる</strong>使い方です。1案だけ作ると、それが良いのか分からないまま決めてしまうからです。</p>
+
+      <ol class="step-list">
+        <li>
+          <strong>出塁率重視の案を作る</strong>
+          出塁率の高い順に1番から並べ、守備位置の重複がないかを確認します。
+        </li>
+        <li>
+          <strong>得点力重視の案を作る</strong>
+          上位に出塁できる打者、中軸に長打のある打者を置き、下位は走力のある打者でつなぎます。
+        </li>
+        <li>
+          <strong>守備重視の案を作る</strong>
+          守備の要（捕手・遊撃・中堅）を先に固め、残りの枠で打順を組みます。
+        </li>
+        <li>
+          <strong>差分を見て、2〜3試合で試す</strong>
+          3案で動いた選手を確認し、練習試合で順に試します。出塁した走者がかえったかを記録して、次の案に反映します。
+        </li>
+      </ol>
+
+      <p>新チームの時期にこの運用をどう回すかは、<a href="https://somirai.jp/blog/new-team-lineup.html">新チームの打順の決め方</a>で週ごとに整理しています。打順の基本の考え方は<a href="https://somirai.jp/blog/baseball-batting-order.html">野球の打順の組み方</a>もあわせて読んでください。</p>
+
+      <h2 id="tool">スタメンメーカーで試す</h2>
+
+      <p>Somirai Lab の「スタメンメーカー（TACTICIAN）」は、ブラウザだけで使える無料のスタメン作成ツールです。シミュレーターとしても使え、選手を登録しておけば、打順の入れ替えを何度でも試せます。守備位置の重複は自動で検出され、完成したオーダーは守備配置図つきでLINEに共有できます。</p>
+
+      <div class="tool-card" style="margin-top: 40px;">
+        <div class="tool-card-header">
+          <div class="tool-icon">&#128203;</div>
+          <div>
+            <div class="tool-name">スタメンメーカー — 打順を何通りでも試せる</div>
+            <div class="tool-badge">登録不要 · 無料 · ブラウザのみ</div>
+          </div>
+        </div>
+        <p class="tool-desc">選手と守備位置を一度登録すれば、打順の入れ替えはドラッグ操作だけ。3案を作って見比べ、決まったオーダーは守備配置図つきでLINE共有できます。</p>
+        <a href="https://somirai.jp/order-maker/" class="cta-btn" target="_blank" rel="noopener">
+          今すぐ無料で使ってみる &#8594;
+        </a>
+      </div>
+
+      <h2 id="faq">よくある質問（FAQ）</h2>
+
+      <div class="faq-section">
+
+        <div class="faq-item">
+          <div class="faq-q">打順シミュレーターは何を基準に並べ替えれば良いですか？</div>
+          <div class="faq-a">出塁率の高い順に上位へ置くのが出発点です。出塁率は安打・四球・死球で塁に出る割合で、打席が多く回る上位打線ほど、その差が得点機会の数に効いてきます。そこから足の速さ、長打力、左右の並びを足して微調整します。打率だけで決めると、四球で出塁できる打者を過小評価しがちです。</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">少年野球や草野球でも、打順で結果は変わりますか？</div>
+          <div class="faq-a">変わる部分と変わらない部分があります。1試合の打席数が少ないため、打順の差で生まれる打席の増減はプロより小さくなります。一方で、打席数が少ない分、上位3人が1打席多く立つ試合もあり、その3人に誰を置くかは影響します。細かい最適化より、出塁できる打者を上位に集め、守備位置の穴を作らないことが先です。</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">2番に強打者を置く『最強2番』は草野球でも有効ですか？</div>
+          <div class="faq-a">セイバーメトリクスの研究では、最も打てる打者を上位（1〜2番）に置くほうが、従来の「4番最強」より得点期待値が高いとされています。ただし差は小さく、チームの人数や役割分担のしやすさで判断して構いません。送りバントを多用しない前提の話なので、チームの方針とあわせて考えてください。</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">シミュレーターで作った打順はそのまま使って良いですか？</div>
+          <div class="faq-a">ツールが示すのは並べ替えた結果の見た目と守備の重複チェックまでで、実際の得点力を保証するものではありません。作った案を紅白戦や練習試合で2〜3試合試し、出塁した打者の後ろでどう得点につながったかを記録して、次の案に反映するのが確実です。</div>
+        </div>
+
+      </div>
+
+      <h2 id="summary">まとめ</h2>
+
+      <ul>
+        <li>シミュレーターで確認できるのは、並びの見た目・守備の重複・案の差分。得点の予測まではできない</li>
+        <li>打順の確かな違いは「打席数」。総打席数÷9のあまりの人数だけ、1番から順に1打席多く立つ</li>
+        <li>7回制のように打席数が少ない試合では、上位の数人だけが1打席多く立つことがよく起きる</li>
+        <li>並べ方の出発点は出塁率。上位に出塁できる打者を集める</li>
+        <li>出塁率重視・得点力重視・守備重視の3案を作り、2〜3試合で試して比べる</li>
+      </ul>
+
+      <p>まずは、今のチームで出塁率の高い順に並べた案を1つ作ってみてください。それだけで、感覚で組んでいた打順が、理由を説明できる打順になります。</p>
+
+      <!-- 著者 -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin:40px 0 0;display:flex;gap:16px;align-items:flex-start;">
+        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#ff6428,#e84410);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:18px;">S</div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mut);margin-bottom:4px;">この記事を書いた人</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;">Somirai Lab</div>
+          <p style="font-size:13px;color:var(--text-sec);line-height:1.75;margin:0;">草野球チームのスコアラー・主将経験を持つSomirai Lab 運営者。Next.js・React を使った無料Webツールを作成・運営しています。野球・習慣化・家計管理など、日常の小さな課題を解決するツールを中心に作成中。</p>
+        </div>
+      </div>
+
+    <!-- /article-body -->
+
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/about.html">このサイトについて</a>
+    <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    <a href="https://somirai.jp/contact.html">お問い合わせ</a>
+  </div>
+  <p>&#169; 2026 Somirai Lab</p>
+</footer>
+
+<script src="/shared/tool.js"></script>
+<script src="/shared/blog-ga.js"></script>
+<script>Tool.initTheme();</script>
+</body>
+</html>
