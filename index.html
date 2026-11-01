@@ -14,7 +14,7 @@
   <link rel="canonical" href="https://somirai.jp/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Space+Grotesk:wght@700&family=Zen+Maru+Gothic:wght@700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/tokens.css">
 
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Somirai Lab","url":"https://somirai.jp/","description":"野球の成績管理から習慣トラッキングまで、無料で使えるWebツールの集積地","inLanguage":"ja","publisher":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"}}</script>
@@ -102,6 +102,38 @@
     footer.site .copy { font-size: .8125rem; color: var(--ink-sec); }
     footer.site .links { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .875rem; align-items: center; }
     footer.site .links a { text-underline-offset: 4px; min-height: 32px; display: inline-flex; align-items: center; }
+
+    /* 野球の色: 打順の番号をツールごとの色に / 丸ゴシックの見出し / 画面下のしま */
+    .slot[href^="order-maker/"] { --t: #2F7F4A; }
+    .slot[href^="batting-stats/"] { --t: #7F5A33; }
+    .slot[href^="pitch-counter/"] { --t: #2F4B82; }
+    .slot[href^="training-timer/"] { --t: #B5592A; }
+    .slot[href^="draft/"] { --t: #6A4C93; }
+    .slot[href^="split/"] { --t: #2F7F4A; }
+    .slot[href^="sunset/"] { --t: #C9501F; }
+    .slot[href^="weather/"] { --t: #2A6FA8; }
+    .slot[href^="habit/"] { --t: #B5592A; }
+    .slot[href^="savings/"] { --t: #96700A; }
+    .slot[href^="write/"] { --t: #1F7A74; }
+    .slot[href^="price-sim/"] { --t: #7F5A33; }
+    .slot[href^="swing/"] { --t: #B8322A; }
+    .slot[href^="player/"] { --t: #2F4B82; }
+    .slot[href^="era-calculator/"] { --t: #B8322A; }
+    .slot[href^="whip-calculator/"] { --t: #1F7A74; }
+    .slot[href^="risp-calculator/"] { --t: #7F5A33; }
+    .slot[href^="magic-number-calculator/"] { --t: #96700A; }
+    .slot { --t: var(--turf); }
+    .slot:hover, .slot:focus-visible { background: color-mix(in srgb, var(--t) 12%, transparent); }
+    .no { background: var(--t); color: #fff; border-color: var(--t); border-radius: 12px; }
+    .bench .no { background: transparent; color: var(--t); border-style: dashed; }
+    .card { border-radius: 14px; border-color: var(--turf-deep); }
+    .card.bench { border-color: var(--ink); }
+    .sec-head h2, .about h2 { font-family: 'Zen Maru Gothic', 'BIZ UDPGothic', sans-serif; font-weight: 900; }
+    .sec-head h2 { border-left: 6px solid var(--turf); padding-left: 10px; border-radius: 3px; }
+    .badge { border-radius: 8px; }
+    .about, footer.site { border-top-color: var(--turf); }
+    body::after { content: ""; position: fixed; left: 0; right: 0; bottom: 0; height: 8px; z-index: 5; pointer-events: none;
+      background: repeating-linear-gradient(90deg, #2F7F4A 0 30px, #226038 30px 60px); }
   </style>
 </head>
 <body>

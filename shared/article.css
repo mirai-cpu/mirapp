@@ -5,7 +5,7 @@
   --border: #C9D1CD; --border2: #C9D1CD;
   --text: #2B2420; --text-sec: #5B534D; --text-mut: #5B534D;
   --accent: #1E6B38; --accent-soft: transparent;
-  --radius: 4px;
+  --radius: 12px; --r: 12px;
   --liner: #F5C400;
   --btn-bg: #1E6B38; --btn-ink: #FFFFFF;
   --ok-bg: #E4F2E9;
@@ -100,3 +100,67 @@ h1, h2, h3 { font-family: inherit; }
 .article-card:hover, .cat-card:hover { background: transparent; border-top-color: var(--text); transform: none; }
 .card-category { background: none; padding: 0; letter-spacing: 0; text-transform: none; color: var(--text-sec); }
 .cat-card-icon, .cta-card-eyebrow { display: none; }
+
+
+/* ================= 野球の色(ページごとの色 data-tint) =================
+   読み込む側: <html data-tint="turf|leather|clay|gold|teal|navy"> */
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&display=swap');
+:root {
+  --round: 'Zen Maru Gothic', 'BIZ UDPGothic', 'Hiragino Maru Gothic ProN', sans-serif;
+  --ball: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23FBFAF6'/%3E%3Cpath d='M9 6c5 4 7 9 7 14s-2 10-7 14M31 6c-5 4-7 9-7 14s2 10 7 14' fill='none' stroke='%23D2382F' stroke-width='2' stroke-linecap='round' stroke-dasharray='1.6 3.4'/%3E%3C/svg%3E");
+}
+[data-tint="turf"]    { --tint: #2F7F4A; }
+[data-tint="leather"] { --tint: #7F5A33; }
+[data-tint="clay"]    { --tint: #B5592A; }
+[data-tint="gold"]    { --tint: #96700A; }
+[data-tint="teal"]    { --tint: #1F7A74; }
+[data-tint="navy"]    { --tint: #2F4B82; }
+[data-tint="red"]     { --tint: #B8322A; }
+[data-tint] {
+  --tint-deep: color-mix(in srgb, var(--tint) 82%, #000);
+  --tint-ink: var(--tint);
+  --bg: color-mix(in srgb, var(--tint) 6%, #F5F7F6); --surface: var(--bg); --surface2: var(--bg);
+  --border: color-mix(in srgb, var(--tint) 30%, #C9D1CD); --border2: var(--border);
+  --accent: var(--tint-ink); --liner: var(--tint); --btn-bg: var(--tint); --btn-ink: #fff;
+}
+:root[data-theme="dark"][data-tint] {
+  --tint-ink: color-mix(in srgb, var(--tint) 55%, #fff);
+  --bg: color-mix(in srgb, var(--tint) 16%, #2B2420); --surface: var(--bg); --surface2: var(--bg);
+  --border: color-mix(in srgb, var(--tint) 45%, #4B403A); --border2: var(--border);
+  --btn-bg: color-mix(in srgb, var(--tint) 62%, #fff); --btn-ink: #14110F;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"])[data-tint] {
+  --tint-ink: color-mix(in srgb, var(--tint) 55%, #fff);
+  --bg: color-mix(in srgb, var(--tint) 16%, #2B2420); --surface: var(--bg); --surface2: var(--bg);
+  --border: color-mix(in srgb, var(--tint) 45%, #4B403A); --border2: var(--border);
+  --btn-bg: color-mix(in srgb, var(--tint) 62%, #fff); --btn-ink: #14110F;
+} }
+/* 短い題字(固定ページ・ブログ一覧): 芝刈りのしまの帯 + ボール */
+[data-tint] .page-h1, [data-tint] .page-heading {
+  display: inline-block; font-family: var(--round); font-weight: 900; color: #fff; padding: 12px 64px 12px 20px; border-radius: var(--r);
+  background: var(--ball) no-repeat right 14px center / 36px 36px, repeating-linear-gradient(90deg, var(--tint) 0 30px, var(--tint-deep) 30px 60px);
+  outline: 2px solid rgba(255,255,255,.55); outline-offset: -7px;
+}
+[data-tint] .page-h1 em { background: none; color: #fff; }
+/* 長い記事題: 文字は読みやすく、上に帯を敷く */
+[data-tint] .article-title { font-family: var(--round); font-weight: 900; }
+[data-tint] .article-header { border-bottom-color: var(--tint); }
+[data-tint] .article-header::before {
+  content: ""; display: block; height: 24px; margin-bottom: 16px; border-radius: 12px;
+  background: var(--ball) no-repeat right 10px center / 20px 20px, repeating-linear-gradient(90deg, var(--tint) 0 26px, var(--tint-deep) 26px 52px);
+}
+[data-tint] .article-body h2, [data-tint] .section-h2 { font-family: var(--round); border-left: 6px solid var(--tint); border-radius: 3px; }
+[data-tint] .site-header, [data-tint] body > nav:not(.breadcrumb) { border-bottom: 3px solid var(--tint); }
+[data-tint] .site-footer, [data-tint] footer { border-top: 3px solid var(--tint); }
+[data-tint] .toc { border-top-color: var(--tint); border-radius: 0 0 var(--r) var(--r); background: color-mix(in srgb, var(--tint) 8%, transparent); }
+[data-tint] .point-box, [data-tint] .highlight-box, [data-tint] .tool-card, [data-tint] .trap-card, [data-tint] .trouble-card, [data-tint] .order-card, [data-tint] .related-article, [data-tint] .tool-link, [data-tint] .phil-card {
+  background: color-mix(in srgb, var(--tint) 8%, transparent); border-radius: 0 var(--r) var(--r) 0;
+}
+[data-tint] .compare-table th { border-bottom-color: var(--tint); color: var(--tint-ink); }
+[data-tint] .article-card, [data-tint] .cat-card { border-top-color: var(--tint); }
+[data-tint] .article-card:hover, [data-tint] .cat-card:hover { border-top-color: var(--tint); background: color-mix(in srgb, var(--tint) 8%, transparent); border-radius: 0 0 var(--r) var(--r); }
+[data-tint] .theme-btn { border-color: var(--tint); }
+[data-tint] body::after {
+  display: block !important; content: ""; position: fixed; left: 0; right: 0; bottom: 0; height: 8px; z-index: 5; pointer-events: none;
+  background: repeating-linear-gradient(90deg, var(--tint) 0 30px, var(--tint-deep) 30px 60px);
+}

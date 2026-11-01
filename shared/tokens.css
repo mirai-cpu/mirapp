@@ -155,3 +155,10 @@ a { color: inherit; }
 }
 [data-tint] .calc-card, [data-tint] .multi-card, [data-tint] .inputs-panel, [data-tint] .sec, [data-tint] #result, [data-tint] .links, [data-tint] .send, [data-tint] .ab-result, [data-tint] .stat-list, [data-tint] .article h2, [data-tint] main > footer, [data-tint] footer { border-color: var(--tint); }
 [data-tint] .calc-card, [data-tint] .multi-card { border-top-width: 5px; }
+/* ガイドページの題字 */
+[data-tint] .hero-title {
+  display: inline-block; font-family: var(--round); font-weight: 900; color: #fff; padding: 10px 64px 10px 18px; margin-bottom: 8px; border-radius: var(--r);
+  background: var(--ball) no-repeat right 14px center / 36px 36px, repeating-linear-gradient(90deg, var(--tint) 0 30px, var(--tint-deep) 30px 60px);
+  outline: 2px solid rgba(255,255,255,.55); outline-offset: -7px;
+}
+[data-tint] .hero { border-color: var(--tint); }
