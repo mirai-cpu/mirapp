@@ -438,6 +438,12 @@
 
     /* ── Saved ── */
     .saved-bar { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    /* 保存バー: オーダー画面の下に付いて回る(打順を入れ終えたその場で保存できる) */
+    .save-dock { position: sticky; bottom: var(--banner-h, 0px); z-index: 20; display: flex; align-items: center; gap: 8px; margin: 12px -4px 0; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: var(--surface); border-top: 3px solid var(--accent); border-radius: 12px 12px 0 0; box-shadow: 0 -6px 18px rgba(0,0,0,.12); }
+    .save-dock[hidden] { display: none; }
+    .save-dock .dock-count { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; margin-right: auto; }
+    .save-dock .btn { min-height: 44px; padding: 0 12px; font-size: 14px; white-space: nowrap; flex-shrink: 0; }
+    .btn-primary.is-saved { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
     .saved-chips { display: flex; gap: 7px; flex-wrap: wrap; }
     .saved-chip {
       display: flex; align-items: center; gap: 6px;
@@ -561,7 +567,7 @@
     .empty-icon { margin-bottom: 12px; opacity: 0.4; display: flex; justify-content: center; }
     .empty p { font-size: 13px; line-height: 1.8; }
     .toast {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      position: fixed; bottom: 88px; left: 50%; transform: translateX(-50%) translateY(160px);
       background: #059669;
       color: #fff; font-size: 13px; font-weight: 700; padding: 10px 22px;
       border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.4);
@@ -873,11 +879,11 @@
       <div class="match-bar">
         <div class="form-group">
           <label>オーダー名</label>
-          <input type="text" id="lineup-name" placeholder="例：vs チームA 先発" maxlength="30">
+          <input type="text" id="lineup-name" placeholder="例：vs チームA 先発" maxlength="30" oninput="updateSaveDock()">
         </div>
         <div class="form-group" style="flex:0 0 150px">
           <label>試合日</label>
-          <input type="date" id="match-date">
+          <input type="date" id="match-date" oninput="updateSaveDock()">
         </div>
       </div>
       <div class="toggle-bar">
@@ -908,6 +914,11 @@
       <div style="margin-top:10px">
         <button class="btn btn-ghost btn-sm" onclick="addExtraSlot()" id="add-extra-btn">＋ 指名打者を追加</button>
       </div>
+    </div>
+    <div class="save-dock no-print" id="save-dock" hidden>
+      <span class="dock-count" id="dock-count">0 / 9人</span>
+      <button class="btn btn-primary" id="dock-save" type="button" onclick="saveLineup('dock')">オーダーを保存</button>
+      <button class="btn btn-ghost" type="button" onclick="switchTab('print')">スタメン表へ</button>
     </div>
   </section>
 
@@ -1077,6 +1088,7 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
         シェアする
       </button>
+      <button class="btn btn-primary" id="print-save" type="button" onclick="saveLineup('print')">オーダーを保存</button>
       <button class="btn btn-ghost" onclick="shareImage()">画像で保存・共有</button>
       <button class="btn btn-ghost" onclick="copyText()">テキストコピー</button>
       <button class="btn btn-ghost" onclick="window.print()">印刷</button>
@@ -1359,6 +1371,7 @@ function closeTcLanding() {
 
 // ── Tab ─────────────────────────────
 function switchTab(tab) {
+  if (typeof updateSaveDock === 'function') setTimeout(updateSaveDock, 0);
   ['roster','order','pitcher','print'].forEach(t => {
     document.getElementById('sec-'+t)?.classList.toggle('active', t===tab);
     document.getElementById('tab-'+t)?.classList.toggle('active', t===tab);
@@ -1516,6 +1529,7 @@ function renderOrderSlots() {
   const el = document.getElementById('order-slots');
   const filled = order.slice(0, 9).filter(s => s && (s.playerId || s.isGuest)).length;
   document.getElementById('order-filled').textContent = `${filled} / 9`;
+  updateSaveDock();
 
   const basePosOpts = isDH ? POSITIONS : POSITIONS.filter(p => p !== 'DH');
   const activePlayers = players.filter(p => !absentIds.includes(p.id));
@@ -1637,13 +1651,48 @@ function clearOrder() {
 }
 
 // ── Saved Lineups ───────────────────
-function saveLineup() {
-  const name = document.getElementById('lineup-name').value.trim() || '無題のオーダー';
+let lastSavedSig = '';
+function lineupSig() {
+  return JSON.stringify([order, pitchers, isDH, document.getElementById('lineup-name')?.value.trim() || '', document.getElementById('match-date')?.value || '']);
+}
+function defaultLineupName(date) {
+  const d = date ? new Date(date + 'T00:00:00') : new Date();
+  return isNaN(d) ? '無題のオーダー' : `${d.getMonth() + 1}/${d.getDate()}のオーダー`;
+}
+// 保存ボタン(オーダー画面・保存バー・スタメン表)の表示を、保存済みかどうかに合わせる
+// 画面下に固定表示されるバナー(Cookie・ホーム画面追加)の分だけ、保存バーを上へ避ける
+function updateBannerOffset() {
+  const h = ['ck-banner', 'pwa-banner'].reduce((m, id) => Math.max(m, document.getElementById(id)?.offsetHeight || 0), 0);
+  document.documentElement.style.setProperty('--banner-h', h + 'px');
+}
+new MutationObserver(updateBannerOffset).observe(document.body, { childList: true });
+window.addEventListener('resize', updateBannerOffset);
+function updateSaveDock() {
+  updateBannerOffset();
+  const filled = order.slice(0, 9).filter(o => o && (o.playerId || o.isGuest)).length;
+  const dock = document.getElementById('save-dock');
+  if (dock) dock.hidden = filled === 0;
+  const cnt = document.getElementById('dock-count');
+  if (cnt) cnt.textContent = filled >= 9 ? '9人そろいました' : `${filled} / 9人`;
+  const saved = filled > 0 && lastSavedSig === lineupSig();
+  ['dock-save', 'print-save'].forEach(id => {
+    const b = document.getElementById(id); if (!b) return;
+    b.classList.toggle('is-saved', saved);
+    b.textContent = saved ? '保存済み ✓' : 'オーダーを保存';
+  });
+}
+function saveLineup(from) {
+  const filled = order.slice(0, 9).filter(o => o && (o.playerId || o.isGuest)).length;
+  if (!filled) { showToast('先に選手を打順に入れてください', true); return; }
+  if (lastSavedSig === lineupSig()) { showToast('このオーダーは保存済みです'); return; }
   const date = document.getElementById('match-date').value;
+  const name = document.getElementById('lineup-name').value.trim() || defaultLineupName(date);
   lineups.unshift({ id: uid(), name, date, order: clone(order), pitchers: clone(pitchers), isDH });
   if (lineups.length > 30) lineups = lineups.slice(0,30);
-  saveAll(); renderSavedChips(); showToast(`「${name}」を保存しました`);
-  gtag('event', 'lineup_saved');
+  lastSavedSig = lineupSig();
+  saveAll(); renderSavedChips(); updateSaveDock();
+  showToast(`「${name}」を保存しました。上の「読込」からいつでも開けます`);
+  gtag('event', 'lineup_saved', { from: from || 'top' });
 }
 function loadLineup(id) {
   const l = lineups.find(x => x.id === id); if (!l) return;
@@ -1652,6 +1701,7 @@ function loadLineup(id) {
   document.getElementById('match-date').value  = l.date||'';
   document.getElementById('dh-toggle').checked = isDH;
   saveAll(); renderOrderSlots(); renderPitcherList(); renderSavedChips();
+  lastSavedSig = lineupSig(); updateSaveDock();
   showToast(`「${l.name}」を読み込みました`);
 }
 function deleteLineup(id) {
