@@ -30,8 +30,8 @@
 
   --header-h:    56px;
   --tabbar-h:    48px;
-  --radius:      6px;
-  --radius-sm:   4px;
+  --radius:      12px;
+  --radius-sm:   8px;
 
   --mono: 'BIZ UDPGothic', sans-serif;
 
@@ -227,7 +227,7 @@ html, body {
 .bg-swatch-row { width: 100%; display: flex; gap: 5px; }
 .bg-swatch {
   width: 22px; height: 22px;
-  border-radius: 4px;
+  border-radius: 8px;
   border: 2px solid transparent;
   cursor: pointer;
   transition: transform .15s, border-color .15s;
@@ -782,8 +782,8 @@ textarea { resize: vertical; min-height: 64px; }
   letter-spacing: .02em;
   margin-bottom: 6px;
 }
-.vs-avg-bar-track { height: 6px; background: var(--border-2); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
-.vs-avg-bar-fill { height: 100%; border-radius: 4px; transition: width .4s ease; }
+.vs-avg-bar-track { height: 6px; background: var(--border-2); border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+.vs-avg-bar-fill { height: 100%; border-radius: 8px; transition: width .4s ease; }
 .vs-avg-bar-r { background: var(--accent); }
 .vs-avg-bar-l { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
 .vs-stat-rows { display: flex; flex-direction: column; gap: 3px; margin-bottom: 8px; }
@@ -928,7 +928,7 @@ textarea { resize: vertical; min-height: 64px; }
   font-weight: 600;
   color: var(--accent);
   background: var(--accent-bg);
-  border-radius: 6px;
+  border-radius: 12px;
   padding: 2px 7px;
   letter-spacing: .04em;
 }
@@ -1040,7 +1040,7 @@ textarea { resize: vertical; min-height: 64px; }
 .spray-tab-btn {
   padding: 5px 12px;
   border: none;
-  border-radius: 6px;
+  border-radius: 12px;
   background: transparent;
   font-family: var(--mono);
   font-size: 11px;
@@ -1295,7 +1295,7 @@ textarea { resize: vertical; min-height: 64px; }
   font-size: 11px;
   font-weight: 600;
   border: 1px solid var(--border-2);
-  border-radius: 6px;
+  border-radius: 12px;
   background: var(--surface);
   color: var(--muted);
   cursor: pointer;
@@ -1311,8 +1311,8 @@ textarea { resize: vertical; min-height: 64px; }
 .dir-col-num  { text-align: right; color: var(--muted); }
 .dir-col-avg  { text-align: right; font-family: var(--mono); font-weight: 700; color: var(--text); }
 .dir-col-bar  { width: 72px; padding-left: 8px; }
-.dir-bar-track { background: var(--border-2); height: 6px; border-radius: 4px; overflow: hidden; }
-.dir-bar-hit  { background: var(--accent); height: 6px; border-radius: 4px; }
+.dir-bar-track { background: var(--border-2); height: 6px; border-radius: 8px; overflow: hidden; }
+.dir-bar-hit  { background: var(--accent); height: 6px; border-radius: 8px; }
 
 /* ── Goal ────────────────────────────────── */
 .goal-inputs { display: flex; gap: 10px; margin-bottom: 10px; }
@@ -1470,7 +1470,7 @@ textarea { resize: vertical; min-height: 64px; }
 .wx-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); }
 .wx-pop  { margin-right: 8px; }
 .wx-source { font-size: 9px; color: var(--muted); font-family: var(--mono);
-  background: rgba(255,255,255,.04); border-radius: 4px; padding: 1px 5px; margin-left: auto; flex-shrink: 0; }
+  background: rgba(255,255,255,.04); border-radius: 8px; padding: 1px 5px; margin-left: auto; flex-shrink: 0; }
 .wx-error { font-size: 11px; color: var(--c-out); font-family: var(--mono); }
 
 /* weather badge in history/story cards */
@@ -1502,7 +1502,7 @@ textarea { resize: vertical; min-height: 64px; }
 .welcome-text span { color: var(--muted); }
 .welcome-close {
   background: none; border: none; color: var(--muted); font-size: 16px;
-  cursor: pointer; padding: 4px 6px; flex-shrink: 0; border-radius: 4px;
+  cursor: pointer; padding: 4px 6px; flex-shrink: 0; border-radius: 8px;
   line-height: 1; transition: color .15s, background .15s;
 }
 .welcome-close:hover { color: var(--text); background: rgba(255,255,255,.06); }

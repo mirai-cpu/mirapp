@@ -1,10 +1,11 @@
 // sw.js - Service Worker (Cache-First Strategy)
 
-const CACHE_NAME = 'batting-stats-v9';
+const CACHE_NAME = 'batting-stats-v10';
 const ASSETS = [
   '/batting-stats/',
   '/batting-stats/index.html',
   '/batting-stats/css/style.css',
+  '/shared/play.css',
   '/batting-stats/js/i18n.js',
   '/batting-stats/js/storage.js',
   '/batting-stats/js/stats.js',

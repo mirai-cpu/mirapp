@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" data-tint="turf">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=DotGothic16&display=swap" rel="stylesheet">
   <link rel="manifest" href="/order-maker/manifest.json">
+  <link rel="stylesheet" href="/shared/play.css">
   <link rel="apple-touch-icon" href="/order-maker/icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -152,7 +153,7 @@
       --red:      #E85A5A;
       --yellow:   #F5C400;
       --mint:     #6FD39A;
-      --radius:   6px;
+      --radius:   12px;
       --mono:     'BIZ UDPGothic', sans-serif;
       --dot-color: #1e2035;
       --field-bg:        #010e04;
@@ -199,7 +200,7 @@
     .empty-cta {
       display: flex; flex-direction: column; align-items: center;
       gap: 10px; padding: 28px 16px 24px; text-align: center; cursor: pointer;
-      border-radius: 6px; transition: background .2s;
+      border-radius: 12px; transition: background .2s;
     }
     .empty-cta:hover { background: rgba(58,168,96,.03); }
     .empty-cta-ball { font-size: 32px; animation: floatUp 2.5s ease-in-out infinite; line-height:1; }
@@ -208,7 +209,7 @@
     .empty-cta-link  {
       display: inline-flex; align-items: center; gap: 5px; margin-top: 4px;
       font-size: 12px; font-weight: 700; color: var(--accent);
-      border: 1px dashed rgba(58,168,96,.4); border-radius: 6px; padding: 6px 14px;
+      border: 1px dashed rgba(58,168,96,.4); border-radius: 12px; padding: 6px 14px;
       letter-spacing: .04em; transition: all .2s;
     }
     .empty-cta:hover .empty-cta-link { background: rgba(58,168,96,.08); border-color: var(--accent); }
@@ -259,10 +260,10 @@
       line-height: 1.4; font-family: 'BIZ UDPGothic', sans-serif;
     }
     .header-right { display: flex; gap: 6px; align-items: center; }
-    .btn-color { background: none; border: 1px solid var(--border); border-radius: 4px; padding: 0; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; flex-shrink: 0; }
+    .btn-color { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 0; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; flex-shrink: 0; }
     .btn-color:active { background: rgba(58,168,96,.08); }
     .btn-color-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 1.5px solid rgba(255,255,255,.2); transition: background .2s; display: block; }
-    .color-palette { display: none; position: fixed; background: var(--surface); border: 1px solid var(--border-2); border-radius: 6px; padding: 10px; gap: 8px; flex-wrap: wrap; width: 148px; z-index: 300; box-shadow: 0 8px 32px rgba(0,0,0,.6); }
+    .color-palette { display: none; position: fixed; background: var(--surface); border: 1px solid var(--border-2); border-radius: 12px; padding: 10px; gap: 8px; flex-wrap: wrap; width: 148px; z-index: 300; box-shadow: 0 8px 32px rgba(0,0,0,.6); }
     .color-palette.open { display: flex; }
     .palette-label { font-size: 9px; font-weight: 700; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; width: 100%; line-height: 1; font-family: var(--mono); pointer-events: none; }
     .palette-divider { width: 100%; height: 1px; background: var(--border-2); margin: 2px 0; }
@@ -274,7 +275,7 @@
     .star-toggle-btn { flex: 1; padding: 5px 4px; border-radius: 7px; font-size: 10px; font-weight: 700; background: transparent; border: 1.5px solid rgba(255,255,255,.12); color: var(--muted); cursor: pointer; letter-spacing: .04em; transition: background .15s, border-color .15s, color .15s; font-family: var(--mono); }
     .star-toggle-btn.active { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.4); color: var(--text); }
     .btn-icon {
-      width: 36px; height: 36px; border-radius: 6px;
+      width: 36px; height: 36px; border-radius: 12px;
       background: rgba(58,168,96,0.04); border: 1px solid var(--border);
       color: var(--muted); cursor: pointer;
       display: flex; align-items: center; justify-content: center;
@@ -284,7 +285,7 @@
 
     /* ── Buttons ── */
     .btn {
-      border: none; cursor: pointer; border-radius: 6px;
+      border: none; cursor: pointer; border-radius: 12px;
       font-size: 13px; font-weight: 700; padding: 8px 16px;
       transition: all .2s; font-family: inherit;
       letter-spacing: 0.01em;
@@ -351,7 +352,7 @@
     label { font-size: 12px; color: var(--muted); font-weight: 700; letter-spacing: 0.02em; }
     input[type=text], input[type=number], input[type=date], select {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 4px; color: var(--text); font-size: 16px;
+      border-radius: 8px; color: var(--text); font-size: 16px;
       padding: 9px 12px; font-family: inherit; outline: none;
       transition: border-color .2s, box-shadow .2s; width: 100%;
     }
@@ -359,7 +360,7 @@
     select option { background: var(--surface); }
 
     /* ── Toggle ── */
-    .toggle-bar { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 14px; }
+    .toggle-bar { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 14px; }
     .toggle-label { font-size: 13px; font-weight: 700; flex: 1; }
     .toggle-desc { font-size: 12px; color: var(--muted); }
     .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
@@ -390,7 +391,7 @@
 
     /* ── Absent toggle ── */
     .absent-toggle {
-      background: none; border: 1px solid var(--border); border-radius: 6px;
+      background: none; border: 1px solid var(--border); border-radius: 12px;
       color: var(--muted); font-size: 11px; font-weight: 700; padding: 3px 8px;
       cursor: pointer; transition: all .2s; font-family: var(--mono); flex-shrink: 0;
     }
@@ -405,7 +406,7 @@
     /* ── Pos Grid ── */
     .pos-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 6px; }
     .pos-toggle {
-      border: 1px solid var(--border); border-radius: 4px; padding: 8px 4px;
+      border: 1px solid var(--border); border-radius: 8px; padding: 8px 4px;
       text-align: center; cursor: pointer; font-size: 13px; font-weight: 700;
       transition: all .2s; background: var(--surface); color: var(--muted); user-select: none;
     }
@@ -419,7 +420,7 @@
     .order-header { display: grid; grid-template-columns: 16px 32px 1fr 100px 28px; gap: 8px; padding: 0 12px 8px; font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
     .order-slots { display: flex; flex-direction: column; gap: 7px; }
     .order-slot {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
       padding: 10px 12px; display: grid; grid-template-columns: 16px 32px 1fr 100px 28px;
       gap: 8px; align-items: center; transition: all .2s;
     }
@@ -430,7 +431,7 @@
     .drag-handle:active { cursor: grabbing; }
     .slot-num { font-size: 20px; font-weight: 900; color: var(--yellow); text-align: center; font-family: 'BIZ UDPGothic', sans-serif; }
     .slot-player select, .slot-pos select { width: 100%; background: var(--card); }
-    .guest-input { width: 100%; margin-top: 5px; font-size: 16px; background: var(--card); border: 1px dashed var(--accent); border-radius: 4px; color: var(--text); padding: 6px 10px; font-family: inherit; outline: none; }
+    .guest-input { width: 100%; margin-top: 5px; font-size: 16px; background: var(--card); border: 1px dashed var(--accent); border-radius: 8px; color: var(--text); padding: 6px 10px; font-family: inherit; outline: none; }
     .guest-input:focus { border-style: solid; }
     .slot-clear button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 15px; padding: 3px; border-radius: 5px; transition: color .15s; }
     .slot-clear button:hover { color: var(--red); }
@@ -440,7 +441,7 @@
     .saved-chips { display: flex; gap: 7px; flex-wrap: wrap; }
     .saved-chip {
       display: flex; align-items: center; gap: 6px;
-      background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
       padding: 6px 12px; font-size: 12px; cursor: pointer; transition: all .2s;
     }
     .saved-chip:hover { border-color: rgba(58,168,96,0.4); background: rgba(58,168,96,0.06); }
@@ -450,7 +451,7 @@
     /* ── Pitcher ── */
     .pitcher-list { display: flex; flex-direction: column; gap: 8px; }
     .pitcher-row {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
       padding: 12px 14px; display: grid; grid-template-columns: 28px 1fr auto;
       gap: 8px; align-items: center; transition: border-color .2s;
     }
@@ -528,13 +529,13 @@
     /* ── Theme Modal ── */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
     .modal-overlay.hidden { display: none; }
-    .modal { background: var(--surface); border: 1px solid var(--border-2); border-radius: 6px; padding: 24px; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+    .modal { background: var(--surface); border: 1px solid var(--border-2); border-radius: 12px; padding: 24px; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
     .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
     .modal-title { font-size: 18px; font-weight: 800; }
     .modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 4px; transition: color .15s; }
     .modal-close:hover { color: var(--text); }
     .theme-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
-    .theme-opt { border: 2px solid transparent; border-radius: 6px; padding: 10px 6px; cursor: pointer; text-align: center; transition: all .2s; background: var(--surface); }
+    .theme-opt { border: 2px solid transparent; border-radius: 12px; padding: 10px 6px; cursor: pointer; text-align: center; transition: all .2s; background: var(--surface); }
     .theme-opt:hover { border-color: var(--muted); }
     .theme-opt.selected { border-color: var(--accent); }
     .theme-swatch { display: flex; gap: 4px; justify-content: center; margin-bottom: 6px; }
@@ -545,7 +546,7 @@
     .tut-steps { display: flex; flex-direction: column; gap: 16px; }
     .tut-step { display: flex; gap: 14px; align-items: flex-start; }
     .step-num {
-      width: 30px; height: 30px; border-radius: 4px;
+      width: 30px; height: 30px; border-radius: 8px;
       background: transparent;
       border: 1.5px solid var(--accent);
       color: var(--accent); font-size: 12px; font-weight: 800;
@@ -563,7 +564,7 @@
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
       background: #059669;
       color: #fff; font-size: 13px; font-weight: 700; padding: 10px 22px;
-      border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,.4);
+      border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.4);
       transition: transform .3s ease; z-index: 999; pointer-events: none;
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
@@ -612,13 +613,13 @@
     #tc-landing h1 { font-size:clamp(44px,12vw,60px); font-weight:700; line-height:1.05; letter-spacing:-.01em; margin:0 0 6px; }
     #tc-landing .tc-sub { font-size:15px; color:var(--muted); margin:0 0 10px; }
     #tc-landing .tc-tag { font-size:19px; font-weight:700; line-height:1.5; margin:0 0 22px; }
-    #tc-landing .tc-cta { width:100%; min-height:56px; background:var(--accent); color:var(--on-accent, #fff); border:0; border-radius:4px; font:inherit; font-size:17px; font-weight:700; cursor:pointer; }
+    #tc-landing .tc-cta { width:100%; min-height:56px; background:var(--accent); color:var(--on-accent, #fff); border:0; border-radius: 8px; font:inherit; font-size:17px; font-weight:700; cursor:pointer; }
     #tc-landing .tc-cta:hover { filter:brightness(1.08); }
     #tc-landing .tc-guide { display:block; text-align:center; margin:12px 0 0; font-size:14px; }
     #tc-landing .tc-guide a { color:var(--muted); text-underline-offset:3px; }
     #tc-landing .tc-trust { list-style:none; display:flex; flex-wrap:wrap; gap:4px 16px; margin:18px 0 26px; padding:0; font-size:14px; color:var(--muted); }
     #tc-landing .tc-trust li::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); margin-right:7px; vertical-align:1px; }
-    #tc-landing .tc-steps { list-style:none; display:flex; border:2px solid var(--text); border-radius:4px; margin:0 0 28px; padding:0; }
+    #tc-landing .tc-steps { list-style:none; display:flex; border:2px solid var(--text); border-radius: 8px; margin:0 0 28px; padding:0; }
     #tc-landing .tc-steps li { flex:1; text-align:center; padding:10px 4px; font-size:14px; font-weight:700; }
     #tc-landing .tc-steps li + li { border-left:1px solid var(--border); }
     #tc-landing .tc-steps b { display:block; font-size:20px; line-height:1.2; color:var(--accent); }
@@ -709,22 +710,22 @@
     .wx-panel-title { font-family:'BIZ UDPGothic',sans-serif;font-size:16px;font-weight:700;color:var(--text);letter-spacing:.04em; }
     .wx-ctrl-row { display:flex;gap:8px;align-items:center;padding:0 16px 14px; }
     .wx-ctrl-pref,.wx-ctrl-date {
-      background:rgba(255,255,255,.05);border:1px solid rgba(58,168,96,.2);border-radius: 4px;
+      background:rgba(255,255,255,.05);border:1px solid rgba(58,168,96,.2);border-radius: 8px;
       color:var(--text);font-family:'BIZ UDPGothic', sans-serif;font-size:13px;padding:8px 10px;
       -webkit-appearance:none;appearance:none;outline:none;flex:1;
     }
     .wx-ctrl-pref option,.wx-ctrl-date option { background:#0d0f18; }
-    .wx-geo-btn { background:transparent;border:1px solid rgba(255,179,71,.4);border-radius: 4px;color:var(--accent);font-family:'BIZ UDPGothic', sans-serif;font-size:12px;font-weight:700;padding:8px 10px;cursor:pointer;white-space:nowrap;flex-shrink:0; }
+    .wx-geo-btn { background:transparent;border:1px solid rgba(255,179,71,.4);border-radius: 8px;color:var(--accent);font-family:'BIZ UDPGothic', sans-serif;font-size:12px;font-weight:700;padding:8px 10px;cursor:pointer;white-space:nowrap;flex-shrink:0; }
     .wx-geo-btn:disabled { opacity:.5;cursor:wait; }
     .wx-fetch-btn {
-      background:var(--accent,#3AA860);color:var(--bg);border:none;border-radius: 4px;
+      background:var(--accent,#3AA860);color:var(--bg);border:none;border-radius: 8px;
       font-family:'BIZ UDPGothic', sans-serif;font-size:13px;font-weight:800;padding:8px 16px;
       cursor:pointer;white-space:nowrap;transition:opacity .15s;flex-shrink:0;
     }
     .wx-fetch-btn:disabled { opacity:.4;cursor:not-allowed; }
     .wx-cards-row { display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 16px 16px; }
     .wx-day-card {
-      background:rgba(255,255,255,.04);border:1px solid rgba(58,168,96,.12);border-radius: 6px;
+      background:rgba(255,255,255,.04);border:1px solid rgba(58,168,96,.12);border-radius: 12px;
       padding:12px 8px;text-align:center;
     }
     .wx-day-label { font-family:'BIZ UDPGothic', sans-serif;font-size:11px;color:rgba(58,168,96,.6);letter-spacing:.08em;margin-bottom:4px; }
@@ -734,7 +735,7 @@
     .wx-day-pop { font-family:'BIZ UDPGothic', sans-serif;font-size:20px;color:var(--text);line-height:1; }
     .wx-day-pop-unit { font-size:10px;color:var(--muted); }
     .wx-day-temp { font-size:10px;color:var(--muted);margin-top:4px; }
-    .wx-day-cond { font-size:9px;padding:3px 6px;border-radius: 4px;margin-top:6px;display:inline-block;font-family:'BIZ UDPGothic', sans-serif;font-weight:700; }
+    .wx-day-cond { font-size:9px;padding:3px 6px;border-radius: 8px;margin-top:6px;display:inline-block;font-family:'BIZ UDPGothic', sans-serif;font-weight:700; }
     .wx-cond-ok   { background:rgba(58,168,96,.12);color:#3AA860; }
     .wx-cond-warn { background:rgba(245,158,11,.12);color:#f59e0b; }
     .wx-cond-bad  { background:rgba(244,63,94,.12);color:#f43f5e; }
@@ -751,7 +752,7 @@
     .wx-msg.loading { animation:wx-spin 1s linear infinite; }
     @keyframes wx-spin { from{opacity:1} 50%{opacity:.3} to{opacity:1} }
     .wx-day-sun { font-size:10px;color:var(--accent);margin-top:6px;font-family:'BIZ UDPGothic',sans-serif;letter-spacing:.02em; }
-    .wx-sun-link { display:block;margin:0 16px 14px;padding:11px 14px;border:1px solid rgba(255,179,71,.35);border-radius: 6px;color:var(--accent);font-size:12px;font-weight:700;text-align:center;text-decoration:none;background:rgba(255,179,71,.06); }
+    .wx-sun-link { display:block;margin:0 16px 14px;padding:11px 14px;border:1px solid rgba(255,179,71,.35);border-radius: 12px;color:var(--accent);font-size:12px;font-weight:700;text-align:center;text-decoration:none;background:rgba(255,179,71,.06); }
     .wx-sun-link:hover { background:rgba(255,179,71,.12); }
     .wx-source-note { text-align:center;font-size:10px;color:var(--muted);padding:0 16px 14px;font-family:'BIZ UDPGothic', sans-serif;letter-spacing:.04em; }
     @media (max-width:380px) { .wx-cards-row { gap:6px; } .wx-day-emoji { font-size:24px; } .wx-day-pop { font-size:18px; } }
@@ -2619,7 +2620,7 @@ if (players.length === 0 && window.innerWidth >= 768) {
               <li>名前を確認して <strong style="color:#f0a855">「追加」</strong> をタップ</li>
             </ol>
           </div>
-          <button id="pwa-dismiss" style="background:none;border:1px solid #3e3e4e;color:#a0a0b0;border-radius:6px;padding:5px 9px;font-size:12px;cursor:pointer;flex-shrink:0">✕</button>
+          <button id="pwa-dismiss" style="background:none;border:1px solid #3e3e4e;color:#a0a0b0;border-radius: 12px;padding:5px 9px;font-size:12px;cursor:pointer;flex-shrink:0">✕</button>
         </div>`;
       el.querySelector('#pwa-steps-btn').onclick = function() {
         stepsVisible = !stepsVisible;
@@ -2635,8 +2636,8 @@ if (players.length === 0 && window.innerWidth >= 768) {
             <div style="font-size:12px;color:#a0a0b0">アプリのように起動できます</div>
           </div>
           <div style="display:flex;gap:8px;flex-shrink:0">
-            <button id="pwa-install" style="background:var(--accent);color:#1c1c21;border:none;border-radius:6px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer">追加する</button>
-            <button id="pwa-dismiss" style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:6px 10px;font-size:12px;cursor:pointer">✕</button>
+            <button id="pwa-install" style="background:var(--accent);color:#1c1c21;border:none;border-radius: 12px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer">追加する</button>
+            <button id="pwa-dismiss" style="background:none;border:1px solid var(--border);color:var(--muted);border-radius: 12px;padding:6px 10px;font-size:12px;cursor:pointer">✕</button>
           </div>
         </div>`;
       el.querySelector('#pwa-install').onclick = async function() {
@@ -2672,7 +2673,7 @@ if (players.length === 0 && window.innerWidth >= 768) {
     var b = document.createElement('div');
     b.id = 'ck-banner';
     b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#1a1220;color:#d4c4a8;font-size:13px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9999;border-top:1px solid rgba(251,191,36,.15)';
-    b.innerHTML = '<span>本サイトはGoogle AdSense・Google AnalyticsのためにCookieを使用しています。詳細は<a href="/privacy.html" style="color:var(--accent)">プライバシーポリシー</a>をご覧ください。</span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:transparent;color:var(--accent);border:1px solid var(--accent);border-radius:6px;padding:6px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">OK</button>';
+    b.innerHTML = '<span>本サイトはGoogle AdSense・Google AnalyticsのためにCookieを使用しています。詳細は<a href="/privacy.html" style="color:var(--accent)">プライバシーポリシー</a>をご覧ください。</span><button onclick="localStorage.setItem(\'cookie_ok\',\'1\');document.getElementById(\'ck-banner\').remove()" style="background:transparent;color:var(--accent);border:1px solid var(--accent);border-radius: 12px;padding:6px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">OK</button>';
     document.body.appendChild(b);
   })();
 </script>
@@ -2706,21 +2707,21 @@ if (players.length === 0 && window.innerWidth >= 768) {
 
     <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
       <div style="display:flex;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
-        <span style="flex-shrink:0;width:28px;height:28px;border-radius:4px;border:1.5px solid var(--accent);color:var(--accent);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:var(--mono);">1</span>
+        <span style="flex-shrink:0;width:28px;height:28px;border-radius: 8px;border:1.5px solid var(--accent);color:var(--accent);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:var(--mono);">1</span>
         <div>
           <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">選手を登録する</div>
           <div style="font-size:12px;color:var(--muted);line-height:1.8;">「選手」タブで名前・背番号・守備できるポジションを登録します。控えを含めてチーム全員を先に登録しておくと、当日の欠席者を「欠」ボタンで外すだけでオーダーが組めるようになります。ポジションは複数選択できるので、兼任する選手も1人分の登録で済みます。</div>
         </div>
       </div>
       <div style="display:flex;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
-        <span style="flex-shrink:0;width:28px;height:28px;border-radius:4px;border:1.5px solid var(--accent);color:var(--accent);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:var(--mono);">2</span>
+        <span style="flex-shrink:0;width:28px;height:28px;border-radius: 8px;border:1.5px solid var(--accent);color:var(--accent);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:var(--mono);">2</span>
         <div>
           <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">打順と守備を決める</div>
           <div style="font-size:12px;color:var(--muted);line-height:1.8;">「オーダー」タブで1番から9番までの枠に選手を割り当てます。左のハンドルをドラッグすれば打順の入れ替えは一瞬です。DH制のオン・オフ、助っ人のゲスト入力にも対応。決まったオーダーは名前を付けて保存でき、「対右投手」「Bチーム」など複数パターンを使い分けられます。</div>
         </div>
       </div>
       <div style="display:flex;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
-        <span style="flex-shrink:0;width:28px;height:28px;border-radius:4px;border:1.5px solid var(--accent);color:var(--accent);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:var(--mono);">3</span>
+        <span style="flex-shrink:0;width:28px;height:28px;border-radius: 8px;border:1.5px solid var(--accent);color:var(--accent);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:var(--mono);">3</span>
         <div>
           <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">スタメン表を共有・印刷する</div>
           <div style="font-size:12px;color:var(--muted);line-height:1.8;">「スタメン表」タブを開くと、守備配置図つきの一覧が自動で生成されます。シェアボタンからLINEのチームグループへワンタップ送信、テキストコピー、そのまま印刷して審判に渡す紙のオーダー表としても使えます。投手ローテを設定していれば登板イニングも一緒に出力されます。</div>
