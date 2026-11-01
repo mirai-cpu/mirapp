@@ -766,5 +766,11 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// Prevent scroll on game field touch
-$field.addEventListener('touchstart', e => { e.preventDefault(); doSwing(); }, { passive: false });
+// 画面のどこをタップ(クリック)しても打ち返す。リンク・ボタン・開始/結果の画面は除く
+document.addEventListener('pointerdown', e => {
+  if (e.target.closest('a, button, select, input, textarea, .overlay, #mp-card')) return;
+  e.preventDefault();
+  doSwing();
+});
+// スクロール・ダブルタップ拡大を止める
+$field.addEventListener('touchstart', e => { e.preventDefault(); }, { passive: false });
