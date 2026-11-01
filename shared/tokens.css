@@ -102,3 +102,56 @@ a { color: inherit; }
 /* 計算機の入力と答え: 上の罫線をツールの色に */
 [data-tint] .calc-card, [data-tint] .multi-card { border-top-color: var(--tint); border-top-width: 5px; }
 [data-tint] h2 { font-family: var(--round); }
+
+/* ---- 全体の配色: ページ全体をツールの色で染める(題字の帯と同じ世界) ---- */
+[data-tint] {
+  --tint-ink: var(--tint);                                        /* 文字・線に使う色 */
+  --wash: color-mix(in srgb, var(--tint) 7%, var(--chalk));        /* 地の色 */
+  --wash-2: color-mix(in srgb, var(--tint) 14%, var(--chalk));     /* 選択・強調面 */
+  --line: color-mix(in srgb, var(--tint) 35%, var(--rule));        /* 罫線 */
+  --bg: var(--wash); --rule: var(--line);
+}
+:root[data-theme="dark"][data-tint] {
+  --tint-ink: color-mix(in srgb, var(--tint) 55%, #fff);
+  --wash: color-mix(in srgb, var(--tint) 16%, #2B2420);
+  --wash-2: color-mix(in srgb, var(--tint) 28%, #2B2420);
+  --line: color-mix(in srgb, var(--tint) 45%, #4B403A);
+  --bg: var(--wash); --rule: var(--line);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"])[data-tint] {
+  --tint-ink: color-mix(in srgb, var(--tint) 55%, #fff);
+  --wash: color-mix(in srgb, var(--tint) 16%, #2B2420);
+  --wash-2: color-mix(in srgb, var(--tint) 28%, #2B2420);
+  --line: color-mix(in srgb, var(--tint) 45%, #4B403A);
+  --bg: var(--wash); --rule: var(--line);
+} }
+/* 本文の見出し: 左にツールの色の柱 */
+[data-tint] h2 { border-left: 6px solid var(--tint); padding-left: 10px; border-radius: 3px; }
+[data-tint] #tc-landing h2, [data-tint] .multi-card h2 { border-left-width: 6px; }
+/* 操作部品 */
+[data-tint] .tab[aria-selected="true"] { color: var(--tint-ink); border-bottom-color: var(--tint); }
+[data-tint] .tabs { border-bottom-color: var(--tint); }
+[data-tint] .seg, [data-tint] .btn-sub, [data-tint] .summary, [data-tint] .theme-btn { border-color: var(--tint); }
+[data-tint] .seg button + button { border-left-color: var(--tint); }
+[data-tint] .seg button[aria-pressed="true"] { background: var(--tint); color: #fff; }
+[data-tint] .btn-sub { color: var(--tint-ink); background: var(--wash-2); }
+[data-tint] .chip { background: var(--wash-2); border-color: transparent; }
+[data-tint] .chip:hover { border-color: var(--tint); }
+[data-tint] .in, [data-tint] .field input, [data-tint] .game-row input { border-color: var(--tint); background: color-mix(in srgb, var(--wash) 40%, #fff); }
+:root[data-theme="dark"][data-tint] .in, :root[data-theme="dark"][data-tint] .field input, :root[data-theme="dark"][data-tint] .game-row input { background: color-mix(in srgb, var(--wash) 70%, #000); }
+[data-tint] .field > label, [data-tint] .lbl, [data-tint] .field label { color: var(--tint-ink); font-weight: 700; }
+[data-tint] .summary { background: var(--wash-2); }
+[data-tint] summary { color: var(--tint-ink); }
+[data-tint] details { border-top-color: var(--tint); }
+[data-tint] .callout, [data-tint] .formula-box { border-left-color: var(--tint); background: var(--wash-2); border-radius: 0 var(--r) var(--r) 0; }
+[data-tint] .benchmark-table td:first-child { color: var(--tint-ink); }
+[data-tint] .result-box { border-bottom: 6px solid var(--tint); }
+[data-tint] .nav-logo, [data-tint] footer a { color: var(--tint-ink); }
+[data-tint] :focus-visible { outline-color: var(--tint); }
+/* ページの一番下に、芝刈りのしま */
+[data-tint] body::after {
+  content: ""; position: fixed; left: 0; right: 0; bottom: 0; height: 8px; z-index: 5; pointer-events: none;
+  background: repeating-linear-gradient(90deg, var(--tint) 0 30px, var(--tint-deep) 30px 60px);
+}
+[data-tint] .calc-card, [data-tint] .multi-card, [data-tint] .inputs-panel, [data-tint] .sec, [data-tint] #result, [data-tint] .links, [data-tint] .send, [data-tint] .ab-result, [data-tint] .stat-list, [data-tint] .article h2, [data-tint] main > footer, [data-tint] footer { border-color: var(--tint); }
+[data-tint] .calc-card, [data-tint] .multi-card { border-top-width: 5px; }
