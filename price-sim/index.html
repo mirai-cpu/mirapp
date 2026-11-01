@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="/shared/tokens.css">
   <link rel="stylesheet" href="/shared/tool.css">
   <script src="/shared/tool.js"></script>
+  <script src="/shared/ga.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
@@ -391,6 +392,7 @@ document.getElementById('kura-import-btn').addEventListener('click', function() 
         updateAmountDisplay();
         status.textContent = `KURAから読み込みました: ${fmtYen(val)}`;
         status.className = 'kura-import-status ok';
+        Track.ev('vale_kura_import');
         return;
       }
     }
@@ -522,6 +524,7 @@ function runSimulation() {
     </tr>`;
   }).join('');
 
+  Track.ev('vale_calc');
   if(typeof gtag === 'function') gtag('event', 'tool_used', {tool_name:'vale', years, rate: rateRange.value, amount: Math.round(amount/10000)+'万'});
 
   // scroll to result

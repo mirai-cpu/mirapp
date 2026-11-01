@@ -1170,6 +1170,7 @@
   </div>
 </div>
 
+<script src="/shared/ga.js"></script>
 <script src="/shared/geo.js"></script>
 <script>
 // ── Constants ──────────────────────
@@ -1602,6 +1603,7 @@ function setPlayer(i, playerId) {
     if (vp.length === 1 && vp[0] !== 'DH') order[i].pos = vp[0];
     else if (order[i].pos && order[i].pos !== 'DH' && !vp.includes(order[i].pos)) order[i].pos = null;
     gtag('event', 'lineup_edited', { slot: i + 1 });
+    if (order.slice(0, 9).filter(o => o && (o.playerId || o.isGuest)).length >= 9) Track.once('lineup_complete');
   }
   saveAll(); renderOrderSlots();
 }

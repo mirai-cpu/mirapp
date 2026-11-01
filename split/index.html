@@ -119,6 +119,7 @@
 </div>
 
 <script src="/shared/tool.js"></script>
+<script src="/shared/ga.js"></script>
 <script>
 const $ = s => document.querySelector(s);
 const KEY = 'somirai-split-v1';
@@ -170,6 +171,7 @@ function update(redraw) {
   const exps = S.exps.filter(e => num(e.a) > 0).map(e => `${e.n || '費用'} ${yen(e.a)}`).join('・');
   $('#line').textContent = r.ok ? `【試合費用のお願い ${d}】\n費用の合計 ${yen(r.total)}${exps ? `(${exps})` : ''}\n${r.use ? `繰越 ${yen(r.use)} を充てました。\n` : ''}` + (r.need <= 0 ? '今回は繰越でまかなえるため、集金はありません。' : r.pays.filter(p => Math.floor(num(p.g.c)) > 0 && p.pay > 0).map(p => `${p.g.n} ${yen(p.pay)}`).join(' / ')) + '\nよろしくお願いします。' : '';
   $('#copy').disabled = !r.ok;
+  if (r.ok && r.total > 0) Track.once('split_calc');
   $('#carry').disabled = !r.ok || (r.surplus <= 0 && !r.use);
   Tool.save(KEY, S);
 }

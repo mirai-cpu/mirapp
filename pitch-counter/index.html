@@ -18,6 +18,7 @@
 <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"投球数カウンター","url":"https://somirai.jp/pitch-counter/","description":"コース(ストライクゾーン9分割+ボールゾーン)と球種つきで投球数を記録し、対戦打者数・スコア・打者成績も管理できる無料ツール。","applicationCategory":"SportsApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","author":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"}}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+<script src="/shared/ga.js"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -442,6 +443,7 @@ document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click'
 function finishPA(code) {
   const n = S.pitches.filter(p => p.bf === curBF()).length;
   S.pas.push({ bf: curBF(), bi: S.batter, pn: pitcherName(), code, n });
+  Track.ev('pc_pa_end');
   S.batter = (S.batter + 1) % 9; S.balls = 0; S.strikes = 0; S.pending = null;
   if (code === 'K' || code === 'out' || code === 'sac') {
     S.outs++;
@@ -455,6 +457,7 @@ document.querySelectorAll('.res').forEach(b => b.addEventListener('click', () =>
   const col = Math.min(4, Math.floor(S.pending.x / CELL)), row = Math.min(4, Math.floor(S.pending.y / CELL));
   S.pitches.push({ bf: curBF(), bi: S.batter, pn: pitcherName(), x: S.pending.x, y: S.pending.y, cell: row * 5 + col, type: t.id, shape: t.shape, fam: t.fam, result: r });
   S.pending = null;
+  Track.once('pc_first_pitch');
   if (r === 'looking' || r === 'swing') S.strikes++;
   else if (r === 'foul') { if (S.strikes < 2) S.strikes++; }
   else if (r === 'ball') S.balls++;
@@ -512,7 +515,7 @@ function drawBoard() {
   });
   $('#sel').textContent = `${S.sel.team === 'me' ? '自' : '相手'} ${S.sel.i + 1}回`;
 }
-$('#runPlus').addEventListener('click', () => { snap(); S.runs[S.sel.team][S.sel.i]++; render(); });
+$('#runPlus').addEventListener('click', () => { Track.once('pc_score'); snap(); S.runs[S.sel.team][S.sel.i]++; render(); });
 $('#runMinus').addEventListener('click', () => { snap(); const a = S.runs[S.sel.team]; a[S.sel.i] = Math.max(0, a[S.sel.i] - 1); render(); });
 
 /* ---- 打者成績 ---- */

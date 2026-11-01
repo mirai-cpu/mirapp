@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     tabPanels.forEach(panel =>
       panel.classList.toggle('active', panel.id === 'tab-' + tabId)
     );
-    if (tabId === 'stats')   renderStats();
-    if (tabId === 'history') renderHistory();
+    if (tabId === 'stats')   { renderStats(); Track.once('bs_stats_view'); }
+    if (tabId === 'history') { renderHistory(); Track.once('bs_history_view'); }
   }
 
   tabBtns.forEach(btn =>
@@ -430,6 +430,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       Storage.add(atBat);
       if (typeof gtag === 'function') gtag('event', 'tool_used', { tool_name: 'batting-stats', action: 'record_atbat' });
+      Track.ev('bs_record');
       const isFirst = Storage.load().length === 1;
       if (isFirst) {
         showToast('記録完了！「成績」タブで打率を確認してみてください');
@@ -812,6 +813,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     g.targetAvg  = !isNaN(avg)  && avg  > 0 ? avg  : null;
     g.targetHits = !isNaN(hits) && hits > 0 ? hits : null;
     Goal.save(g);
+    if (g.targetAvg || g.targetHits) Track.once('bs_goal_set');
     renderStats();
   }
 
