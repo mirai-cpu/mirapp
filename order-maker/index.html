@@ -426,6 +426,11 @@
     }
     .order-slot.filled { border-color: rgba(58,168,96,.25); background: rgba(58,168,96,.03); border-left: 3px solid rgba(58,168,96,.5); }
     .order-slot.dragging { opacity: 0.35; }
+    /* 同じ選手が2回入っているときの警告 */
+    .order-slot.dup { border-color: var(--red) !important; border-left: 4px solid var(--red) !important; background: rgba(232,90,90,.08) !important; }
+    .dup-alert { margin: 0 0 12px; padding: 10px 14px; border: 2px solid var(--red); border-left-width: 6px; border-radius: 12px; background: rgba(232,90,90,.08); color: var(--text); font-size: 13px; font-weight: 700; line-height: 1.7; }
+    .dup-alert[hidden] { display: none; }
+    .dup-alert small { display: block; font-weight: 400; color: var(--muted); }
     .order-slot.drag-over { border-color: var(--accent) !important; background: rgba(58,168,96,.06); }
     .drag-handle { cursor: grab; color: var(--muted); font-size: 13px; display: flex; align-items: center; justify-content: center; touch-action: none; user-select: none; }
     .drag-handle:active { cursor: grabbing; }
@@ -910,6 +915,7 @@
       <div class="order-header">
         <div></div><div style="text-align:center">打順</div><div>選手</div><div>守備</div><div></div>
       </div>
+      <div class="dup-alert no-print" id="dup-alert" role="alert" hidden></div>
       <div class="order-slots" id="order-slots"></div>
       <div style="margin-top:10px">
         <button class="btn btn-ghost btn-sm" onclick="addExtraSlot()" id="add-extra-btn">＋ 指名打者を追加</button>
@@ -1039,7 +1045,8 @@
       <div class="print-title" id="print-title">スタメン</div>
       <div class="print-meta" id="print-meta"></div>
       <div class="section-label">打順・守備</div>
-      <table class="print-table">
+      <div class="dup-alert no-print" id="dup-alert-print" role="alert" hidden></div>
+        <table class="print-table">
         <thead>
           <tr>
             <th style="text-align:center;width:42px">打順</th>
@@ -1534,6 +1541,7 @@ function renderOrderSlots() {
   const basePosOpts = isDH ? POSITIONS : POSITIONS.filter(p => p !== 'DH');
   const activePlayers = players.filter(p => !absentIds.includes(p.id));
 
+  const dupIds = new Set(renderDupAlert().map(([id]) => id));
   el.innerHTML = order.map((slot, i) => {
     const isExtra = i >= 9;
     slot = slot || {};
@@ -1568,7 +1576,7 @@ function renderOrderSlots() {
 
     if (isExtra) {
       return `
-        <div class="order-slot ${isFilled?'filled':''} extra-slot" ${slotAttrs}>
+        <div class="order-slot ${isFilled?'filled':''} ${dupIds.has(slot.playerId)?'dup':''} extra-slot" ${slotAttrs}>
           ${handle}
           <div class="slot-num">${i+1}</div>
           <div class="slot-player">${playerSelect}</div>
@@ -1577,7 +1585,7 @@ function renderOrderSlots() {
         </div>`;
     }
     return `
-      <div class="order-slot ${isFilled?'filled':''}" ${slotAttrs}>
+      <div class="order-slot ${isFilled?'filled':''} ${dupIds.has(slot.playerId)?'dup':''}" ${slotAttrs}>
         ${handle}
         <div class="slot-num">${i+1}</div>
         <div class="slot-player">${playerSelect}</div>
@@ -1599,7 +1607,36 @@ function removeSlot(i) {
   order.splice(i, 1);
   saveAll(); renderOrderSlots();
 }
+// 同じ選手が複数の枠に入っているかを調べる({選手ID: [枠の番号...]} の重複分だけ返す)
+function findDuplicates() {
+  const seen = {};
+  order.forEach((sl, idx) => { if (sl && sl.playerId) (seen[sl.playerId] = seen[sl.playerId] || []).push(idx); });
+  return Object.entries(seen).filter(([, idxs]) => idxs.length > 1);
+}
+function renderDupAlert() {
+  const dups = findDuplicates();
+  const html = dups.map(([id, idxs]) => {
+    const p = players.find(x => x.id === id);
+    return `「${esc(p ? p.name : '選手')}」が ${idxs.map(n => (n + 1) + '番').join('・')} に入っています`;
+  }).join('<br>');
+  ['dup-alert', 'dup-alert-print'].forEach(elId => {
+    const el = document.getElementById(elId); if (!el) return;
+    el.hidden = dups.length === 0;
+    el.innerHTML = dups.length ? `⚠ 同じ選手が重複しています<small>${html}。どちらかを別の選手に変えてください。</small>` : '';
+  });
+  return dups;
+}
 function setPlayer(i, playerId) {
+  // 同じ選手を、すでに別の打順に入れているとき: 移動するか確認する(「いいえ」なら元に戻す)
+  if (playerId && playerId !== '__guest__') {
+    const j = order.findIndex((sl, idx) => idx !== i && sl && sl.playerId === playerId);
+    if (j >= 0) {
+      const dp = players.find(x => x.id === playerId);
+      const ok = confirm(`⚠ 「${dp ? dp.name : '選手'}」は、すでに${j + 1}番に入っています。\n\n${j + 1}番から外して、${i + 1}番に入れますか？\n（キャンセルすると、元のままです）`);
+      if (!ok) { renderOrderSlots(); showToast('同じ選手は2回入れられません', true); return; }
+      order[j] = j >= 9 ? { playerId: null, pos: 'DH', isExtra: true } : null;
+    }
+  }
   const prevPos = order[i]?.pos || null;
   const isEx = i >= 9;
   if (!playerId) {
@@ -1684,6 +1721,7 @@ function updateSaveDock() {
 function saveLineup(from) {
   const filled = order.slice(0, 9).filter(o => o && (o.playerId || o.isGuest)).length;
   if (!filled) { showToast('先に選手を打順に入れてください', true); return; }
+  if (findDuplicates().length) { showToast('同じ選手が重複しています。直してから保存してください', true); return; }
   if (lastSavedSig === lineupSig()) { showToast('このオーダーは保存済みです'); return; }
   const date = document.getElementById('match-date').value;
   const name = document.getElementById('lineup-name').value.trim() || defaultLineupName(date);
@@ -1876,6 +1914,7 @@ function renderField() {
 
 // ── Print / Share ───────────────────
 function renderPrint() {
+  renderDupAlert();
   const name = document.getElementById('lineup-name').value.trim() || 'スタメン';
   const date = document.getElementById('match-date').value;
   document.getElementById('print-title').textContent = name;
