@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ja" data-tint="navy">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>少年野球・草野球の投球数の数え方と管理｜上限70球を「何回まで」に直すと | Somirai Lab</title>
+  <meta name="description" content="投球数を数えるときに何を1球とするか、1日の上限を「何回まで投げられるか」に直した早見表、記録係の決め方と上限に近づいたときの判断を解説。コースと球種も記録できる無料の投球数カウンターで管理できます。">
+  <meta name="keywords" content="投球数 数え方,投球数制限,少年野球 投球数,70球,投球数 カウンター,草野球 投手 管理">
+  <link rel="canonical" href="https://somirai.jp/blog/baseball-pitch-count.html">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://somirai.jp/blog/baseball-pitch-count.html">
+  <meta property="og:title" content="少年野球・草野球の投球数の数え方と管理｜上限70球を「何回まで」に直すと">
+  <meta property="og:description" content="投球数を数えるときに何を1球とするか、1日の上限を「何回まで投げられるか」に直した早見表、記録係の決め方と上限に近づいたときの判断を解説。コースと球種も記録できる無料の投球数カウンターで管理できます。">
+  <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "少年野球・草野球の投球数の数え方と管理｜上限70球を「何回まで」に直すと",
+    "description": "投球数を数えるときに何を1球とするか、1日の上限を「何回まで投げられるか」に直した早見表、記録係の決め方と上限に近づいたときの判断を解説。コースと球種も記録できる無料の投球数カウンターで管理できます。",
+    "datePublished": "2026-11-03",
+    "dateModified": "2026-11-03",
+    "author": { "@type": "Person", "name": "Somirai", "url": "https://somirai.jp/about.html" },
+    "publisher": { "@type": "Organization", "name": "Somirai Lab", "url": "https://somirai.jp/" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://somirai.jp/blog/baseball-pitch-count.html" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "投球数は何を1球と数えますか？", "acceptedAnswer": { "@type": "Answer", "text": "一般的には、ボール・見逃しストライク・空振り・ファウル・打たれた球など、打者に対して投げた球をすべて1球と数えます。牽制球や投球練習は数えないのが通例ですが、大会によって扱いが違うことがあるので、自チームの大会要項で確認してください。" } },
+      { "@type": "Question", "name": "1日の投球数の上限は決まっていますか？", "acceptedAnswer": { "@type": "Answer", "text": "学童（小学生）の軟式野球では1日70球以内とする規定が広く使われていますが、大会や連盟、年によって異なります。中学生以上や草野球の大会では上限がない場合もあります。必ず、出場する大会の要項で最新の規定を確認してください。この記事の70球は、あくまで例としての数字です。" } },
+      { "@type": "Question", "name": "打者の途中で上限に達したら、どうなりますか？", "acceptedAnswer": { "@type": "Answer", "text": "大会によって「その打者が終わるまで投げてよい」とするものと、「上限に達した時点で交代」とするものがあります。ルールを知らないと、試合中に判断が止まります。試合前に、記録係と監督で確認しておきましょう。" } },
+      { "@type": "Question", "name": "投球数は誰が数えるのがよいですか？", "acceptedAnswer": { "@type": "Answer", "text": "投手本人や捕手が数えると、プレーに集中できず数え間違いが起きます。ベンチの控え選手やスコアラーなど、記録だけに集中できる人を1人決めるのが確実です。1打者が終わるごとに、合計をベンチ全体に声で共有します。" } }
+    ]
+  }
+  </script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0b; --surface: #111114; --surface2: #18181c;
+      --border: #222228; --text: #e2e8f0; --text-sec: #94a3b8;
+      --text-mut: #475569; --accent: #ff6428; --accent-soft: rgba(255,100,40,0.12);
+      --radius: 16px;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+
+    .site-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+    .site-logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
+    .site-logo span { color: var(--accent); }
+    .header-nav { margin-left: auto; display: flex; gap: 16px; }
+    .header-nav a { color: var(--text-sec); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+    .header-nav a:hover { color: var(--text); }
+
+    .breadcrumb { max-width: 860px; margin: 0 auto; padding: 12px 24px; font-size: 0.8rem; color: var(--text-mut); }
+    .breadcrumb a { color: var(--text-mut); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 6px; }
+
+    .page-wrapper { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .article-header { padding: 32px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+    .article-category { display: inline-block; background: var(--accent-soft); color: var(--accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 16px; }
+    .article-title { font-family: 'Noto Sans JP', sans-serif; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; margin-bottom: 20px; }
+    .article-meta { display: flex; align-items: center; gap: 16px; font-size: 0.85rem; color: var(--text-mut); }
+
+    .toc { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin: 0 0 40px; }
+    .toc-title { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; margin-bottom: 14px; }
+    .toc ol { list-style: none; padding: 0; margin: 0; counter-reset: toc-counter; }
+    .toc ol li { counter-increment: toc-counter; padding: 4px 0 4px 24px; position: relative; font-size: 0.88rem; }
+    .toc ol li::before { content: counter(toc-counter); position: absolute; left: 0; top: 4px; font-size: 0.72rem; font-weight: 700; color: var(--accent); background: var(--accent-soft); width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .toc a { color: var(--text-sec); text-decoration: none; }
+    .toc a:hover { color: var(--text); }
+
+    .article-body { font-size: 1rem; line-height: 1.9; }
+    .article-body h2 { font-size: 1.4rem; font-weight: 700; color: var(--text); margin: 56px 0 20px; padding-left: 16px; border-left: 3px solid var(--accent); line-height: 1.4; }
+    .article-body h2:first-of-type { margin-top: 0; }
+    .article-body h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin: 36px 0 12px; }
+    .article-body p { color: var(--text-sec); margin-bottom: 20px; }
+    .article-body p strong { color: var(--text); font-weight: 700; }
+    .article-body ul, .article-body ol { margin: 0 0 20px 0; padding-left: 0; list-style: none; }
+    .article-body ul li, .article-body ol li { color: var(--text-sec); padding: 6px 0 6px 24px; position: relative; }
+    .article-body ul li::before { content: ''; position: absolute; left: 0; top: 14px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .article-body ol { counter-reset: ol-counter; }
+    .article-body ol li { counter-increment: ol-counter; }
+    .article-body ol li::before { content: counter(ol-counter); position: absolute; left: 0; top: 6px; font-size: 0.75rem; font-weight: 700; color: var(--accent); background: var(--accent-soft); width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    .point-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin: 28px 0; }
+    .point-box .box-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
+    .point-box p { margin-bottom: 0; }
+    .point-box ul { margin-bottom: 0; }
+
+    .highlight-box { background: var(--accent-soft); border: 1px solid rgba(255,100,40,0.25); border-radius: var(--radius); padding: 20px 24px; margin: 28px 0; }
+    .highlight-box p { margin-bottom: 0; color: var(--text); }
+
+    .tool-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin: 36px 0; }
+    .tool-card-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+    .tool-icon { width: 48px; height: 48px; background: var(--accent-soft); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .tool-name { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .tool-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; font-weight: 700; color: #4ade80; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); padding: 3px 8px; border-radius: 6px; }
+    .tool-desc { color: var(--text-sec); font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
+    .tool-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 24px; }
+    .tool-feature { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 0.85rem; color: var(--text-sec); }
+    .tool-feature strong { display: block; color: var(--text); font-size: 0.8rem; margin-bottom: 3px; }
+    .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.95rem; padding: 12px 28px; border-radius: 999px; text-decoration: none; transition: opacity 0.2s; }
+    .cta-btn:hover { opacity: 0.85; }
+
+    .phase-grid { display: grid; gap: 12px; margin: 28px 0; }
+    .phase-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; display: grid; grid-template-columns: 60px 1fr; gap: 14px; align-items: start; }
+    .phase-num { width: 60px; height: 44px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.78rem; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; text-align: center; line-height: 1.3; }
+    .phase-num.secondary { background: var(--surface2); color: var(--text-sec); border: 1px solid var(--border); }
+    .phase-info .phase-title { font-weight: 700; color: var(--text); margin-bottom: 4px; font-size: 0.95rem; }
+    .phase-info .phase-role { font-size: 0.78rem; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; margin-bottom: 6px; }
+    .phase-info p { font-size: 0.88rem; color: var(--text-sec); margin-bottom: 0; line-height: 1.7; }
+    .phase-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .phase-tag { font-size: 0.7rem; font-weight: 600; padding: 3px 8px; border-radius: 6px; background: var(--surface2); color: var(--text-sec); border: 1px solid var(--border); }
+    .phase-tag.key { background: var(--accent-soft); color: var(--accent); border-color: rgba(255,100,40,0.25); }
+
+    .failure-list { counter-reset: failure-counter; list-style: none; padding: 0; margin: 0 0 28px; }
+    .failure-item { counter-increment: failure-counter; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 20px 20px 56px; position: relative; margin-bottom: 12px; }
+    .failure-item::before { content: counter(failure-counter); position: absolute; left: 16px; top: 18px; width: 28px; height: 28px; background: #ef4444; color: #fff; font-weight: 700; font-size: 0.82rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .failure-item .failure-title { font-weight: 700; color: var(--text); margin-bottom: 6px; font-size: 0.95rem; }
+    .failure-item p { font-size: 0.88rem; color: var(--text-sec); margin-bottom: 0; line-height: 1.7; }
+    .failure-item .fix { margin-top: 10px; padding: 8px 12px; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); border-radius: 8px; font-size: 0.82rem; color: #4ade80; }
+    .failure-item .fix strong { color: #4ade80; }
+
+    .step-list { counter-reset: step-counter; list-style: none; padding: 0; margin: 0 0 28px; }
+    .step-list li { counter-increment: step-counter; position: relative; padding: 0 0 28px 52px; color: var(--text-sec); }
+    .step-list li::before { content: counter(step-counter); position: absolute; left: 0; top: 0; width: 32px; height: 32px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.85rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .step-list li::after { content: ''; position: absolute; left: 15px; top: 32px; bottom: 0; width: 2px; background: var(--border); }
+    .step-list li:last-child::after { display: none; }
+    .step-list li strong { display: block; color: var(--text); font-weight: 700; margin-bottom: 6px; }
+
+    .compare-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 0.9rem; }
+    .compare-table th, .compare-table td { padding: 12px 16px; border: 1px solid var(--border); text-align: left; }
+    .compare-table th { background: var(--surface2); color: var(--text); font-weight: 700; font-size: 0.82rem; }
+    .compare-table td { color: var(--text-sec); background: var(--surface); }
+    .compare-table td.good { color: #4ade80; font-weight: 600; }
+    .compare-table td.bad { color: #f87171; }
+    .compare-table tr:first-child th:first-child { border-radius: 10px 0 0 0; }
+    .compare-table tr:first-child th:last-child { border-radius: 0 10px 0 0; }
+    .table-scroll { overflow-x: auto; }
+
+    .faq-section { margin: 12px 0; }
+    .faq-item { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+    .faq-q { background: var(--surface); padding: 16px 20px; font-weight: 700; color: var(--text); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 12px; }
+    .faq-q::before { content: 'Q'; color: var(--accent); font-weight: 700; font-size: 0.9rem; background: var(--accent-soft); width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .faq-a { background: var(--surface2); padding: 16px 20px 16px 54px; color: var(--text-sec); font-size: 0.92rem; line-height: 1.8; }
+
+    .related-article { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin: 20px 0; display: flex; align-items: center; gap: 16px; text-decoration: none; transition: border-color 0.2s; }
+    .related-article:hover { border-color: var(--accent); }
+    .related-article-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .related-article-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; margin-bottom: 4px; }
+    .related-article-title { font-size: 0.95rem; font-weight: 700; color: var(--text); line-height: 1.5; }
+
+    .site-footer { background: var(--surface); border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 0.85rem; color: var(--text-mut); margin-top: 80px; }
+    .site-footer a { color: var(--text-mut); text-decoration: none; margin: 0 10px; }
+    .site-footer a:hover { color: var(--text); }
+    .site-footer .footer-links { margin-bottom: 16px; }
+
+    @media (max-width: 600px) {
+      .page-wrapper { padding: 0 16px 60px; }
+      .article-header { padding: 24px 0 32px; }
+      .tool-features { grid-template-columns: 1fr 1fr; }
+      .phase-card { grid-template-columns: 52px 1fr; gap: 10px; }
+      .phase-num { width: 52px; height: 40px; font-size: 0.7rem; }
+      .compare-table { font-size: 0.8rem; }
+      .compare-table th, .compare-table td { padding: 10px 10px; }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/article.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="https://somirai.jp/" class="site-logo">Somirai<span>.</span>jp</a>
+  <nav class="header-nav">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/pitch-counter/">投球数カウンター</a>
+    <a href="https://somirai.jp/blog/">ブログ</a>
+  </nav>
+  <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
+</header>
+
+<nav class="breadcrumb" aria-label="パンくずリスト">
+  <a href="https://somirai.jp/">ホーム</a>
+  <span>›</span>
+  <a href="https://somirai.jp/blog/">ブログ</a>
+  <span>›</span>
+  投球数の数え方と管理
+</nav>
+
+<main class="page-wrapper">
+  <article>
+
+    <header class="article-header">
+      <div class="article-category">野球・スポーツ</div>
+      <h1 class="article-title">少年野球・草野球の投球数の数え方と管理｜上限70球を「何回まで」に直すと</h1>
+      <div class="article-meta">
+        <time datetime="2026-11-03">2026年11月3日</time>
+        <span>約3,000字 · 読了約6分</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="目次">
+      <div class="toc-title">目次</div>
+      <ol>
+        <li><a href="#why">投球数を数える理由</a></li>
+        <li><a href="#rule">何を1球と数えるか</a></li>
+        <li><a href="#inning">上限を「何回まで」に直す早見表</a></li>
+        <li><a href="#how">数え方の運用：記録係と声の共有</a></li>
+        <li><a href="#limit">上限に近づいたときの判断</a></li>
+        <li><a href="#tool">投球数カウンターで記録する</a></li>
+        <li><a href="#faq">よくある質問（FAQ）</a></li>
+        <li><a href="#summary">まとめ</a></li>
+      </ol>
+    </nav>
+
+    <div class="article-body">
+
+      <p>少年野球や草野球で、投手の交代を「そろそろ疲れていそうだから」という感覚だけで決めていないでしょうか。試合中は点差や走者に気を取られて、投手が何球投げたかを正確に覚えている人はほとんどいません。</p>
+
+      <p>この記事では、投球数を<strong>数字で管理する</strong>ための基本を整理します。何を1球と数えるか、1日の上限を「何回まで」に直すといくつか、誰がどう数えれば間違いが減るか、上限に近づいたときに何を決めておくべきかを順に解説します。</p>
+
+      <div class="highlight-box">
+        <p><strong>この記事で分かること：</strong>1球の数え方 / 上限70球を回数に直した早見表 / 記録係の決め方 / 上限に近づいたときの判断 / コースと球種まで記録する方法</p>
+      </div>
+
+      <h2 id="why">投球数を数える理由</h2>
+
+      <p>投げすぎは肩やひじの故障につながるとされ、学童野球を中心に、多くの団体が1日の球数に上限を設けています。上限の数字は大会や年によって違うため、<strong>自分のチームが出る大会の要項で最新の規定を確認する</strong>ことが前提です。</p>
+
+      <p>規定がない草野球でも、数えておく意味はあります。球数が分かると、交代の判断が感覚から数字に変わり、「あと何球で替えるか」を試合前にベンチで決められます。後で見返せば、どのイニングから球数がかさむかも分かります。</p>
+
+      <h2 id="rule">何を1球と数えるか</h2>
+
+      <p>数え方に迷う場面は、実は決まっています。一般的な扱いは次のとおりです。</p>
+
+      <div class="point-box">
+        <div class="box-label">一般的な数え方</div>
+        <ul>
+          <li><strong>数える：</strong>ボール、見逃しストライク、空振り、ファウル、打たれた球（打者に向けて投げた球）</li>
+          <li><strong>数えない：</strong>牽制球、試合前や回の間の投球練習</li>
+          <li><strong>大会で確認：</strong>暴投・捕逸の球、故意四球の球、投球練習の扱い</li>
+        </ul>
+      </div>
+
+      <p>特にファウルは、数え忘れやすい球です。ファウルで粘られる打者が続くと、1打者で10球を超えることもあります。ベンチの記録でファウルを落とすと、実際の球数より少なく見えてしまいます。</p>
+
+      <h2 id="inning">上限を「何回まで」に直す早見表</h2>
+
+      <p>上限が球数で決まっていると、「何回まで投げさせられるか」が分かりにくくなります。1イニングの平均球数で割ると、おおよその回数が出ます。上限を70球とした例です。</p>
+
+      <table class="compare-table"><thead><tr><th>1イニングの平均球数</th><th>上限70球で投げられる回数の目安</th></tr></thead><tbody><tr><td>12球</td><td>約5.8回</td></tr><tr><td>15球</td><td>約4.7回</td></tr><tr><td>17球</td><td>約4.1回</td></tr><tr><td>20球</td><td>約3.5回</td></tr></tbody></table>
+
+      <p>1イニングの平均が15球なら、70球は<strong>4回強</strong>です。20球かかるイニングが続けば、3回半で上限に届きます。逆に、短いイニングが続けば5回以上投げられます。<strong>1回を何球で終えているか</strong>を、試合中に見ておくことが大切です。</p>
+
+      <p>なお、この表は計算の目安です。実際の上限の数字は、大会や連盟によって違います。表の「70球」の部分は、自チームの上限に読み替えてください（上限÷1イニングの球数で出せます）。</p>
+
+      <h2 id="how">数え方の運用：記録係と声の共有</h2>
+
+      <p>投球数は、<strong>記録だけに集中できる人を1人決めて</strong>数えるのが確実です。投手本人や捕手は、プレーに集中すると数え間違えます。ベンチの控え選手やスコアラーが向いています。</p>
+
+      <ol class="step-list">
+        <li>
+          <strong>記録係を決める</strong>
+          試合前に1人決め、ベンチで投手の近くに座ってもらいます。
+        </li>
+        <li>
+          <strong>1球ごとに記録する</strong>
+          ボール・ストライク・ファウルのどれかを、その場で入力します。
+        </li>
+        <li>
+          <strong>1打者が終わるごとに、合計を声に出す</strong>
+          「いま42球」と声に出し、監督と投手に共有します。
+        </li>
+        <li>
+          <strong>回の終わりに、上限までの残りを確認する</strong>
+          「あと28球」「次の回で交代の準備」と、次の判断につなげます。
+        </li>
+      </ol>
+
+      <h2 id="limit">上限に近づいたときの判断</h2>
+
+      <p>上限に近づいたとき、慌てないために試合前に決めておくことが3つあります。</p>
+
+      <ul>
+        <li><strong>打者の途中で上限に達したときのルール</strong>（その打者まで投げてよいのか、その時点で交代か）</li>
+        <li><strong>次に投げる投手</strong>（上限の10〜15球手前で、肩を作り始める）</li>
+        <li><strong>交代後の守備位置</strong>（投手が別の守備に回るのか、ベンチに下がるのか）</li>
+      </ul>
+
+      <p>次の投手を前もって決めていないと、上限に達してから慌ててオーダーを組み直すことになります。登板計画の組み方は、<a href="https://somirai.jp/blog/baseball-lineup-simulator.html">打順シミュレーターの使い方</a>で紹介した、複数パターンを試す手順とあわせて考えると整理しやすくなります。</p>
+
+      <h2 id="tool">投球数カウンターで記録する</h2>
+
+      <p>Somirai Lab の「投球数カウンター」は、ブラウザだけで使える無料の記録ツールです。ストライクゾーンを9分割した図をタップして、コースと球種（直球・変化球、または球種別）を記録できます。球数のほか、対戦した打者、カウント、アウト、イニングも一緒に管理できます。</p>
+
+      <p>「肩の余力」のゲージは、自分で決めた上限（初期値は70球）に対して、あと何球かを示します。上限に近づくと一目で分かるので、記録係が声に出して共有しやすくなります。登録は不要です。</p>
+
+      <div class="tool-card" style="margin-top: 40px;">
+        <div class="tool-card-header">
+          <div class="tool-icon">&#9918;</div>
+          <div>
+            <div class="tool-name">投球数カウンター — コースと球種まで記録</div>
+            <div class="tool-badge">登録不要 · 無料 · ブラウザのみ</div>
+          </div>
+        </div>
+        <p class="tool-desc">ストライクゾーンをタップして1球ずつ記録。球数・対戦打者・カウント・アウトを一緒に管理し、「肩の余力」で上限までの残りを確認できます。</p>
+        <a href="https://somirai.jp/pitch-counter/" class="cta-btn" target="_blank" rel="noopener">
+          今すぐ無料で使ってみる &#8594;
+        </a>
+      </div>
+
+      <h2 id="faq">よくある質問（FAQ）</h2>
+
+      <div class="faq-section">
+
+        <div class="faq-item">
+          <div class="faq-q">投球数は何を1球と数えますか？</div>
+          <div class="faq-a">一般的には、ボール・見逃しストライク・空振り・ファウル・打たれた球など、打者に対して投げた球をすべて1球と数えます。牽制球や投球練習は数えないのが通例ですが、大会によって扱いが違うことがあるので、自チームの大会要項で確認してください。</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">1日の投球数の上限は決まっていますか？</div>
+          <div class="faq-a">学童（小学生）の軟式野球では1日70球以内とする規定が広く使われていますが、大会や連盟、年によって異なります。中学生以上や草野球の大会では上限がない場合もあります。必ず、出場する大会の要項で最新の規定を確認してください。この記事の70球は、あくまで例としての数字です。</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">打者の途中で上限に達したら、どうなりますか？</div>
+          <div class="faq-a">大会によって「その打者が終わるまで投げてよい」とするものと、「上限に達した時点で交代」とするものがあります。ルールを知らないと、試合中に判断が止まります。試合前に、記録係と監督で確認しておきましょう。</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">投球数は誰が数えるのがよいですか？</div>
+          <div class="faq-a">投手本人や捕手が数えると、プレーに集中できず数え間違いが起きます。ベンチの控え選手やスコアラーなど、記録だけに集中できる人を1人決めるのが確実です。1打者が終わるごとに、合計をベンチ全体に声で共有します。</div>
+        </div>
+
+      </div>
+
+      <h2 id="summary">まとめ</h2>
+
+      <ul>
+        <li>投球数の上限は、大会や連盟ごとに違う。必ず自チームの大会要項で最新の規定を確認する</li>
+        <li>打者に向けて投げた球は、ファウルも含めてすべて数える。牽制と投球練習は数えないのが通例</li>
+        <li>上限÷1イニングの球数で、投げられる回数の目安が出る。70球なら、15球ペースで4回強</li>
+        <li>数えるのは記録だけに集中できる人。1打者ごとに合計を声に出して共有する</li>
+        <li>上限に達したときのルールと、次の投手を、試合前に決めておく</li>
+      </ul>
+
+      <p>まずは次の試合で、記録係を1人決めてみてください。それだけで、投手の交代が、感覚から数字を根拠にした判断に変わります。</p>
+
+      <!-- 著者 -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin:40px 0 0;display:flex;gap:16px;align-items:flex-start;">
+        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#ff6428,#e84410);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:18px;">S</div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mut);margin-bottom:4px;">この記事を書いた人</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;">Somirai Lab</div>
+          <p style="font-size:13px;color:var(--text-sec);line-height:1.75;margin:0;">草野球チームのスコアラー・主将経験を持つSomirai Lab 運営者。Next.js・React を使った無料Webツールを作成・運営しています。野球・習慣化・家計管理など、日常の小さな課題を解決するツールを中心に作成中。</p>
+        </div>
+      </div>
+
+    <!-- /article-body -->
+
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/about.html">このサイトについて</a>
+    <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    <a href="https://somirai.jp/contact.html">お問い合わせ</a>
+  </div>
+  <p>&#169; 2026 Somirai Lab</p>
+</footer>
+
+<script src="/shared/tool.js"></script>
+<script src="/shared/blog-ga.js"></script>
+<script>Tool.initTheme();</script>
+</body>
+</html>
