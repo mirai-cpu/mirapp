@@ -81,6 +81,8 @@
         <div class="result-label">WHIP</div>
         <div class="result-value" id="result-value">-.--</div>
         <div class="result-note" id="result-note"></div>
+        <button type="button" class="reg-btn" id="register-game">この試合を通算に登録</button>
+        <div class="reg-msg" id="register-msg" role="status" aria-live="polite"></div>
       </div>
     </div>
 
@@ -89,7 +91,11 @@
       <p>試合ごとの数字を入力すると、全試合を合算した通算WHIPを出します。投球回は「6.1」「6.2」の表記のままで入力できます。1試合ずつの平均ではなく、合計の与四球・被安打を合計の投球回で割るので、実際のWHIPと一致します。</p>
       <div class="game-head"><span></span><span>与四球</span><span>被安打</span><span>投球回</span><span></span></div>
       <div id="game-rows"></div>
-      <button type="button" class="add-btn" id="add-game">＋ 試合を追加</button>
+      <div class="multi-actions">
+        <button type="button" class="add-btn" id="add-game">＋ 試合を追加</button>
+        <button type="button" class="add-btn sub" id="clear-games">全部消す</button>
+      </div>
+      <p style="font-size:.875rem;margin-top:8px;">※ 入力した試合はこの端末のブラウザに保存され、次に開いたときも残ります。</p>
       <div class="result-box" id="multi-result" style="display:none;">
         <div class="result-label">通算WHIP</div>
         <div class="result-value" id="multi-value">-.--</div>
@@ -170,7 +176,7 @@
     </div>
     <div class="faq-item">
       <h3>シーズン通算のWHIPも計算できますか？</h3>
-      <p>このページは1試合単位の簡易計算機です。シーズン通算で自動集計したい場合は、無料の打撃成績管理ツール「LUMBER」と合わせてご利用ください。</p>
+      <p>できます。上の計算機で出した1試合の結果は「この試合を通算に登録」ボタンで、下の「複数試合の通算WHIP」に追加できます。登録した試合はこの端末のブラウザに保存され、合計の与四球・被安打を合計の投球回で割った通算WHIPが自動で出ます。</p>
     </div>
   </main>
 
@@ -227,6 +233,23 @@
       $walks.addEventListener('input', calc);
       $hits.addEventListener('input', calc);
       $innings.addEventListener('input', calc);
+
+      var $regMsg = document.getElementById('register-msg');
+      document.getElementById('register-game').addEventListener('click', function () {
+        if (!window.WhipGames) return;
+        var no = window.WhipGames.register($walks.value, $hits.value, $innings.value);
+        if (no === null) {
+          $regMsg.textContent = '投球回は「6.1」「6.2」の形で入力してください';
+          return;
+        }
+        $regMsg.textContent = no + '試合目として通算に登録しました';
+        $walks.value = ''; $hits.value = ''; $innings.value = '';
+        document.getElementById('multi-result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (typeof gtag === 'function') gtag('event', 'whip_registered', {});
+      });
+      [$walks, $hits, $innings].forEach(function (el) {
+        el.addEventListener('input', function () { $regMsg.textContent = ''; });
+      });
     })();
   </script>
 
@@ -252,7 +275,23 @@
         return Math.floor(outs / 3) + (outs % 3 ? '.' + (outs % 3) : '');
       }
 
-      function addRow() {
+      var KEY = 'somirai:whip-games';
+      function save() {
+        try {
+          var data = Array.prototype.map.call($rows.children, function (r) {
+            return [r.querySelector('.g-bb').value, r.querySelector('.g-h').value, r.querySelector('.g-ip').value];
+          });
+          localStorage.setItem(KEY, JSON.stringify(data));
+        } catch (e) {}
+      }
+      function load() {
+        try {
+          var d = JSON.parse(localStorage.getItem(KEY) || 'null');
+          return Array.isArray(d) && d.length ? d : null;
+        } catch (e) { return null; }
+      }
+
+      function addRow(vals) {
         count++;
         var row = document.createElement('div');
         row.className = 'game-row';
@@ -265,7 +304,16 @@
           if ($rows.children.length > 1) { row.remove(); renumber(); calc(); }
         });
         row.addEventListener('input', calc);
+        if (vals) {
+          row.querySelector('.g-bb').value = vals[0] || '';
+          row.querySelector('.g-h').value = vals[1] || '';
+          row.querySelector('.g-ip').value = vals[2] || '';
+        }
         $rows.appendChild(row);
+        return row;
+      }
+      function isEmpty(r) {
+        return !r.querySelector('.g-bb').value && !r.querySelector('.g-h').value && !r.querySelector('.g-ip').value;
       }
       function renumber() {
         Array.prototype.forEach.call($rows.children, function (r, i) {
@@ -274,7 +322,8 @@
         count = $rows.children.length;
       }
 
-      function calc() {
+      function calc(silent) {
+        save();
         var bb = 0, h = 0, outs = 0, used = 0;
         Array.prototype.forEach.call($rows.children, function (r) {
           var vb = r.querySelector('.g-bb').value, vh = r.querySelector('.g-h').value, vi = r.querySelector('.g-ip').value;
@@ -286,11 +335,40 @@
         $val.textContent = ((bb + h) / (outs / 3)).toFixed(2);
         $note.textContent = used + '試合 ・ 与四球 ' + bb + ' ・ 被安打 ' + h + ' ・ 投球回 ' + fmtInnings(outs);
         $res.style.display = 'block';
-        if (typeof gtag === 'function') gtag('event', 'whip_multi_calculated', {});
+        if (silent !== true && typeof gtag === 'function') gtag('event', 'whip_multi_calculated', {});
       }
 
-      document.getElementById('add-game').addEventListener('click', addRow);
-      addRow(); addRow(); addRow();
+      document.getElementById('add-game').addEventListener('click', function () { addRow(); save(); });
+      document.getElementById('clear-games').addEventListener('click', function () {
+        if (!confirm('入力した試合をすべて消します。よろしいですか？')) return;
+        $rows.innerHTML = ''; count = 0;
+        addRow(); addRow(); addRow();
+        calc();
+      });
+
+      // 上の1試合の計算結果を通算に登録する。登録した試合番号を返す(不正な値なら null)
+      window.WhipGames = {
+        register: function (bb, h, ip) {
+          var b = parseFloat(bb), x = parseFloat(h);
+          if (toOuts(ip) === null || !isFinite(b) || b < 0 || !isFinite(x) || x < 0) return null;
+          var target = null;
+          Array.prototype.some.call($rows.children, function (r) {
+            if (isEmpty(r)) { target = r; return true; }
+            return false;
+          });
+          if (!target) target = addRow();
+          target.querySelector('.g-bb').value = bb;
+          target.querySelector('.g-h').value = h;
+          target.querySelector('.g-ip').value = ip;
+          calc();
+          return Array.prototype.indexOf.call($rows.children, target) + 1;
+        }
+      };
+
+      var saved = load();
+      if (saved) saved.forEach(function (v) { addRow(v); });
+      else { addRow(); addRow(); addRow(); }
+      calc(true);
     })();
   </script>
 
