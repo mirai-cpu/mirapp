@@ -77,6 +77,27 @@
         <div class="result-label">ERA（防御率）</div>
         <div class="result-value" id="result-value">-.--</div>
         <div class="result-note" id="result-note"></div>
+        <button type="button" class="reg-btn" id="register-game">この試合を通算に登録</button>
+        <div class="reg-msg" id="register-msg" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="multi-card" id="multi-card">
+      <h2>複数試合の通算防御率を計算する</h2>
+      <p>試合ごとの数字を入力するか、上の計算機の「この試合を通算に登録」で追加すると、全試合を合算した通算防御率を出します。投球回は「6.1」「6.2」の表記のままで入力できます。1試合ずつの防御率の平均ではなく、合計の自責点を合計の投球回で割って9をかけるので、実際の防御率と一致します。</p>
+      <div class="game-head cols-2"><span></span><span>投球回</span><span>自責点</span><span></span></div>
+      <div id="game-rows" class="cols-2"></div>
+      <p class="hidden-note" id="hidden-note" style="display:none;"></p>
+      <div class="multi-actions">
+        <button type="button" class="add-btn" id="add-game">＋ 試合を追加</button>
+        <button type="button" class="add-btn sub" id="toggle-games" aria-controls="game-rows">登録した試合を隠す</button>
+        <button type="button" class="add-btn sub" id="clear-games">全部消す</button>
+      </div>
+      <p style="font-size:.875rem;margin-top:8px;">※ 入力した試合はこの端末のブラウザに保存され、次に開いたときも残ります。「隠す」を押すと一覧だけを閉じ、通算には含めたままにします。</p>
+      <div class="result-box" id="multi-result" style="display:none;">
+        <div class="result-label">通算防御率</div>
+        <div class="result-value" id="multi-value">-.--</div>
+        <div class="result-note" id="multi-note"></div>
       </div>
     </div>
 
@@ -154,7 +175,7 @@
     </div>
     <div class="faq-item">
       <h3>シーズン通算の防御率も計算できますか？</h3>
-      <p>このページは1試合単位の簡易計算機です。シーズン通算で自動集計したい場合は、無料の打撃成績管理ツール「LUMBER」と合わせてご利用ください。</p>
+      <p>できます。上の計算機で出した1試合の結果は「この試合を通算に登録」ボタンで、下の「複数試合の通算防御率」に追加できます。登録した試合はこの端末のブラウザに保存され、合計の自責点を合計の投球回で割って9をかけた通算防御率が自動で出ます。試合が増えて一覧が長くなったら「登録した試合を隠す」で閉じられます（通算には含めたままです）。</p>
     </div>
   </main>
 
@@ -209,7 +230,43 @@
 
       $innings.addEventListener('input', calc);
       $earned.addEventListener('input', calc);
+
+      var $regMsg = document.getElementById('register-msg');
+      document.getElementById('register-game').addEventListener('click', function () {
+        if (!window.gameLog) return;
+        var no = window.gameLog.register([$innings.value, $earned.value]);
+        if (no === null) {
+          $regMsg.textContent = '投球回は「6.1」「6.2」の形で入力してください';
+          return;
+        }
+        $regMsg.textContent = no + '試合目として通算に登録しました' + (window.gameLog.isHidden() ? '（一覧は非表示中）' : '');
+        $innings.value = ''; $earned.value = '';
+        document.getElementById('multi-result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (typeof gtag === 'function') gtag('event', 'era_registered', {});
+      });
+      [$innings, $earned].forEach(function (el) {
+        el.addEventListener('input', function () { $regMsg.textContent = ''; });
+      });
     })();
+  </script>
+
+  <script src="/shared/games.js"></script>
+  <script>
+    window.gameLog = GameLog({
+      key: 'somirai:era-games',
+      root: document.getElementById('multi-card'),
+      fields: [
+        { cls: 'g-ip', label: '投球回', placeholder: '6.1', innings: true },
+        { cls: 'g-er', label: '自責点', placeholder: '2' }
+      ],
+      compute: function (sums, outs, used) {
+        return {
+          value: (sums['g-er'] / (outs / 3) * 9).toFixed(2),
+          note: used + '試合 ・ 投球回 ' + GameLog.fmtInnings(outs) + ' ・ 自責点 ' + sums['g-er']
+        };
+      },
+      event: 'era_multi_calculated'
+    });
   </script>
 
   <script>(function(){try{if(localStorage.getItem('somirai:seen')){}else{localStorage.setItem('somirai:seen','1');}var t=new Date(),ld=function(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};var today=ld(t),r=localStorage.getItem('somirai:streak'),s=r?JSON.parse(r):null;if(!s||s.lastDate!==today){var y=ld(new Date(Date.now()-864e5));localStorage.setItem('somirai:streak',JSON.stringify({lastDate:today,count:(s&&s.lastDate===y)?s.count+1:1}));}}catch(e){}})();</script>

@@ -74,6 +74,8 @@ strong { color: var(--ink); }
 .game-row .rm { background: none; border: 2px solid var(--rule); color: var(--ink-sec); border-radius: var(--r); height: 48px; width: 44px; cursor: pointer; font-size: 1.1rem; }
 .add-btn { background: none; border: 2px solid var(--ink); color: var(--ink); border-radius: var(--r); min-height: 48px; padding: 0 16px; font-size: .9375rem; font-weight: 700; cursor: pointer; margin-top: 4px; }
 .add-btn.sub { border-color: var(--rule); color: var(--ink-sec); font-weight: 400; }
+.game-head.cols-2, #game-rows.cols-2 .game-row { grid-template-columns: 64px 1fr 1fr 44px; }
+.hidden-note { font-size: .9375rem; color: var(--ink-sec); border-left: 5px solid var(--rule); padding: 6px 12px; margin: 0 0 8px; }
 .multi-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .reg-btn { margin-top: 14px; background: none; border: 2px solid #D5D9DD; color: #F4F1EC; border-radius: var(--r); min-height: 48px; padding: 0 18px; font-size: .9375rem; font-weight: 700; cursor: pointer; }
 .reg-btn:focus-visible { outline: 3px solid var(--liner); outline-offset: 2px; }
