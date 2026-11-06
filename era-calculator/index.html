@@ -85,7 +85,7 @@
     <div class="multi-card" id="multi-card">
       <h2>複数試合の通算防御率を計算する</h2>
       <p>試合ごとの数字を入力するか、上の計算機の「この試合を通算に登録」で追加すると、全試合を合算した通算防御率を出します。投球回は「6.1」「6.2」の表記のままで入力できます。1試合ずつの防御率の平均ではなく、合計の自責点を合計の投球回で割って9をかけるので、実際の防御率と一致します。</p>
-      <div class="game-head cols-2"><span></span><span>投球回</span><span>自責点</span><span></span></div>
+      <div class="game-head cols-2"><span></span><span>投球回</span><span>自責点</span><span>通算</span><span></span></div>
       <div id="game-rows" class="cols-2"></div>
       <p class="hidden-note" id="hidden-note" style="display:none;"></p>
       <div class="multi-actions">
@@ -93,7 +93,7 @@
         <button type="button" class="add-btn sub" id="toggle-games" aria-controls="game-rows">登録した試合を隠す</button>
         <button type="button" class="add-btn sub" id="clear-games">全部消す</button>
       </div>
-      <p style="font-size:.875rem;margin-top:8px;">※ 入力した試合はこの端末のブラウザに保存され、次に開いたときも残ります。「隠す」を押すと一覧だけを閉じ、通算には含めたままにします。</p>
+      <p style="font-size:.875rem;margin-top:8px;">※ 入力した試合はこの端末のブラウザに保存され、次に開いたときも残ります。「隠す」を押すと一覧だけを閉じ、通算には含めたままにします。「通算」のチェックを外した試合は、数字を残したまま通算から外れます。</p>
       <div class="result-box" id="multi-result" style="display:none;">
         <div class="result-label">通算防御率</div>
         <div class="result-value" id="multi-value">-.--</div>
@@ -175,7 +175,7 @@
     </div>
     <div class="faq-item">
       <h3>シーズン通算の防御率も計算できますか？</h3>
-      <p>できます。上の計算機で出した1試合の結果は「この試合を通算に登録」ボタンで、下の「複数試合の通算防御率」に追加できます。登録した試合はこの端末のブラウザに保存され、合計の自責点を合計の投球回で割って9をかけた通算防御率が自動で出ます。試合が増えて一覧が長くなったら「登録した試合を隠す」で閉じられます（通算には含めたままです）。</p>
+      <p>できます。上の計算機で出した1試合の結果は「この試合を通算に登録」ボタンで、下の「複数試合の通算防御率」に追加できます。登録した試合はこの端末のブラウザに保存され、合計の自責点を合計の投球回で割って9をかけた通算防御率が自動で出ます。試合が増えて一覧が長くなったら「登録した試合を隠す」で閉じられます（通算には含めたままです）。特定の試合だけ通算から外したいときは、その試合の「通算」のチェックを外してください。</p>
     </div>
   </main>
 

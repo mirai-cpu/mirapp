@@ -3,6 +3,7 @@
  * - 試合ごとの行を入力 → 合計してから通算値を出す
  * - 上の1試合の計算結果を register() で登録できる
  * - 入力はブラウザ(localStorage)に保存。登録した試合の一覧は隠せる(通算には含めたまま)
+ * - 試合ごとに「通算」のチェックを外すと、その試合だけ通算から外せる(数字は残る)
  *
  * GameLog({
  *   key: 'somirai:whip-games',
@@ -38,7 +39,10 @@
     function save() {
       try {
         var data = Array.prototype.map.call($rows.children, function (r) {
-          return fields.map(function (f) { return r.querySelector('.' + f.cls).value; });
+          return {
+            v: fields.map(function (f) { return r.querySelector('.' + f.cls).value; }),
+            off: !r.querySelector('.g-use').checked
+          };
         });
         localStorage.setItem(opt.key, JSON.stringify({ rows: data, hidden: hidden }));
       } catch (e) {}
@@ -54,11 +58,16 @@
     function isEmpty(r) {
       return fields.every(function (f) { return !r.querySelector('.' + f.cls).value; });
     }
+    function offCount() {
+      return Array.prototype.filter.call($rows.children, function (r) { return !isEmpty(r) && isOff(r); }).length;
+    }
     function filledCount() {
       return Array.prototype.filter.call($rows.children, function (r) { return !isEmpty(r); }).length;
     }
 
-    function addRow(vals) {
+    function isOff(r) { return !r.querySelector('.g-use').checked; }
+
+    function addRow(vals, off) {
       var no = $rows.children.length + 1;
       var row = document.createElement('div');
       row.className = 'game-row';
@@ -67,6 +76,7 @@
         html += '<input type="number" class="' + f.cls + '" min="0" step="' + (f.innings ? '0.1' : '1') + '" inputmode="' +
           (f.innings ? 'decimal' : 'numeric') + '" placeholder="' + f.placeholder + '">';
       });
+      html += '<label class="use"><input type="checkbox" class="g-use" checked></label>';
       html += '<button type="button" class="rm" aria-label="この行を削除">×</button>';
       row.innerHTML = html;
       row.querySelector('.rm').addEventListener('click', function () {
@@ -74,7 +84,11 @@
         renumber(); calc();
       });
       row.addEventListener('input', calc);
+      row.querySelector('.g-use').addEventListener('change', function () {
+        row.classList.toggle('off', isOff(row)); renumber(); calc();
+      });
       if (vals) fields.forEach(function (f, i) { row.querySelector('.' + f.cls).value = vals[i] || ''; });
+      if (off) { row.querySelector('.g-use').checked = false; row.classList.add('off'); }
       $rows.appendChild(row);
       renumber();
       return row;
@@ -83,6 +97,7 @@
       Array.prototype.forEach.call($rows.children, function (r, i) {
         var no = (i + 1) + '試合目';
         r.querySelector('.game-no').textContent = no;
+        r.querySelector('.g-use').setAttribute('aria-label', no + 'を通算に含める');
         fields.forEach(function (f) { r.querySelector('.' + f.cls).setAttribute('aria-label', no + ' ' + f.label); });
       });
     }
@@ -94,7 +109,9 @@
       $toggle.textContent = hidden ? '登録した試合を表示する' : '登録した試合を隠す';
       $toggle.setAttribute('aria-expanded', hidden ? 'false' : 'true');
       $hiddenNote.style.display = hidden ? 'block' : 'none';
-      $hiddenNote.textContent = n + '試合を非表示にしています（通算には含まれています）';
+      var off = offCount();
+      $hiddenNote.textContent = n + '試合を非表示にしています（' +
+        (off ? '通算から外した' + off + '試合を除き、通算に含まれています）' : '通算には含まれています）');
     }
     function setHidden(h) { hidden = h; render(); save(); }
 
@@ -103,6 +120,7 @@
       var sums = {}, outs = 0, used = 0;
       fields.forEach(function (f) { if (!f.innings) sums[f.cls] = 0; });
       Array.prototype.forEach.call($rows.children, function (r) {
+        if (isOff(r)) return;
         var o = null, ok = true, vals = {};
         fields.forEach(function (f) {
           var v = r.querySelector('.' + f.cls).value;
@@ -117,7 +135,8 @@
       var out = used > 0 && outs > 0 ? opt.compute(sums, outs, used) : null;
       if (!out) { $res.style.display = 'none'; return; }
       $val.textContent = out.value;
-      $note.textContent = out.note;
+      var off = offCount();
+      $note.textContent = out.note + (off ? '（' + off + '試合は通算から外しています）' : '');
       $res.style.display = 'block';
       if (silent !== true && opt.event && typeof gtag === 'function') gtag('event', opt.event, {});
     }
@@ -137,7 +156,9 @@
     $toggle.addEventListener('click', function () { setHidden(!hidden); });
 
     var saved = load();
-    if (saved) { saved.rows.forEach(function (v) { addRow(v); }); hidden = !!saved.hidden; }
+    if (saved) {
+      saved.rows.forEach(function (d) { if (Array.isArray(d)) addRow(d); else addRow(d.v, d.off); }); hidden = !!saved.hidden;
+    }
     else { addRow(); addRow(); addRow(); }
     calc(true);
 
@@ -151,7 +172,7 @@
         if (bad) return null;
         var target = null;
         Array.prototype.some.call($rows.children, function (r) {
-          if (isEmpty(r)) { target = r; return true; }
+          if (isEmpty(r) && !isOff(r)) { target = r; return true; }
           return false;
         });
         if (!target) target = addRow();
