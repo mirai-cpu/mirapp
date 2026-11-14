@@ -360,6 +360,7 @@ check_html "$BASE/magic-number-calculator/index.html" "マジックナンバー�
 check_html "$BASE/weather/index.html"       "FORECAST"               "https://somirai.jp/weather/"
 check_html "$BASE/swing/index.html"         "SWING!"                 "https://somirai.jp/swing/"
 check_html "$BASE/signs/index.html"         "SIGNS"                  "https://somirai.jp/signs/"
+check_html "$BASE/skipper/index.html"       "SKIPPER"                "https://somirai.jp/skipper/"
 check_html "$BASE/draft/index.html"         "ドラフト会議"           "https://somirai.jp/draft/"
 check_html "$BASE/split/index.html"         "試合費用の割り勘"       "https://somirai.jp/split/"
 check_html "$BASE/training-timer/index.html" "9回制トレタイマー"     "https://somirai.jp/training-timer/"

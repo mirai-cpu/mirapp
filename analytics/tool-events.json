@@ -18,7 +18,8 @@
     { "name": "FORECAST", "path": "/weather/", "steps": [["geo_locate", "現在地を使った"], ["city_weather_search", "市区町村で検索"]] },
     { "name": "VALE", "path": "/price-sim/", "steps": [["vale_calc", "シミュレーション実行"], ["vale_kura_import", "KURA連携"]] },
     { "name": "SWING", "path": "/swing/", "steps": [["game_complete", "1ゲーム完了"]] },
-    { "name": "SIGNS", "path": "/signs/", "steps": [["signs_start", "10球を始めた"], ["signs_complete", "10球やりきった"], ["signs_share", "結果を共有"]] }
+    { "name": "SIGNS", "path": "/signs/", "steps": [["signs_start", "10球を始めた"], ["signs_complete", "10球やりきった"], ["signs_share", "結果を共有"]] },
+    { "name": "SKIPPER", "path": "/skipper/", "steps": [["skipper_start", "試合を始めた"], ["skipper_complete", "試合終了まで指揮した"], ["skipper_share", "結果を共有"]] }
   ],
   "blog": { "path": "/blog/", "steps": [["blog_scroll_25", "25%"], ["blog_scroll_50", "50%"], ["blog_scroll_75", "75%"], ["blog_scroll_100", "最後まで"], ["blog_read", "読了(75%+45秒)"]] }
 }

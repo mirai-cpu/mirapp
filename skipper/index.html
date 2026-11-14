@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ja" data-tint="navy">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SKIPPER 監督采配シミュレーター【無料】7回1点差から9回まで、あなたならどうする？ | Somirai Lab</title>
+<meta name="description" content="7回裏1点ビハインドから試合終了まで、送りバント・盗塁・エンドラン・スクイズ・代打・継投・前進守備を選んで勝ちにいく無料の野球采配ゲーム。スタメンメーカーの打順を引き継いで自分のチームで采配できる。結果から監督タイプを診断。登録不要・スマホ対応。作戦の考え方の解説つき。">
+<meta name="keywords" content="野球 采配 ゲーム,監督 シミュレーター 野球,野球 作戦 考え方,送りバント 判断,少年野球 采配,野球 監督 ゲーム 無料">
+<link rel="canonical" href="https://somirai.jp/skipper/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://somirai.jp/skipper/">
+<meta property="og:title" content="SKIPPER 監督采配シミュレーター【無料】あなたならどうする？">
+<meta property="og:description" content="7回1点差から9回まで。バント・盗塁・スクイズ・継投を選んで勝ちにいく。結果から監督タイプを診断。">
+<meta property="og:site_name" content="Somirai Lab">
+<meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2B2420">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"SKIPPER 監督采配シミュレーター","url":"https://somirai.jp/skipper/","description":"7回1点ビハインドから試合終了まで、バント・盗塁・エンドラン・スクイズ・代打・継投・前進守備を選んで勝ちにいく無料の野球采配ゲーム。","genre":"Strategy","gamePlatform":"Web Browser","applicationCategory":"GameApplication","operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"publisher":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"結果はどうやって決まりますか？","acceptedAnswer":{"@type":"Answer","text":"このゲームの中で決めた設計値(確率)で抽選しています。例えば送りバントは成功70%・失敗15%・内野安打10%・小飛球併殺5%です。実在の選手やリーグの統計ではありません。設計値はページ内の表で公開しています。"}},
+{"@type":"Question","name":"自分のチームの選手名で遊べますか？","acceptedAnswer":{"@type":"Answer","text":"はい。同じサイトのスタメンメーカー(TACTICIAN)で選手を登録して打順を組んでいると、その打順がそのまま打席に立ちます。名簿がない場合は架空の9人で始まります。"}},
+{"@type":"Question","name":"「今日の試合」は誰でも同じですか？","acceptedAnswer":{"@type":"Answer","text":"相手の打線の特徴と抽選の種が日付から決まるので、同じ日に遊ぶ人は同じ条件で始まります。ただし采配が違えば抽選の進み方も変わるため、結果は人によって異なります。"}},
+{"@type":"Question","name":"登録や保存は必要ですか？","acceptedAnswer":{"@type":"Answer","text":"登録は不要です。通算成績(勝ち・負け・引き分け)はお使いの端末のブラウザにだけ保存され、サーバーには送りません。"}}
+]}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/tokens.css">
+<link rel="stylesheet" href="/shared/tool.css">
+<style>
+  /* スコアボード: 電光掲示板の書体はここだけ */
+  .board { margin-top: 16px; background: var(--dirt); color: var(--chalk); border-radius: var(--r); padding: 10px 12px 8px; }
+  .board table { width: 100%; border-collapse: collapse; font-family: var(--board); font-size: 1.05rem; text-align: center; }
+  .board th { font-weight: 400; color: #B9B1AA; font-size: .8rem; padding-bottom: 2px; }
+  .board td { padding: 2px 0; }
+  .board td.nm, .board th.nm { text-align: left; width: 5.5em; font-family: var(--body); font-size: .8rem; color: #B9B1AA; }
+  .board td.r { color: var(--liner); font-size: 1.3rem; }
+  .board td.now { outline: 2px solid var(--liner); outline-offset: -2px; }
+  .board .foot { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; font-size: .8rem; color: #B9B1AA; font-family: var(--body); }
+  .board .foot b { color: var(--chalk); font-family: var(--board); font-size: 1rem; font-weight: 400; }
+
+  /* 場面: ダイヤモンドの走者 + 打者 */
+  .scene { display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center; margin-top: 14px; }
+  .dia { width: 96px; height: 96px; }
+  .dia .base { fill: var(--bg); stroke: var(--ink); stroke-width: 3; }
+  .dia .base.on { fill: var(--liner); }
+  .dia .line { stroke: var(--rule); stroke-width: 2; fill: none; }
+  .scene .txt { font-size: .9375rem; }
+  .scene .txt b { font-size: 1.15rem; display: block; }
+  .scene .txt .tag { display: inline-block; font-size: .75rem; border: 1px solid var(--ink); border-radius: 999px; padding: 0 8px; margin-left: 4px; vertical-align: 2px; }
+  .scene .txt .runners { color: var(--ink-sec); font-size: .875rem; }
+
+  /* 采配: 2列の選択肢。上の行に手、下に一言 */
+  .ask { margin-top: 14px; border-top: 2px solid var(--ink); padding-top: 8px; }
+  .ask h2 { font-size: 1rem; font-family: var(--body) !important; border: 0 !important; padding: 0 !important; }
+  .ask .q { font-size: .9375rem; color: var(--ink-sec); margin-top: 2px; }
+  .moves { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .moves button { min-height: 64px; background: none; border: 2px solid var(--ink); border-radius: var(--r); text-align: left; padding: 8px 12px; }
+  .moves button b { display: block; font-size: 1.05rem; }
+  .moves button small { display: block; color: var(--ink-sec); font-size: .78rem; line-height: 1.4; margin-top: 2px; }
+  .moves button:disabled { opacity: .35; }
+  .moves button.wide { grid-column: 1 / -1; }
+  .play { margin-top: 10px; min-height: 3em; font-size: .9375rem; }
+  .play b { font-size: 1.1rem; }
+  .play.score { color: var(--turf-deep); }
+  :root[data-theme="dark"] .play.score { color: #7ED39A; }
+  .play.bad { color: var(--alert); }
+
+  /* 経過: 1行ずつ */
+  .log { list-style: none; margin-top: 12px; border-top: 1px solid var(--rule); max-height: 240px; overflow-y: auto; }
+  .log li { display: flex; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--rule); font-size: .875rem; }
+  .log li .t { flex: 0 0 5.5em; color: var(--ink-sec); }
+  .log li.us .t { color: var(--tint-ink); font-weight: 700; }
+  .log li.run { font-weight: 700; }
+
+  /* 結果 */
+  .result { margin-top: 20px; border-top: 2px solid var(--ink); padding-top: 12px; }
+  .result .head1 { font-size: 1.6rem; font-weight: 700; }
+  .result .fin { font-family: var(--board); font-size: 2.6rem; line-height: 1.1; }
+  .result .type { margin-top: 10px; padding: 10px 14px; border: 2px solid var(--ink); border-radius: var(--r); }
+  .result .type b { font-size: 1.2rem; display: block; }
+  .result dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; margin-top: 12px; font-size: .9375rem; }
+  .result dt { color: var(--ink-sec); } .result dd { font-weight: 700; }
+
+  .about { margin-top: 36px; }
+  .about h2 { font-size: 1.15rem; margin-top: 28px; }
+  .about p, .about li { color: var(--ink-sec); font-size: .9375rem; }
+  .about ul, .about ol { padding-left: 1.4em; margin-top: 6px; }
+  .about p { margin-top: 8px; }
+  .about table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: .875rem; }
+  .about th, .about td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .about th { color: var(--ink); white-space: nowrap; }
+  .about .tip { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin-top: 8px; }
+  .about .tip b { color: var(--ink); }
+  .check { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: .9375rem; }
+  @media (prefers-reduced-motion: no-preference) { .log li:first-child { animation: login .22s ease-out; } }
+  @keyframes login { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="/" class="nav-logo" aria-label="Somirai Lab トップへ">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#111114"/><stop offset="100%" stop-color="#0a0a0b"/></linearGradient><linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff6428"/><stop offset="100%" stop-color="#e84410"/></linearGradient></defs><rect width="120" height="120" rx="24" fill="url(#n1)"/><circle cx="60" cy="52" r="18" fill="url(#n2)"/><circle cx="56" cy="47" r="6" fill="#fff" opacity=".2"/><path d="M60 28 L63 46 L60 52 L57 46Z" fill="#ffb088" opacity=".7"/><path d="M36 52 L52 54 L60 52 L52 50Z" fill="#ffb088" opacity=".55"/><path d="M84 52 L68 54 L60 52 L68 50Z" fill="#ffb088" opacity=".55"/></svg>
+      <span>Somirai Lab</span>
+    </a>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
+  </div>
+
+  <header class="head">
+    <h1>SKIPPER</h1>
+    <p class="sub">7回裏、1点ビハインド。ここからの采配はあなたが決める</p>
+  </header>
+
+  <section id="setup">
+    <div class="field">
+      <span class="lbl">試合</span>
+      <div class="seg" id="modeSeg" role="group" aria-label="試合の種類">
+        <button type="button" aria-pressed="true" data-mode="daily">今日の試合</button>
+        <button type="button" aria-pressed="false" data-mode="random">ランダム</button>
+      </div>
+      <p class="hint" id="modeHint">今日の試合は、同じ日に遊ぶ人みんな同じ相手・同じ条件で始まります。</p>
+    </div>
+    <div class="field">
+      <span class="lbl">相手</span>
+      <div class="seg" id="oppSeg" role="group" aria-label="相手の強さ">
+        <button type="button" aria-pressed="true" data-opp="normal">同格</button>
+        <button type="button" aria-pressed="false" data-opp="strong">格上</button>
+      </div>
+    </div>
+    <p class="hint" id="rosterLine"></p>
+    <button class="btn-main" id="start" type="button">7回裏から指揮を執る</button>
+    <p class="hint" id="recordLine"></p>
+  </section>
+
+  <section id="game" hidden>
+    <div class="board" aria-live="polite">
+      <table id="lines"></table>
+      <div class="foot"><span id="situ"></span><span>投手 <b id="pitcherName">先発</b></span></div>
+    </div>
+    <div class="scene">
+      <svg class="dia" viewBox="0 0 100 100" aria-hidden="true">
+        <path class="line" d="M50 92 L10 52 L50 12 L90 52 Z"/>
+        <rect class="base" id="b1" x="82" y="44" width="16" height="16" transform="rotate(45 90 52)"/>
+        <rect class="base" id="b2" x="42" y="4" width="16" height="16" transform="rotate(45 50 12)"/>
+        <rect class="base" id="b3" x="2" y="44" width="16" height="16" transform="rotate(45 10 52)"/>
+        <path class="base" d="M42 84 L58 84 L58 92 L50 98 L42 92 Z"/>
+      </svg>
+      <div class="txt" id="sceneTxt"></div>
+    </div>
+    <section class="ask" id="ask" hidden>
+      <h2 id="askTitle">あなたの采配</h2>
+      <p class="q" id="askQ"></p>
+      <div class="moves" id="moves"></div>
+    </section>
+    <p class="play" id="play" aria-live="polite"></p>
+    <button class="btn-main" id="next" type="button" hidden>次へ</button>
+    <ol class="log" id="log" aria-label="試合の経過"></ol>
+  </section>
+
+  <section id="done" class="result" hidden>
+    <div class="head1" id="resHead"></div>
+    <div class="fin" id="resScore"></div>
+    <div class="type"><span style="font-size:.8rem;color:var(--ink-sec)">監督タイプ診断</span><b id="resType"></b><span id="resTypeWhy" style="font-size:.9rem;color:var(--ink-sec)"></span></div>
+    <dl>
+      <dt>決めた采配</dt><dd id="resMoves">–</dd>
+      <dt>ここで試合が動いた</dt><dd id="resKey">–</dd>
+      <dt>通算</dt><dd id="resRecord">–</dd>
+    </dl>
+    <button class="btn-main" id="share" type="button">結果を共有する</button>
+    <div class="btn-row" style="margin-top:10px">
+      <button class="btn-sub" id="retry" type="button">同じ条件でもう一度</button>
+      <button class="btn-sub" id="again" type="button">条件を変える</button>
+    </div>
+    <p class="hint">自分のチームの打順で采配したい人は、<a href="/order-maker/" onclick="if(typeof gtag==='function')gtag('event','blog_cta_click',{location:'skipper_result'})">スタメンメーカー</a>で選手と打順を登録すると、次の試合からその打線が打席に立ちます。</p>
+  </section>
+
+  <section class="about">
+    <h2>遊び方</h2>
+    <ol>
+      <li>7回裏、1点ビハインドの攻撃から始まります。あなたは後攻チームの監督です。</li>
+      <li>自分の攻撃では、打席ごとに「強攻・送りバント・盗塁・エンドラン・スクイズ・代打」から選びます。場面によって選べる手が変わります。</li>
+      <li>相手の攻撃では、回のはじめに「続投か継投か」、走者が三塁にいれば「前進守備にするか」、一塁が空いて強打者なら「敬遠するか」を決めます。打席そのものは自動で進みます。</li>
+      <li>9回裏が終わるか、サヨナラで決着したら終了です。9回で同点なら引き分けです。</li>
+    </ol>
+    <p>1試合は3〜6分です。スタメンメーカーで打順を組んでいると、その9人が自分のチームとして打席に立ちます。</p>
+
+    <h2>采配の考え方(このゲームでの判断材料)</h2>
+    <p>作戦に「いつでも正しい手」はありません。このゲームでは、次のような考え方で手を選ぶと結果が安定しやすいように設計しています。</p>
+    <div class="tip">
+      <b>送りバント</b><span>走者を確実に進める代わりに、アウトを1つ渡します。1点が欲しい終盤・無死一塁や無死二塁で効きます。打者が強打者なら、バントより強攻の方が見返りが大きいことが多い設計です。</span>
+      <b>盗塁</b><span>アウトを渡さずに進塁できる唯一の手ですが、失敗すると走者を失います。俊足の走者で、打者が三振しにくい場面が狙い目です。三塁への盗塁は成功率が下がります。</span>
+      <b>エンドラン</b><span>走者が走り、打者は必ず打ちにいきます。ゴロで併殺を避け、安打なら走者が一気に三塁へ。空振りすれば盗塁と同じ判定、ライナーなら併殺の危険があります。巧打者向きです。</span>
+      <b>スクイズ</b><span>三塁走者を一気に還す一発勝負。成功すれば1点、失敗すれば本塁で走者アウトです。同点に追いつきたい場面で、打者が強打者でないときに価値が上がります。</span>
+      <b>代打</b><span>1試合に1回だけ、長打力のある代打を送れます。一発で試合が動く場面まで取っておくか、早めに使って流れを作るかが分かれ目です。</span>
+      <b>継投</b><span>先発は回を追うごとに打たれやすくなります。中継ぎは打たれにくい代わりに立ち上がりに四球が増え、抑えは9回だけ使える切り札です。1点差を守る場面で、誰にどの回を任せるかが采配の核心です。</span>
+      <b>前進守備</b><span>三塁走者がいる場面で、ゴロで本塁を刺しにいく守備です。1点も与えられないときに使いますが、守備範囲が狭くなり安打が増えます。</span>
+      <b>敬遠</b><span>強打者を歩かせて次の打者と勝負します。一塁が空いていて併殺が取れる形を作れる一方、走者を増やすので四球や安打が続くと大量失点につながります。</span>
+    </div>
+
+    <h2>結果の決まり方(設計値)</h2>
+    <p>打席の結果は、このゲームの中で決めた確率で抽選します。実在の選手・球団・リーグの統計ではありません。打者には「巧打・強打・俊足・普通」の4タイプがあり、タイプごとに次の割合で結果が出ます(投手の状態で上下します)。</p>
+    <div style="overflow-x:auto"><table style="min-width:520px">
+      <thead><tr><th>タイプ</th><th>単打</th><th>二塁打</th><th>本塁打</th><th>四球</th><th>三振</th><th>ゴロ</th><th>フライ</th></tr></thead>
+      <tbody>
+        <tr><th>普通</th><td>19%</td><td>5%</td><td>2%</td><td>8%</td><td>20%</td><td>26%</td><td>20%</td></tr>
+        <tr><th>巧打</th><td>25%</td><td>5%</td><td>1%</td><td>9%</td><td>12%</td><td>26%</td><td>22%</td></tr>
+        <tr><th>強打</th><td>15%</td><td>7%</td><td>5%</td><td>8%</td><td>27%</td><td>20%</td><td>18%</td></tr>
+        <tr><th>俊足</th><td>22%</td><td>4%</td><td>1%</td><td>8%</td><td>18%</td><td>27%</td><td>20%</td></tr>
+      </tbody>
+    </table></div>
+    <table>
+      <thead><tr><th>作戦</th><th>このゲームでの結果の割合</th></tr></thead>
+      <tbody>
+        <tr><th>送りバント</th><td>成功(走者進塁・打者アウト)70% / 失敗(走者アウト)15% / 内野安打10% / 小飛球で併殺5%。俊足は内野安打が18%に増えます。</td></tr>
+        <tr><th>盗塁</th><td>二塁へ: 普通68%・俊足80%・強打50%。三塁へはそれぞれ13ポイント下がります。</td></tr>
+        <tr><th>エンドラン</th><td>安打28%(走者は2つ進む) / ゴロで走者進塁・打者アウト40% / 空振り20%(盗塁の判定へ) / ライナー併殺12%。巧打は安打が34%、強打はライナー併殺が18%です。</td></tr>
+        <tr><th>スクイズ</th><td>成功60% / 失敗(本塁で走者アウト)25% / 内野安打で得点10% / 小飛球で併殺5%。</td></tr>
+        <tr><th>ゴロ(一塁走者・二死未満)</th><td>併殺: 普通35%・強打45%・俊足20%。併殺でなければ半分が一塁走者の封殺、半分が打者アウトで走者進塁。</td></tr>
+        <tr><th>投手</th><td>先発は8回に安打+3ポイント、9回に+6ポイント。中継ぎは安打−4・四球+2。抑えは安打−8・四球+3(9回のみ)。前進守備中は相手の安打+8、ゴロでの本塁憤死50%。</td></tr>
+        <tr><th>相手の強さ</th><td>「同格」は相手打線の安打が3ポイント減ります。「格上」は自軍の安打が3ポイント減り、相手打線に強打者が1人増えます。</td></tr>
+      </tbody>
+    </table>
+
+    <h2>監督タイプ診断</h2>
+    <p>試合中に選んだ手の内訳から、5つのタイプに分けます。良し悪しではなく、あなたの采配の癖です。</p>
+    <ul>
+      <li><b>堅実型</b>: 送りバント・スクイズで1点を積み上げる</li>
+      <li><b>勝負師型</b>: 盗塁・エンドランでアウトを渡さずに動く</li>
+      <li><b>打撃信頼型</b>: 小技を使わず打者に任せる</li>
+      <li><b>守りの采配型</b>: 継投・前進守備・敬遠で失点を抑える</li>
+      <li><b>バランス型</b>: 場面ごとに手を変える</li>
+    </ul>
+
+    <details>
+      <summary>よくある質問</summary>
+      <p><b>確率は本物の野球の数字ですか？</b><br>いいえ。このゲームのために決めた設計値です。上の表のとおり公開しています。</p>
+      <p><b>自分のチームの選手名で遊ぶには？</b><br><a href="/order-maker/">スタメンメーカー</a>で選手を登録して打順を組むと、この端末ではその打順で試合が始まります。名簿が読めない場合は架空の9人です。</p>
+      <p><b>「今日の試合」は誰でも同じですか？</b><br>相手の打線と抽選の種が日付で決まるので、始まりの条件は同じです。采配が違えば抽選の進み方も変わるため、結果は人によって違います。</p>
+      <p><b>成績はどこに保存されますか？</b><br>お使いの端末のブラウザの中だけです。サーバーには送りません。</p>
+    </details>
+  </section>
+
+  <footer>
+    <a href="/privacy.html">プライバシーポリシー</a>
+    <a href="/">Somirai Lab トップ</a>
+    <a href="/order-maker/">スタメンメーカー</a>
+    <a href="/signs/">SIGNS(サイン解読)</a>
+  </footer>
+</div>
+
+<script src="/shared/tool.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const KEY = 'skipper_v1';
+const TYPES = ['普通', '巧打', '強打', '俊足'];
+const BAT = { // 単打 二塁打 本塁打 四球 三振 ゴロ フライ
+  '普通': [.19, .05, .02, .08, .20, .26, .20],
+  '巧打': [.25, .05, .01, .09, .12, .26, .22],
+  '強打': [.15, .07, .05, .08, .27, .20, .18],
+  '俊足': [.22, .04, .01, .08, .18, .27, .20],
+  '代打': [.17, .09, .07, .08, .25, .18, .16],
+};
+const US_NAMES = ['青木', '石田', '上田', '遠藤', '岡本', '片岡', '木下', '小山', '斉藤'];
+const THEM_NAMES = ['北川', '東野', '南原', '西村', '大森', '小川', '星野', '月岡', '雲井']; // 架空の相手打線
+const ORD = ['一', '二', '三'];
+
+function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const todaySeed = () => { const d = new Date(); return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate(); };
+const store = Tool.load(KEY, { games: 0, w: 0, l: 0, d: 0, streak: 0 });
+
+const cfg = { mode: 'daily', opp: 'normal', seed: todaySeed() };
+let G = null;
+
+// 名簿: スタメンメーカーの打順(sm_order)があればその9人、なければ架空
+function lineupFromMaker() {
+  const players = Tool.load('sm_players', []), order = Tool.load('sm_order', []);
+  if (!Array.isArray(players) || !Array.isArray(order)) return null;
+  const byId = Object.fromEntries(players.filter(p => p && p.id).map(p => [p.id, p]));
+  const names = order.slice(0, 9).map(s => s && (s.guestName || (byId[s.playerId] || {}).name)).filter(Boolean).map(String);
+  return names.length === 9 ? names : null;
+}
+function typeFor(r, i) { const x = r(); return x < .45 ? '普通' : x < .65 ? '巧打' : x < .82 ? '強打' : '俊足'; }
+
+function newGame() {
+  const r = rng(cfg.seed);
+  const makerNames = lineupFromMaker();
+  const us = (makerNames || US_NAMES).map((n, i) => ({ name: n, type: typeFor(r, i) }));
+  const them = THEM_NAMES.map((n, i) => ({ name: n, type: typeFor(r, i) }));
+  if (cfg.opp === 'strong') { const k = them.findIndex(p => p.type !== '強打'); if (k >= 0) them[k].type = '強打'; }
+  // 抽選の種は、同じ条件なら同じ列から始まる
+  G = { r, us, them, fromMaker: !!makerNames, inning: 7, half: 'bot', outs: 0, bases: [null, null, null], score: { us: 1, them: 2 },
+    lines: { us: [0, 0, 0, 1, 0, 0, 0, 0, 0, 0], them: [0, 0, 1, 0, 0, 1, 0, 0, 0, 0] }, idx: { us: 0, them: 0 }, pitcher: 'starter', used: { mid: false, closer: false, pinch: false },
+    shift: false, askedShift: false, log: [], counts: { hit: 0, bunt: 0, steal: 0, endrun: 0, squeeze: 0, pinch: 0, relief: 0, shift: 0, ibb: 0 }, key: null, over: false, pending: null };
+  // 先頭の打者は7回裏の先頭から(1〜3番のどれか)
+  G.idx.us = Math.floor(r() * 3); G.idx.them = Math.floor(r() * 9);
+}
+
+// ── 表示 ──
+function renderBoard() {
+  const inn = [7, 8, 9]; const cur = G.inning;
+  const row = (nm, arr, who) => `<tr><td class="nm">${nm}</td>${inn.map(i => `<td class="${(i === cur && G.half === (who === 'them' ? 'top' : 'bot') && !G.over) ? 'now' : ''}">${i < cur || (i === cur && (who === 'them' || G.half === 'bot')) ? arr[i - 1] : ''}</td>`).join('')}<td class="r">${G.score[who]}</td></tr>`;
+  $('#lines').innerHTML = `<tr><th class="nm"></th>${inn.map(i => `<th>${i}</th>`).join('')}<th>計</th></tr>` + row('相手', G.lines.them, 'them') + row(G.fromMaker ? '自軍' : '自軍', G.lines.us, 'us');
+  $('#situ').textContent = G.over ? '試合終了' : `${G.inning}回${G.half === 'top' ? '表' : '裏'} ${['無死', '一死', '二死'][G.outs]}`;
+  $('#pitcherName').textContent = { starter: '先発', mid: '中継ぎ', closer: '抑え' }[G.pitcher] + (G.shift ? '・前進守備' : '');
+  ['b1', 'b2', 'b3'].forEach((id, i) => $('#' + id).classList.toggle('on', !!G.bases[i]));
+  const bat = batter();
+  const who = G.half === 'bot' ? '自軍の攻撃' : '相手の攻撃';
+  const runners = G.bases.map((b, i) => b ? `${ORD[i]}塁 ${b.name}` : null).filter(Boolean).join(' / ') || '走者なし';
+  $('#sceneTxt').innerHTML = G.over ? `<b>試合終了</b>` : `<span style="color:var(--ink-sec);font-size:.8rem">${who}</span><b>${G.idx[G.half === 'bot' ? 'us' : 'them'] + 1}番 ${Tool.esc(bat.name)}<span class="tag">${bat.type}</span></b><span class="runners">${Tool.esc(runners)}</span>`;
+}
+function batter() { const side = G.half === 'bot' ? 'us' : 'them'; return G[side][G.idx[side] % 9]; }
+function addLog(text, cls) {
+  const li = document.createElement('li'); li.className = cls || '';
+  li.innerHTML = `<span class="t">${G.inning}回${G.half === 'top' ? '表' : '裏'}</span><span>${Tool.esc(text)}</span>`;
+  $('#log').prepend(li); G.log.push({ inning: G.inning, half: G.half, text });
+}
+function showPlay(text, cls) { $('#play').textContent = text; $('#play').className = 'play ' + (cls || ''); }
+
+// ── 進行 ──
+function pick(probs) { let x = G.r(), acc = 0; for (let i = 0; i < probs.length; i++) { acc += probs[i]; if (x < acc) return i; } return probs.length - 1; }
+function pitchMod() { // 相手打者に対する自軍投手の補正 [安打, 四球]
+  if (G.pitcher === 'starter') return [G.inning === 8 ? .03 : G.inning >= 9 ? .06 : 0, 0];
+  if (G.pitcher === 'mid') return [-.04, .02];
+  return [-.08, .03];
+}
+function dist(type, side) {
+  const d = BAT[type].slice();
+  let hm = 0, bm = 0;
+  if (side === 'them') { [hm, bm] = pitchMod(); if (G.shift) hm += .08; if (cfg.opp === 'normal') hm -= .03; }
+  else if (cfg.opp === 'strong') hm = -.03;
+  // 安打3種を比例配分で動かし、三振とゴロで帳尻を合わせる
+  const hits = d[0] + d[1] + d[2];
+  for (let i = 0; i < 3; i++) d[i] += hm * d[i] / hits;
+  d[3] += bm; d[4] -= (hm + bm) / 2; d[5] -= (hm + bm) / 2;
+  return d.map(v => Math.max(0, v));
+}
+function scoreRun(n, who) { G.score[who] += n; G.lines[who][G.inning - 1] += n; }
+function advanceAll(n, who) { // 全走者をn個進める(得点処理つき)
+  let runs = 0;
+  for (let i = 2; i >= 0; i--) { if (!G.bases[i]) continue; const to = i + n; if (to >= 3) { runs++; G.bases[i] = null; } else { G.bases[to] = G.bases[i]; G.bases[i] = null; } }
+  if (runs) scoreRun(runs, who); return runs;
+}
+function walk(bat, who) { // 押し出し判定つき四球
+  let runs = 0;
+  if (G.bases[0]) { if (G.bases[1]) { if (G.bases[2]) { runs = 1; } G.bases[2] = G.bases[1]; } G.bases[1] = G.bases[0]; }
+  G.bases[0] = bat; if (runs) scoreRun(runs, who); return runs;
+}
+function out(n) { G.outs += n; }
+function nextBatter(side) { G.idx[side] = (G.idx[side] + 1) % 9; }
+
+// 打席(強攻)を解決して文章を返す
+function resolveSwing(bat, side, type) {
+  const d = dist(type || bat.type, side);
+  const res = pick(d);
+  const who = side; let text = '', runs = 0;
+  if (res === 0) { // 単打
+    const r2scores = G.bases[1] && (G.bases[1].type === '俊足' || G.r() < .7);
+    if (G.bases[2]) { runs++; G.bases[2] = null; }
+    if (G.bases[1]) { if (r2scores) { runs++; G.bases[1] = null; } else { G.bases[2] = G.bases[1]; G.bases[1] = null; } }
+    if (G.bases[0]) { const to3 = !G.bases[2] && (G.bases[0].type === '俊足' ? G.r() < .5 : G.r() < .2); if (to3) { G.bases[2] = G.bases[0]; } else { G.bases[1] = G.bases[0]; } G.bases[0] = null; }
+    G.bases[0] = bat; if (runs) scoreRun(runs, who);
+    text = `${bat.name} ヒット`;
+  } else if (res === 1) { // 二塁打
+    if (G.bases[2]) { runs++; G.bases[2] = null; }
+    if (G.bases[1]) { runs++; G.bases[1] = null; }
+    if (G.bases[0]) { if (G.r() < .6) runs++; else G.bases[2] = G.bases[0]; G.bases[0] = null; }
+    G.bases[1] = bat; if (runs) scoreRun(runs, who);
+    text = `${bat.name} 二塁打`;
+  } else if (res === 2) { // 本塁打
+    runs = 1 + G.bases.filter(Boolean).length; G.bases = [null, null, null]; scoreRun(runs, who);
+    text = `${bat.name} ホームラン`;
+  } else if (res === 3) { runs = walk(bat, who); text = `${bat.name} 四球${runs ? '(押し出し)' : ''}`; }
+  else if (res === 4) { out(1); text = `${bat.name} 三振`; }
+  else if (res === 5) { // ゴロ
+    if (G.outs < 2 && G.bases[0]) {
+      const dp = { '普通': .35, '強打': .45, '俊足': .2, '巧打': .33, '代打': .4 }[type || bat.type];
+      if (G.r() < dp) { out(2); G.bases[0] = null; runs = G.outs < 3 ? advanceAll(1, who) : 0; text = `${bat.name} 併殺打`; }
+      else if (G.r() < .5) { out(1); G.bases[0] = bat; runs = G.outs < 3 ? advanceOthers(who) : 0; text = `${bat.name} ゴロ、一塁走者が封殺`; }
+      else { out(1); runs = G.outs < 3 ? advanceAll(1, who) : 0; text = `${bat.name} ゴロ、走者は進塁`; }
+    } else if (G.outs < 2 && G.bases[2]) {
+      if (side === 'them' && G.shift && G.r() < .5) { out(1); G.bases[2] = null; text = `${bat.name} ゴロ、前進守備で本塁憤死`; }
+      else { out(1); runs = advanceAll(1, who); text = `${bat.name} ゴロの間に${runs ? '1点' : '進塁'}`; }
+    } else { out(1); text = `${bat.name} ゴロ`; }
+  } else { // フライ
+    out(1);
+    if (G.outs < 3 && G.bases[2] && G.r() < .6) { runs++; G.bases[2] = null; scoreRun(1, who); text = `${bat.name} 犠牲フライ`; }
+    else { if (G.outs < 3 && G.bases[1] && !G.bases[2] && G.r() < .3) { G.bases[2] = G.bases[1]; G.bases[1] = null; } text = `${bat.name} フライ`; }
+  }
+  return { text, runs, res };
+}
+function advanceOthers(who) { // 一塁走者が封殺された後、二・三塁走者だけ進める
+  let runs = 0;
+  if (G.bases[2]) { runs++; G.bases[2] = null; }
+  if (G.bases[1]) { G.bases[2] = G.bases[1]; G.bases[1] = null; }
+  if (runs) scoreRun(runs, who); return runs;
+}
+
+// 自軍の作戦
+function doMove(move) {
+  const bat = batter(); let text = '', runs = 0, note = '';
+  G.counts[move === 'hit' ? 'hit' : move]++;
+  if (move === 'hit') { const o = resolveSwing(bat, 'us'); text = o.text; runs = o.runs; }
+  else if (move === 'pinch') {
+    G.used.pinch = true; const ph = { name: '代打の切り札', type: '代打' };
+    const o = resolveSwing(ph, 'us', '代打'); text = o.text; runs = o.runs; G.us[G.idx.us] = { name: '切り札', type: '強打' };
+  } else if (move === 'bunt') {
+    const p = bat.type === '俊足' ? [.62, .15, .18, .05] : [.70, .15, .10, .05]; const k = pick(p);
+    if (k === 0) { out(1); runs = advanceAll(1, 'us'); text = `${bat.name} 送りバント成功`; }
+    else if (k === 1) { // 先頭の走者が封殺され、打者は一塁へ
+      out(1);
+      if (G.bases[1] && G.bases[0]) { G.bases[1] = G.bases[0]; G.bases[0] = bat; }
+      else if (G.bases[1]) { G.bases[1] = null; G.bases[0] = bat; }
+      else { G.bases[0] = bat; }
+      text = `${bat.name} バント失敗、走者が封殺`;
+    }
+    else if (k === 2) { runs = advanceAll(1, 'us'); G.bases[0] = bat; text = `${bat.name} バントが内野安打に`; }
+    else { out(2); const lead = G.bases[1] ? 1 : 0; G.bases[lead] = null; text = `${bat.name} 小飛球で併殺`; }
+  } else if (move === 'steal') {
+    const from = G.bases[1] && !G.bases[2] ? 1 : 0; const run = G.bases[from];
+    let p = { '普通': .68, '巧打': .68, '俊足': .80, '強打': .50 }[run.type]; if (from === 1) p -= .13;
+    if (G.r() < p) { G.bases[from + 1] = run; G.bases[from] = null; text = `${run.name} ${ORD[from + 1]}塁へ盗塁成功`; note = 'go'; }
+    else { G.bases[from] = null; out(1); text = `${run.name} 盗塁失敗`; }
+    if (note === 'go') { // 盗塁の後、同じ打者で打席を続ける
+      const o = resolveSwing(bat, 'us'); text += '。' + o.text; runs = o.runs;
+    } else { return finishPA(text, runs, false); }
+  } else if (move === 'endrun') {
+    const p = bat.type === '巧打' ? [.34, .36, .20, .10] : bat.type === '強打' ? [.26, .36, .20, .18] : [.28, .40, .20, .12]; const k = pick(p);
+    if (k === 0) { if (G.bases[2]) { runs++; G.bases[2] = null; } if (G.bases[1]) { runs++; G.bases[1] = null; } if (G.bases[0]) { G.bases[2] = G.bases[0]; G.bases[0] = null; } G.bases[0] = bat; if (runs) scoreRun(runs, 'us'); text = `エンドラン成功、${bat.name} ヒットで走者は三塁へ`; }
+    else if (k === 1) { out(1); runs = advanceAll(1, 'us'); text = `${bat.name} ゴロの間に走者進塁`; }
+    else if (k === 2) { const run = G.bases[0]; const ok = G.r() < { '普通': .68, '巧打': .68, '俊足': .80, '強打': .50 }[run.type]; if (ok) { G.bases[1] = run; G.bases[0] = null; text = `${bat.name} 空振り、走者は二塁へ`; } else { G.bases[0] = null; out(1); text = `${bat.name} 空振り、走者は二塁で刺される`; } if (G.outs < 3) { const o = resolveSwing(bat, 'us'); text += '。' + o.text; runs = o.runs; } }
+    else { out(2); G.bases[0] = null; text = `${bat.name} ライナーで併殺`; }
+  } else if (move === 'squeeze') {
+    const k = pick([.60, .25, .10, .05]);
+    if (k === 0) { out(1); G.bases[2] = null; runs = 1; scoreRun(1, 'us'); if (G.bases[1]) { G.bases[2] = G.bases[1]; G.bases[1] = null; } if (G.bases[0]) { G.bases[1] = G.bases[0]; G.bases[0] = null; } text = `${bat.name} スクイズ成功`; }
+    else if (k === 1) { out(1); G.bases[2] = null; G.bases[0] = G.bases[0] || bat; text = `${bat.name} スクイズ失敗、三塁走者が本塁で憤死`; }
+    else if (k === 2) { G.bases[2] = null; runs = 1; scoreRun(1, 'us'); if (G.bases[1]) { G.bases[2] = G.bases[1]; G.bases[1] = null; } if (G.bases[0]) { G.bases[1] = G.bases[0]; G.bases[0] = null; } G.bases[0] = bat; text = `${bat.name} スクイズが内野安打に`; }
+    else { out(2); G.bases[2] = null; text = `${bat.name} 小飛球、三塁走者も戻れず併殺`; }
+  }
+  return finishPA(text, runs, true);
+}
+function finishPA(text, runs, advanceBatter) {
+  const side = G.half === 'bot' ? 'us' : 'them';
+  if (G.outs >= 3) { G.outs = 3; }
+  addLog(text + (runs ? `、${runs}点` : ''), (side === 'us' ? 'us ' : '') + (runs ? 'run' : ''));
+  showPlay(text + (runs ? ` — ${runs}点！` : ''), runs ? (side === 'us' ? 'score' : 'bad') : '');
+  if (runs && side === 'us') G.key = G.key || `${G.inning}回裏 ${text}`;
+  if (runs && side === 'them') G.key = G.key || `${G.inning}回表 ${text}`;
+  if (advanceBatter) nextBatter(side);
+  renderBoard();
+  checkEnd();
+  if (G.over) return;
+  if (G.outs >= 3) { G.pending = 'changeHalf'; $('#next').textContent = G.half === 'bot' ? `${G.inning + 1}回表へ` : `${G.inning}回裏へ`; }
+  else { G.pending = side === 'us' ? 'ourPA' : 'theirPA'; $('#next').textContent = '次の打者'; }
+  $('#ask').hidden = true; $('#next').hidden = false; $('#next').focus({ preventScroll: true });
+}
+function checkEnd() {
+  const { us, them } = G.score;
+  if (G.half === 'bot' && G.inning >= 9 && us > them) { finish('walkoff'); return; }
+  if (G.half === 'bot' && G.inning >= 9 && G.outs >= 3) { finish(us > them ? 'win' : us < them ? 'lose' : 'draw'); return; }
+  if (G.half === 'top' && G.inning >= 9 && G.outs >= 3 && us > them) { finish('win'); return; }
+}
+function changeHalf() {
+  G.outs = 0; G.bases = [null, null, null]; G.shift = false; G.askedShift = false;
+  if (G.half === 'bot') { G.inning++; G.half = 'top'; } else { G.half = 'bot'; }
+  if (G.half === 'bot' && G.inning >= 9 && G.score.us > G.score.them) { finish('win'); return; }
+  renderBoard();
+  if (G.half === 'top') askPitcher(); else ourPA();
+}
+
+// 自軍の打席: 選択肢を出す
+function ourPA() {
+  renderBoard(); showPlay('');
+  const bat = batter(); const b = G.bases, o = G.outs;
+  const can = {
+    hit: true,
+    bunt: o < 2 && (b[0] || b[1]) && !(b[0] && b[1] && b[2]),
+    steal: o < 3 && ((b[0] && !b[1]) || (b[1] && !b[2])),
+    endrun: o < 2 && b[0] && !b[1],
+    squeeze: o < 2 && !!b[2],
+    pinch: !G.used.pinch,
+  };
+  const diff = G.score.them - G.score.us;
+  $('#askTitle').textContent = 'あなたの采配'; $('#askQ').textContent = `${diff > 0 ? diff + '点ビハインド' : diff === 0 ? '同点' : (-diff) + '点リード'}。${['無死', '一死', '二死'][o]}${b.some(Boolean) ? ' ' + b.map((x, i) => x ? ORD[i] : '').filter(Boolean).join('・') + '塁' : ' 走者なし'}、打者は${bat.type}の${bat.name}。`;
+  const M = [
+    ['hit', '強攻', '打者に任せる。走者一塁・二死未満は併殺の危険'],
+    ['bunt', '送りバント', 'アウト1つで走者を確実に進める'],
+    ['steal', '盗塁', 'アウトを渡さず進塁。失敗なら走者を失う'],
+    ['endrun', 'エンドラン', '走者が走り打者は必ず打つ。併殺を避ける'],
+    ['squeeze', 'スクイズ', '三塁走者を還す一発勝負'],
+    ['pinch', '代打の切り札', '1試合1回だけ。長打力のある代打'],
+  ];
+  $('#moves').innerHTML = M.map(([k, t, h]) => `<button type="button" data-m="${k}" ${can[k] ? '' : 'disabled'}><b>${t}</b><small>${h}</small></button>`).join('');
+  $('#moves').querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => { $('#ask').hidden = true; doMove(btn.dataset.m); }));
+  $('#ask').hidden = false; $('#next').hidden = true;
+}
+
+// 相手の攻撃: 回頭に投手、場面に応じて前進守備・敬遠
+function askPitcher() {
+  showPlay('');
+  const opts = [['keep', '続投', { starter: `先発。${G.inning}回は${G.inning === 8 ? '少し' : 'かなり'}打たれやすい`, mid: '中継ぎのまま', closer: '抑えのまま' }[G.pitcher]]];
+  if (!G.used.mid && G.pitcher === 'starter') opts.push(['mid', '中継ぎへ', '打たれにくいが立ち上がりは四球が増える']);
+  if (!G.used.closer && G.inning >= 9) opts.push(['closer', '抑えへ', '9回だけ使える切り札。四球はやや多い']);
+  if (opts.length === 1) { theirPA(); return; }
+  $('#askTitle').textContent = `${G.inning}回表の投手`; $('#askQ').textContent = `${G.score.us > G.score.them ? (G.score.us - G.score.them) + '点リードを守る' : G.score.us === G.score.them ? '同点のまま抑えたい' : (G.score.them - G.score.us) + '点差、これ以上は離されたくない'}回です。`;
+  $('#moves').innerHTML = opts.map(([k, t, h]) => `<button type="button" data-m="${k}" class="${opts.length === 1 ? 'wide' : ''}"><b>${t}</b><small>${h}</small></button>`).join('');
+  $('#moves').querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
+    const k = btn.dataset.m; $('#ask').hidden = true;
+    if (k !== 'keep') { G.pitcher = k; G.used[k] = true; G.counts.relief++; addLog(k === 'mid' ? '中継ぎに交代' : '抑えに交代', 'us'); }
+    renderBoard(); theirPA();
+  }));
+  $('#ask').hidden = false; $('#next').hidden = true;
+}
+function theirPA() {
+  renderBoard();
+  const bat = batter(); const b = G.bases, o = G.outs;
+  // 前進守備の確認(その回で最初に三塁走者が出たとき)
+  if (o < 2 && b[2] && !G.askedShift) {
+    G.askedShift = true;
+    $('#askTitle').textContent = '守備位置'; $('#askQ').textContent = `${['無死', '一死'][o]}三塁。ゴロで本塁を刺しにいきますか。`;
+    $('#moves').innerHTML = `<button type="button" data-m="normal"><b>通常の守備</b><small>1点は仕方ない。確実にアウトを取る</small></button><button type="button" data-m="shift"><b>前進守備</b><small>ゴロなら本塁で勝負。安打は増える</small></button>`;
+    $('#moves').querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => { $('#ask').hidden = true; if (btn.dataset.m === 'shift') { G.shift = true; G.counts.shift++; addLog('前進守備を敷く', 'us'); } renderBoard(); theirPA(); }));
+    $('#ask').hidden = false; $('#next').hidden = true; return;
+  }
+  // 敬遠の確認(一塁が空き、得点圏に走者、強打者、二死未満)
+  if (o < 2 && !b[0] && (b[1] || b[2]) && bat.type === '強打' && !G.askedIBB) {
+    G.askedIBB = true;
+    $('#askTitle').textContent = '強打者との勝負'; $('#askQ').textContent = `一塁が空いています。${bat.name}(強打)と勝負しますか。`;
+    $('#moves').innerHTML = `<button type="button" data-m="go"><b>勝負する</b><small>抑えれば流れを渡さない</small></button><button type="button" data-m="ibb"><b>敬遠する</b><small>一塁を埋めて次の打者と。満塁の危険も</small></button>`;
+    $('#moves').querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => { $('#ask').hidden = true; if (btn.dataset.m === 'ibb') { G.counts.ibb++; walk(bat, 'them'); nextBatter('them'); addLog(`${bat.name} を敬遠`, 'us'); renderBoard(); G.askedIBB = false; theirPA(); return; } G.askedIBB = 'done'; theirPA(); }));
+    $('#ask').hidden = false; $('#next').hidden = true; return;
+  }
+  if (G.askedIBB === 'done') G.askedIBB = false;
+  // 俊足の一塁走者は勝手に走ることがある
+  let pre = '';
+  if (o < 2 && b[0] && !b[1] && b[0].type === '俊足' && G.r() < .3) {
+    const run = b[0]; if (G.r() < .78) { G.bases[1] = run; G.bases[0] = null; pre = `${run.name} 盗塁成功。`; } else { G.bases[0] = null; out(1); addLog(`${run.name} 盗塁失敗`); if (G.outs >= 3) { finishPA(`${run.name} 盗塁失敗でチェンジ`, 0, false); return; } pre = `${run.name} 盗塁失敗。`; }
+  }
+  const r = resolveSwing(bat, 'them');
+  finishPA(pre + r.text, r.runs, true);
+}
+
+// ── 終了 ──
+function finish(kind) {
+  G.over = true; renderBoard(); $('#ask').hidden = true; $('#next').hidden = true;
+  const { us, them } = G.score;
+  const head = { walkoff: 'サヨナラ勝ち', win: '勝ち', lose: '負け', draw: '引き分け' }[kind];
+  const c = G.counts; const small = c.bunt + c.squeeze, run = c.steal + c.endrun, def = c.relief + c.shift + c.ibb, total = c.hit + small + run + c.pinch;
+  let type, why;
+  if (small >= 2 && small >= run && small >= def) { type = '堅実型'; why = `バント・スクイズ${small}回。1点を積み上げる采配`; }
+  else if (run >= 2 && run >= def) { type = '勝負師型'; why = `盗塁・エンドラン${run}回。アウトを渡さずに動く采配`; }
+  else if (def >= 2) { type = '守りの采配型'; why = `継投・前進守備・敬遠${def}回。失点を抑えにいく采配`; }
+  else if (total > 0 && c.hit / total >= .8) { type = '打撃信頼型'; why = `${total}打席中${c.hit}打席を強攻。打者に任せる采配`; }
+  else { type = 'バランス型'; why = '場面ごとに手を変える采配'; }
+  store.games++; if (kind === 'lose') { store.l++; store.streak = 0; } else if (kind === 'draw') { store.d++; } else { store.w++; store.streak++; }
+  Tool.save(KEY, store);
+  $('#resHead').textContent = head + (kind === 'walkoff' || kind === 'win' ? '。1点差をひっくり返した' : kind === 'draw' ? '。追いついたが、勝ち越せず' : '。届かなかった');
+  $('#resScore').textContent = `${us} - ${them}`;
+  $('#resType').textContent = type; $('#resTypeWhy').textContent = why;
+  $('#resMoves').textContent = [c.hit && `強攻${c.hit}`, c.bunt && `バント${c.bunt}`, c.steal && `盗塁${c.steal}`, c.endrun && `エンドラン${c.endrun}`, c.squeeze && `スクイズ${c.squeeze}`, c.pinch && `代打${c.pinch}`, c.relief && `継投${c.relief}`, c.shift && `前進守備${c.shift}`, c.ibb && `敬遠${c.ibb}`].filter(Boolean).join(' / ') || '–';
+  $('#resKey').textContent = G.key || '動きのない試合でした';
+  $('#resRecord').textContent = `${store.w}勝${store.l}敗${store.d}分` + (store.streak >= 2 ? `(${store.streak}連勝中)` : '');
+  G.shareText = `SKIPPER 監督采配: 7回裏1点ビハインドから ${us}-${them} で${head}。監督タイプ「${type}」。あなたならどうする？ #少年野球 #草野球\nhttps://somirai.jp/skipper/`;
+  $('#done').hidden = false; window.scrollTo({ top: $('#done').offsetTop - 8, behavior: 'smooth' });
+  if (typeof gtag === 'function') gtag('event', 'skipper_complete', { result: kind, mode: cfg.mode, opp: cfg.opp });
+}
+
+// ── 操作 ──
+function updateSetup() {
+  const names = lineupFromMaker();
+  $('#rosterLine').innerHTML = names ? `自軍はスタメンメーカーの打順(${Tool.esc(names[0])}〜${Tool.esc(names[8])})で戦います。` : '自軍は架空の9人です。<a href="/order-maker/">スタメンメーカー</a>で打順を組むと、自分のチームで采配できます。';
+  $('#recordLine').textContent = store.games ? `通算 ${store.w}勝${store.l}敗${store.d}分` : '';
+}
+function startGame() {
+  newGame();
+  $('#setup').hidden = true; $('#done').hidden = true; $('#game').hidden = false; $('#log').innerHTML = ''; showPlay('');
+  renderBoard();
+  addLog('7回裏、1点ビハインドで攻撃開始', 'us');
+  if (typeof gtag === 'function') gtag('event', 'skipper_start', { mode: cfg.mode, opp: cfg.opp, roster: G.fromMaker ? 'maker' : 'default' });
+  window.scrollTo({ top: $('#game').offsetTop - 8, behavior: 'smooth' });
+  ourPA();
+}
+document.querySelectorAll('#modeSeg button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#modeSeg button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+  cfg.mode = b.dataset.mode; cfg.seed = cfg.mode === 'daily' ? todaySeed() : Tool.randInt(2147483647);
+  $('#modeHint').textContent = cfg.mode === 'daily' ? '今日の試合は、同じ日に遊ぶ人みんな同じ相手・同じ条件で始まります。' : '相手の打線と抽選が毎回変わります。';
+}));
+document.querySelectorAll('#oppSeg button').forEach(b => b.addEventListener('click', () => { document.querySelectorAll('#oppSeg button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false')); cfg.opp = b.dataset.opp; }));
+$('#start').addEventListener('click', startGame);
+$('#next').addEventListener('click', () => { const p = G.pending; G.pending = null; $('#next').hidden = true; if (p === 'changeHalf') changeHalf(); else if (p === 'ourPA') ourPA(); else if (p === 'theirPA') theirPA(); });
+$('#share').addEventListener('click', () => { Tool.share(G.shareText, $('#share')); if (typeof gtag === 'function') gtag('event', 'skipper_share'); });
+$('#retry').addEventListener('click', startGame);
+$('#again').addEventListener('click', () => { if (cfg.mode === 'random') cfg.seed = Tool.randInt(2147483647); $('#game').hidden = true; $('#done').hidden = true; $('#setup').hidden = false; updateSetup(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && !$('#next').hidden) $('#next').click(); });
+
+updateSetup();
+Tool.initTheme(); Tool.initCookie();
+</script>
+</body>
+</html>
