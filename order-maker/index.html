@@ -243,7 +243,13 @@
       display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 100;
     }
-    .header-left { display: flex; align-items: center; gap: 10px; }
+    .header-left { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1 1 auto; }
+    .header-back { white-space: nowrap; }
+    .header-title { flex-shrink: 0; }
+    @media (max-width: 540px) {
+      .header-back-text { display: none; }
+      .header-left { gap: 6px; }
+    }
     .header-back { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .15s; }
     .header-back:hover { color: var(--accent); }
     .header-title {
@@ -259,7 +265,7 @@
       color: var(--muted); text-transform: uppercase;
       line-height: 1.4; font-family: 'BIZ UDPGothic', sans-serif;
     }
-    .header-right { display: flex; gap: 6px; align-items: center; }
+    .header-right { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
     .btn-color { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 0; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; flex-shrink: 0; }
     .btn-color:active { background: rgba(58,168,96,.08); }
     .btn-color-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 1.5px solid rgba(255,255,255,.2); transition: background .2s; display: block; }
@@ -658,7 +664,7 @@
 
 <header>
   <nav class="header-left" aria-label="メインナビゲーション">
-    <a href="/" class="header-back" style="display:inline-flex;align-items:center;gap:5px;"><svg viewBox="0 0 120 120" width="20" height="20" style="border-radius:5px;"><defs><linearGradient id="hbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1220"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><linearGradient id="hco" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/></linearGradient></defs><rect width="120" height="120" rx="26" fill="url(#hbg)"/><circle cx="60" cy="48" r="14" fill="url(#hco)"/><path d="M60 26 L62 42 L60 48 L58 42Z" fill="#fb923c" opacity=".85"/><circle cx="84" cy="30" r="3.5" fill="#fb923c" opacity=".6"/><circle cx="34" cy="68" r="3" fill="#fbbf24" opacity=".5"/><circle cx="88" cy="62" r="2.5" fill="#6ee7b7" opacity=".45"/></svg>Somirai Lab</a>
+    <a href="/" class="header-back" style="display:inline-flex;align-items:center;gap:5px;"><svg viewBox="0 0 120 120" width="20" height="20" style="border-radius:5px;"><defs><linearGradient id="hbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1220"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><linearGradient id="hco" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/></linearGradient></defs><rect width="120" height="120" rx="26" fill="url(#hbg)"/><circle cx="60" cy="48" r="14" fill="url(#hco)"/><path d="M60 26 L62 42 L60 48 L58 42Z" fill="#fb923c" opacity=".85"/><circle cx="84" cy="30" r="3.5" fill="#fb923c" opacity=".6"/><circle cx="34" cy="68" r="3" fill="#fbbf24" opacity=".5"/><circle cx="88" cy="62" r="2.5" fill="#6ee7b7" opacity=".45"/></svg><span class="header-back-text">Somirai Lab</span></a>
     <div class="header-title">
       <span class="header-title-main">TACTICIAN</span>
       <span class="header-title-sub">野球スタメン作成</span>
