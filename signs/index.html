@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja" data-tint="clay">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIGNS サイン解読ゲーム【無料】三塁コーチのブロックサインを見破れ | Somirai Lab</title>
+<meta name="description" content="三塁コーチが出すブロックサインを、キーの直後だけ見分けて「盗塁・バント・エンドラン・サインなし」を当てる無料ブラウザゲーム。10球で称号が決まり、毎日同じ「今日のサイン表」で記録を比べられる。登録不要・スマホ対応。ブロックサインの仕組みと覚え方の解説つき。">
+<meta name="keywords" content="野球 サイン ゲーム,ブロックサイン 覚え方,野球 サイン 見破る,野球 ゲーム 無料,少年野球 サイン,三塁コーチ サイン">
+<link rel="canonical" href="https://somirai.jp/signs/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://somirai.jp/signs/">
+<meta property="og:title" content="SIGNS サイン解読ゲーム【無料】ブロックサインを見破れ">
+<meta property="og:description" content="三塁コーチのサインを読む。キーの直後だけが本物。10球で称号、毎日同じサイン表で記録比べ。">
+<meta property="og:site_name" content="Somirai Lab">
+<meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2B2420">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"SIGNS サイン解読ゲーム","url":"https://somirai.jp/signs/","description":"三塁コーチのブロックサインを読み取り、盗塁・バント・エンドラン・サインなしを当てる無料ブラウザゲーム。","genre":"Puzzle","gamePlatform":"Web Browser","applicationCategory":"GameApplication","operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"publisher":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"ブロックサインとは何ですか？","acceptedAnswer":{"@type":"Answer","text":"帽子・袖・ベルトなど体の複数か所を順に触り、その中の決められた1か所(キー)の直後の動作だけを本物のサインとして扱う出し方です。本物の前後に意味のない動作(ダミー)を混ぜることで、相手チームに読まれにくくします。このゲームはその仕組みをそのまま遊びにしています。"}},
+{"@type":"Question","name":"キーの後に出た動作がサイン表にない場合はどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"「サインなし」が正解です。キーの直後の動作がサイン表の盗塁・バント・エンドランのどれにも当たらなければ、その打席はサインが出ていない扱いになります。"}},
+{"@type":"Question","name":"「今日のサイン表」は誰でも同じですか？","acceptedAnswer":{"@type":"Answer","text":"同じです。日付から出題を作っているため、同じ日に遊んだ人は同じサイン表と同じ順番の動作になります。チームや家族で正解数を比べられます。日付が変わると新しいサイン表になります。"}},
+{"@type":"Question","name":"結果は保存されますか？登録は必要ですか？","acceptedAnswer":{"@type":"Answer","text":"登録は不要です。自己ベストはお使いの端末のブラウザにだけ保存され、サーバーには送りません。端末やブラウザを替えると引き継がれません。"}}
+]}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/tokens.css">
+<link rel="stylesheet" href="/shared/tool.css">
+<style>
+  /* サイン表: 罫線だけの小さな表。覚える時だけ開く */
+  .table { margin-top: 16px; border-top: 2px solid var(--ink); }
+  .table .r { display: flex; align-items: center; min-height: 44px; border-bottom: 1px solid var(--rule); gap: 12px; }
+  .table .r.key { background: color-mix(in srgb, var(--liner) 28%, transparent); margin: 0 -8px; padding: 0 8px; }
+  .table .what { flex: 0 0 7em; color: var(--ink-sec); font-size: .9375rem; }
+  .table .part { font-weight: 700; font-size: 1.15rem; }
+  .table .note { margin-left: auto; font-size: .8125rem; color: var(--ink-sec); }
+
+  /* コーチ: 触った場所だけ黄色く光る。ここが主役 */
+  .stage { position: relative; margin: 18px auto 0; max-width: 300px; }
+  .coach { display: block; width: 100%; height: auto; }
+  .coach .body { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .coach .fill { fill: var(--ink); }
+  .coach .spot { fill: transparent; stroke: transparent; }
+  .coach .spot.on { fill: var(--liner); stroke: var(--dirt); stroke-width: 3; }
+  .motion { text-align: center; font-size: 2rem; font-weight: 700; line-height: 1.2; min-height: 2.6rem; }
+  .motion small { display: block; font-size: .875rem; color: var(--ink-sec); font-weight: 400; }
+  .counter { display: flex; justify-content: space-between; align-items: baseline; margin-top: 14px; border-bottom: 2px solid var(--ink); padding-bottom: 4px; }
+  .counter .round { font-family: var(--board); font-size: 1.5rem; }
+  .counter .streak { font-size: .875rem; color: var(--ink-sec); }
+
+  /* 回答: 4択。制限時間は細い線が縮む */
+  .timer { height: 6px; background: var(--rule); margin-top: 12px; border-radius: 3px; overflow: hidden; }
+  .timer i { display: block; height: 100%; width: 100%; background: var(--tint); transform-origin: left; }
+  .answers { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .answers button { min-height: 60px; background: none; border: 2px solid var(--ink); border-radius: var(--r); font-size: 1.1rem; font-weight: 700; }
+  .answers button:disabled { opacity: .45; }
+  .answers button.ok { background: var(--turf-deep); color: #fff; border-color: var(--turf-deep); }
+  .answers button.ng { border-color: var(--alert); color: var(--alert); }
+  .judge { margin-top: 12px; min-height: 3.4em; font-size: .9375rem; }
+  .judge b { font-size: 1.1rem; }
+  .judge .trace { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .judge .trace span { padding: 2px 10px; border: 1px solid var(--rule); border-radius: 999px; font-size: .875rem; }
+  .judge .trace span.k { border-color: var(--ink); background: color-mix(in srgb, var(--liner) 40%, transparent); }
+  .judge .trace span.s { border-color: var(--turf-deep); font-weight: 700; }
+  .judge .trace span.c { border-color: var(--alert); }
+
+  /* 結果 */
+  .result { margin-top: 20px; border-top: 2px solid var(--ink); padding-top: 12px; }
+  .result .big { display: flex; align-items: baseline; gap: 10px; }
+  .result .big .n { font-family: var(--board); font-size: 4.2rem; line-height: 1; }
+  .result .big .d { font-size: 1.1rem; color: var(--ink-sec); }
+  .result .title { font-size: 1.5rem; font-weight: 700; margin-top: 4px; }
+  .result dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; margin-top: 12px; font-size: .9375rem; }
+  .result dt { color: var(--ink-sec); }
+  .result dd { font-weight: 700; }
+
+  .about { margin-top: 36px; }
+  .about h2 { font-size: 1.15rem; margin-top: 28px; }
+  .about p, .about li { color: var(--ink-sec); font-size: .9375rem; }
+  .about ul, .about ol { padding-left: 1.4em; margin-top: 6px; }
+  .about ol li { padding-left: .2em; }
+  .about p { margin-top: 8px; }
+  .about .tip { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin-top: 8px; }
+  .about .tip b { color: var(--ink); }
+  .check { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: .9375rem; }
+  @media (prefers-reduced-motion: no-preference) {
+    .coach .spot.on { animation: tap .18s ease-out; }
+    @keyframes tap { from { transform: scale(1.3); transform-box: fill-box; transform-origin: center; } to { transform: scale(1); } }
+    .timer i { transition: transform .1s linear; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="/" class="nav-logo" aria-label="Somirai Lab トップへ">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#111114"/><stop offset="100%" stop-color="#0a0a0b"/></linearGradient><linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff6428"/><stop offset="100%" stop-color="#e84410"/></linearGradient></defs><rect width="120" height="120" rx="24" fill="url(#n1)"/><circle cx="60" cy="52" r="18" fill="url(#n2)"/><circle cx="56" cy="47" r="6" fill="#fff" opacity=".2"/><path d="M60 28 L63 46 L60 52 L57 46Z" fill="#ffb088" opacity=".7"/><path d="M36 52 L52 54 L60 52 L52 50Z" fill="#ffb088" opacity=".55"/><path d="M84 52 L68 54 L60 52 L68 50Z" fill="#ffb088" opacity=".55"/></svg>
+      <span>Somirai Lab</span>
+    </a>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
+  </div>
+
+  <header class="head">
+    <h1>SIGNS</h1>
+    <p class="sub">三塁コーチのブロックサインを見破る。本物はキーの直後だけ</p>
+  </header>
+
+  <!-- 準備: モードとサイン表 -->
+  <section id="setup">
+    <div class="field">
+      <span class="lbl">出題</span>
+      <div class="seg" id="modeSeg" role="group" aria-label="出題の種類">
+        <button type="button" aria-pressed="true" data-mode="daily">今日のサイン表</button>
+        <button type="button" aria-pressed="false" data-mode="random">ランダム</button>
+      </div>
+      <p class="hint" id="modeHint">今日のサイン表は、同じ日に遊ぶ人みんな同じ出題です。正解数を比べられます。</p>
+    </div>
+    <p class="hint" style="margin-top:16px">コーチは1球ごとに4〜7か所を順に触ります。<b>キーの直後の1つだけ</b>が本物のサイン。それ以外はダミーです。まずサイン表を覚えてください。</p>
+    <div class="table" id="tableSetup" aria-label="サイン表"></div>
+    <button class="btn-main" id="start" type="button">覚えた。10球始める</button>
+    <p class="hint" id="bestLine"></p>
+  </section>
+
+  <!-- プレイ -->
+  <section id="play" hidden>
+    <div class="counter"><span class="round" id="round">1/10</span><span class="streak" id="streak"></span></div>
+    <div class="stage">
+      <svg class="coach" viewBox="0 0 200 270" role="img" aria-label="三塁コーチ">
+        <g class="body">
+          <circle cx="100" cy="54" r="24"/>
+          <path d="M74 46 Q100 18 126 46 L148 50 L126 52 Z" class="fill"/>
+          <circle cx="76" cy="56" r="4"/><circle cx="124" cy="56" r="4"/>
+          <path d="M70 90 Q100 82 130 90 L136 152 L64 152 Z"/>
+          <path d="M70 92 L48 150 M130 92 L152 150"/>
+          <circle cx="46" cy="158" r="7"/><circle cx="154" cy="158" r="7"/>
+          <path d="M64 152 L132 152"/>
+          <path d="M72 152 L68 250 M128 152 L132 250 M100 160 L100 250"/>
+          <path d="M60 250 L76 250 M124 250 L140 250"/>
+        </g>
+        <g id="spots">
+          <circle class="spot" data-p="帽子" cx="100" cy="30" r="16"/>
+          <circle class="spot" data-p="耳" cx="124" cy="56" r="14"/>
+          <circle class="spot" data-p="あご" cx="100" cy="82" r="14"/>
+          <circle class="spot" data-p="胸" cx="100" cy="112" r="16"/>
+          <circle class="spot" data-p="袖" cx="139" cy="112" r="14"/>
+          <circle class="spot" data-p="ベルト" cx="100" cy="152" r="14"/>
+          <circle class="spot" data-p="太もも" cx="84" cy="196" r="15"/>
+          <circle class="spot" data-p="手" cx="154" cy="158" r="14"/>
+        </g>
+      </svg>
+      <p class="motion" id="motion" aria-live="polite"><small>&nbsp;</small>&nbsp;</p>
+    </div>
+    <div class="timer" aria-hidden="true"><i id="bar"></i></div>
+    <div class="answers" id="answers">
+      <button type="button" data-a="盗塁" disabled>盗塁</button>
+      <button type="button" data-a="バント" disabled>バント</button>
+      <button type="button" data-a="エンドラン" disabled>エンドラン</button>
+      <button type="button" data-a="サインなし" disabled>サインなし</button>
+    </div>
+    <div class="judge" id="judge" aria-live="polite"></div>
+    <button class="btn-main" id="next" type="button" hidden>次の球</button>
+    <details id="peek"><summary>サイン表をもう一度見る(この球は不正解扱い)</summary><div class="table" id="tablePeek"></div></details>
+  </section>
+
+  <!-- 結果 -->
+  <section id="done" class="result" hidden>
+    <div class="big"><span class="n" id="score">0</span><span class="d">/ 10 正解</span></div>
+    <div class="title" id="title"></div>
+    <dl>
+      <dt>反応の平均</dt><dd id="avg">–</dd>
+      <dt>最長連続正解</dt><dd id="maxStreak">–</dd>
+      <dt>時間切れ</dt><dd id="timeouts">–</dd>
+      <dt>自己ベスト</dt><dd id="best">–</dd>
+    </dl>
+    <button class="btn-main" id="share" type="button">結果を共有する</button>
+    <div class="btn-row" style="margin-top:10px">
+      <button class="btn-sub" id="retry" type="button">同じサイン表でもう一度</button>
+      <button class="btn-sub" id="newTable" type="button">別のサイン表</button>
+    </div>
+    <p class="hint">読みが当たったら、次は自分のチームのスタメンを組んでみてください。<a href="/order-maker/" onclick="if(typeof gtag==='function')gtag('event','blog_cta_click',{location:'signs_result'})">スタメンメーカー(無料)</a></p>
+  </section>
+
+  <section class="about">
+    <h2>遊び方</h2>
+    <ol>
+      <li>サイン表を覚えます。キー(1か所)と、盗塁・バント・エンドランに対応する体の場所が書いてあります。</li>
+      <li>コーチが4〜7か所を順に触ります。キーが出たら、その<b>直後の1つ</b>だけを見てください。</li>
+      <li>動作が終わったら3秒以内に「盗塁・バント・エンドラン・サインなし」から選びます。</li>
+      <li>キーが出なかった、またはキーの直後がサイン表にない場所だった場合は「サインなし」が正解です。</li>
+      <li>8球目からは「取り消し」が加わります。本物のサインの後に取り消しの場所を触ったら、そのサインは無かったことになり「サインなし」です。</li>
+    </ol>
+    <p>10球で終わります。球が進むほど動作が速く、数も増えます。途中でサイン表を見返すこともできますが、その球は不正解になります。</p>
+
+    <h2>ブロックサインの仕組み</h2>
+    <p>野球のサインは、ベンチや三塁コーチが打者・走者に作戦を伝える合図です。出し方はルールで決められているものではなく、チームごとの約束事として作られます。その中でよく使われる形が、このゲームが題材にしている「ブロックサイン」です。</p>
+    <p>ブロックサインでは、コーチが帽子・顔・胸・袖・ベルトなど体のあちこちを続けて触ります。ほとんどはダミーで、意味を持つのは「キー」と呼ばれる決められた場所の<b>直後の1つ</b>だけです。たとえばキーがベルトで、盗塁が帽子なら、「袖 → ベルト → 帽子 → 胸」という動作は盗塁、「帽子 → 袖 → 胸」はキーが無いのでサインなし、となります。本物の前後にダミーを混ぜられるので、相手チームが動作をすべて見ていても、キーを知らなければ読めません。</p>
+    <p>チームによっては、キーを複数にする、キーの「何個後」を本物にする、取り消しのサインを決めておく、試合の途中でキーを変える、といった工夫を重ねます。このゲームの後半で出てくる「取り消し」はその一例です。</p>
+
+    <h2>サインを覚えるコツ</h2>
+    <div class="tip">
+      <b>キーだけ見る</b><span>全部を覚えようとすると追いつきません。キーの場所が出るまでは何も覚えず、出た瞬間に次の1つだけに集中します。</span>
+      <b>声に出す(心の中で)</b><span>「ベルト…帽子!」のように、キーと直後を言葉にすると、ダミーに引きずられにくくなります。</span>
+      <b>直後の場所を指に置き換える</b><span>盗塁は人差し指、バントは中指、のように手元の動きに対応づけると、答えを選ぶまでの時間が縮みます。</span>
+      <b>取り消しは「上書き」</b><span>後半は、本物を見た後も最後まで気を抜かないこと。取り消しが出たら答えは「サインなし」です。</span>
+    </div>
+    <p>これは、実際にチームでサインを覚えるときの練習にもなります。選手がサインを見落とす原因の多くは「全部を見ようとして、キーを見失う」ことです。キーの直後だけを拾う癖がつけば、ダミーが何個増えても読めるようになります。</p>
+
+    <h2>称号の目安</h2>
+    <ul>
+      <li>10問正解: 三塁コーチ ― ダミーに一度も釣られませんでした。</li>
+      <li>8〜9問: 監督の右腕 ― 実戦でも任せられる読みです。</li>
+      <li>6〜7問: レギュラー ― 速い球で取りこぼしがあります。後半の取り消しに注意。</li>
+      <li>4〜5問: 控え ― キーの場所を先に固定して、そこだけ待ってみてください。</li>
+      <li>0〜3問: 入団初日 ― まずサイン表のキーだけ覚えて、ゆっくり始めましょう。</li>
+    </ul>
+
+    <details>
+      <summary>よくある質問</summary>
+      <p><b>キーの後がサイン表にない場所だったら？</b><br>「サインなし」が正解です。ダミーで終わっています。</p>
+      <p><b>「今日のサイン表」は誰でも同じですか？</b><br>同じです。日付から出題を作っているので、同じ日に遊んだ人は同じ表・同じ順番になります。家族やチームで正解数を比べられます。</p>
+      <p><b>結果はどこに保存されますか？</b><br>お使いの端末のブラウザの中だけです。サーバーには送りません。登録も不要です。</p>
+      <p><b>実際のチームのサインを入れて練習できますか？</b><br>今はできません。このゲームは場所を自動で割り当てます。自チームのサインを公開のページに入力するのは避けたほうがよいため、対応の予定はありません。</p>
+    </details>
+  </section>
+
+  <footer>
+    <a href="/privacy.html">プライバシーポリシー</a>
+    <a href="/">Somirai Lab トップ</a>
+    <a href="/swing/">SWING!(打席反応ゲーム)</a>
+    <a href="/order-maker/">スタメンメーカー</a>
+  </footer>
+</div>
+
+<script src="/shared/tool.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const PARTS = ['帽子', '耳', 'あご', '胸', '袖', 'ベルト', '太もも', '手'];
+const PLAYS = ['盗塁', 'バント', 'エンドラン'];
+const ROUNDS = 10, ANSWER_MS = 3000, KEY = 'signs_v1';
+const TITLES = [[10, '三塁コーチ'], [8, '監督の右腕'], [6, 'レギュラー'], [4, '控え'], [0, '入団初日']];
+
+// 日付から同じ出題を作るための乱数(mulberry32)
+function rng(seed) {
+  let a = seed >>> 0;
+  return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+const todaySeed = () => { const d = new Date(); return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate(); };
+const todayKey = () => String(todaySeed());
+
+const state = { mode: 'daily', seed: 0, table: null, rounds: [], i: 0, results: [], streak: 0, maxStreak: 0, peeked: false, timer: null, tStart: 0, busy: false };
+const store = Tool.load(KEY, { bestDaily: {}, bestRandom: 0, plays: 0 });
+
+// サイン表と10球ぶんの動作を、乱数から先に全部作る
+function build(seed) {
+  const r = rng(seed), pick = n => Math.floor(r() * n);
+  const parts = PARTS.slice();
+  for (let i = parts.length - 1; i > 0; i--) { const j = pick(i + 1); [parts[i], parts[j]] = [parts[j], parts[i]]; }
+  const table = { key: parts[0], map: { '盗塁': parts[1], 'バント': parts[2], 'エンドラン': parts[3] }, cancel: parts[4] };
+  const sigParts = Object.values(table.map);
+  // ダミーに使える場所(本物の場所も混ぜる。キーと取り消しは意図した所にしか出さない)
+  const others = PARTS.filter(p => p !== table.key && p !== table.cancel);
+  const rounds = [];
+  for (let n = 0; n < ROUNDS; n++) {
+    const len = Math.min(7, 4 + Math.floor(n / 3) + (r() < 0.4 ? 1 : 0));
+    const ms = Math.max(480, 820 - n * 38);
+    const useCancel = n >= 7;
+    const kind = r() < 0.68 ? 'play' : 'none';
+    const seq = Array.from({ length: len }, () => others[pick(others.length)]);
+    let answer = 'サインなし', keyAt = -1, cancelAt = -1;
+    const kpos = pick(len - 1);
+    if (kind === 'play') {
+      const play = PLAYS[pick(3)];
+      seq[kpos] = table.key; seq[kpos + 1] = table.map[play]; keyAt = kpos; answer = play;
+      if (useCancel && r() < 0.5 && kpos + 2 < len) { cancelAt = kpos + 2 + pick(len - kpos - 2); seq[cancelAt] = table.cancel; answer = 'サインなし'; }
+    } else if (r() < 0.6) {
+      // キーは出るが直後がダミー
+      const dummies = others.filter(p => !sigParts.includes(p));
+      seq[kpos] = table.key; seq[kpos + 1] = dummies[pick(dummies.length)]; keyAt = kpos;
+    }
+    rounds.push({ seq, ms, answer, keyAt, cancelAt, useCancel });
+  }
+  return { table, rounds };
+}
+
+function renderTable(el, t, withCancel) {
+  const row = (what, part, cls, note) => `<div class="r ${cls || ''}"><span class="what">${what}</span><span class="part">${Tool.esc(part)}</span>${note ? `<span class="note">${note}</span>` : ''}</div>`;
+  el.innerHTML = row('キー', t.key, 'key', 'この直後だけ本物') + PLAYS.map(p => row(p, t.map[p])).join('') + (withCancel ? row('取り消し', t.cancel, '', '8球目から') : '');
+}
+
+function setup(mode, seed) {
+  state.mode = mode; state.seed = seed;
+  const b = build(seed); state.table = b.table; state.rounds = b.rounds;
+  renderTable($('#tableSetup'), b.table, true);
+  const best = mode === 'daily' ? (store.bestDaily.date === todayKey() ? store.bestDaily.score : null) : (store.bestRandom || null);
+  $('#bestLine').textContent = best != null ? `自己ベスト: ${best}/10` + (mode === 'daily' ? '(今日)' : '') : '';
+  $('#setup').hidden = false; $('#play').hidden = true; $('#done').hidden = true;
+}
+
+function startGame() {
+  state.i = 0; state.results = []; state.streak = 0; state.maxStreak = 0;
+  $('#setup').hidden = true; $('#done').hidden = true; $('#play').hidden = false;
+  renderTable($('#tablePeek'), state.table, true);
+  if (typeof gtag === 'function') gtag('event', 'signs_start', { mode: state.mode });
+  window.scrollTo({ top: $('#play').offsetTop - 8, behavior: 'smooth' });
+  playRound();
+}
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+function showSpot(p) {
+  document.querySelectorAll('.spot').forEach(s => s.classList.toggle('on', s.dataset.p === p));
+  $('#motion').innerHTML = p ? `<small>触った場所</small>${Tool.esc(p)}` : '<small>&nbsp;</small>&nbsp;';
+}
+
+async function playRound() {
+  const rd = state.rounds[state.i];
+  state.peeked = false; state.busy = true;
+  $('#peek').open = false;
+  $('#round').textContent = `${state.i + 1}/${ROUNDS}`;
+  $('#streak').textContent = state.streak >= 2 ? `${state.streak}連続正解中` : (rd.useCancel ? '取り消しあり' : '');
+  $('#judge').innerHTML = ''; $('#next').hidden = true;
+  $('#bar').style.transform = 'scaleX(1)';
+  document.querySelectorAll('#answers button').forEach(b => { b.disabled = true; b.className = ''; });
+  showSpot(null);
+  $('#motion').innerHTML = '<small>&nbsp;</small>見て';
+  await sleep(700);
+  const quick = Tool.reducedMotion();
+  for (const p of rd.seq) {
+    showSpot(p); Tool.buzz(10);
+    await sleep(quick ? Math.max(rd.ms, 700) : rd.ms);
+    showSpot(null);
+    await sleep(quick ? 220 : 140);
+  }
+  $('#motion').innerHTML = '<small>&nbsp;</small>どれ？';
+  state.busy = false;
+  document.querySelectorAll('#answers button').forEach(b => { b.disabled = false; });
+  state.tStart = performance.now();
+  const t0 = state.tStart;
+  const tick = () => {
+    const left = 1 - (performance.now() - t0) / ANSWER_MS;
+    if (left <= 0) { answer(null); return; }
+    $('#bar').style.transform = `scaleX(${left})`;
+    state.timer = requestAnimationFrame(tick);
+  };
+  state.timer = requestAnimationFrame(tick);
+}
+
+function answer(choice) {
+  if (state.busy) return;
+  state.busy = true; cancelAnimationFrame(state.timer);
+  const rd = state.rounds[state.i];
+  const rt = choice ? Math.round(performance.now() - state.tStart) : null;
+  const ok = choice === rd.answer && !state.peeked;
+  document.querySelectorAll('#answers button').forEach(b => {
+    b.disabled = true;
+    if (b.dataset.a === rd.answer) b.classList.add('ok');
+    else if (b.dataset.a === choice) b.classList.add('ng');
+  });
+  if (ok) { state.streak++; state.maxStreak = Math.max(state.maxStreak, state.streak); } else state.streak = 0;
+  state.results.push({ ok, rt, timeout: !choice });
+  const trace = rd.seq.map((p, k) => {
+    let cls = '';
+    if (k === rd.keyAt) cls = 'k'; else if (k === rd.keyAt + 1 && rd.keyAt >= 0 && PLAYS.some(pl => state.table.map[pl] === p)) cls = 's'; else if (k === rd.cancelAt) cls = 'c';
+    return `<span class="${cls}">${Tool.esc(p)}</span>`;
+  }).join('');
+  let why;
+  if (rd.keyAt < 0) why = 'キーが出ていないので、サインなし。';
+  else if (rd.cancelAt >= 0) why = `キー(${rd.seq[rd.keyAt]})の直後は${rd.seq[rd.keyAt + 1]}でしたが、あとで取り消し(${state.table.cancel})が出たのでサインなし。`;
+  else if (rd.answer === 'サインなし') why = `キー(${rd.seq[rd.keyAt]})の直後は${rd.seq[rd.keyAt + 1]}。サイン表にない場所なので、サインなし。`;
+  else why = `キー(${rd.seq[rd.keyAt]})の直後が${rd.seq[rd.keyAt + 1]}なので、${rd.answer}。`;
+  const head = !choice ? '時間切れ。' : state.peeked ? 'サイン表を見たので不正解扱い。' : ok ? '読めた。' : '釣られた。';
+  $('#judge').innerHTML = `<b>${head}</b> 正解は「${rd.answer}」${rt != null ? `(${(rt / 1000).toFixed(2)}秒)` : ''}<br>${Tool.esc(why)}<div class="trace">${trace}</div>`;
+  if (ok) Tool.buzz(30); else Tool.buzz([40, 60, 40]);
+  $('#next').textContent = state.i + 1 < ROUNDS ? '次の球' : '結果を見る';
+  $('#next').hidden = false;
+  $('#next').focus({ preventScroll: true });
+}
+
+function finish() {
+  const score = state.results.filter(r => r.ok).length;
+  const rts = state.results.filter(r => r.ok && r.rt != null).map(r => r.rt);
+  const avg = rts.length ? (rts.reduce((a, b) => a + b, 0) / rts.length / 1000).toFixed(2) + '秒' : '–';
+  const title = TITLES.find(([n]) => score >= n)[1];
+  let best;
+  if (state.mode === 'daily') {
+    if (store.bestDaily.date !== todayKey() || score > store.bestDaily.score) store.bestDaily = { date: todayKey(), score };
+    best = store.bestDaily.score + '/10(今日)';
+  } else { store.bestRandom = Math.max(store.bestRandom || 0, score); best = store.bestRandom + '/10'; }
+  store.plays = (store.plays || 0) + 1; Tool.save(KEY, store);
+  $('#score').textContent = score; $('#title').textContent = title;
+  $('#avg').textContent = avg; $('#maxStreak').textContent = state.maxStreak + '球';
+  $('#timeouts').textContent = state.results.filter(r => r.timeout).length + '球'; $('#best').textContent = best;
+  state.shareText = `SIGNS サイン解読 ${state.mode === 'daily' ? '今日のサイン表' : 'ランダム'}: ${score}/10 正解「${title}」反応${avg}\nキーの直後だけが本物。あなたは読める？ #少年野球 #草野球\nhttps://somirai.jp/signs/`;
+  $('#play').hidden = true; $('#done').hidden = false;
+  window.scrollTo({ top: $('#done').offsetTop - 8, behavior: 'smooth' });
+  if (typeof gtag === 'function') gtag('event', 'signs_complete', { mode: state.mode, score });
+}
+
+// 操作
+document.querySelectorAll('#modeSeg button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#modeSeg button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+  const m = b.dataset.mode;
+  $('#modeHint').textContent = m === 'daily' ? '今日のサイン表は、同じ日に遊ぶ人みんな同じ出題です。正解数を比べられます。' : '毎回ちがうサイン表と順番で出題します。';
+  setup(m, m === 'daily' ? todaySeed() : Tool.randInt(2147483647));
+}));
+$('#start').addEventListener('click', startGame);
+document.querySelectorAll('#answers button').forEach(b => b.addEventListener('click', () => answer(b.dataset.a)));
+$('#next').addEventListener('click', () => { state.i++; if (state.i < ROUNDS) playRound(); else finish(); });
+$('#peek').addEventListener('toggle', () => { if ($('#peek').open && !state.busy) state.peeked = true; });
+$('#share').addEventListener('click', () => { Tool.share(state.shareText, $('#share')); if (typeof gtag === 'function') gtag('event', 'signs_share'); });
+$('#retry').addEventListener('click', () => { setup(state.mode, state.seed); startGame(); });
+$('#newTable').addEventListener('click', () => {
+  document.querySelectorAll('#modeSeg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === 'random' ? 'true' : 'false'));
+  $('#modeHint').textContent = '毎回ちがうサイン表と順番で出題します。';
+  setup('random', Tool.randInt(2147483647));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+document.addEventListener('keydown', e => {
+  if (state.busy || $('#play').hidden) return;
+  const n = { '1': '盗塁', '2': 'バント', '3': 'エンドラン', '4': 'サインなし' }[e.key];
+  if (n) answer(n);
+});
+
+setup('daily', todaySeed());
+Tool.initTheme(); Tool.initCookie();
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "_doc": "ツールごとの重要イベント。上から順に「入口 → ちゃんと使った」の流れ。最後のステップに到達した人が「活用ユーザー」。",
+  "tools": [
+    { "name": "TACTICIAN", "path": "/order-maker/", "steps": [
+      ["player_added", "選手を登録"], ["lineup_edited", "打順に選手を入れた"], ["lineup_complete", "9人そろえた"], ["lineup_saved", "オーダーを保存"], ["lineup_shared", "画像・共有"] ] },
+    { "name": "LUMBER", "path": "/batting-stats/", "steps": [
+      ["bs_record", "打席を記録"], ["bs_stats_view", "成績を見た"], ["bs_history_view", "履歴を見た"], ["bs_goal_set", "目標を設定"] ] },
+    { "name": "TEMPER", "path": "/habit/", "steps": [["habit_add", "習慣を登録"], ["habit_check", "習慣をチェック"]] },
+    { "name": "MARGINALIA", "path": "/write/", "steps": [["memo_add", "メモを書いた"]] },
+    { "name": "KURA", "path": "/savings/", "steps": [["kura_expense_add", "支出を記録"]] },
+    { "name": "投球数カウンター", "path": "/pitch-counter/", "steps": [
+      ["pc_first_pitch", "1球目を記録"], ["pc_pa_end", "打者を1人終えた"], ["pc_score", "スコアを入力"], ["pitch_to_lumber", "LUMBERへ書き出し"], ["pitch_share", "共有"] ] },
+    { "name": "ドラフト会議", "path": "/draft/", "steps": [
+      ["draft_order", "順番を決めた"], ["draft_team", "チーム分け"], ["draft_duty", "当番決め"], ["draft_share", "共有"] ] },
+    { "name": "試合費用の割り勘", "path": "/split/", "steps": [["split_calc", "金額を出した"], ["split_share", "共有"]] },
+    { "name": "9回制トレタイマー", "path": "/training-timer/", "steps": [["train_start", "開始"], ["train_finish", "最後までやった"]] },
+    { "name": "日没タイムリミット", "path": "/sunset/", "steps": [["sunset_calc", "日没を計算"]] },
+    { "name": "FORECAST", "path": "/weather/", "steps": [["geo_locate", "現在地を使った"], ["city_weather_search", "市区町村で検索"]] },
+    { "name": "VALE", "path": "/price-sim/", "steps": [["vale_calc", "シミュレーション実行"], ["vale_kura_import", "KURA連携"]] },
+    { "name": "SWING", "path": "/swing/", "steps": [["game_complete", "1ゲーム完了"]] },
+    { "name": "SIGNS", "path": "/signs/", "steps": [["signs_start", "10球を始めた"], ["signs_complete", "10球やりきった"], ["signs_share", "結果を共有"]] }
+  ],
+  "blog": { "path": "/blog/", "steps": [["blog_scroll_25", "25%"], ["blog_scroll_50", "50%"], ["blog_scroll_75", "75%"], ["blog_scroll_100", "最後まで"], ["blog_read", "読了(75%+45秒)"]] }
+}
