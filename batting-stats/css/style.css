@@ -169,7 +169,14 @@ html, body {
 .btn-theme:active,
 .btn-help:active { background: var(--accent-bg); color: var(--accent); border-color: rgba(255,215,0,.4); }
 
-.header-right { display: flex; gap: 6px; align-items: center; }
+.header-right { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+/* 狭い画面: 戻るリンクの文字を隠し、題字とボタンがはみ出さないようにする */
+.header-back { white-space: nowrap; }
+.app-title { flex-shrink: 0; }
+@media (max-width: 540px) {
+  .header-back-text { display: none; }
+  .header-back { margin-right: 6px; }
+}
 
 /* ── Color Theme Picker ───────────────────── */
 .color-picker-wrap { position: relative; }

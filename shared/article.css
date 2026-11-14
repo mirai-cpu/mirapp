@@ -35,6 +35,8 @@ body { font-family: 'BIZ UDPGothic', 'Hiragino Sans', 'Noto Sans JP', sans-serif
 .site-logo { font-size: 1.05rem; }
 .site-logo span { color: var(--text); }
 .header-nav a:hover, .site-footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
+/* フッターのリンクが語の途中で折り返さないように */
+.site-footer a { display: inline-block; white-space: nowrap; }
 .breadcrumb a:hover { color: var(--text); }
 
 /* 記事の見出し周り */
