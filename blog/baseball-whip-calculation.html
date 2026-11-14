@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja" data-tint="teal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WHIPの計算方法【(与四球＋被安打)÷投球回】数え方と例題・防御率との違い | Somirai Lab</title>
+  <meta name="description" content="野球のWHIPの計算式をMLB公式用語集の定義に沿って解説。死球・失策・野手選択は数えないこと、投球回の1/3の扱い、5回1/3などの例題、通算WHIPの出し方、防御率との違いまで。計算式つき・無料のWHIP計算機つき。">
+  <meta name="keywords" content="WHIP 計算,WHIP 計算方法,WHIP とは,WHIP 求め方,WHIP 死球,投手 成績 指標,草野球 WHIP">
+  <link rel="canonical" href="https://somirai.jp/blog/baseball-whip-calculation.html">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://somirai.jp/blog/baseball-whip-calculation.html">
+  <meta property="og:title" content="WHIPの計算方法【(与四球＋被安打)÷投球回】数え方と例題・防御率との違い">
+  <meta property="og:description" content="野球のWHIPの計算式をMLB公式用語集の定義に沿って解説。死球・失策・野手選択は数えないこと、投球回の1/3の扱い、5回1/3などの例題、通算WHIPの出し方、防御率との違いまで。計算式つき・無料のWHIP計算機つき。">
+  <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"WHIPの計算方法【(与四球＋被安打)÷投球回】数え方と例題・防御率との違い","description":"野球のWHIPの計算式をMLB公式用語集の定義に沿って解説。死球・失策・野手選択は数えないこと、投球回の1/3の扱い、5回1/3などの例題、通算WHIPの出し方、防御率との違いまで。計算式つき・無料のWHIP計算機つき。","datePublished":"2026-11-14","dateModified":"2026-11-14","author":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"},"publisher":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://somirai.jp/blog/baseball-whip-calculation.html"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"WHIPの計算式は？","acceptedAnswer":{"@type":"Answer","text":"WHIP ＝ (与四球 ＋ 被安打) ÷ 投球回 です。MLB公式の用語集でも、与四球と被安打の合計を投球回で割ったものと定義されています。6回を被安打5・与四球2で投げた場合は 7 ÷ 6 ≒ 1.17 です。"}},
+      {"@type":"Question","name":"死球やエラーで出した走者はWHIPに入りますか？","acceptedAnswer":{"@type":"Answer","text":"入りません。MLB公式の用語集では、死球・失策・野手選択で出塁した打者は投手のWHIPに数えないとされています。数えるのは与四球と被安打だけです。"}},
+      {"@type":"Question","name":"投球回の「5回1/3」はどう計算しますか？","acceptedAnswer":{"@type":"Answer","text":"1アウトが1/3回なので、5回1/3は16アウト＝16/3回です。(与四球＋被安打) × 3 ÷ アウト数 の形にすると、分数や小数を使わずに計算できます。"}},
+      {"@type":"Question","name":"WHIPはいくつなら良いのですか？","acceptedAnswer":{"@type":"Answer","text":"公式に決まった基準はありません。MLB公式の用語集では、WHIPが低い投手ほど一般に優れた投手だと説明されています。WHIP 1.00は1イニングに平均1人、1.50は2イニングに平均3人の走者を出した計算です。"}},
+      {"@type":"Question","name":"通算WHIPは試合ごとのWHIPを平均すればいいですか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。与四球と被安打の合計を、投球回の合計で割ります。試合ごとのWHIPを平均すると、短い登板の数字が大きく効いてしまいます。"}},
+      {"@type":"Question","name":"WHIPと防御率はどう違いますか？","acceptedAnswer":{"@type":"Answer","text":"防御率は自責点(失点)を見る指標、WHIPは四球と安打で出した走者の数を見る指標です。走者を出しても失点しなければ防御率は良いままなので、両方を並べると投球の内容が分かりやすくなります。"}}
+  ]}
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0b; --surface: #111114; --surface2: #18181c;
+      --border: #222228; --text: #e2e8f0; --text-sec: #94a3b8;
+      --text-mut: #475569; --accent: #ff6428; --accent-soft: rgba(255,100,40,0.12);
+      --radius: 16px;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+
+    .site-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+    .site-logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
+    .site-logo span { color: var(--accent); }
+    .header-nav { margin-left: auto; display: flex; gap: 16px; }
+    .header-nav a { color: var(--text-sec); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+    .header-nav a:hover { color: var(--text); }
+
+    .breadcrumb { max-width: 860px; margin: 0 auto; padding: 12px 24px; font-size: 0.8rem; color: var(--text-mut); }
+    .breadcrumb a { color: var(--text-mut); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 6px; }
+
+    .page-wrapper { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .article-header { padding: 32px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+    .article-category { display: inline-block; background: var(--accent-soft); color: var(--accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 16px; }
+    .article-title { font-family: 'Noto Sans JP', sans-serif; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; margin-bottom: 20px; }
+    .article-meta { display: flex; align-items: center; gap: 16px; font-size: 0.85rem; color: var(--text-mut); flex-wrap: wrap; }
+
+    .toc { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin: 0 0 40px; }
+    .toc-title { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; margin-bottom: 14px; }
+    .toc ol { list-style: none; padding: 0; margin: 0; counter-reset: toc-counter; }
+    .toc ol li { counter-increment: toc-counter; padding: 4px 0 4px 24px; position: relative; font-size: 0.88rem; }
+    .toc ol li::before { content: counter(toc-counter); position: absolute; left: 0; top: 4px; font-size: 0.72rem; font-weight: 700; color: var(--accent); background: var(--accent-soft); width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .toc a { color: var(--text-sec); text-decoration: none; }
+    .toc a:hover { color: var(--text); }
+
+    .article-body { font-size: 1rem; line-height: 1.9; }
+    .article-body h2 { font-size: 1.4rem; font-weight: 700; color: var(--text); margin: 56px 0 20px; padding-left: 16px; border-left: 3px solid var(--accent); line-height: 1.4; }
+    .article-body h2:first-of-type { margin-top: 0; }
+    .article-body h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin: 36px 0 12px; }
+    .article-body p { color: var(--text-sec); margin-bottom: 20px; }
+    .article-body p strong { color: var(--text); font-weight: 700; }
+    .article-body ul, .article-body ol { margin: 0 0 20px 0; padding-left: 0; list-style: none; }
+    .article-body ul li, .article-body ol li { color: var(--text-sec); padding: 6px 0 6px 24px; position: relative; }
+    .article-body ul li::before { content: ''; position: absolute; left: 0; top: 14px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .article-body ol { counter-reset: ol-counter; }
+    .article-body ol li { counter-increment: ol-counter; }
+    .article-body ol li::before { content: counter(ol-counter); position: absolute; left: 0; top: 6px; font-size: 0.75rem; font-weight: 700; color: var(--accent); background: var(--accent-soft); width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    .point-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin: 28px 0; }
+    .point-box .box-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
+    .point-box p { margin-bottom: 0; }
+    .point-box ul { margin-bottom: 0; }
+
+    .highlight-box { background: var(--accent-soft); border: 1px solid rgba(255,100,40,0.25); border-radius: var(--radius); padding: 20px 24px; margin: 28px 0; }
+    .highlight-box p { margin-bottom: 0; color: var(--text); }
+
+    .tool-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin: 36px 0; }
+    .tool-card-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+    .tool-icon { width: 48px; height: 48px; background: var(--accent-soft); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .tool-name { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .tool-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; font-weight: 700; color: #4ade80; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); padding: 3px 8px; border-radius: 6px; }
+    .tool-desc { color: var(--text-sec); font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
+    .tool-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 24px; }
+    .tool-feature { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 0.85rem; color: var(--text-sec); }
+    .tool-feature strong { display: block; color: var(--text); font-size: 0.8rem; margin-bottom: 3px; }
+    .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.95rem; padding: 12px 28px; border-radius: 999px; text-decoration: none; transition: opacity 0.2s; }
+    .cta-btn:hover { opacity: 0.85; }
+
+    .failure-list { counter-reset: failure-counter; list-style: none; padding: 0; margin: 0 0 28px; }
+    .failure-item { counter-increment: failure-counter; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 20px 20px 56px; position: relative; margin-bottom: 12px; }
+    .failure-item::before { content: counter(failure-counter); position: absolute; left: 16px; top: 18px; width: 28px; height: 28px; background: #ef4444; color: #fff; font-weight: 700; font-size: 0.82rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .failure-item .failure-title { font-weight: 700; color: var(--text); margin-bottom: 6px; font-size: 0.95rem; }
+    .failure-item p { font-size: 0.88rem; color: var(--text-sec); margin-bottom: 0; line-height: 1.7; }
+    .failure-item .fix { margin-top: 10px; padding: 8px 12px; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); border-radius: 8px; font-size: 0.82rem; color: #4ade80; }
+    .failure-item .fix strong { color: #4ade80; }
+
+    .step-list { counter-reset: step-counter; list-style: none; padding: 0; margin: 0 0 28px; }
+    .step-list li { counter-increment: step-counter; position: relative; padding: 0 0 28px 52px; color: var(--text-sec); }
+    .step-list li::before { content: counter(step-counter); position: absolute; left: 0; top: 0; width: 32px; height: 32px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.85rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .step-list li::after { content: ''; position: absolute; left: 15px; top: 32px; bottom: 0; width: 2px; background: var(--border); }
+    .step-list li:last-child::after { display: none; }
+    .step-list li strong { display: block; color: var(--text); font-weight: 700; margin-bottom: 6px; }
+
+    .table-scroll { overflow-x: auto; margin: 24px 0; }
+    .compare-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 0.9rem; }
+    .table-scroll .compare-table { margin: 0; min-width: 560px; }
+    .compare-table th, .compare-table td { padding: 12px 16px; border: 1px solid var(--border); text-align: left; }
+    .compare-table th { background: var(--surface2); color: var(--text); font-weight: 700; font-size: 0.82rem; }
+    .compare-table td { color: var(--text-sec); background: var(--surface); }
+    .compare-table td.good { color: #4ade80; font-weight: 600; }
+    .compare-table td.bad { color: #f87171; }
+    .compare-table tr:first-child th:first-child { border-radius: 10px 0 0 0; }
+    .compare-table tr:first-child th:last-child { border-radius: 0 10px 0 0; }
+
+    .faq-section { margin: 12px 0; }
+    .faq-item { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+    .faq-q { background: var(--surface); padding: 16px 20px; font-weight: 700; color: var(--text); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 12px; }
+    .faq-q::before { content: 'Q'; color: var(--accent); font-weight: 700; font-size: 0.9rem; background: var(--accent-soft); width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .faq-a { background: var(--surface2); padding: 16px 20px 16px 54px; color: var(--text-sec); font-size: 0.92rem; line-height: 1.8; }
+
+    .related-article { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin: 20px 0; display: flex; align-items: center; gap: 16px; text-decoration: none; transition: border-color 0.2s; }
+    .related-article:hover { border-color: var(--accent); }
+    .related-article-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .related-article-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; margin-bottom: 4px; }
+    .related-article-title { font-size: 0.95rem; font-weight: 700; color: var(--text); line-height: 1.5; }
+
+    .site-footer { background: var(--surface); border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 0.85rem; color: var(--text-mut); margin-top: 80px; }
+    .site-footer a { color: var(--text-mut); text-decoration: none; margin: 0 10px; }
+    .site-footer a:hover { color: var(--text); }
+    .site-footer .footer-links { margin-bottom: 16px; }
+
+    @media (max-width: 600px) {
+      .page-wrapper { padding: 0 16px 60px; }
+      .article-header { padding: 24px 0 32px; }
+      .tool-features { grid-template-columns: 1fr 1fr; }
+      .compare-table { font-size: 0.8rem; }
+      .compare-table th, .compare-table td { padding: 10px 10px; }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/article.css">
+</head>
+<body>
+<header class="site-header">
+  <a href="https://somirai.jp/" class="site-logo">Somirai<span>.</span>jp</a>
+  <nav class="header-nav">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/whip-calculator/">WHIP計算機</a>
+    <a href="https://somirai.jp/blog/">ブログ</a>
+  </nav>
+  <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
+</header>
+<nav class="breadcrumb" aria-label="パンくずリスト">
+  <a href="https://somirai.jp/">ホーム</a><span>›</span><a href="https://somirai.jp/blog/">ブログ</a><span>›</span>WHIPの計算方法
+</nav>
+<main class="page-wrapper">
+  <article>
+    <header class="article-header">
+      <div class="article-category">野球・スポーツ</div>
+      <h1 class="article-title">WHIPの計算方法【(与四球＋被安打)÷投球回】数え方と例題・防御率との違い</h1>
+      <div class="article-meta">
+        <time datetime="2026-11-14">2026年11月14日</time>
+        <span>約3,200字 · 読了約6分</span>
+      </div>
+    </header>
+    <nav class="toc" aria-label="目次">
+      <div class="toc-title">目次</div>
+      <ol>
+        <li><a href="#formula">WHIPの計算式と意味</a></li>
+        <li><a href="#count">数えるもの・数えないもの</a></li>
+        <li><a href="#third">投球回の「1/3」「2/3」の扱い</a></li>
+        <li><a href="#examples">例題で覚える</a></li>
+        <li><a href="#total">通算WHIPは「合計してから」</a></li>
+        <li><a href="#read">WHIPの数字の読み方</a></li>
+        <li><a href="#era">防御率との違い</a></li>
+        <li><a href="#origin">WHIPという言葉の始まり</a></li>
+        <li><a href="#faq">よくある質問（FAQ）</a></li>
+        <li><a href="#source">参考・出典</a></li>
+      </ol>
+    </nav>
+    <div class="article-body">
+      <p>投手の成績で、防御率と並んでよく見かけるのが<strong>WHIP（ウィップ）</strong>です。「1イニングに何人の走者を出したか」を表す数字ですが、いざ自分で計算しようとすると「死球は入れるの？」「5回1/3はどう割るの？」と迷いがちです。</p>
+      <p>この記事では、WHIPの式と数える対象を<a href="https://www.mlb.com/glossary/standard-stats/walks-and-hits-per-inning-pitched" target="_blank" rel="noopener">MLB公式の用語集</a>の定義に沿って確認し、投球回の端数の扱いと通算の出し方を例題で整理します。数字はすべて計算式つきです。</p>
+      <div class="highlight-box">
+        <p><strong>この記事で分かること：</strong>WHIPの式と意味 / 数えるもの・数えないもの / 投球回「5回1/3」の計算 / 例題5つ / 通算WHIPの出し方 / 防御率との違い / 数字の読み方</p>
+      </div>
+
+      <h2 id="formula">WHIPの計算式と意味</h2>
+      <div class="point-box">
+        <div class="box-label">計算式</div>
+        <p><strong>WHIP ＝ (与四球 ＋ 被安打) ÷ 投球回</strong></p>
+      </div>
+      <p>WHIPは Walks plus Hits per Inning Pitched の略です。MLB公式の用語集では、投手の与四球と被安打の合計を投球回で割ったもの、と定義されています。つまり<strong>1イニングあたりに四球と安打で出した走者の数</strong>です。同じ用語集には、WHIPが低い投手ほど一般にリーグで優れた投手だ、とも書かれています。</p>
+
+      <h2 id="count">数えるもの・数えないもの</h2>
+      <p>WHIPで間違えやすいのが「どの出塁を数えるか」です。MLB公式の用語集では、<strong>死球・失策・野手選択で出塁した打者は投手のWHIPに数えない</strong>とされています。</p>
+      <div class="table-scroll">
+        <table class="compare-table fit">
+          <thead><tr><th>出塁のしかた</th><th>WHIPに数えるか</th></tr></thead>
+          <tbody>
+            <tr><td>安打(単打・二塁打・三塁打・本塁打)</td><td class="good">数える</td></tr>
+            <tr><td>四球</td><td class="good">数える</td></tr>
+            <tr><td>死球</td><td class="bad">数えない</td></tr>
+            <tr><td>失策(エラー)による出塁</td><td class="bad">数えない</td></tr>
+            <tr><td>野手選択による出塁</td><td class="bad">数えない</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>例えば、5回を投げて被安打4・与四球1・与死球2だった場合、WHIPは (4 ＋ 1) ÷ 5 ＝ <strong>1.00</strong> です。死球の2人は入れません。スコアブックから数えるときは、四球と死球を分けて集計しておくと間違いません。</p>
+
+      <h2 id="third">投球回の「1/3」「2/3」の扱い</h2>
+      <p>投球回は<strong>取ったアウトの数 ÷ 3</strong>です。成績表の「5.1」「5.2」は5回1/3・5回2/3の略記で、5.1回・5.2回という意味ではありません。そこでWHIPも、アウト数を使った形に直すと計算が楽になります。</p>
+      <div class="point-box">
+        <div class="box-label">アウト数で計算する形</div>
+        <p><strong>WHIP ＝ (与四球 ＋ 被安打) × 3 ÷ 投球アウト数</strong></p>
+      </div>
+      <div class="failure-list">
+        <div class="failure-item">
+          <div class="failure-title">「5.2」を5.2のまま割ってしまう</div>
+          <p>被安打5・与四球2で投球回「5.2」(5回2/3＝17アウト)なら、正しくは 7 × 3 ÷ 17 ＝ 21 ÷ 17 ≒ 1.24。「5.2」でそのまま割ると 7 ÷ 5.2 ≒ 1.35 となり、0.11ずれます。</p>
+          <div class="fix"><strong>対策：</strong>先にアウト数(5回2/3＝17アウト)に直してから計算する。</div>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-card-header">
+          <div class="tool-icon">&#9918;</div>
+          <div>
+            <div class="tool-name">WHIP計算機（無料）</div>
+            <div class="tool-badge">無料 · 登録不要</div>
+          </div>
+        </div>
+        <p class="tool-desc">与四球・被安打・投球回を入れるだけでWHIPを計算します。「6.1」「6.2」の表記のまま入力でき、複数試合の通算WHIPも出せます。この記事の例題の答え合わせにも使えます。</p>
+        <a href="https://somirai.jp/whip-calculator/" class="cta-btn" target="_blank" rel="noopener" onclick="if(typeof gtag==='function')gtag('event','blog_cta_click',{location:'whip_calc_top'});">WHIPを計算する &#8594;</a>
+      </div>
+
+      <h2 id="examples">例題で覚える（計算式つき）</h2>
+      <div class="table-scroll">
+        <table class="compare-table fit">
+          <thead><tr><th>場面</th><th>計算式</th><th>WHIP</th></tr></thead>
+          <tbody>
+            <tr><td>6回・被安打5・与四球2</td><td>(5＋2) ÷ 6</td><td>1.17</td></tr>
+            <tr><td>5回1/3(16アウト)・被安打6・与四球3</td><td>(6＋3) × 3 ÷ 16</td><td>1.69</td></tr>
+            <tr><td>5回・被安打4・与四球1・与死球2</td><td>(4＋1) ÷ 5　※死球は数えない</td><td>1.00</td></tr>
+            <tr><td>5回2/3(17アウト)・被安打5・与四球2</td><td>(5＋2) × 3 ÷ 17</td><td>1.24</td></tr>
+            <tr><td>1回・被安打3・与四球1(リリーフ)</td><td>(3＋1) ÷ 1</td><td class="bad">4.00</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>小数は第3位を四捨五入して第2位まで表示しています。WHIPの丸め方に公式の決まりは確認できなかったので、チーム内で桁を揃えておけば十分です。</p>
+
+      <h2 id="total">通算WHIPは「合計してから」計算する</h2>
+      <ul>
+        <li>1試合目：6回(18アウト)・被安打5・与四球2 → 1.17</li>
+        <li>2試合目：1回(3アウト)・被安打3・与四球1 → 4.00</li>
+      </ul>
+      <p>2つの平均 (1.17 ＋ 4.00) ÷ 2 ≒ 2.58 は<strong>誤り</strong>です。合計して計算します。</p>
+      <div class="highlight-box">
+        <p><strong>(7 ＋ 4) × 3 ÷ (18 ＋ 3) ＝ 33 ÷ 21 ≒ 1.57</strong>　（走者の合計 × 3 ÷ アウト数の合計）</p>
+      </div>
+      <p>平均の平均にすると、1イニングしか投げていない試合が6イニングの試合と同じ重みで扱われてしまいます。通算・シーズンの数字は必ず合計から出してください。</p>
+
+      <h2 id="read">WHIPの数字の読み方</h2>
+      <p>WHIPに「何点ならエース」という公式の基準はありません。数字の意味そのものは「1イニングあたりの走者数」なので、9イニングに直すと実感しやすくなります。</p>
+      <div class="table-scroll">
+        <table class="compare-table fit">
+          <thead><tr><th>WHIP</th><th>意味(計算)</th><th>9イニングに直すと</th></tr></thead>
+          <tbody>
+            <tr><td>1.00</td><td>1イニングに平均1人</td><td>1.00 × 9 ＝ 9人</td></tr>
+            <tr><td>1.33</td><td>3イニングに平均4人</td><td>1.33 × 9 ≒ 12人</td></tr>
+            <tr><td>1.50</td><td>2イニングに平均3人</td><td>1.50 × 9 ＝ 13.5人</td></tr>
+            <tr><td>2.00</td><td>1イニングに平均2人</td><td>2.00 × 9 ＝ 18人</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>草野球や少年野球は、守備力やチームのレベルの差が大きく、他チームのWHIPと比べてもあまり意味がありません。<strong>チーム内の投手どうし</strong>や、<strong>同じ投手の先月と今月</strong>を比べると、四球が減ったのか、打たれる安打が減ったのかが見えてきます。</p>
+
+      <h2 id="era">防御率との違い</h2>
+      <div class="table-scroll">
+        <table class="compare-table fit">
+          <thead><tr><th></th><th>防御率</th><th>WHIP</th></tr></thead>
+          <tbody>
+            <tr><td>式</td><td>自責点 × 9 ÷ 投球回</td><td>(与四球＋被安打) ÷ 投球回</td></tr>
+            <tr><td>見ているもの</td><td>取られた点(自責点)</td><td>出した走者(四球・安打)</td></tr>
+            <tr><td>単位</td><td>9イニングあたり</td><td>1イニングあたり</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>走者を出しても後続を抑えれば失点しないため、WHIPが高めでも防御率が良い試合はあります。逆に走者は少なくても本塁打で失点すれば、WHIPは良くても防御率は悪くなります。WHIPは長打と単打を区別しない点にも注意が必要です。2つを並べると、「点を取られなかったのは走者を出さなかったからか、ピンチをしのいだからか」が分かります。防御率の計算は<a href="https://somirai.jp/blog/baseball-era-calculation.html">防御率の計算方法</a>の記事で解説しています。</p>
+
+      <h2 id="origin">WHIPという言葉の始まり</h2>
+      <p>MLB公式の用語集によると、WHIPという言葉は、ロティサリー方式のファンタジーベースボールを考案した作家ダニエル・オクレント氏が1979年に作ったもので、当初は innings pitched ratio と呼ばれ、のちにWHIPになったとされています。</p>
+
+      <h2 id="faq">よくある質問（FAQ）</h2>
+      <div class="faq-section">
+      <div class="faq-item"><div class="faq-q">WHIPの計算式は？</div><div class="faq-a">WHIP ＝ (与四球 ＋ 被安打) ÷ 投球回 です。MLB公式の用語集でも、与四球と被安打の合計を投球回で割ったものと定義されています。6回を被安打5・与四球2で投げた場合は 7 ÷ 6 ≒ 1.17 です。</div></div>
+      <div class="faq-item"><div class="faq-q">死球やエラーで出した走者はWHIPに入りますか？</div><div class="faq-a">入りません。MLB公式の用語集では、死球・失策・野手選択で出塁した打者は投手のWHIPに数えないとされています。数えるのは与四球と被安打だけです。</div></div>
+      <div class="faq-item"><div class="faq-q">投球回の「5回1/3」はどう計算しますか？</div><div class="faq-a">1アウトが1/3回なので、5回1/3は16アウト＝16/3回です。(与四球＋被安打) × 3 ÷ アウト数 の形にすると、分数や小数を使わずに計算できます。</div></div>
+      <div class="faq-item"><div class="faq-q">WHIPはいくつなら良いのですか？</div><div class="faq-a">公式に決まった基準はありません。MLB公式の用語集では、WHIPが低い投手ほど一般に優れた投手だと説明されています。WHIP 1.00は1イニングに平均1人、1.50は2イニングに平均3人の走者を出した計算です。</div></div>
+      <div class="faq-item"><div class="faq-q">通算WHIPは試合ごとのWHIPを平均すればいいですか？</div><div class="faq-a">いいえ。与四球と被安打の合計を、投球回の合計で割ります。試合ごとのWHIPを平均すると、短い登板の数字が大きく効いてしまいます。</div></div>
+      <div class="faq-item"><div class="faq-q">WHIPと防御率はどう違いますか？</div><div class="faq-a">防御率は自責点(失点)を見る指標、WHIPは四球と安打で出した走者の数を見る指標です。走者を出しても失点しなければ防御率は良いままなので、両方を並べると投球の内容が分かりやすくなります。</div></div>
+      </div>
+
+      <h2 id="source">参考・出典</h2>
+      <ul>
+        <li><a href="https://www.mlb.com/glossary/standard-stats/walks-and-hits-per-inning-pitched" target="_blank" rel="noopener">MLB.com Glossary: Walks And Hits Per Inning Pitched (WHIP)</a>：定義・数えないもの(死球・失策・野手選択)・名前の由来</li>
+      </ul>
+      <p>本文中の例題の数値は、上記の定義に基づく筆者の計算で、計算式を併記しています。</p>
+
+      <a href="https://somirai.jp/blog/baseball-era-calculation.html" class="related-article">
+        <span class="related-article-icon">&#128200;</span>
+        <div>
+          <div class="related-article-label">関連記事</div>
+          <div class="related-article-title">防御率の計算方法【自責点×9÷投球回】1/3回の数え方と例題で覚える</div>
+        </div>
+      </a>
+    </div>
+    <!-- /article-body -->
+
+      <!-- 著者 -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin:40px 0 0;display:flex;gap:16px;align-items:flex-start;">
+        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#ff6428,#e84410);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:18px;">S</div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mut);margin-bottom:4px;">この記事を書いた人</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;">Somirai Lab 開発者</div>
+          <p style="font-size:13px;color:var(--text-sec);line-height:1.75;margin:0;">Somirai Lab 運営者。Next.js・React を使った無料Webツールを作成・運営しています。野球・習慣化・家計管理など、日常の小さな課題を解決するツールを中心に作成中。</p>
+        </div>
+      </div>
+
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/about.html">このサイトについて</a>
+    <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    <a href="https://somirai.jp/contact.html">お問い合わせ</a>
+  </div>
+  <p>&#169; 2026 Somirai Lab</p>
+</footer>
+
+<script src="/shared/tool.js"></script>
+<script src="/shared/blog-ga.js"></script>
+<script>Tool.initTheme();</script>
+</body>
+</html>

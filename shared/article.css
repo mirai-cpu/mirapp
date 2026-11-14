@@ -166,3 +166,5 @@ h1, h2, h3 { font-family: inherit; }
   display: block !important; content: ""; position: fixed; left: 0; right: 0; bottom: 0; height: 8px; z-index: 5; pointer-events: none;
   background: repeating-linear-gradient(90deg, var(--tint) 0 30px, var(--tint-deep) 30px 60px);
 }
+/* 2〜3列の小さな表はスマホで横スクロールさせない */
+.table-scroll .compare-table.fit { min-width: 0; }
