@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja" data-tint="red">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>防御率の計算方法【自責点×9÷投球回】1/3回の数え方と例題で覚える | Somirai Lab</title>
+  <meta name="description" content="野球の防御率の計算式を、NPB公式の算出ルール（小数点以下3位まで求めて四捨五入）に沿って解説。投球回の1/3・2/3の扱い、5回1/3や1回3失点などの例題、通算の出し方、7回制の草野球での考え方まで。無料の防御率計算機つき。">
+  <meta name="keywords" content="防御率 計算,防御率 計算方法,防御率 1/3,防御率 求め方,ERA 計算,自責点 計算,草野球 防御率">
+  <link rel="canonical" href="https://somirai.jp/blog/baseball-era-calculation.html">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://somirai.jp/blog/baseball-era-calculation.html">
+  <meta property="og:title" content="防御率の計算方法【自責点×9÷投球回】1/3回の数え方と例題で覚える">
+  <meta property="og:description" content="野球の防御率の計算式を、NPB公式の算出ルール（小数点以下3位まで求めて四捨五入）に沿って解説。投球回の1/3・2/3の扱い、5回1/3や1回3失点などの例題、通算の出し方、7回制の草野球での考え方まで。無料の防御率計算機つき。">
+  <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"防御率の計算方法【自責点×9÷投球回】1/3回の数え方と例題で覚える","description":"野球の防御率の計算式を、NPB公式の算出ルール（小数点以下3位まで求めて四捨五入）に沿って解説。投球回の1/3・2/3の扱い、5回1/3や1回3失点などの例題、通算の出し方、7回制の草野球での考え方まで。無料の防御率計算機つき。","datePublished":"2026-11-14","dateModified":"2026-11-14","author":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"},"publisher":{"@type":"Organization","name":"Somirai Lab","url":"https://somirai.jp/"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://somirai.jp/blog/baseball-era-calculation.html"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"防御率の計算式は？","acceptedAnswer":{"@type":"Answer","text":"防御率 ＝ 自責点 × 9 ÷ 投球回数 です。NPB（日本野球機構）の公式解説ページでも同じ式が使われています。例えば6回を自責点2で投げた場合は 2 × 9 ÷ 6 ＝ 3.00 です。"}},
+      {"@type":"Question","name":"投球回の「5回1/3」は計算でどう扱いますか？","acceptedAnswer":{"@type":"Answer","text":"1アウトが1/3回なので、5回1/3は 5 + 1/3 ＝ 16/3 回です。小数にするなら 5.333… で、途中で .33 などに丸めると結果が1〜2桁ずれることがあります。分数のまま「アウト数÷3」で計算すると誤差が出ません。"}},
+      {"@type":"Question","name":"防御率は小数点以下何桁まで出しますか？","acceptedAnswer":{"@type":"Answer","text":"NPBの公式解説では、防御率は小数点以下3位まで求めて四捨五入するとされています。成績表では小数第2位（2.01 のような表記）で載っていることが多く、チームの集計ルールに合わせれば十分です。"}},
+      {"@type":"Question","name":"防御率が0.00のときはどういう意味ですか？","acceptedAnswer":{"@type":"Answer","text":"自責点が0であることを意味します。失点があっても、エラーなど投手の責任でない失点だけなら自責点は0になり、防御率は0.00です。"}},
+      {"@type":"Question","name":"通算の防御率は試合ごとの防御率を平均すればいいですか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。試合ごとの防御率を平均すると、短いイニングの乱調が過大に反映されます。通算は「自責点の合計 × 9 ÷ 投球回の合計」で計算します。"}},
+      {"@type":"Question","name":"7回制の試合では「9」を「7」に変えるのですか？","acceptedAnswer":{"@type":"Answer","text":"計算の考え方としては「1試合あたり」の基準回数に合わせて 9 を 7 に置き換える方法が使われますが、これを定めた公式規定は今回確認できませんでした。大会や連盟によって扱いが違う可能性があるため、自チームで基準を決めて統一するのが安全です。"}},
+      {"@type":"Question","name":"防御率を自動で計算できるツールはありますか？","acceptedAnswer":{"@type":"Answer","text":"はい。Somirai Lab の無料ツール「防御率計算機」に投球回と自責点を入れるだけで計算できます。登録やインストールは不要です。"}}
+  ]}
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0b; --surface: #111114; --surface2: #18181c;
+      --border: #222228; --text: #e2e8f0; --text-sec: #94a3b8;
+      --text-mut: #475569; --accent: #ff6428; --accent-soft: rgba(255,100,40,0.12);
+      --radius: 16px;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+
+    .site-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+    .site-logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
+    .site-logo span { color: var(--accent); }
+    .header-nav { margin-left: auto; display: flex; gap: 16px; }
+    .header-nav a { color: var(--text-sec); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+    .header-nav a:hover { color: var(--text); }
+
+    .breadcrumb { max-width: 860px; margin: 0 auto; padding: 12px 24px; font-size: 0.8rem; color: var(--text-mut); }
+    .breadcrumb a { color: var(--text-mut); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 6px; }
+
+    .page-wrapper { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .article-header { padding: 32px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+    .article-category { display: inline-block; background: var(--accent-soft); color: var(--accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 16px; }
+    .article-title { font-family: 'Noto Sans JP', sans-serif; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; margin-bottom: 20px; }
+    .article-meta { display: flex; align-items: center; gap: 16px; font-size: 0.85rem; color: var(--text-mut); flex-wrap: wrap; }
+
+    .toc { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin: 0 0 40px; }
+    .toc-title { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; margin-bottom: 14px; }
+    .toc ol { list-style: none; padding: 0; margin: 0; counter-reset: toc-counter; }
+    .toc ol li { counter-increment: toc-counter; padding: 4px 0 4px 24px; position: relative; font-size: 0.88rem; }
+    .toc ol li::before { content: counter(toc-counter); position: absolute; left: 0; top: 4px; font-size: 0.72rem; font-weight: 700; color: var(--accent); background: var(--accent-soft); width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .toc a { color: var(--text-sec); text-decoration: none; }
+    .toc a:hover { color: var(--text); }
+
+    .article-body { font-size: 1rem; line-height: 1.9; }
+    .article-body h2 { font-size: 1.4rem; font-weight: 700; color: var(--text); margin: 56px 0 20px; padding-left: 16px; border-left: 3px solid var(--accent); line-height: 1.4; }
+    .article-body h2:first-of-type { margin-top: 0; }
+    .article-body h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin: 36px 0 12px; }
+    .article-body p { color: var(--text-sec); margin-bottom: 20px; }
+    .article-body p strong { color: var(--text); font-weight: 700; }
+    .article-body ul, .article-body ol { margin: 0 0 20px 0; padding-left: 0; list-style: none; }
+    .article-body ul li, .article-body ol li { color: var(--text-sec); padding: 6px 0 6px 24px; position: relative; }
+    .article-body ul li::before { content: ''; position: absolute; left: 0; top: 14px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .article-body ol { counter-reset: ol-counter; }
+    .article-body ol li { counter-increment: ol-counter; }
+    .article-body ol li::before { content: counter(ol-counter); position: absolute; left: 0; top: 6px; font-size: 0.75rem; font-weight: 700; color: var(--accent); background: var(--accent-soft); width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    .point-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin: 28px 0; }
+    .point-box .box-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
+    .point-box p { margin-bottom: 0; }
+    .point-box ul { margin-bottom: 0; }
+
+    .highlight-box { background: var(--accent-soft); border: 1px solid rgba(255,100,40,0.25); border-radius: var(--radius); padding: 20px 24px; margin: 28px 0; }
+    .highlight-box p { margin-bottom: 0; color: var(--text); }
+
+    .tool-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin: 36px 0; }
+    .tool-card-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+    .tool-icon { width: 48px; height: 48px; background: var(--accent-soft); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .tool-name { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .tool-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; font-weight: 700; color: #4ade80; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); padding: 3px 8px; border-radius: 6px; }
+    .tool-desc { color: var(--text-sec); font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
+    .tool-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 24px; }
+    .tool-feature { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 0.85rem; color: var(--text-sec); }
+    .tool-feature strong { display: block; color: var(--text); font-size: 0.8rem; margin-bottom: 3px; }
+    .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.95rem; padding: 12px 28px; border-radius: 999px; text-decoration: none; transition: opacity 0.2s; }
+    .cta-btn:hover { opacity: 0.85; }
+
+    .failure-list { counter-reset: failure-counter; list-style: none; padding: 0; margin: 0 0 28px; }
+    .failure-item { counter-increment: failure-counter; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 20px 20px 56px; position: relative; margin-bottom: 12px; }
+    .failure-item::before { content: counter(failure-counter); position: absolute; left: 16px; top: 18px; width: 28px; height: 28px; background: #ef4444; color: #fff; font-weight: 700; font-size: 0.82rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .failure-item .failure-title { font-weight: 700; color: var(--text); margin-bottom: 6px; font-size: 0.95rem; }
+    .failure-item p { font-size: 0.88rem; color: var(--text-sec); margin-bottom: 0; line-height: 1.7; }
+    .failure-item .fix { margin-top: 10px; padding: 8px 12px; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); border-radius: 8px; font-size: 0.82rem; color: #4ade80; }
+    .failure-item .fix strong { color: #4ade80; }
+
+    .step-list { counter-reset: step-counter; list-style: none; padding: 0; margin: 0 0 28px; }
+    .step-list li { counter-increment: step-counter; position: relative; padding: 0 0 28px 52px; color: var(--text-sec); }
+    .step-list li::before { content: counter(step-counter); position: absolute; left: 0; top: 0; width: 32px; height: 32px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.85rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .step-list li::after { content: ''; position: absolute; left: 15px; top: 32px; bottom: 0; width: 2px; background: var(--border); }
+    .step-list li:last-child::after { display: none; }
+    .step-list li strong { display: block; color: var(--text); font-weight: 700; margin-bottom: 6px; }
+
+    .table-scroll { overflow-x: auto; margin: 24px 0; }
+    .compare-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 0.9rem; }
+    .table-scroll .compare-table { margin: 0; min-width: 560px; }
+    .compare-table th, .compare-table td { padding: 12px 16px; border: 1px solid var(--border); text-align: left; }
+    .compare-table th { background: var(--surface2); color: var(--text); font-weight: 700; font-size: 0.82rem; }
+    .compare-table td { color: var(--text-sec); background: var(--surface); }
+    .compare-table td.good { color: #4ade80; font-weight: 600; }
+    .compare-table td.bad { color: #f87171; }
+    .compare-table tr:first-child th:first-child { border-radius: 10px 0 0 0; }
+    .compare-table tr:first-child th:last-child { border-radius: 0 10px 0 0; }
+
+    .faq-section { margin: 12px 0; }
+    .faq-item { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+    .faq-q { background: var(--surface); padding: 16px 20px; font-weight: 700; color: var(--text); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 12px; }
+    .faq-q::before { content: 'Q'; color: var(--accent); font-weight: 700; font-size: 0.9rem; background: var(--accent-soft); width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .faq-a { background: var(--surface2); padding: 16px 20px 16px 54px; color: var(--text-sec); font-size: 0.92rem; line-height: 1.8; }
+
+    .related-article { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin: 20px 0; display: flex; align-items: center; gap: 16px; text-decoration: none; transition: border-color 0.2s; }
+    .related-article:hover { border-color: var(--accent); }
+    .related-article-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .related-article-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; margin-bottom: 4px; }
+    .related-article-title { font-size: 0.95rem; font-weight: 700; color: var(--text); line-height: 1.5; }
+
+    .site-footer { background: var(--surface); border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 0.85rem; color: var(--text-mut); margin-top: 80px; }
+    .site-footer a { color: var(--text-mut); text-decoration: none; margin: 0 10px; }
+    .site-footer a:hover { color: var(--text); }
+    .site-footer .footer-links { margin-bottom: 16px; }
+
+    @media (max-width: 600px) {
+      .page-wrapper { padding: 0 16px 60px; }
+      .article-header { padding: 24px 0 32px; }
+      .tool-features { grid-template-columns: 1fr 1fr; }
+      .compare-table { font-size: 0.8rem; }
+      .compare-table th, .compare-table td { padding: 10px 10px; }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/article.css">
+</head>
+<body>
+<header class="site-header">
+  <a href="https://somirai.jp/" class="site-logo">Somirai<span>.</span>jp</a>
+  <nav class="header-nav">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/era-calculator/">防御率計算機</a>
+    <a href="https://somirai.jp/blog/">ブログ</a>
+  </nav>
+  <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
+</header>
+<nav class="breadcrumb" aria-label="パンくずリスト">
+  <a href="https://somirai.jp/">ホーム</a><span>›</span><a href="https://somirai.jp/blog/">ブログ</a><span>›</span>防御率の計算方法
+</nav>
+<main class="page-wrapper">
+  <article>
+    <header class="article-header">
+      <div class="article-category">野球・スポーツ</div>
+      <h1 class="article-title">防御率の計算方法【自責点×9÷投球回】1/3回の数え方と例題で覚える</h1>
+      <div class="article-meta">
+        <time datetime="2026-11-14">2026年11月14日</time>
+        <span>約3,600字 · 読了約7分</span>
+      </div>
+    </header>
+    <nav class="toc" aria-label="目次">
+      <div class="toc-title">目次</div>
+      <ol>
+        <li><a href="#formula">防御率の計算式と意味</a></li>
+        <li><a href="#third">投球回の「1/3」「2/3」をどう計算するか</a></li>
+        <li><a href="#rounding">小数点の丸め方</a></li>
+        <li><a href="#examples">例題で覚える</a></li>
+        <li><a href="#total">通算防御率は「合計してから」</a></li>
+        <li><a href="#seven">7回制の草野球・少年野球では</a></li>
+        <li><a href="#other">防御率と合わせて見たい指標</a></li>
+        <li><a href="#mistakes">よくある計算ミス4つ</a></li>
+        <li><a href="#faq">よくある質問（FAQ）</a></li>
+        <li><a href="#source">参考・出典</a></li>
+      </ol>
+    </nav>
+    <div class="article-body">
+      <p>「今日は6回を投げて2点取られた。防御率はいくつ？」——スコアブックをつけていても、いざ計算しようとすると「5回1/3は5.3でいいのか」「通算は平均すればいいのか」と手が止まりがちです。</p>
+      <p>この記事では、防御率の計算式をNPB（日本野球機構）の公式解説に沿って確認したうえで、<strong>投球回の1/3・2/3の扱い</strong>と<strong>通算の出し方</strong>という、つまずきやすい2点を例題で整理します。数字はすべて計算式つきなので、自分の成績にもそのまま当てはめられます。</p>
+      <div class="highlight-box">
+        <p><strong>この記事で分かること：</strong>防御率の式と意味 / 投球回「5回1/3」の正しい計算 / 小数点の丸め方 / 例題5つ / 通算防御率の出し方 / 7回制の草野球での考え方 / よくある計算ミス</p>
+      </div>
+
+      <h2 id="formula">防御率の計算式と意味</h2>
+      <p>防御率（ERA：Earned Run Average）の式は次のとおりです。</p>
+      <div class="point-box">
+        <div class="box-label">計算式</div>
+        <p><strong>防御率 ＝ 自責点 × 9 ÷ 投球回数</strong></p>
+      </div>
+      <p>「9イニング（1試合ぶん）投げたとして、自責点がいくつになるペースか」を表す数字です。NPBの公式解説ページでも、防御率が1点台の投手は「9イニングあたり自責点を2点未満に抑えている」と説明されています。数字が小さいほど失点を抑えられている、ということです。</p>
+      <p>NPB公式ページには2016年の例が載っています。自責点41・投球回183 1/3の投手の場合、<strong>41 × 9 ÷ 183.33 ＝ 約2.01</strong>です（出典は記事末尾）。</p>
+
+      <h2 id="third">投球回の「1/3」「2/3」をどう計算するか</h2>
+      <p>防御率の計算で一番ミスが出るのがここです。投球回は<strong>取ったアウトの数 ÷ 3</strong>で決まります。</p>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead><tr><th>記録上の表記</th><th>アウト数</th><th>分数</th><th>小数（参考）</th></tr></thead>
+          <tbody>
+            <tr><td>5回</td><td>15</td><td>15/3 ＝ 5</td><td>5.000</td></tr>
+            <tr><td>5回1/3</td><td>16</td><td>16/3</td><td>5.333…</td></tr>
+            <tr><td>5回2/3</td><td>17</td><td>17/3</td><td>5.666…</td></tr>
+            <tr><td>6回</td><td>18</td><td>18/3 ＝ 6</td><td>6.000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>スコアブックや成績表で「5.1」「5.2」と書かれていることがありますが、これは<strong>5回1/3・5回2/3の略記</strong>で、5.1回や5.2回という意味ではありません。そのまま計算式に入れると誤った値になります。</p>
+      <div class="failure-list">
+        <div class="failure-item">
+          <div class="failure-title">「5.2」を5.2のまま計算してしまう</div>
+          <p>自責点2で投球回「5.2」（5回2/3）の場合、正しくは 2 × 9 ÷ (17/3) ＝ 54 ÷ 17 ≒ 3.176。「5.2」をそのまま使うと 18 ÷ 5.2 ≒ 3.462 となり、約0.29もずれます。</p>
+          <div class="fix"><strong>対策：</strong>まずアウト数に直す（5回2/3＝17アウト）。式は「自責点 × 27 ÷ アウト数」と書き換えられる。</div>
+        </div>
+      </div>
+      <p>ここで便利なのが<strong>アウト数で計算する形</strong>です。投球回 ＝ アウト数 ÷ 3 なので、</p>
+      <div class="point-box">
+        <div class="box-label">アウト数で計算する形</div>
+        <p><strong>防御率 ＝ 自責点 × 27 ÷ 投球アウト数</strong>（9 × 3 ＝ 27）</p>
+      </div>
+      <p>分数や小数点を扱わずに済み、電卓で一発です。自責点2・5回1/3（16アウト）なら 2 × 27 ÷ 16 ＝ 54 ÷ 16 ＝ <strong>3.375</strong>。投球回を 5.33 に丸めると 18 ÷ 5.33 ≒ 3.377、5.3 まで丸めると 18 ÷ 5.3 ≒ 3.396 となり、丸めるほど誤差が広がります。</p>
+
+      <h2 id="rounding">小数点の丸め方</h2>
+      <p>NPBの公式解説では、防御率は<strong>小数点以下3位まで求めて四捨五入する</strong>とされています（打率など他の率は4位まで）。ただし成績表では小数第2位までの表記（2.01 など）で見ることが多く、草野球や少年野球でどこまで出すかは、チームで決めたルールに合わせれば問題ありません。大事なのは、<strong>毎回同じ桁で揃える</strong>ことと、途中で丸めずに最後に丸めることです。</p>
+
+      <div class="tool-card">
+        <div class="tool-card-header">
+          <div class="tool-icon">&#9918;</div>
+          <div>
+            <div class="tool-name">防御率計算機（無料）</div>
+            <div class="tool-badge">無料 · 登録不要</div>
+          </div>
+        </div>
+        <p class="tool-desc">投球回と自責点を入れるだけで防御率を計算します。1/3・2/3の入力にも対応しているので、この記事の例題の答え合わせにも使えます。</p>
+        <a href="https://somirai.jp/era-calculator/" class="cta-btn" target="_blank" rel="noopener" onclick="if(typeof gtag==='function')gtag('event','blog_cta_click',{location:'era_calc_top'});">防御率を計算する &#8594;</a>
+      </div>
+
+      <h2 id="examples">例題で覚える（計算式つき）</h2>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead><tr><th>場面</th><th>計算式</th><th>防御率</th></tr></thead>
+          <tbody>
+            <tr><td>6回・自責点2（先発の標準的な形）</td><td>2 × 9 ÷ 6</td><td class="good">3.00</td></tr>
+            <tr><td>5回1/3・自責点2</td><td>2 × 27 ÷ 16</td><td>3.375</td></tr>
+            <tr><td>9回完投・自責点2</td><td>2 × 9 ÷ 9</td><td class="good">2.00</td></tr>
+            <tr><td>1回・自責点3（リリーフの乱調）</td><td>3 × 9 ÷ 1</td><td class="bad">27.00</td></tr>
+            <tr><td>2/3回（2アウト）・自責点1</td><td>1 × 27 ÷ 2</td><td class="bad">13.50</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>同じ自責点2でも、6回なら3.00、5回1/3なら3.375、完投なら2.00と変わります。<strong>長く投げるほど、同じ失点でも防御率は良くなる</strong>のがこの指標の性質です。</p>
+      <p>また、1イニングしか投げていない試合で3点取られると防御率は27.00という極端な値になります。短い登板の防御率は1試合で大きく振れるため、リリーフ投手の評価は数試合単位では判断しづらい、という点にも注意してください。</p>
+
+      <h2 id="total">通算防御率は「合計してから」計算する</h2>
+      <p>2試合の成績を例にします。</p>
+      <ul>
+        <li>1試合目：6回（18アウト）・自責点2 → 防御率3.00</li>
+        <li>2試合目：1回（3アウト）・自責点3 → 防御率27.00</li>
+      </ul>
+      <p>防御率を平均して (3.00 + 27.00) ÷ 2 ＝ 15.00 とするのは<strong>誤り</strong>です。正しくは合計して、</p>
+      <div class="highlight-box">
+        <p><strong>(2 + 3) × 27 ÷ (18 + 3) ＝ 135 ÷ 21 ≒ 6.43</strong>　（自責点の合計 × 27 ÷ アウト数の合計）</p>
+      </div>
+      <p>平均の平均は、投げたイニングの長さを無視してしまうため、短い登板の乱調を過大に反映します。通算・シーズン成績は必ず「合計の自責点」と「合計の投球回（アウト数）」から出します。</p>
+
+      <h2 id="seven">7回制の草野球・少年野球ではどうするか</h2>
+      <p>7回制の試合では「1試合ぶんのペース」を7イニングで見たいので、式の9を7に置き換えて <strong>自責点 × 7 ÷ 投球回</strong> とする考え方があります。この場合、6回・自責点2なら 2 × 7 ÷ 6 ≒ 2.33 です。</p>
+      <p>ただし、この置き換えを定めた公式規定は今回の調査では確認できませんでした。9回基準の数値と7回基準の数値は直接比べられないため、<strong>チーム内で「9基準か7基準か」を決めて、毎回同じ式で統一</strong>してください。大会の記録として提出する場合は、主催団体の集計ルールが優先されます。</p>
+
+      <h2 id="other">防御率と合わせて見たい指標</h2>
+      <p>防御率は自責点だけを見る指標なので、「ヒットや四球をどれだけ出したか」は分かりません。出塁を許す頻度を見たい場合は、1イニングあたりの被安打と与四球を数える<strong>WHIP</strong>（一般的な定義は (被安打 ＋ 与四球) ÷ 投球回）もあわせて見ると、投球内容が立体的に分かります。</p>
+      <a href="https://somirai.jp/whip-calculator/" class="related-article">
+        <span class="related-article-icon">&#128290;</span>
+        <div>
+          <div class="related-article-label">関連ツール</div>
+          <div class="related-article-title">WHIP計算機【無料】与四球・被安打から一発計算</div>
+        </div>
+      </a>
+
+      <h2 id="mistakes">よくある計算ミス4つ</h2>
+      <ol>
+        <li><strong>「5.2」を5.2として計算する</strong>：5回2/3のこと。アウト数（17）に直して計算する。</li>
+        <li><strong>自責点と失点を混同する</strong>：エラーなど投手の責任でない失点は自責点に入らない。防御率に使うのは自責点。</li>
+        <li><strong>通算を平均で出す</strong>：合計してから計算する。</li>
+        <li><strong>途中で丸める</strong>：投球回を5.3などに丸めず、アウト数のまま最後に丸める。</li>
+      </ol>
+
+      <h2 id="faq">よくある質問（FAQ）</h2>
+      <div class="faq-section">
+      <div class="faq-item"><div class="faq-q">防御率の計算式は？</div><div class="faq-a">防御率 ＝ 自責点 × 9 ÷ 投球回数 です。NPB（日本野球機構）の公式解説ページでも同じ式が使われています。例えば6回を自責点2で投げた場合は 2 × 9 ÷ 6 ＝ 3.00 です。</div></div>
+      <div class="faq-item"><div class="faq-q">投球回の「5回1/3」は計算でどう扱いますか？</div><div class="faq-a">1アウトが1/3回なので、5回1/3は 5 + 1/3 ＝ 16/3 回です。小数にするなら 5.333… で、途中で .33 などに丸めると結果が1〜2桁ずれることがあります。分数のまま「アウト数÷3」で計算すると誤差が出ません。</div></div>
+      <div class="faq-item"><div class="faq-q">防御率は小数点以下何桁まで出しますか？</div><div class="faq-a">NPBの公式解説では、防御率は小数点以下3位まで求めて四捨五入するとされています。成績表では小数第2位（2.01 のような表記）で載っていることが多く、チームの集計ルールに合わせれば十分です。</div></div>
+      <div class="faq-item"><div class="faq-q">防御率が0.00のときはどういう意味ですか？</div><div class="faq-a">自責点が0であることを意味します。失点があっても、エラーなど投手の責任でない失点だけなら自責点は0になり、防御率は0.00です。</div></div>
+      <div class="faq-item"><div class="faq-q">通算の防御率は試合ごとの防御率を平均すればいいですか？</div><div class="faq-a">いいえ。試合ごとの防御率を平均すると、短いイニングの乱調が過大に反映されます。通算は「自責点の合計 × 9 ÷ 投球回の合計」で計算します。</div></div>
+      <div class="faq-item"><div class="faq-q">7回制の試合では「9」を「7」に変えるのですか？</div><div class="faq-a">計算の考え方としては「1試合あたり」の基準回数に合わせて 9 を 7 に置き換える方法が使われますが、これを定めた公式規定は今回確認できませんでした。大会や連盟によって扱いが違う可能性があるため、自チームで基準を決めて統一するのが安全です。</div></div>
+      <div class="faq-item"><div class="faq-q">防御率を自動で計算できるツールはありますか？</div><div class="faq-a">はい。Somirai Lab の無料ツール「防御率計算機」に投球回と自責点を入れるだけで計算できます。登録やインストールは不要です。</div></div>
+      </div>
+
+      <h2 id="source">参考・出典</h2>
+      <ul>
+        <li><a href="https://npb.jp/scoring/calculation.html" target="_blank" rel="noopener">NPB 記録の計算方法（日本野球機構）</a>：防御率の式、小数点以下3位まで求めて四捨五入、2016年の計算例</li>
+      </ul>
+      <p>本文中の例題の数値は、上記の式に基づく筆者による計算で、計算式を併記しています。自責点の細かな認定ルールは公認野球規則に定められているため、判断に迷う場合は規則や大会の記録員に確認してください。</p>
+
+      <a href="https://somirai.jp/blog/baseball-batting-stats.html" class="related-article">
+        <span class="related-article-icon">&#128200;</span>
+        <div>
+          <div class="related-article-label">関連記事</div>
+          <div class="related-article-title">野球のスコアブック・打撃成績を無料でブラウザ管理する方法（LUMBER）</div>
+        </div>
+      </a>
+    </div>
+    <!-- /article-body -->
+
+      <!-- 著者 -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin:40px 0 0;display:flex;gap:16px;align-items:flex-start;">
+        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#ff6428,#e84410);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:18px;">S</div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mut);margin-bottom:4px;">この記事を書いた人</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;">Somirai Lab 開発者</div>
+          <p style="font-size:13px;color:var(--text-sec);line-height:1.75;margin:0;">Somirai Lab 運営者。Next.js・React を使った無料Webツールを作成・運営しています。野球・習慣化・家計管理など、日常の小さな課題を解決するツールを中心に作成中。</p>
+        </div>
+      </div>
+
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/about.html">このサイトについて</a>
+    <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    <a href="https://somirai.jp/contact.html">お問い合わせ</a>
+  </div>
+  <p>&#169; 2026 Somirai Lab</p>
+</footer>
+
+<script src="/shared/tool.js"></script>
+<script src="/shared/blog-ga.js"></script>
+<script>Tool.initTheme();</script>
+</body>
+</html>
