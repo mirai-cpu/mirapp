@@ -196,7 +196,7 @@
       <b>送りバント</b><span>走者を確実に進める代わりに、アウトを1つ渡します。1点が欲しい終盤・無死一塁や無死二塁で効きます。打者が強打者なら、バントより強攻の方が見返りが大きいことが多い設計です。</span>
       <b>盗塁</b><span>アウトを渡さずに進塁できる唯一の手ですが、失敗すると走者を失います。俊足の走者で、打者が三振しにくい場面が狙い目です。三塁への盗塁は成功率が下がります。</span>
       <b>エンドラン</b><span>走者が走り、打者は必ず打ちにいきます。ゴロで併殺を避け、安打なら走者が一気に三塁へ。空振りすれば盗塁と同じ判定、ライナーなら併殺の危険があります。巧打者向きです。</span>
-      <b>スクイズ</b><span>三塁走者を一気に還す一発勝負。成功すれば1点、失敗すれば本塁で走者アウトです。同点に追いつきたい場面で、打者が強打者でないときに価値が上がります。</span>
+      <b>スクイズ</b><span>三塁走者を一気に還す一発勝負。成功すれば1点、失敗すれば本塁で走者アウトです。二・三塁なら二塁走者も同時にスタートし、一塁へ送球する間に本塁を狙う「ツーランスクイズ」が起きることがあります(俊足ほど成功しやすい)。同点に追いつきたい場面で、打者が強打者でないときに価値が上がります。</span>
       <b>代打</b><span>1試合に1回だけ、長打力のある代打を送れます。一発で試合が動く場面まで取っておくか、早めに使って流れを作るかが分かれ目です。</span>
       <b>継投</b><span>先発は回を追うごとに打たれやすくなります。中継ぎは打たれにくい代わりに立ち上がりに四球が増え、抑えは9回だけ使える切り札です。1点差を守る場面で、誰にどの回を任せるかが采配の核心です。</span>
       <b>前進守備</b><span>三塁走者がいる場面で、ゴロで本塁を刺しにいく守備です。1点も与えられないときに使いますが、守備範囲が狭くなり安打が増えます。</span>
@@ -220,8 +220,10 @@
         <tr><th>送りバント</th><td>成功(走者進塁・打者アウト)70% / 失敗(走者アウト)15% / 内野安打10% / 小飛球で併殺5%。俊足は内野安打が18%に増えます。</td></tr>
         <tr><th>盗塁</th><td>二塁へ: 普通68%・俊足80%・強打50%。三塁へはそれぞれ13ポイント下がります。</td></tr>
         <tr><th>エンドラン</th><td>安打28%(走者は2つ進む) / ゴロで走者進塁・打者アウト40% / 空振り20%(盗塁の判定へ) / ライナー併殺12%。巧打は安打が34%、強打はライナー併殺が18%です。</td></tr>
-        <tr><th>スクイズ</th><td>成功60% / 失敗(本塁で走者アウト)25% / 内野安打で得点10% / 小飛球で併殺5%。</td></tr>
-        <tr><th>ゴロ(一塁走者・二死未満)</th><td>併殺: 普通35%・強打45%・俊足20%。併殺でなければ半分が一塁走者の封殺、半分が打者アウトで走者進塁。</td></tr>
+        <tr><th>スクイズ</th><td>成功60% / 失敗(本塁で走者アウト・打者は一塁へ)25% / 内野安打で得点10% / 小飛球で併殺5%。他の走者もスタートしているので、成功・失敗とも二塁走者は三塁へ進みます。成功時に二塁走者がいれば本塁突入を狙い(俊足60%・他35%)、突入すれば生還(俊足70%・他50%)でツーランスクイズ、失敗なら本塁でタッチアウト。</td></tr>
+        <tr><th>ゴロ(一塁走者・二死未満)</th><td>併殺: 普通35%・強打45%・俊足20%。併殺でなければ半分が一塁走者の二塁封殺、半分が打者アウトで走者進塁。押し出される走者は必ず進み、満塁では30%で本塁封殺。</td></tr>
+        <tr><th>ゴロの方向と走者</th><td>打球はピッチャー10%・ファースト15%・セカンド25%・サード20%・ショート30%。一塁が空いているとき、二塁走者が三塁へ進む割合はファースト95%・セカンド92%・ショート40%・ピッチャー35%・サード15%(進路の後ろへ転がる一・二塁側ほど進みやすい)。三塁走者の本塁突入はファースト・セカンド85%・ショート70%・サード45%・ピッチャー40%。走者が俊足なら+15ポイント、強打は−5ポイント。二死なら走者は動きません。</td></tr>
+        <tr><th>フライの方向と走者</th><td>内野22%・レフト27%・センター27%・ライト24%。犠牲フライ(三塁→本塁)はレフト55%・センター70%・ライト65%、二塁走者のタッチアップはレフト20%・センター45%・ライト65%。内野フライと二死では進めません。</td></tr>
         <tr><th>投手</th><td>先発は8回に安打+3ポイント、9回に+6ポイント。中継ぎは安打−4・四球+2。抑えは安打−8・四球+3(9回のみ)。前進守備中は相手の安打+8、ゴロでの本塁憤死50%。</td></tr>
         <tr><th>相手の強さ</th><td>「同格」は相手打線の安打が3ポイント減ります。「格上」は自軍の安打が3ポイント減り、相手打線に強打者が1人増えます。</td></tr>
       </tbody>
@@ -377,28 +379,97 @@ function resolveSwing(bat, side, type) {
     text = `${bat.name} ホームラン`;
   } else if (res === 3) { runs = walk(bat, who); text = `${bat.name} 四球${runs ? '(押し出し)' : ''}`; }
   else if (res === 4) { out(1); text = `${bat.name} 三振`; }
-  else if (res === 5) { // ゴロ
-    if (G.outs < 2 && G.bases[0]) {
-      const dp = { '普通': .35, '強打': .45, '俊足': .2, '巧打': .33, '代打': .4 }[type || bat.type];
-      if (G.r() < dp) { out(2); G.bases[0] = null; runs = G.outs < 3 ? advanceAll(1, who) : 0; text = `${bat.name} 併殺打`; }
-      else if (G.r() < .5) { out(1); G.bases[0] = bat; runs = G.outs < 3 ? advanceOthers(who) : 0; text = `${bat.name} ゴロ、一塁走者が封殺`; }
-      else { out(1); runs = G.outs < 3 ? advanceAll(1, who) : 0; text = `${bat.name} ゴロ、走者は進塁`; }
-    } else if (G.outs < 2 && G.bases[2]) {
-      if (side === 'them' && G.shift && G.r() < .5) { out(1); G.bases[2] = null; text = `${bat.name} ゴロ、前進守備で本塁憤死`; }
-      else { out(1); runs = advanceAll(1, who); text = `${bat.name} ゴロの間に${runs ? '1点' : '進塁'}`; }
-    } else { out(1); text = `${bat.name} ゴロ`; }
-  } else { // フライ
-    out(1);
-    if (G.outs < 3 && G.bases[2] && G.r() < .6) { runs++; G.bases[2] = null; scoreRun(1, who); text = `${bat.name} 犠牲フライ`; }
-    else { if (G.outs < 3 && G.bases[1] && !G.bases[2] && G.r() < .3) { G.bases[2] = G.bases[1]; G.bases[1] = null; } text = `${bat.name} フライ`; }
-  }
+  else if (res === 5) { ({ text, runs } = resolveGrounder(bat, side, type || bat.type)); }
+  else { ({ text, runs } = resolveFly(bat, side)); }
   return { text, runs, res };
 }
-function advanceOthers(who) { // 一塁走者が封殺された後、二・三塁走者だけ進める
-  let runs = 0;
-  if (G.bases[2]) { runs++; G.bases[2] = null; }
-  if (G.bases[1]) { G.bases[2] = G.bases[1]; G.bases[1] = null; }
-  if (runs) scoreRun(runs, who); return runs;
+
+// ── 凡打での走者の動き ──
+// 打球方向ごとに走者の判断が変わる(一・二塁側のゴロなら二塁走者は三塁へ進みやすい)
+const spd = run => run.type === '俊足' ? .15 : run.type === '強打' ? -.05 : 0;
+const chance = p => G.r() < Math.min(.97, Math.max(.03, p));
+const GB = [ // 守備位置, 割合, 併殺の形, 二塁→三塁, 三塁→本塁(ゴロゴー)
+  { pos: 'ピッチャー', w: .10, dp: '1-6-3', r2: .35, r3: .40 },
+  { pos: 'ファースト', w: .15, dp: '3-6-3', r2: .95, r3: .85 },
+  { pos: 'セカンド', w: .25, dp: '4-6-3', r2: .92, r3: .85 },
+  { pos: 'サード', w: .20, dp: '5-4-3', r2: .15, r3: .45 },
+  { pos: 'ショート', w: .30, dp: '6-4-3', r2: .40, r3: .70 },
+];
+const FB = [ // 守備位置, 割合, 三塁→本塁(犠飛), 二塁→三塁(タッチアップ)
+  { pos: '内野', w: .22, r3: 0, r2: 0 },
+  { pos: 'レフト', w: .27, r3: .55, r2: .20 },
+  { pos: 'センター', w: .27, r3: .70, r2: .45 },
+  { pos: 'ライト', w: .24, r3: .65, r2: .65 },
+];
+function resolveGrounder(bat, side, type) {
+  const g = GB[pick(GB.map(x => x.w))], b = G.bases;
+  const head = `${bat.name} ${g.pos}ゴロ`;
+  if (G.outs >= 2) { out(1); return { text: head, runs: 0 }; }
+  const infieldIn = side === 'them' && G.shift;
+  const notes = []; let runs = 0;
+  const r1 = b[0], r2 = b[1], r3 = b[2];
+  if (r1) {
+    const loaded = !!(r2 && r3);
+    const dpRate = { '普通': .35, '強打': .45, '俊足': .2, '巧打': .33, '代打': .4 }[type];
+    if (G.r() < dpRate) { // 併殺。三死でなければ残りの走者は1つ進む
+      out(2); b[0] = null;
+      if (G.outs < 3) { runs = advanceAll(1, side); if (r2) notes.push('二塁走者は三塁へ'); if (runs) notes.push('その間に三塁走者が生還'); }
+      return { text: `${head}、併殺(${g.dp})${notes.length ? '。' + notes.join('、') : ''}`, runs };
+    }
+    if (loaded && G.r() < .3) { // 満塁で本塁封殺
+      out(1); b[2] = r2; b[1] = r1; b[0] = bat;
+      return { text: `${head}、本塁封殺で満塁のまま`, runs: 0 };
+    }
+    const toSecond = G.r() < .5; // 二塁封殺(打者は一塁に残る) か 一塁送球(走者が1つずつ進む)
+    out(1);
+    let r3home = false, homeOut = false;
+    if (r3) {
+      if (loaded) r3home = true; // フォースで生還
+      else if (infieldIn && G.r() < .5) { b[2] = null; homeOut = true; } // 前進守備で本塁へ送球(野選)
+      else if (infieldIn || chance(g.r3 + spd(r3))) r3home = true;
+      else notes.push('三塁走者は動けず');
+    }
+    const thirdOut = G.outs >= 3;
+    if (r3home) { b[2] = null; if (!thirdOut) { runs = 1; notes.push('三塁走者が生還'); } }
+    if (r2) { b[2] = r2; b[1] = null; notes.push('二塁走者は三塁へ'); } // 一塁走者がいるので二塁走者は押し出される
+    if (homeOut) { b[1] = r1; b[0] = bat; notes.unshift('前進守備で三塁走者が本塁で憤死、一塁走者は二塁へ、打者は一塁へ'); }
+    else if (toSecond) { b[0] = bat; notes.unshift('一塁走者が二塁で封殺'); }
+    else { b[1] = r1; b[0] = null; notes.unshift('一塁走者は二塁へ'); }
+    if (runs) scoreRun(runs, side);
+    return { text: `${head}、${notes.join('、')}`, runs };
+  }
+  // 一塁が空いている: 打者は一塁でアウト。走者は打球方向を見て判断する
+  if (r3 && infieldIn && G.r() < .5) { // 前進守備で本塁へ送球(野選)
+    out(1); b[2] = null; b[0] = bat; notes.push('前進守備で三塁走者が本塁で憤死、打者は一塁へ');
+    if (r2 && chance(g.r2 + spd(r2))) { b[2] = r2; b[1] = null; notes.push('二塁走者は三塁へ'); }
+    return { text: `${head}、${notes.join('、')}`, runs: 0 };
+  }
+  out(1);
+  if (r3) {
+    if (infieldIn || chance(g.r3 + spd(r3))) { b[2] = null; runs = 1; notes.push('三塁走者が生還'); }
+    else notes.push('三塁走者は動けず');
+  }
+  if (r2) {
+    if (!b[2] && chance(g.r2 + spd(r2))) { b[2] = r2; b[1] = null; notes.push('二塁走者は三塁へ'); }
+    else notes.push('二塁走者はそのまま');
+  }
+  if (runs) scoreRun(runs, side);
+  return { text: notes.length ? `${head}、${notes.join('、')}` : head, runs };
+}
+function resolveFly(bat, side) {
+  const f = FB[pick(FB.map(x => x.w))], b = G.bases;
+  const head = `${bat.name} ${f.pos}フライ`;
+  out(1);
+  if (G.outs >= 3 || (!f.r3 && !f.r2)) return { text: head, runs: 0 };
+  const notes = []; let runs = 0;
+  if (b[2]) {
+    if (chance(f.r3 + spd(b[2]))) { b[2] = null; runs = 1; notes.push('犠牲フライ'); }
+    else notes.push('三塁走者は自重');
+  }
+  if (b[1] && !b[2] && chance(f.r2 + spd(b[1]))) { b[2] = b[1]; b[1] = null; notes.push('二塁走者がタッチアップで三塁へ'); }
+  if (b[0] && !b[1] && f.pos === 'センター' && chance(.08 + spd(b[0]))) { b[1] = b[0]; b[0] = null; notes.push('一塁走者もタッチアップで二塁へ'); }
+  if (runs) scoreRun(runs, side);
+  return { text: notes.length ? `${head}、${notes.join('、')}` : head, runs };
 }
 
 // 自軍の作戦
@@ -436,11 +507,21 @@ function doMove(move) {
     else if (k === 2) { const run = G.bases[0]; const ok = G.r() < { '普通': .68, '巧打': .68, '俊足': .80, '強打': .50 }[run.type]; if (ok) { G.bases[1] = run; G.bases[0] = null; text = `${bat.name} 空振り、走者は二塁へ`; } else { G.bases[0] = null; out(1); text = `${bat.name} 空振り、走者は二塁で刺される`; } if (G.outs < 3) { const o = resolveSwing(bat, 'us'); text += '。' + o.text; runs = o.runs; } }
     else { out(2); G.bases[0] = null; text = `${bat.name} ライナーで併殺`; }
   } else if (move === 'squeeze') {
-    const k = pick([.60, .25, .10, .05]);
-    if (k === 0) { out(1); G.bases[2] = null; runs = 1; scoreRun(1, 'us'); if (G.bases[1]) { G.bases[2] = G.bases[1]; G.bases[1] = null; } if (G.bases[0]) { G.bases[1] = G.bases[0]; G.bases[0] = null; } text = `${bat.name} スクイズ成功`; }
-    else if (k === 1) { out(1); G.bases[2] = null; G.bases[0] = G.bases[0] || bat; text = `${bat.name} スクイズ失敗、三塁走者が本塁で憤死`; }
-    else if (k === 2) { G.bases[2] = null; runs = 1; scoreRun(1, 'us'); if (G.bases[1]) { G.bases[2] = G.bases[1]; G.bases[1] = null; } if (G.bases[0]) { G.bases[1] = G.bases[0]; G.bases[0] = null; } G.bases[0] = bat; text = `${bat.name} スクイズが内野安打に`; }
-    else { out(2); G.bases[2] = null; text = `${bat.name} 小飛球、三塁走者も戻れず併殺`; }
+    // 投球と同時に全走者がスタートする。一塁へ送球する間に二塁走者が三塁を回って本塁を狙えばツーランスクイズ
+    const b = G.bases, k = pick([.60, .25, .10, .05]);
+    const shiftUp = () => { if (b[1]) { b[2] = b[1]; b[1] = null; } if (b[0]) { b[1] = b[0]; b[0] = null; } };
+    if (k === 0) {
+      out(1); b[2] = null; runs = 1; text = `${bat.name} スクイズ成功`;
+      const r2 = b[1]; shiftUp();
+      if (r2 && G.outs < 3 && G.r() < (r2.type === '俊足' ? .6 : .35)) { // 二塁走者が本塁へ突入
+        if (G.r() < (r2.type === '俊足' ? .7 : .5)) { b[2] = null; runs = 2; text = `${bat.name} ツーランスクイズ！一塁送球の間に二塁走者${r2.name}も生還`; }
+        else { b[2] = null; out(1); text = `${bat.name} スクイズ成功。二塁走者${r2.name}も本塁を狙うがタッチアウト`; }
+      } else if (r2) text += `、二塁走者は三塁へ`;
+      scoreRun(runs, 'us');
+    }
+    else if (k === 1) { out(1); b[2] = null; shiftUp(); b[0] = bat; text = `${bat.name} スクイズ失敗、三塁走者が本塁で憤死(打者は一塁へ)`; }
+    else if (k === 2) { b[2] = null; runs = 1; scoreRun(1, 'us'); shiftUp(); b[0] = bat; text = `${bat.name} スクイズが内野安打に`; }
+    else { out(2); b[2] = null; text = `${bat.name} 小飛球、三塁走者も戻れず併殺`; }
   }
   return finishPA(text, runs, true);
 }
@@ -492,7 +573,7 @@ function ourPA() {
     ['bunt', '送りバント', 'アウト1つで走者を確実に進める'],
     ['steal', '盗塁', 'アウトを渡さず進塁。失敗なら走者を失う'],
     ['endrun', 'エンドラン', '走者が走り打者は必ず打つ。併殺を避ける'],
-    ['squeeze', 'スクイズ', '三塁走者を還す一発勝負'],
+    ['squeeze', 'スクイズ', '三塁走者を還す一発勝負。二・三塁ならツーランも'],
     ['pinch', '代打の切り札', '1試合1回だけ。長打力のある代打'],
   ];
   $('#moves').innerHTML = M.map(([k, t, h]) => `<button type="button" data-m="${k}" ${can[k] ? '' : 'disabled'}><b>${t}</b><small>${h}</small></button>`).join('');
