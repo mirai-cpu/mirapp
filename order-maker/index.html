@@ -213,6 +213,12 @@
       letter-spacing: .04em; transition: all .2s;
     }
     .empty-cta:hover .empty-cta-link { background: rgba(58,168,96,.08); border-color: var(--accent); }
+    /* サンプルの9人: 空のときの近道と、読み込み後の帯 */
+    .sample-try { width: 100%; min-height: 48px; margin-top: 4px; background: var(--accent); color: var(--on-accent, #fff); border: 0; border-radius: 12px; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
+    .empty-or { font-size: 12px; color: var(--muted); }
+    .sample-bar { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; padding: 10px 12px; border: 2px dashed var(--accent); border-radius: 12px; font-size: 13px; line-height: 1.5; color: var(--text); }
+    .sample-bar span { flex: 1; }
+    .sample-bar button { flex-shrink: 0; min-height: 40px; padding: 0 12px; background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 10px; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
     .step-badge {
       display: inline-flex; align-items: center; gap: 5px;
       font-size: 10px; font-weight: 700; letter-spacing: .12em; font-family: var(--mono);
@@ -632,6 +638,7 @@
     #tc-landing .tc-tag { font-size:19px; font-weight:700; line-height:1.5; margin:0 0 22px; }
     #tc-landing .tc-cta { width:100%; min-height:56px; background:var(--accent); color:var(--on-accent, #fff); border:0; border-radius: 8px; font:inherit; font-size:17px; font-weight:700; cursor:pointer; }
     #tc-landing .tc-cta:hover { filter:brightness(1.08); }
+    #tc-landing .tc-sample { width:100%; min-height:48px; margin-top:10px; background:transparent; color:var(--text); border:2px solid var(--text); border-radius:8px; font:inherit; font-size:15px; font-weight:700; cursor:pointer; }
     #tc-landing .tc-guide { display:block; text-align:center; margin:12px 0 0; font-size:14px; }
     #tc-landing .tc-guide a { color:var(--muted); text-underline-offset:3px; }
     #tc-landing .tc-trust { list-style:none; display:flex; flex-wrap:wrap; gap:4px 16px; margin:18px 0 26px; padding:0; font-size:14px; color:var(--muted); }
@@ -652,6 +659,7 @@
     <p class="tc-sub">野球打順・スタメン作成ツール</p>
     <p class="tc-tag">試合前の打順決め、60秒で完了。</p>
     <button onclick="closeTcLanding()" class="tc-cta">今すぐ作成する</button>
+    <button onclick="closeTcLanding();loadSample('landing')" class="tc-sample" type="button">サンプルの9人で試す</button>
     <p class="tc-guide"><a href="https://somirai.jp/blog/baseball-order-maker.html" target="_blank" rel="noopener" onclick="gtag('event','guide_link_click',{from:'tactician_landing'})">詳しい使い方を見る →</a></p>
     <ul class="tc-trust"><li>登録不要</li><li>完全無料</li><li>スマホ対応</li><li>印刷対応</li></ul>
     <ol class="tc-steps"><li><b>1</b>選手を登録</li><li><b>2</b>打順を組む</li><li><b>3</b>LINEで共有</li></ol>
@@ -1458,12 +1466,13 @@ function renderRoster() {
   document.getElementById('roster-count').textContent = players.length + '人';
   const benchCountEl = document.getElementById('bench-count');
   if (benchCountEl) benchCountEl.textContent = `ベンチ入り ${benchIds.length}人`;
+  renderSampleBars();
   if (!players.length) {
-    el.innerHTML = `<div class="empty-cta" onclick="focusAddForm()" role="button" aria-label="選手追加フォームへ移動">
-      
-      <div class="empty-cta-title">選手を登録してオーダーを組もう</div>
-      <div class="empty-cta-desc">「選手」タブで名前を入力 → 「追加する」<br>登録後はここで打順・守備を設定できます</div>
-      <div class="empty-cta-link">選手タブへ移動して追加する</div>
+    el.innerHTML = `<div class="empty-cta">
+      <div class="empty-cta-title">まずはサンプルで触ってみる</div>
+      <div class="empty-cta-desc">架空の9人と打順が入ります。名前を書き換えたり、打順を入れ替えたりして使い方を確かめられます。</div>
+      <button type="button" class="sample-try" onclick="loadSample('roster')">サンプルの9人で試す</button>
+      <div class="empty-or">または、上の欄から自分のチームの選手を追加</div>
     </div>`;
     return;
   }
@@ -2358,6 +2367,62 @@ function focusAddForm() {
   const el = document.getElementById('inp-name');
   el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   setTimeout(() => el.focus(), 300);
+}
+
+// ── サンプルの9人 ──────────────────
+// 初めての人が入力なしで操作を試せるよう、架空の選手と打順を入れる。消すときはサンプル分だけ消す。
+const SAMPLE = [
+  ['8','見本 一郎','中'],['6','見本 二郎','遊'],['3','見本 三郎','一'],['5','見本 四郎','三'],['7','見本 五郎','左'],
+  ['2','見本 六郎','捕'],['4','見本 七郎','二'],['9','見本 八郎','右'],['1','見本 九郎','投'],
+  ['10','見本 十郎','左'],['11','見本 十一','二']
+];
+function sampleIds() { try { return JSON.parse(localStorage.getItem('sm_sample_ids')) || []; } catch { return []; } }
+function loadSample(from) {
+  if (players.length) { switchTab('order'); return; }
+  const made = SAMPLE.map(([num, name, pos]) => {
+    const extra = name === '見本 十郎' ? ['右'] : name === '見本 十一' ? ['遊'] : [];
+    return { id: uid(), num, name, pos: [pos, ...extra] };
+  });
+  players = made;
+  order = made.slice(0, 9).map(p => ({ playerId: p.id, pos: p.pos[0] }));
+  localStorage.setItem('sm_sample_ids', JSON.stringify(made.map(p => p.id)));
+  const ln = document.getElementById('lineup-name'); if (ln && !ln.value) ln.value = 'サンプル(練習試合)';
+  saveAll(); renderRoster(); renderOrderSlots(); renderPitcherSelect(); renderPosStats();
+  setFirstTimeState(false);
+  switchTab('order');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  showToast('サンプルの9人を入れました');
+  if (typeof gtag === 'function') gtag('event', 'sample_loaded', { from });
+}
+function clearSample() {
+  const ids = sampleIds(); if (!ids.length) return;
+  if (!confirm('サンプルの選手と打順を消します。自分で追加した選手は残ります。')) return;
+  players = players.filter(p => !ids.includes(p.id));
+  order = order.map(s => (s && ids.includes(s.playerId)) ? null : s);
+  pitchers = pitchers.filter(p => !ids.includes(p.playerId));
+  absentIds = absentIds.filter(x => !ids.includes(x));
+  benchIds = benchIds.filter(x => !ids.includes(x));
+  localStorage.removeItem('sm_sample_ids');
+  const ln = document.getElementById('lineup-name'); if (ln && ln.value === 'サンプル(練習試合)') ln.value = '';
+  saveAll(); renderRoster(); renderOrderSlots(); renderPitcherSelect(); renderPitcherList(); renderPosStats();
+  setFirstTimeState(players.length === 0);
+  switchTab('roster');
+  showToast('サンプルを消しました');
+  if (typeof gtag === 'function') gtag('event', 'sample_cleared');
+}
+function renderSampleBars() {
+  const ids = sampleIds();
+  const on = ids.length && players.some(p => ids.includes(p.id));
+  if (!on && ids.length) localStorage.removeItem('sm_sample_ids');
+  ['roster', 'order'].forEach(tab => {
+    let bar = document.getElementById('sample-bar-' + tab);
+    if (!on) { bar?.remove(); return; }
+    if (bar) return;
+    bar = document.createElement('div');
+    bar.id = 'sample-bar-' + tab; bar.className = 'sample-bar no-print'; bar.setAttribute('role', 'note');
+    bar.innerHTML = '<span>いま入っているのは<b>サンプルの選手</b>です。自分のチームで使うときは消してください。</span><button type="button" onclick="clearSample()">サンプルを消す</button>';
+    document.getElementById('sec-' + tab)?.prepend(bar);
+  });
 }
 
 function setFirstTimeState(isEmpty) {
