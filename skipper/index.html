@@ -50,6 +50,12 @@
   .dia .base { fill: var(--bg); stroke: var(--ink); stroke-width: 3; }
   .dia .base.on { fill: var(--liner); }
   .dia .line { stroke: var(--rule); stroke-width: 2; fill: none; }
+  /* 球場のスコアボードと同じく、アウトは赤いランプで数える */
+  .field { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .outs { display: flex; align-items: center; gap: 5px; font-family: var(--board); font-size: .8rem; color: var(--ink-sec); }
+  .outs i { width: 13px; height: 13px; border-radius: 50%; border: 2px solid var(--alert); }
+  .outs i.on { background: var(--alert); }
+  .scene .txt .sit { display: block; font-size: 1.05rem; font-weight: 700; margin-bottom: 2px; }
   .scene .txt { font-size: .9375rem; }
   .scene .txt b { font-size: 1.15rem; display: block; }
   .scene .txt .tag { display: inline-block; font-size: .75rem; border: 1px solid var(--ink); border-radius: 999px; padding: 0 8px; margin-left: 4px; vertical-align: 2px; }
@@ -65,7 +71,7 @@
   .moves button small { display: block; color: var(--ink-sec); font-size: .78rem; line-height: 1.4; margin-top: 2px; }
   .moves button:disabled { opacity: .35; }
   .moves button.wide { grid-column: 1 / -1; }
-  .play { margin-top: 10px; min-height: 3em; font-size: .9375rem; }
+  .play { margin-top: 10px; min-height: 3em; font-size: .9375rem; white-space: pre-line; }
   .play b { font-size: 1.1rem; }
   .play.score { color: var(--turf-deep); }
   :root[data-theme="dark"] .play.score { color: #7ED39A; }
@@ -144,6 +150,7 @@
       <div class="foot"><span id="situ"></span><span>投手 <b id="pitcherName">先発</b></span></div>
     </div>
     <div class="scene">
+      <div class="field">
       <svg class="dia" viewBox="0 0 100 100" aria-hidden="true">
         <path class="line" d="M50 92 L10 52 L50 12 L90 52 Z"/>
         <rect class="base" id="b1" x="82" y="44" width="16" height="16" transform="rotate(45 90 52)"/>
@@ -151,6 +158,8 @@
         <rect class="base" id="b3" x="2" y="44" width="16" height="16" transform="rotate(45 10 52)"/>
         <path class="base" d="M42 84 L58 84 L58 92 L50 98 L42 92 Z"/>
       </svg>
+      <div class="outs" aria-hidden="true">O <i id="o1"></i><i id="o2"></i></div>
+      </div>
       <div class="txt" id="sceneTxt"></div>
     </div>
     <section class="ask" id="ask" hidden>
@@ -194,7 +203,7 @@
     <p>作戦に「いつでも正しい手」はありません。このゲームでは、次のような考え方で手を選ぶと結果が安定しやすいように設計しています。</p>
     <div class="tip">
       <b>送りバント</b><span>走者を確実に進める代わりに、アウトを1つ渡します。1点が欲しい終盤・無死一塁や無死二塁で効きます。打者が強打者なら、バントより強攻の方が見返りが大きいことが多い設計です。</span>
-      <b>盗塁</b><span>アウトを渡さずに進塁できる唯一の手ですが、失敗すると走者を失います。俊足の走者で、打者が三振しにくい場面が狙い目です。三塁への盗塁は成功率が下がります。</span>
+      <b>盗塁</b><span>アウトを渡さずに進塁できる唯一の手ですが、失敗すると走者を失います。俊足の走者で、打者が三振しにくい場面が狙い目です。三塁への盗塁は成功率が下がります。一・三塁では「一塁走者だけ走らせる」か「ダブルスチールで三塁走者も本塁を狙う」かを選べます。盗塁のあとは同じ打者のまま、もう一度作戦を選べます。</span>
       <b>エンドラン</b><span>走者が走り、打者は必ず打ちにいきます。ゴロで併殺を避け、安打なら走者が一気に三塁へ。空振りすれば盗塁と同じ判定、ライナーなら併殺の危険があります。巧打者向きです。</span>
       <b>スクイズ</b><span>三塁走者を一気に還す一発勝負。成功すれば1点、失敗すれば本塁で走者アウトです。二・三塁なら二塁走者も同時にスタートし、一塁へ送球する間に本塁を狙う「ツーランスクイズ」が起きることがあります(俊足ほど成功しやすい)。同点に追いつきたい場面で、打者が強打者でないときに価値が上がります。</span>
       <b>代打</b><span>1試合に1回だけ、長打力のある代打を送れます。一発で試合が動く場面まで取っておくか、早めに使って流れを作るかが分かれ目です。</span>
@@ -218,7 +227,7 @@
       <thead><tr><th>作戦</th><th>このゲームでの結果の割合</th></tr></thead>
       <tbody>
         <tr><th>送りバント</th><td>成功(走者進塁・打者アウト)70% / 失敗(走者アウト)15% / 内野安打10% / 小飛球で併殺5%。俊足は内野安打が18%に増えます。</td></tr>
-        <tr><th>盗塁</th><td>二塁へ: 普通68%・俊足80%・強打50%。三塁へはそれぞれ13ポイント下がります。</td></tr>
+        <tr><th>盗塁</th><td>二塁へ: 普通68%・俊足80%・強打50%。三塁へはそれぞれ13ポイント下がります。一・三塁で一塁走者だけ走らせると、捕手が送球しにくいため+8ポイント。一・二塁のダブルスチールは二塁走者の三盗の確率+5ポイントで、失敗なら二塁走者がアウト。一・三塁のダブルスチールは35%で捕手が投げず一塁走者だけ進塁、投げれば三塁走者が本塁へ(生還55%、俊足+15・強打−5ポイント)。</td></tr>
         <tr><th>エンドラン</th><td>安打28%(走者は2つ進む) / ゴロで走者進塁・打者アウト40% / 空振り20%(盗塁の判定へ) / ライナー併殺12%。巧打は安打が34%、強打はライナー併殺が18%です。</td></tr>
         <tr><th>スクイズ</th><td>成功60% / 失敗(本塁で走者アウト・打者は一塁へ)25% / 内野安打で得点10% / 小飛球で併殺5%。他の走者もスタートしているので、成功・失敗とも二塁走者は三塁へ進みます。成功時に二塁走者がいれば本塁突入を狙い(俊足60%・他35%)、突入すれば生還(俊足70%・他50%)でツーランスクイズ、失敗なら本塁でタッチアウト。</td></tr>
         <tr><th>ゴロ(一塁走者・二死未満)</th><td>併殺: 普通35%・強打45%・俊足20%。併殺でなければ半分が一塁走者の二塁封殺、半分が打者アウトで走者進塁。押し出される走者は必ず進み、満塁では30%で本塁封殺。</td></tr>
@@ -308,14 +317,18 @@ function renderBoard() {
   const inn = [7, 8, 9]; const cur = G.inning;
   const row = (nm, arr, who) => `<tr><td class="nm">${nm}</td>${inn.map(i => `<td class="${(i === cur && G.half === (who === 'them' ? 'top' : 'bot') && !G.over) ? 'now' : ''}">${i < cur || (i === cur && (who === 'them' || G.half === 'bot')) ? arr[i - 1] : ''}</td>`).join('')}<td class="r">${G.score[who]}</td></tr>`;
   $('#lines').innerHTML = `<tr><th class="nm"></th>${inn.map(i => `<th>${i}</th>`).join('')}<th>計</th></tr>` + row('相手', G.lines.them, 'them') + row(G.fromMaker ? '自軍' : '自軍', G.lines.us, 'us');
-  $('#situ').textContent = G.over ? '試合終了' : `${G.inning}回${G.half === 'top' ? '表' : '裏'} ${['無死', '一死', '二死'][G.outs]}`;
+  $('#situ').textContent = G.over ? '試合終了' : `${G.inning}回${G.half === 'top' ? '表' : '裏'} ${Math.min(G.outs, 3)}アウト`;
+  ['o1', 'o2'].forEach((id, i) => $('#' + id).classList.toggle('on', G.outs > i));
   $('#pitcherName').textContent = { starter: '先発', mid: '中継ぎ', closer: '抑え' }[G.pitcher] + (G.shift ? '・前進守備' : '');
   ['b1', 'b2', 'b3'].forEach((id, i) => $('#' + id).classList.toggle('on', !!G.bases[i]));
   const bat = batter();
   const who = G.half === 'bot' ? '自軍の攻撃' : '相手の攻撃';
   const runners = G.bases.map((b, i) => b ? `${ORD[i]}塁 ${b.name}` : null).filter(Boolean).join(' / ') || '走者なし';
-  $('#sceneTxt').innerHTML = G.over ? `<b>試合終了</b>` : `<span style="color:var(--ink-sec);font-size:.8rem">${who}</span><b>${G.idx[G.half === 'bot' ? 'us' : 'them'] + 1}番 ${Tool.esc(bat.name)}<span class="tag">${bat.type}</span></b><span class="runners">${Tool.esc(runners)}</span>`;
+  $('#sceneTxt').innerHTML = G.over ? `<b>試合終了</b>` : `<span class="sit">${situText()}</span><span style="color:var(--ink-sec);font-size:.8rem">${who}</span><b>${G.idx[G.half === 'bot' ? 'us' : 'them'] + 1}番 ${Tool.esc(bat.name)}<span class="tag">${bat.type}</span></b><span class="runners">${Tool.esc(runners)}</span>`;
 }
+// 「1アウト 1・3塁」の形で今の状況を言う
+function basesText() { const on = [1, 2, 3].filter(n => G.bases[n - 1]); return on.length === 3 ? '満塁' : on.length ? on.join('・') + '塁' : '走者なし'; }
+function situText() { return G.outs >= 3 ? '3アウト チェンジ' : `${G.outs}アウト ${basesText()}`; }
 function batter() { const side = G.half === 'bot' ? 'us' : 'them'; return G[side][G.idx[side] % 9]; }
 function addLog(text, cls) {
   const li = document.createElement('li'); li.className = cls || '';
@@ -472,8 +485,54 @@ function resolveFly(bat, side) {
   return { text: notes.length ? `${head}、${notes.join('、')}` : head, runs };
 }
 
+// 盗塁: 場面ごとに選べる走らせ方
+const STEAL_P = { '普通': .68, '巧打': .68, '俊足': .80, '強打': .50, '代打': .50 };
+function stealOptions() {
+  const b = G.bases, opts = [];
+  if (b[0] && !b[1]) opts.push(['two', b[2] ? '一塁走者だけ二盗' : '二盗', b[2] ? '三塁走者は動かない。捕手は三塁走者が気になり送球しにくい' : `${b[0].name}(${b[0].type})が二塁を狙う`]);
+  if (b[0] && !b[1] && b[2]) opts.push(['double13', 'ダブルスチール', '捕手が二塁へ投げた瞬間、三塁走者が本塁を突く']);
+  if (b[1] && !b[2] && !b[0]) opts.push(['three', '三盗', `${b[1].name}(${b[1].type})が三塁を狙う。二盗より難しい`]);
+  if (b[0] && b[1] && !b[2]) opts.push(['double12', 'ダブルスチール', '二塁走者が三塁、一塁走者が二塁へ同時に走る']);
+  return opts;
+}
+function doSteal(kind) {
+  const b = G.bases, r1 = b[0], r2 = b[1], r3 = b[2];
+  if (kind === 'two') {
+    const p = STEAL_P[r1.type] + (r3 ? .08 : 0);
+    if (G.r() < p) { b[1] = r1; b[0] = null; return { text: `${r1.name} 二塁へ盗塁成功${r3 ? '(三塁走者は自重)' : ''}`, runs: 0 }; }
+    b[0] = null; out(1); return { text: `${r1.name} 二盗失敗`, runs: 0 };
+  }
+  if (kind === 'three') {
+    if (G.r() < STEAL_P[r2.type] - .13) { b[2] = r2; b[1] = null; return { text: `${r2.name} 三塁へ盗塁成功`, runs: 0 }; }
+    b[1] = null; out(1); return { text: `${r2.name} 三盗失敗`, runs: 0 };
+  }
+  if (kind === 'double12') { // 刺されるとすれば先の走者(三塁)
+    if (G.r() < STEAL_P[r2.type] - .08) { b[2] = r2; b[1] = r1; b[0] = null; return { text: `ダブルスチール成功、${r2.name}は三塁、${r1.name}は二塁へ`, runs: 0 }; }
+    b[2] = null; b[1] = r1; b[0] = null; out(1); return { text: `ダブルスチール失敗、${r2.name}が三塁で刺される(${r1.name}は二塁へ)`, runs: 0 };
+  }
+  // double13: 捕手が二塁へ投げれば三塁走者が本塁へ。投げなければ一塁走者が楽に二塁へ
+  if (G.r() < .35) { b[1] = r1; b[0] = null; return { text: `ダブルスチール、捕手は投げず${r1.name}は二塁へ(三塁走者はそのまま)`, runs: 0 }; }
+  if (G.r() < .55 + spd(r3)) {
+    b[2] = null; b[1] = r1; b[0] = null; scoreRun(1, 'us');
+    return { text: `ダブルスチール成功！二塁送球の間に${r3.name}が本塁を陥れ、${r1.name}も二塁へ`, runs: 1 };
+  }
+  b[2] = null; b[1] = r1; b[0] = null; out(1);
+  return { text: `ダブルスチール失敗、${r3.name}が本塁でタッチアウト(${r1.name}は二塁へ)`, runs: 0 };
+}
+function askSteal() {
+  const opts = stealOptions();
+  if (opts.length === 1) { doMove('steal', opts[0][0]); return; }
+  $('#askTitle').textContent = '盗塁の作戦'; $('#askQ').textContent = `${situText()}。どう走らせますか。`;
+  $('#moves').innerHTML = opts.map(([k, t, h]) => `<button type="button" data-k="${k}"><b>${t}</b><small>${h}</small></button>`).join('') + `<button type="button" data-k="back"><b>やめる</b><small>采配の選択に戻る</small></button>`;
+  $('#moves').querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
+    if (btn.dataset.k === 'back') { ourPA(); return; }
+    $('#ask').hidden = true; doMove('steal', btn.dataset.k);
+  }));
+  $('#ask').hidden = false; $('#next').hidden = true;
+}
+
 // 自軍の作戦
-function doMove(move) {
+function doMove(move, kind) {
   const bat = batter(); let text = '', runs = 0, note = '';
   G.counts[move === 'hit' ? 'hit' : move]++;
   if (move === 'hit') { const o = resolveSwing(bat, 'us'); text = o.text; runs = o.runs; }
@@ -493,13 +552,8 @@ function doMove(move) {
     else if (k === 2) { runs = advanceAll(1, 'us'); G.bases[0] = bat; text = `${bat.name} バントが内野安打に`; }
     else { out(2); const lead = G.bases[1] ? 1 : 0; G.bases[lead] = null; text = `${bat.name} 小飛球で併殺`; }
   } else if (move === 'steal') {
-    const from = G.bases[1] && !G.bases[2] ? 1 : 0; const run = G.bases[from];
-    let p = { '普通': .68, '巧打': .68, '俊足': .80, '強打': .50 }[run.type]; if (from === 1) p -= .13;
-    if (G.r() < p) { G.bases[from + 1] = run; G.bases[from] = null; text = `${run.name} ${ORD[from + 1]}塁へ盗塁成功`; note = 'go'; }
-    else { G.bases[from] = null; out(1); text = `${run.name} 盗塁失敗`; }
-    if (note === 'go') { // 盗塁の後、同じ打者で打席を続ける
-      const o = resolveSwing(bat, 'us'); text += '。' + o.text; runs = o.runs;
-    } else { return finishPA(text, runs, false); }
+    // 盗塁は打席の途中の出来事。成否にかかわらず同じ打者のまま、次の采配を選び直す
+    const o = doSteal(kind); return finishPA(o.text, o.runs, false);
   } else if (move === 'endrun') {
     const p = bat.type === '巧打' ? [.34, .36, .20, .10] : bat.type === '強打' ? [.26, .36, .20, .18] : [.28, .40, .20, .12]; const k = pick(p);
     if (k === 0) { if (G.bases[2]) { runs++; G.bases[2] = null; } if (G.bases[1]) { runs++; G.bases[1] = null; } if (G.bases[0]) { G.bases[2] = G.bases[0]; G.bases[0] = null; } G.bases[0] = bat; if (runs) scoreRun(runs, 'us'); text = `エンドラン成功、${bat.name} ヒットで走者は三塁へ`; }
@@ -528,8 +582,9 @@ function doMove(move) {
 function finishPA(text, runs, advanceBatter) {
   const side = G.half === 'bot' ? 'us' : 'them';
   if (G.outs >= 3) { G.outs = 3; }
-  addLog(text + (runs ? `、${runs}点` : ''), (side === 'us' ? 'us ' : '') + (runs ? 'run' : ''));
-  showPlay(text + (runs ? ` — ${runs}点！` : ''), runs ? (side === 'us' ? 'score' : 'bad') : '');
+  const after = situText();
+  addLog(text + (runs ? `、${runs}点` : '') + `(${after})`, (side === 'us' ? 'us ' : '') + (runs ? 'run' : ''));
+  showPlay(text + (runs ? ` — ${runs}点！` : '') + `\n→ ${after}`, runs ? (side === 'us' ? 'score' : 'bad') : '');
   if (runs && side === 'us') G.key = G.key || `${G.inning}回裏 ${text}`;
   if (runs && side === 'them') G.key = G.key || `${G.inning}回表 ${text}`;
   if (advanceBatter) nextBatter(side);
@@ -561,23 +616,23 @@ function ourPA() {
   const can = {
     hit: true,
     bunt: o < 2 && (b[0] || b[1]) && !(b[0] && b[1] && b[2]),
-    steal: o < 3 && ((b[0] && !b[1]) || (b[1] && !b[2])),
+    steal: stealOptions().length > 0,
     endrun: o < 2 && b[0] && !b[1],
     squeeze: o < 2 && !!b[2],
     pinch: !G.used.pinch,
   };
   const diff = G.score.them - G.score.us;
-  $('#askTitle').textContent = 'あなたの采配'; $('#askQ').textContent = `${diff > 0 ? diff + '点ビハインド' : diff === 0 ? '同点' : (-diff) + '点リード'}。${['無死', '一死', '二死'][o]}${b.some(Boolean) ? ' ' + b.map((x, i) => x ? ORD[i] : '').filter(Boolean).join('・') + '塁' : ' 走者なし'}、打者は${bat.type}の${bat.name}。`;
+  $('#askTitle').textContent = 'あなたの采配'; $('#askQ').textContent = `${diff > 0 ? diff + '点ビハインド' : diff === 0 ? '同点' : (-diff) + '点リード'}。${situText()}、打者は${bat.type}の${bat.name}。`;
   const M = [
-    ['hit', '強攻', '打者に任せる。走者一塁・二死未満は併殺の危険'],
+    ['hit', '強攻', '打者に任せる。走者一塁・0〜1アウトは併殺の危険'],
     ['bunt', '送りバント', 'アウト1つで走者を確実に進める'],
-    ['steal', '盗塁', 'アウトを渡さず進塁。失敗なら走者を失う'],
+    ['steal', '盗塁', 'アウトを渡さず進塁。一・三塁は走らせ方を選べる'],
     ['endrun', 'エンドラン', '走者が走り打者は必ず打つ。併殺を避ける'],
     ['squeeze', 'スクイズ', '三塁走者を還す一発勝負。二・三塁ならツーランも'],
     ['pinch', '代打の切り札', '1試合1回だけ。長打力のある代打'],
   ];
   $('#moves').innerHTML = M.map(([k, t, h]) => `<button type="button" data-m="${k}" ${can[k] ? '' : 'disabled'}><b>${t}</b><small>${h}</small></button>`).join('');
-  $('#moves').querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => { $('#ask').hidden = true; doMove(btn.dataset.m); }));
+  $('#moves').querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => { if (btn.dataset.m === 'steal') { askSteal(); return; } $('#ask').hidden = true; doMove(btn.dataset.m); }));
   $('#ask').hidden = false; $('#next').hidden = true;
 }
 
@@ -603,7 +658,7 @@ function theirPA() {
   // 前進守備の確認(その回で最初に三塁走者が出たとき)
   if (o < 2 && b[2] && !G.askedShift) {
     G.askedShift = true;
-    $('#askTitle').textContent = '守備位置'; $('#askQ').textContent = `${['無死', '一死'][o]}三塁。ゴロで本塁を刺しにいきますか。`;
+    $('#askTitle').textContent = '守備位置'; $('#askQ').textContent = `${situText()}。ゴロで本塁を刺しにいきますか。`;
     $('#moves').innerHTML = `<button type="button" data-m="normal"><b>通常の守備</b><small>1点は仕方ない。確実にアウトを取る</small></button><button type="button" data-m="shift"><b>前進守備</b><small>ゴロなら本塁で勝負。安打は増える</small></button>`;
     $('#moves').querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => { $('#ask').hidden = true; if (btn.dataset.m === 'shift') { G.shift = true; G.counts.shift++; addLog('前進守備を敷く', 'us'); } renderBoard(); theirPA(); }));
     $('#ask').hidden = false; $('#next').hidden = true; return;
