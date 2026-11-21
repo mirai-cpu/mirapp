@@ -40,6 +40,9 @@
   .skip { margin-top: 10px; }
   .check { display: flex; align-items: center; gap: 10px; min-height: 48px; margin-top: 8px; }
   .check input { width: 22px; height: 22px; accent-color: var(--turf-deep); }
+  .after { margin-top: 16px; }
+  .after[hidden] { display: none; }
+  .after .share-note { margin: 8px 0 0; }
 </style>
 </head>
 <body>
@@ -109,9 +112,10 @@
     <ol class="reveal" id="reveal"></ol>
     <button class="btn-sub skip" id="skip" type="button" hidden>すぐに全部見る</button>
     <div id="final"></div>
-    <div class="btn-row" id="after" hidden>
+    <div class="after" id="after" hidden>
+      <button class="btn-main" id="copy" type="button">結果を送る</button>
+      <p class="hint share-note">LINEなどでメンバーに送れます。送る文には結果と日付、このページのURLが入ります。先に全員へ送っておくと、当日に「どっちのチーム？」と聞かれません。</p>
       <button class="btn-sub" id="again" type="button">もう一度引く</button>
-      <button class="btn-sub" id="copy" type="button">結果を共有する</button>
     </div>
   </section>
 
@@ -204,7 +208,7 @@ function present(items, finish) {
   $('#result').hidden = false;
   const fast = Tool.reducedMotion() || (!$('#draftStyle').checked && !$('#p-team').hidden);
   let i = 0;
-  const done = () => { clearTimeout(timer); timer = null; $('#skip').hidden = true; finish(); $('#after').hidden = false; };
+  const done = () => { clearTimeout(timer); timer = null; $('#skip').hidden = true; finish(); $('#copy').textContent = SHARE_LABEL[currentTab()] || '結果を送る'; $('#after').hidden = false; };
   const showAll = () => { while (i < items.length) addRow(items[i++]); done(); };
   $('#skip').onclick = showAll;
   if (fast || items.length === 0) { showAll(); return; }
@@ -220,7 +224,15 @@ $('#again').addEventListener('click', () => {
   const tab = document.querySelector('.tab[aria-selected="true"]').dataset.tab;
   ({ team: goTeam, duty: goDuty, order: goOrder })[tab]();
 });
-$('#copy').addEventListener('click', () => { Tool.share(lastText, $('#copy')); if (typeof gtag === 'function') gtag('event', 'draft_share'); });
+// 送る文: 結果のあとに日付とURL(共有から来た人だと分かる目印つき)を付ける
+const SHARE_LABEL = { team: 'チーム分けの結果を送る', duty: '当番くじの結果を送る', order: '打順くじの結果を送る' };
+function currentTab() { return document.querySelector('.tab[aria-selected="true"]')?.dataset.tab || 'team'; }
+$('#copy').addEventListener('click', () => {
+  const d = new Date();
+  const text = `${lastText}\n\n(${d.getMonth() + 1}月${d.getDate()}日 ドラフト会議で決めました)\nhttps://somirai.jp/draft/?utm_source=draft_share`;
+  Tool.share(text, $('#copy'));
+  if (typeof gtag === 'function') gtag('event', 'draft_share', { mode: currentTab() });
+});
 
 /* ---- チーム分け ---- */
 function splitTeams(list, k, usePos) {
