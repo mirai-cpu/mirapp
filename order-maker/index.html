@@ -401,6 +401,28 @@
     }
     .roster-actions { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
 
+    /* ── まとめて追加(名簿の貼り付け) ── */
+    .bulk-add { margin-top: 14px; border-top: 1px dashed var(--border); padding-top: 12px; }
+    .bulk-add summary { cursor: pointer; font-size: 13px; font-weight: 700; color: var(--accent); list-style: none; display: flex; align-items: center; gap: 6px; }
+    .bulk-add summary::-webkit-details-marker { display: none; }
+    .bulk-add summary::before { content: '＋'; display: inline-block; transition: transform .2s; }
+    .bulk-add[open] summary::before { transform: rotate(45deg); }
+    .bulk-help { font-size: 12px; color: var(--muted); line-height: 1.7; margin: 8px 0; }
+    .bulk-add textarea {
+      width: 100%; min-height: 132px; resize: vertical; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 16px; line-height: 1.6; padding: 9px 12px; font-family: inherit; outline: none;
+    }
+    .bulk-add textarea:focus { border-color: var(--accent); }
+    .bulk-preview { display: flex; flex-direction: column; gap: 6px; margin: 10px 0 12px; }
+    .bulk-preview:empty { display: none; }
+    .bulk-sum { font-size: 12px; font-weight: 700; color: var(--text); }
+    .bulk-row { display: flex; align-items: center; gap: 10px; padding: 7px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+    .bulk-row .roster-num { font-size: 14px; }
+    .bulk-row.skip { opacity: .55; }
+    .bulk-row.skip .roster-name { text-decoration: line-through; }
+    .bulk-why { font-size: 11px; color: var(--red); font-weight: 700; flex-shrink: 0; }
+    @media (prefers-reduced-motion: reduce) { .bulk-add summary::before { transition: none; } }
+
     /* ── Absent toggle ── */
     .absent-toggle {
       background: none; border: 1px solid var(--border); border-radius: 12px;
@@ -835,6 +857,13 @@
         <div class="pos-grid" id="add-pos-grid"></div>
       </div>
       <button class="btn btn-primary" id="add-player-btn" onclick="addPlayer()">＋ 追加する</button>
+      <details class="bulk-add" id="bulk-add">
+        <summary>まとめて追加（名簿を貼り付け）</summary>
+        <p class="bulk-help">1行に1人ずつ書きます。「背番号 名前 守備」の順なら、それぞれの欄に入ります。背番号と守備は省略できます。LINEやメモ帳、表計算ソフトからそのまま貼り付けられます。</p>
+        <textarea id="bulk-text" aria-label="選手の名簿(1行に1人)" placeholder="10 山田 太郎 投 一&#10;2 佐藤 次郎 捕&#10;鈴木 三郎 遊/二&#10;田中 四郎"></textarea>
+        <div class="bulk-preview" id="bulk-preview" aria-live="polite"></div>
+        <button class="btn btn-primary" id="bulk-add-btn" type="button" onclick="addBulkPlayers()" disabled>まとめて追加する</button>
+      </details>
     </div>
     <div class="card">
       <div class="card-header">
@@ -1431,6 +1460,82 @@ function addPlayer() {
   gtag('event', 'player_added', { roster_size: players.length });
   setFirstTimeState(false);
 }
+// ── まとめて追加: 貼り付けた名簿を1行1人で読む ──
+// 行の形: [背番号] 名前 [守備...]。区切りはタブ・カンマ・読点、なければ空白。
+const POS_ALIAS = {
+  P:'投', C:'捕', '1B':'一', '2B':'二', '3B':'三', SS:'遊', LF:'左', CF:'中', RF:'右', DH:'DH',
+  '投手':'投', '捕手':'捕', '一塁':'一', '二塁':'二', '三塁':'三', '遊撃':'遊', '左翼':'左', '中堅':'中', '右翼':'右', '指名打者':'DH',
+  'ピッチャー':'投', 'キャッチャー':'捕', 'ファースト':'一', 'セカンド':'二', 'サード':'三', 'ショート':'遊', 'レフト':'左', 'センター':'中', 'ライト':'右',
+};
+const POS_CHARS = '投捕一二三遊左中右';
+function readPosToken(tok) { // 守備の書き方なら守備位置の配列、違えば null
+  const t = tok.toUpperCase();
+  if (POS_ALIAS[t]) return [POS_ALIAS[t]];
+  const parts = t.split(/[\/・]/).filter(Boolean);
+  if (parts.length > 1) { const all = parts.map(readPosToken); return all.every(Boolean) ? all.flat() : null; }
+  if (/^[投捕一二三遊左中右]{1,4}$/.test(t)) return [...t];
+  return null;
+}
+function parseRosterLine(raw) {
+  let line = raw.normalize('NFKC').replace(/^[\s・\-*•●○◯]+/, '').trim();
+  if (!line) return null;
+  if (/(名前|氏名|選手名)/.test(line) && !/\d/.test(line)) return { skip: '見出しの行', name: line };
+  const delimited = /[\t,、，]/.test(line);
+  let f = (delimited ? line.split(/[\t,、，]/) : line.split(/\s+/)).map(x => x.trim()).filter(Boolean);
+  let num = '';
+  if (f.length && /^#?\d{1,3}[.)\]:]?$/.test(f[0])) { num = f.shift().replace(/\D/g, ''); }
+  else if (f.length) { const m = f[0].match(/^#?(\d{1,2})[.)\]:]?(\D.*)$/); if (m) { num = m[1]; f[0] = m[2]; } }
+  const pos = [];
+  while (f.length > 1) { const ps = readPosToken(f[f.length - 1]); if (!ps) break; pos.unshift(...ps); f.pop(); }
+  const name = f.join(' ').slice(0, 20);
+  if (!name) return { skip: '名前がない', name: raw.trim() };
+  if (num && +num > 999) num = '';
+  return { num, name, pos: [...new Set(pos)] };
+}
+function bulkParse() {
+  const text = document.getElementById('bulk-text').value;
+  const lines = text.split(/\r?\n/).slice(0, 60);
+  const seen = new Set(players.map(p => p.name.replace(/\s/g, '')));
+  return lines.map(parseRosterLine).filter(Boolean).map(r => {
+    if (r.skip) return r;
+    const key = r.name.replace(/\s/g, '');
+    if (seen.has(key)) return { ...r, skip: players.some(p => p.name.replace(/\s/g, '') === key) ? '登録済み' : '重複' };
+    seen.add(key); return r;
+  });
+}
+function renderBulkPreview() {
+  const rows = bulkParse(), ok = rows.filter(r => !r.skip);
+  const btn = document.getElementById('bulk-add-btn'), el = document.getElementById('bulk-preview');
+  btn.disabled = !ok.length;
+  btn.textContent = ok.length ? `${ok.length}人をまとめて追加する` : 'まとめて追加する';
+  if (!rows.length) { el.innerHTML = ''; return; }
+  const skipped = rows.length - ok.length;
+  el.innerHTML = `<div class="bulk-sum">この形で追加されます（${ok.length}人${skipped ? `・${skipped}行は追加しません` : ''}）</div>` + rows.map(r => `
+    <div class="bulk-row${r.skip ? ' skip' : ''}">
+      <div class="roster-num">${esc(r.num || '—')}</div>
+      <div class="roster-info">
+        <div class="roster-name">${esc(r.name)}</div>
+        ${r.skip ? '' : `<div class="roster-pos">${(r.pos || []).map(x => `<span class="pos-chip">${x}</span>`).join('') || '<span style="font-size:11px;color:var(--muted)">守備はあとで設定</span>'}</div>`}
+      </div>
+      ${r.skip ? `<span class="bulk-why">${r.skip}</span>` : ''}
+    </div>`).join('');
+}
+function addBulkPlayers() {
+  const ok = bulkParse().filter(r => !r.skip);
+  if (!ok.length) { showToast('追加できる行がありません。1行に1人ずつ名前を書いてください', true); return; }
+  ok.forEach(r => players.push({ id: uid(), num: r.num, name: r.name, pos: r.pos }));
+  saveAll(); renderRoster(); renderOrderSlots(); renderPitcherSelect();
+  document.getElementById('bulk-text').value = '';
+  renderBulkPreview();
+  document.getElementById('bulk-add').open = false;
+  showToast(`${ok.length}人をまとめて追加しました`);
+  gtag('event', 'player_added', { roster_size: players.length, method: 'bulk', count: ok.length });
+  setFirstTimeState(false);
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const t = document.getElementById('bulk-text'); if (t) t.addEventListener('input', renderBulkPreview);
+});
+
 function removePlayer(id) {
   if (!confirm('この選手を削除しますか？')) return;
   players = players.filter(p => p.id !== id);
