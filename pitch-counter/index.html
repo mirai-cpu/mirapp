@@ -489,8 +489,18 @@ function summaryOf(g) {
   const my = g.my && g.my.pas.length ? `\n自チームの攻撃: ${g.my.pas.length}打席 安打${g.my.pas.filter(a => RES_BY[a.code].h).length} 打点${g.my.pas.reduce((t, a) => t + (a.rbi || 0), 0)}` : '';
   return { text: `【投球記録 ${g.date}】\n` + (lines.join('\n') || '記録なし') + my + `\nスコア 自${R('me')}-${R('opp')}相手`, lines };
 }
+// 攻撃タブを開いて、LUMBERに追加する欄まで移る
+function openSend() {
+  document.querySelector('.tab[data-tab="attack"]')?.click();
+  $('.send')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
 $('#newGame').addEventListener('click', () => {
-  if (!S.pitches.length && !S.pas.length) { $('#msg').textContent = 'まだ記録がありません。'; return; }
+  if (!S.pitches.length && !S.pas.length && !S.my.pas.length) { $('#msg').textContent = 'まだ記録がありません。'; return; }
+  const unsent = S.my.pas.filter(a => !a.sent).length;
+  if (unsent && confirm(`自チームの攻撃に、LUMBERにまだ追加していない打席が${unsent}打席あります。試合を終える前に、自分の打席をLUMBERに追加しますか。\n(「キャンセル」で追加せずに試合を終えます)`)) {
+    if (typeof gtag === 'function') gtag('event', 'pc_send_prompt', { unsent });
+    openSend(); return;
+  }
   if (!confirm('この試合を履歴に保存して、新しい試合を始めます。よろしいですか。')) return;
   HIST.unshift({ id: Date.now(), game: S }); HIST = HIST.slice(0, 30);
   S = fresh(); undoStack = []; $('#msg').textContent = '履歴に保存しました。新しい試合を始めます。'; render();
@@ -542,6 +552,7 @@ const myLine = bi => {
     bb: a.filter(x => x.code === 'bb' || x.code === 'hbp').length, k: a.filter(x => x.code === 'k').length };
 };
 function myCommit(code) {
+  Track.once('pc_attack');
   snap();
   const m = S.my, r = RES_BY[code];
   m.pas.push({ bi: m.batter, code, rbi: m.rbi, sent: false });
@@ -563,6 +574,8 @@ function drawAttack() {
   $('#myStats').querySelectorAll('input').forEach(inp => inp.addEventListener('change', () => { S.my.names[+inp.dataset.mi] = inp.value.trim() || (+inp.dataset.mi + 1) + '番'; render(); }));
   $('#sendWho').innerHTML = m.names.map((n, i) => `<option value="${i}">${i + 1}番 ${n.replace(/</g, '&lt;')}(${m.pas.filter(x => x.bi === i && !x.sent).length}打席)</option>`).join('');
   $('#sendWho').value = m.sendWho; $('#oppTeam').value = m.opp;
+  const unsent = m.pas.filter(x => x.bi === m.sendWho && !x.sent).length;
+  $('#sendBtn').textContent = unsent ? `${m.sendWho + 1}番の${unsent}打席をLUMBERに追加する` : 'この打順の打席をLUMBERに追加する';
   document.querySelectorAll('#handSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.h === m.hand));
 }
 $('#rbiPlus').addEventListener('click', () => { S.my.rbi = Math.min(4, S.my.rbi + 1); render(); });
