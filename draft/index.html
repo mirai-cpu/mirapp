@@ -65,6 +65,7 @@
     <label for="names" class="lbl">参加者</label>
     <textarea class="in" id="names" placeholder="山田&#10;佐藤&#10;鈴木" autocomplete="off"></textarea>
     <button class="btn-sub" id="loadRoster" type="button">スタメンメーカーの選手を読み込む</button>
+    <button class="btn-sub" id="trySample" type="button" hidden>例の8人で試す</button>
     <p class="hint" id="rosterMsg"></p>
   </div>
 
@@ -157,13 +158,25 @@ $('#names').addEventListener('input', refresh);
 $('#roles').addEventListener('input', persist);
 $('#byPos').addEventListener('change', persist);
 $('#draftStyle').addEventListener('change', persist);
+// 名前が空のときだけ「例の8人で試す」を出す(入力の前に、発表の流れを一度見られるように)
+const SAMPLE_NAMES = ['青木', '石田', '上田', '遠藤', '岡本', '片岡', '木下', '小山'];
+function syncSample() { $('#trySample').hidden = names().length > 0; }
+$('#names').addEventListener('input', syncSample);
+$('#trySample').addEventListener('click', () => {
+  $('#names').value = SAMPLE_NAMES.join('\n');
+  $('#rosterMsg').textContent = '例の8人を入れました(架空の名前です)。そのまま下のボタンで試せます。';
+  refresh(); syncSample();
+  if (typeof gtag === 'function') gtag('event', 'draft_sample');
+  document.querySelector('.tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 $('#loadRoster').addEventListener('click', () => {
   const ros = Tool.roster();
   if (!ros.length) { $('#rosterMsg').textContent = 'スタメンメーカーの選手が見つかりません。先に選手を登録するか、名前を直接入力してください。'; return; }
   $('#names').value = ros.map(p => p.name).join('\n');
   $('#rosterMsg').textContent = ros.length + '人を読み込みました。';
-  refresh();
+  refresh(); syncSample();
 });
+syncSample();
 
 /* ---- タブ・チーム数 ---- */
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
