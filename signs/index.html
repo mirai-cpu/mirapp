@@ -94,6 +94,9 @@
     @keyframes tap { from { transform: scale(1.3); transform-box: fill-box; transform-origin: center; } to { transform: scale(1); } }
     .timer i { transition: transform .1s linear; }
   }
+  .challenge { border: 2px solid var(--tint, var(--ink)); border-radius: var(--r, 8px); padding: 12px 14px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 4px; font-size: .9375rem; line-height: 1.6; }
+  .challenge[hidden] { display: none; }
+  .challenge b { font-size: 1rem; }
 </style>
 </head>
 <body>
@@ -113,6 +116,10 @@
 
   <!-- 準備: モードとサイン表 -->
   <section id="setup">
+    <div class="challenge" id="challenge" hidden>
+      <b>届いたサイン表で勝負</b>
+      <span id="challengeTxt"></span>
+    </div>
     <div class="field">
       <span class="lbl">出題</span>
       <div class="seg" id="modeSeg" role="group" aria-label="出題の種類">
@@ -178,7 +185,8 @@
       <dt>時間切れ</dt><dd id="timeouts">–</dd>
       <dt>自己ベスト</dt><dd id="best">–</dd>
     </dl>
-    <button class="btn-main" id="share" type="button">結果を共有する</button>
+    <button class="btn-main" id="share" type="button">このサイン表を友だちに送る</button>
+    <p class="hint" style="margin-top:6px">送ったURLを開くと、同じサイン表・同じ順番の10球に挑戦できます。正解数の比べ合いに使えます。</p>
     <div class="btn-row" style="margin-top:10px">
       <button class="btn-sub" id="retry" type="button">同じサイン表でもう一度</button>
       <button class="btn-sub" id="newTable" type="button">別のサイン表</button>
@@ -306,7 +314,7 @@ function startGame() {
   state.i = 0; state.results = []; state.streak = 0; state.maxStreak = 0;
   $('#setup').hidden = true; $('#done').hidden = true; $('#play').hidden = false;
   renderTable($('#tablePeek'), state.table, true);
-  if (typeof gtag === 'function') gtag('event', 'signs_start', { mode: state.mode });
+  if (typeof gtag === 'function') gtag('event', 'signs_start', { mode: state.challenge ? 'challenge' : state.mode });
   window.scrollTo({ top: $('#play').offsetTop - 8, behavior: 'smooth' });
   playRound();
 }
@@ -395,7 +403,10 @@ function finish() {
   $('#score').textContent = score; $('#title').textContent = title;
   $('#avg').textContent = avg; $('#maxStreak').textContent = state.maxStreak + '球';
   $('#timeouts').textContent = state.results.filter(r => r.timeout).length + '球'; $('#best').textContent = best;
-  state.shareText = `SIGNS サイン解読 ${state.mode === 'daily' ? '今日のサイン表' : 'ランダム'}: ${score}/10 正解「${title}」反応${avg}\nキーの直後だけが本物。あなたは読める？ #少年野球 #草野球\nhttps://somirai.jp/signs/`;
+  // 同じサイン表・同じ順番を開けるURL
+  const url = `https://somirai.jp/signs/?g=${state.seed}&s=${score}&utm_source=signs_share`;
+  const lead = state.challenge ? '届いたサイン表に挑戦: ' : '';
+  state.shareText = `${lead}SIGNS サイン解読 ${score}/10 正解「${title}」反応${avg}\nキーの直後だけが本物。同じサイン表を送ります。あなたは何球読める？ #少年野球 #草野球\n${url}`;
   $('#play').hidden = true; $('#done').hidden = false;
   window.scrollTo({ top: $('#done').offsetTop - 8, behavior: 'smooth' });
   if (typeof gtag === 'function') gtag('event', 'signs_complete', { mode: state.mode, score });
@@ -405,6 +416,7 @@ function finish() {
 document.querySelectorAll('#modeSeg button').forEach(b => b.addEventListener('click', () => {
   document.querySelectorAll('#modeSeg button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
   const m = b.dataset.mode;
+  state.challenge = false; $('#challenge').hidden = true; $('#start').textContent = '覚えた。10球始める';
   $('#modeHint').textContent = m === 'daily' ? '今日のサイン表は、同じ日に遊ぶ人みんな同じ出題です。正解数を比べられます。' : '毎回ちがうサイン表と順番で出題します。';
   setup(m, m === 'daily' ? todaySeed() : Tool.randInt(2147483647));
 }));
@@ -412,11 +424,12 @@ $('#start').addEventListener('click', startGame);
 document.querySelectorAll('#answers button').forEach(b => b.addEventListener('click', () => answer(b.dataset.a)));
 $('#next').addEventListener('click', () => { state.i++; if (state.i < ROUNDS) playRound(); else finish(); });
 $('#peek').addEventListener('toggle', () => { if ($('#peek').open && !state.busy) state.peeked = true; });
-$('#share').addEventListener('click', () => { Tool.share(state.shareText, $('#share')); if (typeof gtag === 'function') gtag('event', 'signs_share'); });
+$('#share').addEventListener('click', () => { Tool.share(state.shareText, $('#share')); if (typeof gtag === 'function') gtag('event', 'signs_share', { mode: state.challenge ? 'challenge' : state.mode }); });
 $('#retry').addEventListener('click', () => { setup(state.mode, state.seed); startGame(); });
 $('#newTable').addEventListener('click', () => {
   document.querySelectorAll('#modeSeg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.mode === 'random' ? 'true' : 'false'));
   $('#modeHint').textContent = '毎回ちがうサイン表と順番で出題します。';
+  state.challenge = false; $('#challenge').hidden = true; $('#start').textContent = '覚えた。10球始める';
   setup('random', Tool.randInt(2147483647));
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
@@ -426,7 +439,22 @@ document.addEventListener('keydown', e => {
   if (n) answer(n);
 });
 
-setup('daily', todaySeed());
+// 共有URL(?g=抽選の種&s=正解数)で届いたサイン表を準備する。なければ今日のサイン表
+(function init() {
+  const q = new URLSearchParams(location.search);
+  const g = Number(q.get('g'));
+  if (!Number.isInteger(g) || g < 1 || g > 2147483647) { setup('daily', todaySeed()); return; }
+  state.challenge = true;
+  document.querySelectorAll('#modeSeg button').forEach(x => x.setAttribute('aria-pressed', 'false'));
+  setup('random', g);
+  const sc = Number(q.get('s'));
+  $('#challengeTxt').textContent = (Number.isInteger(sc) && sc >= 0 && sc <= 10 ? `送ってくれた人は 10球中${sc}球 正解。` : '') + '同じサイン表・同じ順番の10球に挑戦できます。';
+  $('#challenge').hidden = false;
+  $('#modeHint').textContent = '届いたサイン表です。「今日のサイン表」「ランダム」を選ぶと、ふだんの出題に戻ります。';
+  $('#start').textContent = '覚えた。この10球に挑戦する';
+  if (typeof gtag === 'function') gtag('event', 'signs_challenge_open');
+  try { history.replaceState(null, '', location.pathname); } catch (e) {}
+})();
 Tool.initTheme(); Tool.initCookie();
 </script>
 </body>
