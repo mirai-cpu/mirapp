@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ja" data-tint="navy">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>スクイズ・ダブルスチールの記録のつけ方｜犠打・盗塁・打点になる場面を野球規則で確認 | Somirai Lab</title>
+  <meta name="description" content="スクイズの打点、ツーランスクイズは打点2か、ダブルスチールで一人アウトのときの盗塁、1・3塁で捕手が投げなかったときの扱い、犠牲フライの条件、バントの小飛球がインフィールドフライにならない理由を、Official Baseball Rules 第9章の条文番号つきで解説。場面別の早見表つき。">
+  <meta name="keywords" content="スクイズ 打点,ツーランスクイズ 打点,ダブルスチール 記録,重盗 盗塁 記録,犠打 条件,犠牲フライ 条件,野手選択 盗塁,スコアブック 記録 つけ方">
+  <link rel="canonical" href="https://somirai.jp/blog/baseball-strategy-scoring.html">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://somirai.jp/blog/baseball-strategy-scoring.html">
+  <meta property="og:title" content="スクイズ・ダブルスチールの記録のつけ方｜犠打・盗塁・打点になる場面を野球規則で確認">
+  <meta property="og:description" content="スクイズの打点、ツーランスクイズは打点2か、ダブルスチールで一人アウトのときの盗塁、1・3塁で捕手が投げなかったときの扱い、犠牲フライの条件、バントの小飛球がインフィールドフライにならない理由を、Official Baseball Rules 第9章の条文番号つきで解説。場面別の早見表つき。">
+  <meta property="og:image" content="https://somirai.jp/icons/ogp.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "スクイズ・ダブルスチールの記録のつけ方｜犠打・盗塁・打点になる場面を野球規則で確認", "description": "スクイズの打点、ツーランスクイズは打点2か、ダブルスチールで一人アウトのときの盗塁、1・3塁で捕手が投げなかったときの扱い、犠牲フライの条件、バントの小飛球がインフィールドフライにならない理由を、Official Baseball Rules 第9章の条文番号つきで解説。場面別の早見表つき。", "datePublished": "2026-11-21", "dateModified": "2026-11-21", "author": {"@type": "Person", "name": "Somirai", "url": "https://somirai.jp/about.html"}, "publisher": {"@type": "Organization", "name": "Somirai Lab", "url": "https://somirai.jp/"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://somirai.jp/blog/baseball-strategy-scoring.html"}}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "スクイズが成功したら打点はつきますか？", "acceptedAnswer": {"@type": "Answer", "text": "つきます。OBR 9.04(a)(1) では、失策の助けを借りずに犠打で始まったプレーで得点した場合に打点を記録するとしています。二・三塁で2点入ったツーランスクイズも、失策がなければ打点2です。"}}, {"@type": "Question", "name": "ダブルスチールで一人がアウトになったら、もう一人は盗塁ですか？", "acceptedAnswer": {"@type": "Answer", "text": "盗塁になりません。OBR 9.07(d) で、重盗・三重盗で一人が目的の塁に達する前にアウトになった場合、他の走者には盗塁を記録しないと決められています。"}}, {"@type": "Question", "name": "1・3塁で捕手が二塁へ投げなかったら、盗塁になりますか？", "acceptedAnswer": {"@type": "Answer", "text": "多くの場合は盗塁です。OBR 9.07(g) は守備側が無関心で進塁を許した場合を野手選択としていますが、その注釈で、1・3塁で三塁走者の生還を防ぐという正当な戦略上の理由で投げなかったと判断できれば、通常は盗塁を記録すると例示しています。"}}, {"@type": "Question", "name": "二死から送りバントをしたら犠打になりますか？", "acceptedAnswer": {"@type": "Answer", "text": "なりません。OBR 9.08(a) で、犠打は二死になる前のバントに限られています。二死からのバントで打者が一塁でアウトになれば、打数1です。"}}]}</script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-902VNDKEE9');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0b; --surface: #111114; --surface2: #18181c;
+      --border: #222228; --text: #e2e8f0; --text-sec: #94a3b8;
+      --text-mut: #475569; --accent: #ff6428; --accent-soft: rgba(255,100,40,0.12);
+      --radius: 16px;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+
+    .site-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+    .site-logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
+    .site-logo span { color: var(--accent); }
+    .header-nav { margin-left: auto; display: flex; gap: 16px; }
+    .header-nav a { color: var(--text-sec); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+    .header-nav a:hover { color: var(--text); }
+
+    .breadcrumb { max-width: 860px; margin: 0 auto; padding: 12px 24px; font-size: 0.8rem; color: var(--text-mut); }
+    .breadcrumb a { color: var(--text-mut); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 6px; }
+
+    .page-wrapper { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .article-header { padding: 32px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+    .article-category { display: inline-block; background: var(--accent-soft); color: var(--accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 16px; }
+    .article-title { font-family: 'Noto Sans JP', sans-serif; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; margin-bottom: 20px; }
+    .article-meta { display: flex; align-items: center; gap: 16px; font-size: 0.85rem; color: var(--text-mut); flex-wrap: wrap; }
+
+    .toc { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin: 0 0 40px; }
+    .toc-title { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; margin-bottom: 14px; }
+    .toc ol { list-style: none; padding: 0; margin: 0; counter-reset: toc-counter; }
+    .toc ol li { counter-increment: toc-counter; padding: 4px 0 4px 24px; position: relative; font-size: 0.88rem; }
+    .toc ol li::before { content: counter(toc-counter); position: absolute; left: 0; top: 4px; font-size: 0.72rem; font-weight: 700; color: var(--accent); background: var(--accent-soft); width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .toc a { color: var(--text-sec); text-decoration: none; }
+    .toc a:hover { color: var(--text); }
+
+    .article-body { font-size: 1rem; line-height: 1.9; }
+    .article-body h2 { font-size: 1.4rem; font-weight: 700; color: var(--text); margin: 56px 0 20px; padding-left: 16px; border-left: 3px solid var(--accent); line-height: 1.4; }
+    .article-body h2:first-of-type { margin-top: 0; }
+    .article-body h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin: 36px 0 12px; }
+    .article-body p { color: var(--text-sec); margin-bottom: 20px; }
+    .article-body p strong { color: var(--text); font-weight: 700; }
+    .article-body ul, .article-body ol { margin: 0 0 20px 0; padding-left: 0; list-style: none; }
+    .article-body ul li, .article-body ol li { color: var(--text-sec); padding: 6px 0 6px 24px; position: relative; }
+    .article-body ul li::before { content: ''; position: absolute; left: 0; top: 14px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .article-body ol { counter-reset: ol-counter; }
+    .article-body ol li { counter-increment: ol-counter; }
+    .article-body ol li::before { content: counter(ol-counter); position: absolute; left: 0; top: 6px; font-size: 0.75rem; font-weight: 700; color: var(--accent); background: var(--accent-soft); width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    .point-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin: 28px 0; }
+    .point-box .box-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
+    .point-box p { margin-bottom: 0; }
+    .point-box ul { margin-bottom: 0; }
+
+    .highlight-box { background: var(--accent-soft); border: 1px solid rgba(255,100,40,0.25); border-radius: var(--radius); padding: 20px 24px; margin: 28px 0; }
+    .highlight-box p { margin-bottom: 0; color: var(--text); }
+
+    .tool-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin: 36px 0; }
+    .tool-card-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+    .tool-icon { width: 48px; height: 48px; background: var(--accent-soft); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .tool-name { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .tool-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; font-weight: 700; color: #4ade80; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); padding: 3px 8px; border-radius: 6px; }
+    .tool-desc { color: var(--text-sec); font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
+    .tool-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 24px; }
+    .tool-feature { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 0.85rem; color: var(--text-sec); }
+    .tool-feature strong { display: block; color: var(--text); font-size: 0.8rem; margin-bottom: 3px; }
+    .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.95rem; padding: 12px 28px; border-radius: 999px; text-decoration: none; transition: opacity 0.2s; }
+    .cta-btn:hover { opacity: 0.85; }
+
+    .failure-list { counter-reset: failure-counter; list-style: none; padding: 0; margin: 0 0 28px; }
+    .failure-item { counter-increment: failure-counter; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 20px 20px 56px; position: relative; margin-bottom: 12px; }
+    .failure-item::before { content: counter(failure-counter); position: absolute; left: 16px; top: 18px; width: 28px; height: 28px; background: #ef4444; color: #fff; font-weight: 700; font-size: 0.82rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .failure-item .failure-title { font-weight: 700; color: var(--text); margin-bottom: 6px; font-size: 0.95rem; }
+    .failure-item p { font-size: 0.88rem; color: var(--text-sec); margin-bottom: 0; line-height: 1.7; }
+    .failure-item .fix { margin-top: 10px; padding: 8px 12px; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); border-radius: 8px; font-size: 0.82rem; color: #4ade80; }
+    .failure-item .fix strong { color: #4ade80; }
+
+    .step-list { counter-reset: step-counter; list-style: none; padding: 0; margin: 0 0 28px; }
+    .step-list li { counter-increment: step-counter; position: relative; padding: 0 0 28px 52px; color: var(--text-sec); }
+    .step-list li::before { content: counter(step-counter); position: absolute; left: 0; top: 0; width: 32px; height: 32px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.85rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .step-list li::after { content: ''; position: absolute; left: 15px; top: 32px; bottom: 0; width: 2px; background: var(--border); }
+    .step-list li:last-child::after { display: none; }
+    .step-list li strong { display: block; color: var(--text); font-weight: 700; margin-bottom: 6px; }
+
+    .table-scroll { overflow-x: auto; margin: 24px 0; }
+    .compare-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 0.9rem; }
+    .table-scroll .compare-table { margin: 0; min-width: 560px; }
+    .compare-table th, .compare-table td { padding: 12px 16px; border: 1px solid var(--border); text-align: left; }
+    .compare-table th { background: var(--surface2); color: var(--text); font-weight: 700; font-size: 0.82rem; }
+    .compare-table td { color: var(--text-sec); background: var(--surface); }
+    .compare-table td.good { color: #4ade80; font-weight: 600; }
+    .compare-table td.bad { color: #f87171; }
+    .compare-table tr:first-child th:first-child { border-radius: 10px 0 0 0; }
+    .compare-table tr:first-child th:last-child { border-radius: 0 10px 0 0; }
+
+    .faq-section { margin: 12px 0; }
+    .faq-item { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+    .faq-q { background: var(--surface); padding: 16px 20px; font-weight: 700; color: var(--text); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 12px; }
+    .faq-q::before { content: 'Q'; color: var(--accent); font-weight: 700; font-size: 0.9rem; background: var(--accent-soft); width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .faq-a { background: var(--surface2); padding: 16px 20px 16px 54px; color: var(--text-sec); font-size: 0.92rem; line-height: 1.8; }
+
+    .related-article { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin: 20px 0; display: flex; align-items: center; gap: 16px; text-decoration: none; transition: border-color 0.2s; }
+    .related-article:hover { border-color: var(--accent); }
+    .related-article-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .related-article-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; margin-bottom: 4px; }
+    .related-article-title { font-size: 0.95rem; font-weight: 700; color: var(--text); line-height: 1.5; }
+
+    .site-footer { background: var(--surface); border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 0.85rem; color: var(--text-mut); margin-top: 80px; }
+    .site-footer a { color: var(--text-mut); text-decoration: none; margin: 0 10px; }
+    .site-footer a:hover { color: var(--text); }
+    .site-footer .footer-links { margin-bottom: 16px; }
+
+    @media (max-width: 600px) {
+      .page-wrapper { padding: 0 16px 60px; }
+      .article-header { padding: 24px 0 32px; }
+      .tool-features { grid-template-columns: 1fr 1fr; }
+      .compare-table { font-size: 0.8rem; }
+      .compare-table th, .compare-table td { padding: 10px 10px; }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/article.css">
+</head>
+<body>
+<header class="site-header">
+  <a href="https://somirai.jp/" class="site-logo">Somirai<span>.</span>jp</a>
+  <nav class="header-nav">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/skipper/">SKIPPER</a>
+    <a href="https://somirai.jp/blog/">ブログ</a>
+  </nav>
+  <button class="theme-btn" id="themeBtn" type="button" aria-label="明るい面と暗い面を切り替える">暗い面</button>
+</header>
+<nav class="breadcrumb" aria-label="パンくずリスト">
+  <a href="https://somirai.jp/">ホーム</a><span>›</span><a href="https://somirai.jp/blog/">ブログ</a><span>›</span>スクイズ・ダブルスチールの記録
+</nav>
+<main class="page-wrapper">
+  <article>
+    <header class="article-header">
+      <div class="article-category">野球・スポーツ</div>
+      <h1 class="article-title">スクイズ・ダブルスチールの記録のつけ方｜犠打・盗塁・打点になる場面を野球規則で確認</h1>
+      <div class="article-meta">
+        <time datetime="2026-11-21">2026年11月21日</time>
+        <span>約5,100字 · 読了約9分</span>
+      </div>
+    </header>
+    <nav class="toc" aria-label="目次">
+      <div class="toc-title">目次</div>
+      <ol>
+        <li><a href="#terms">この記事で扱う作戦</a></li>
+        <li><a href="#sac">犠打（送りバント・スクイズ）になる条件</a></li>
+        <li><a href="#rbi">スクイズとツーランスクイズの打点</a></li>
+        <li><a href="#sf">犠牲フライの条件</a></li>
+        <li><a href="#sb">盗塁と盗塁刺の基本</a></li>
+        <li><a href="#double">ダブルスチールで一人がアウトになったとき</a></li>
+        <li><a href="#indiff">1・3塁で捕手が投げなかったとき</a></li>
+        <li><a href="#iff">バントの小飛球はインフィールドフライにならない</a></li>
+        <li><a href="#table">場面別の早見表</a></li>
+        <li><a href="#practice">作戦の判断を試してみる</a></li>
+        <li><a href="#faq">よくある質問（FAQ）</a></li>
+        <li><a href="#source">参考・出典</a></li>
+      </ol>
+    </nav>
+        <div class="article-body">
+      <p>スコアブックをつけていると、作戦が絡んだ場面で手が止まります。「スクイズで1点入ったけど打点はつく？」「ダブルスチールで一人だけアウトになったら、もう一人は盗塁？」「1・3塁で捕手が投げなかったら盗塁になる？」といった場面です。</p>
+      <p>この記事では、<strong>送りバント・スクイズ・犠牲フライ・盗塁・ダブルスチール</strong>の記録のつけ方を、公式の記録規則（Official Baseball Rules 第9章）の条文に沿って整理します。条文は2024年版の英語原文で確認し、番号を併記しています。</p>
+      <div class="highlight-box">
+        <p><strong>この記事で分かること：</strong>犠打になる・ならないの境目 / スクイズとツーランスクイズの打点 / 犠牲フライの条件 / ダブルスチールで一人アウトのときの盗塁 / 1・3塁で捕手が投げなかったとき / バントの小飛球がインフィールドフライにならない理由 / 場面別の早見表</p>
+      </div>
+
+      <div class="point-box">
+        <div class="box-label">条文の番号について</div>
+        <p>日本の公認野球規則は、2016年度の改正で「2015年の Official Baseball Rules の改正に伴い、条文構成を大幅に改める」とされ、条文の構成がOBRに合わせられました（日本野球規則委員会「2016年度 野球規則改正」）。この記事の番号（9.04・9.07・9.08など）はOBRの番号です。日本独自の【注】が付く条文もあり、学童・軟式などの大会では特別規則がある場合もあるので、公式記録として扱うときは最新の公認野球規則と大会要項もあわせて確認してください。</p>
+      </div>
+
+      <h2 id="terms">この記事で扱う作戦</h2>
+      <p>作戦の呼び名は規則で決められたものではなく、チームや地域で呼び方が少しずつ違います。ここでは一般的な使い方で、次の意味として扱います。</p>
+      <div class="table-scroll">
+        <table class="compare-table fit">
+          <thead><tr><th>作戦</th><th>この記事での意味</th></tr></thead>
+          <tbody>
+            <tr><td>送りバント</td><td>打者がバントをして、アウトと引き換えに走者を次の塁へ進める</td></tr>
+            <tr><td>スクイズ</td><td>三塁走者を、バントで本塁へ還す。走者が投球と同時に走る形と、打球を見てから走る形（セーフティスクイズ）がある</td></tr>
+            <tr><td>ツーランスクイズ</td><td>二・三塁のスクイズで、一塁へ送球する間に二塁走者も本塁まで還る</td></tr>
+            <tr><td>エンドラン</td><td>走者が投球と同時に走り、打者は必ず打ちにいく</td></tr>
+            <tr><td>ダブルスチール（重盗）</td><td>二人の走者が同時に盗塁する。1・3塁では、捕手が二塁へ投げた間に三塁走者が本塁を狙う形がよく使われる</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>記録の規則は「作戦の名前」ではなく<strong>実際に起きたプレー</strong>で決まります。エンドランという名前の記録はなく、打者が打てば安打やゴロとして、空振りして走者が進めば盗塁として記録します。</p>
+
+      <h2 id="sac">犠打（送りバント・スクイズ）になる条件</h2>
+      <p>犠打の記録は 9.08(a) で決められています。要点は次の3つです。</p>
+      <ol>
+        <li><strong>二死になる前</strong>（無死か一死）であること</li>
+        <li>打者のバントで<strong>走者が1つ以上進み</strong>、打者が一塁でアウトになる（または失策がなければアウトになっていた）こと</li>
+        <li>記録員から見て、打者が自分が生きるためだけにバントした（バントヒット狙い）と判断される場合は、犠打ではなく打数になる</li>
+      </ol>
+      <p>3つ目の判断については 9.08(a) の注釈に「打者に有利に解釈する」とあり、回・アウトカウント・点差など打席の状況全体を考えて判断するとされています。</p>
+
+      <h3>犠打にならない場合</h3>
+      <ul>
+        <li><strong>二死からのバント</strong>：条件1を満たさないので、犠打にはなりません。</li>
+        <li><strong>バントで走者がアウトになった</strong>：9.08(c) により、走者が次の塁へ進もうとしてアウトになった（または失策がなければアウトになっていた）場合は犠打にならず、打者には打数がつきます。<strong>スクイズを外されて三塁走者が本塁でアウト</strong>になった場面がこれにあたります。</li>
+      </ul>
+
+      <h3>先の走者を狙って間に合わなかった場合</h3>
+      <p>9.08(b) では、二死前に野手がバントを処理し、先の走者をアウトにしようとして失敗した（失策ではない）場合も犠打とします。ただし、普通に一塁へ投げても打者をアウトにできなかったと記録員が判断した場合は、犠打ではなく単打になります。</p>
+
+      <h2 id="rbi">スクイズとツーランスクイズの打点</h2>
+      <p>打点は 9.04 で決められています。9.04(a)(1) では、失策の助けを借りずに、打者の安打・<strong>犠打</strong>・犠牲フライ・内野ゴロのアウト・野手選択で始まったプレーで得点した場合、その得点ごとに打点を記録するとしています。</p>
+      <ul>
+        <li><strong>スクイズ成功で1点</strong>：犠打で始まったプレーの得点なので、打点1です。</li>
+        <li><strong>ツーランスクイズで2点</strong>：一塁への送球の間に二塁走者も還った場合、2点とも同じ犠打で始まったプレーの得点です。失策がからんでいなければ、打点は2です。送球エラーのおかげで二人目が還った場合、その得点は 9.04(a)(1) の「失策の助けを借りない」という条件に当てはまりません。</li>
+        <li><strong>内野ゴロの間の得点</strong>：同じく 9.04(a)(1) により打点がつきます。</li>
+        <li><strong>ゴロで併殺の間の得点</strong>：9.04(b)(1) により、打者がフォースの併殺打（または逆フォースの併殺打）を打った場合は打点を記録しません。</li>
+      </ul>
+
+      <h2 id="sf">犠牲フライの条件</h2>
+      <p>犠牲フライは 9.08(d) で、二死前に打者が打った飛球を外野手（または外野へ走った内野手）が処理し、次のどちらかの場合に記録します。</p>
+      <ol>
+        <li>捕球され、捕球後に走者が得点した</li>
+        <li>落球されて走者が得点し、捕球されていても得点できたと記録員が判断した</li>
+      </ol>
+      <p>条件は<strong>走者が得点すること</strong>です。二塁走者がタッチアップで三塁へ進んだだけでは、犠牲フライにはなりません（その場合は打数1の凡打です）。</p>
+
+      <h2 id="sb">盗塁と盗塁刺の基本</h2>
+      <p>9.07 では、走者が安打・アウト・失策・フォースアウト・野手選択・捕逸・暴投・ボークの助けを借りずに1つ進んだときに盗塁を記録する、と決めています。走者が盗塁を企ててアウトになった（または失策がなければアウトになっていた）ときは、9.07(h) により<strong>盗塁刺</strong>を記録します。</p>
+      <p>また 9.07(b) では、走者の盗塁を防ごうとした捕手の送球が悪送球になった場合も、走者には盗塁を記録します。悪送球のせいで盗塁した走者がさらに先の塁へ進んだり、他の走者が進んだりした場合に限り、捕手に失策を記録します。</p>
+
+      <h2 id="double">ダブルスチールで一人がアウトになったとき</h2>
+      <p>9.07(d) にはっきり書かれています。<strong>重盗（ダブルスチール）・三重盗を企てて、走者のうち一人が目的の塁に達して確保する前にアウトになった場合、他の走者には盗塁を記録しません。</strong></p>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead><tr><th>1・3塁のダブルスチールの結果</th><th>一塁走者</th><th>三塁走者</th></tr></thead>
+          <tbody>
+            <tr><td>捕手の二塁送球の間に三塁走者が生還、一塁走者も二塁でセーフ</td><td>盗塁</td><td>盗塁（本盗）</td></tr>
+            <tr><td>三塁走者が本塁でアウト、一塁走者は二塁へ</td><td class="bad">盗塁にならない（9.07(d)）</td><td class="bad">盗塁刺</td></tr>
+            <tr><td>一塁走者が二塁でアウト、その間に三塁走者が生還</td><td class="bad">盗塁刺</td><td class="bad">盗塁にならない（9.07(d)）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>3行目のように三塁走者の得点自体は認められても、記録上は盗塁になりません。得点は残るので、スコアブックには得点の経緯として残しておきます。</p>
+
+      <h2 id="indiff">1・3塁で捕手が投げなかったとき</h2>
+      <p>守備側が走者の進塁を気にせず放っておいた場合、9.07(g) により盗塁を記録せず、<strong>野手選択</strong>として記録します。</p>
+      <p>ただし同じ条文の注釈で、この判断には回・点差、走者を塁に留めていたか、けん制をしていたか、ベースカバーの動き、守備側に「進塁を許す正当な戦略上の理由」があったかなど、状況全体を考えるとされています。そして例として、<strong>1・3塁で一塁走者が二塁へ進んだとき、二塁へ投げると三塁走者に生還されるのを防ぐという正当な戦略上の理由で守備側が投げなかったと判断できれば、通常は盗塁を記録する</strong>と書かれています。</p>
+      <p>つまり「捕手が投げなかった＝盗塁ではない」とは限りません。大差の終盤で一塁手が走者に付かずに放置していたような場面は野手選択、1・3塁の駆け引きで投げなかった場面は盗塁、と分けて考えます。</p>
+
+      <h2 id="iff">バントの小飛球はインフィールドフライにならない</h2>
+      <p>インフィールドフライの定義（規則の用語の定義）では、対象を「ライナーおよび<strong>バントを企てた打球</strong>を除くフェアの飛球」としています。そのため、一・二塁や満塁でバントが小フライになっても、インフィールドフライは宣告されません。</p>
+      <p>スクイズで三塁走者が投球と同時に走っているときにバントが小フライになると、捕球されたあと三塁へ送球されて併殺になる危険があります。スクイズが「一発勝負」と言われるのは、この形があるからです。</p>
+
+      <h2 id="table">場面別の早見表</h2>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead><tr><th>場面</th><th>打者の記録</th><th>根拠</th></tr></thead>
+          <tbody>
+            <tr><td>無死一塁、送りバントで走者二塁・打者一塁アウト</td><td>犠打（打数なし）</td><td>9.08(a)</td></tr>
+            <tr><td>二死一塁で送りバント、打者一塁アウト</td><td>打数1（犠打にならない）</td><td>9.08(a)</td></tr>
+            <tr><td>一死三塁、スクイズ成功で1点</td><td>犠打・打点1</td><td>9.08(a)・9.04(a)(1)</td></tr>
+            <tr><td>一死二・三塁、ツーランスクイズで2点（失策なし）</td><td>犠打・打点2</td><td>9.08(a)・9.04(a)(1)</td></tr>
+            <tr><td>スクイズを外され三塁走者が本塁でアウト</td><td>打数1（犠打にならない）</td><td>9.08(c)</td></tr>
+            <tr><td>一死三塁、外野フライで捕球後に生還</td><td>犠牲フライ・打点1</td><td>9.08(d)・9.04(a)(1)</td></tr>
+            <tr><td>一死二塁、外野フライで走者が三塁へタッチアップ</td><td>打数1（犠牲フライにならない）</td><td>9.08(d)</td></tr>
+            <tr><td>一死三塁、内野ゴロで打者アウトの間に生還</td><td>打数1・打点1</td><td>9.04(a)(1)</td></tr>
+            <tr><td>無死満塁、ゴロ併殺の間に生還</td><td>打数1・打点なし</td><td>9.04(b)(1)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>犠打・犠牲フライが打数に入らないことは、OBRの打数の定義（9.02(a)(1)）によります。</p>
+
+      <h2 id="practice">作戦の判断を試してみる</h2>
+      <p>記録のルールが分かると、作戦の損得も見えてきます。スクイズは成功すれば打点になりますが、外されれば三塁走者を失って打数もつきます。ダブルスチールは一人でもアウトになれば、もう一人の盗塁も消えます。</p>
+      <p>Somirai Lab の<a href="https://somirai.jp/skipper/">SKIPPER（監督采配シミュレーター）</a>では、7回1点ビハインドから、送りバント・スクイズ・エンドラン・盗塁・ダブルスチールを選んで試合を動かせます。ゲームの中の確率は筆者が決めた設計値で、実在の選手やリーグの統計ではありません。たとえば一死二・三塁でスクイズを選んだとき、ツーランスクイズになる割合は次のように計算しています。</p>
+      <div class="point-box">
+        <div class="box-label">ゲーム内の設計値（計算式）</div>
+        <p>スクイズ成功 60% × 二塁走者が本塁を狙う割合 × 本塁でセーフになる割合<br>
+        普通の走者：0.60 × 0.35 × 0.50 ＝ 0.105（約10.5%）<br>
+        俊足の走者：0.60 × 0.60 × 0.70 ＝ 0.252（約25.2%）</p>
+      </div>
+      <p>実際の試合で起きたプレーは、打撃成績アプリの<a href="https://somirai.jp/batting-stats/">LUMBER</a>で打席ごとに記録できます。</p>
+
+      <div class="tool-card">
+        <div class="tool-card-header">
+          <div class="tool-icon">&#9918;</div>
+          <div>
+            <div class="tool-name">SKIPPER 監督采配シミュレーター</div>
+            <span class="tool-badge">無料・登録不要</span>
+          </div>
+        </div>
+        <p class="tool-desc">7回裏1点ビハインドから試合終了まで指揮します。走者の状況とアウトカウントを見ながら、バント・スクイズ・盗塁・ダブルスチール・継投・前進守備を選び、結果から監督タイプを診断します。</p>
+        <a href="https://somirai.jp/skipper/" class="cta-btn">SKIPPERで采配する</a>
+      </div>
+
+      <h2 id="faq">よくある質問（FAQ）</h2>
+      <div class="faq-section">
+        <div class="faq-item"><div class="faq-q">スクイズが成功したら打点はつきますか？</div><div class="faq-a">つきます。OBR 9.04(a)(1) では、失策の助けを借りずに犠打で始まったプレーで得点した場合に打点を記録するとしています。二・三塁で2点入ったツーランスクイズも、失策がなければ打点2です。</div></div>
+        <div class="faq-item"><div class="faq-q">ダブルスチールで一人がアウトになったら、もう一人は盗塁ですか？</div><div class="faq-a">盗塁になりません。OBR 9.07(d) で、重盗・三重盗で一人が目的の塁に達する前にアウトになった場合、他の走者には盗塁を記録しないと決められています。</div></div>
+        <div class="faq-item"><div class="faq-q">1・3塁で捕手が二塁へ投げなかったら、盗塁になりますか？</div><div class="faq-a">多くの場合は盗塁です。OBR 9.07(g) は守備側が無関心で進塁を許した場合を野手選択としていますが、その注釈で、1・3塁で三塁走者の生還を防ぐという正当な戦略上の理由で投げなかったと判断できれば、通常は盗塁を記録すると例示しています。</div></div>
+        <div class="faq-item"><div class="faq-q">二死から送りバントをしたら犠打になりますか？</div><div class="faq-a">なりません。OBR 9.08(a) で、犠打は二死になる前のバントに限られています。二死からのバントで打者が一塁でアウトになれば、打数1です。</div></div>
+      </div>
+
+      <h2 id="source">参考・出典</h2>
+      <ul>
+        <li><a href="https://www.baseball.ca/uploads/files/2024%20Rules/2024%20MLB%20Official%20Rules%20-%20EN.pdf" target="_blank" rel="noopener">Official Baseball Rules 2024 Edition（Baseball Canada 掲載のPDF）</a>：9.02(a)(1) 打数、9.04 打点、9.07 盗塁・盗塁刺、9.08 犠打・犠牲フライ、用語の定義「INFIELD FLY」</li>
+        <li><a href="https://jhbf.or.jp/topics/info/data/20160128_1.pdf" target="_blank" rel="noopener">日本野球規則委員会「2016年度 野球規則改正」（日本高等学校野球連盟 掲載のPDF）</a>：OBR 2015年の改正に伴い条文構成を改めたこと</li>
+      </ul>
+      <p>条文の内容は筆者が英語原文を読んで要約したもので、公認野球規則の日本語の条文そのものではありません。ゲーム内の確率は筆者が決めた設計値で、計算式を併記しています。</p>
+
+      <a href="https://somirai.jp/blog/baseball-batting-stats.html" class="related-article">
+        <span class="related-article-icon">&#128202;</span>
+        <div>
+          <div class="related-article-label">関連記事</div>
+          <div class="related-article-title">野球のスコアブック・打撃成績を無料でブラウザ管理する方法｜LUMBER（打撃成績トラッカー）の使い方</div>
+        </div>
+      </a>
+    </div>
+    <!-- /article-body -->
+
+      <!-- 著者 -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin:40px 0 0;display:flex;gap:16px;align-items:flex-start;">
+        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#ff6428,#e84410);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:18px;">S</div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mut);margin-bottom:4px;">この記事を書いた人</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;">Somirai Lab 開発者</div>
+          <p style="font-size:13px;color:var(--text-sec);line-height:1.75;margin:0;">Somirai Lab 運営者。Next.js・React を使った無料Webツールを作成・運営しています。野球・習慣化・家計管理など、日常の小さな課題を解決するツールを中心に作成中。</p>
+        </div>
+      </div>
+
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="https://somirai.jp/">ホーム</a>
+    <a href="https://somirai.jp/about.html">このサイトについて</a>
+    <a href="https://somirai.jp/privacy.html">プライバシーポリシー</a>
+    <a href="https://somirai.jp/contact.html">お問い合わせ</a>
+  </div>
+  <p>&#169; 2026 Somirai Lab</p>
+</footer>
+
+<script src="/shared/tool.js"></script>
+<script src="/shared/blog-ga.js"></script>
+<script>Tool.initTheme();</script>
+</body>
+</html>
