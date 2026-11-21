@@ -575,6 +575,24 @@
     .section-label { font-size: 11px; font-weight: 700; color: var(--ink-soft); letter-spacing: .1em; text-transform: uppercase; margin: 14px 0 6px; font-family: var(--mono); }
     .share-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
     .share-privacy { font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+    h1.header-title { margin: 0; font-size: inherit; font-weight: inherit; line-height: inherit; }
+
+    /* ── 最初の画面: 始め方(選手0人) / 前回の続き(打順あり) ── */
+    .first-view { border: 2px solid var(--text); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; background: var(--surface); }
+    .first-view[hidden], .resume-bar[hidden] { display: none; }
+    .fv-lead { font-size: 17px; font-weight: 700; line-height: 1.5; margin: 0 0 4px; }
+    .fv-sub { font-size: 12px; color: var(--muted); line-height: 1.6; margin: 0 0 12px; }
+    .fv-paths { display: grid; gap: 8px; }
+    .fv-path { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; width: 100%; min-height: 52px; padding: 10px 14px; text-align: left; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 8px; font: inherit; cursor: pointer; }
+    .fv-path b { font-size: 15px; }
+    .fv-path small { font-size: 12px; color: var(--muted); }
+    .fv-path:hover { border-color: var(--accent); }
+    .fv-path.is-main { background: var(--accent); border-color: var(--accent); color: var(--on-accent, #fff); }
+    .fv-path.is-main small { color: inherit; opacity: .85; }
+    .fv-guide { display: inline-block; margin-top: 10px; font-size: 13px; color: var(--muted); text-underline-offset: 3px; }
+    .resume-bar { display: flex; align-items: center; gap: 12px; border: 2px solid var(--accent); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 14px; background: var(--surface); }
+    .resume-bar .rb-text { flex: 1; min-width: 0; font-size: 13px; line-height: 1.5; }
+    .resume-bar .rb-text b { display: block; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
     /* ── 届いたオーダー(共有URLを開いた人) ── */
     #shared-view { position: fixed; inset: 0; z-index: 9100; background: var(--bg); color: var(--text); overflow-y: auto; padding: 28px 18px 40px; }
@@ -665,56 +683,15 @@
 <div id="starfield" aria-hidden="true"></div>
 
 <!-- ── Landing Overlay（初回訪問のみ表示） ── -->
-<script>if(localStorage.getItem('sm_landing_done')||window.__sharedLineup){document.addEventListener('DOMContentLoaded',function(){var e=document.getElementById('tc-landing');if(e)e.remove();});}</script>
-<div id="tc-landing">
-  <style>
-    #tc-landing { position:fixed; inset:0; z-index:9000; background:var(--bg); color:var(--text); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px 22px 40px; overflow-y:auto; font-family:'BIZ UDPGothic','Hiragino Sans',system-ui,sans-serif; }
-    #tc-landing .tc-wrap { width:100%; max-width:400px; animation:tc-up .4s ease-out both; }
-    @keyframes tc-up { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-    #tc-landing h1 { font-size:clamp(44px,12vw,60px); font-weight:700; line-height:1.05; letter-spacing:-.01em; margin:0 0 6px; }
-    #tc-landing .tc-sub { font-size:15px; color:var(--muted); margin:0 0 10px; }
-    #tc-landing .tc-tag { font-size:19px; font-weight:700; line-height:1.5; margin:0 0 22px; }
-    #tc-landing .tc-cta { width:100%; min-height:56px; background:var(--accent); color:var(--on-accent, #fff); border:0; border-radius: 8px; font:inherit; font-size:17px; font-weight:700; cursor:pointer; }
-    #tc-landing .tc-cta:hover { filter:brightness(1.08); }
-    #tc-landing .tc-sample { width:100%; min-height:48px; margin-top:10px; background:transparent; color:var(--text); border:2px solid var(--text); border-radius:8px; font:inherit; font-size:15px; font-weight:700; cursor:pointer; }
-    #tc-landing .tc-guide { display:block; text-align:center; margin:12px 0 0; font-size:14px; }
-    #tc-landing .tc-guide a { color:var(--muted); text-underline-offset:3px; }
-    #tc-landing .tc-trust { list-style:none; display:flex; flex-wrap:wrap; gap:4px 16px; margin:18px 0 26px; padding:0; font-size:14px; color:var(--muted); }
-    #tc-landing .tc-trust li::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); margin-right:7px; vertical-align:1px; }
-    #tc-landing .tc-steps { list-style:none; display:flex; border:2px solid var(--text); border-radius: 8px; margin:0 0 28px; padding:0; }
-    #tc-landing .tc-steps li { flex:1; text-align:center; padding:10px 4px; font-size:14px; font-weight:700; }
-    #tc-landing .tc-steps li + li { border-left:1px solid var(--border); }
-    #tc-landing .tc-steps b { display:block; font-size:20px; line-height:1.2; color:var(--accent); }
-    #tc-landing h2 { font-size:15px; font-weight:700; margin:0 0 6px; padding-top:10px; border-top:2px solid var(--text); }
-    #tc-landing .tc-feat { padding:10px 0; border-bottom:1px solid var(--border); }
-    #tc-landing .tc-feat b { display:block; font-size:15px; }
-    #tc-landing .tc-feat span { font-size:14px; color:var(--muted); line-height:1.6; }
-    #tc-landing .tc-foot { margin-top:22px; font-size:13px; color:var(--muted); text-align:center; }
-    #tc-landing .tc-foot a { color:var(--muted); text-underline-offset:3px; }
-  </style>
-  <div class="tc-wrap">
-    <h1>TACTICIAN</h1>
-    <p class="tc-sub">野球打順・スタメン作成ツール</p>
-    <p class="tc-tag">試合前の打順決め、60秒で完了。</p>
-    <button onclick="closeTcLanding('create')" class="tc-cta">今すぐ作成する</button>
-    <button onclick="closeTcLanding('sample');loadSample('landing')" class="tc-sample" type="button">サンプルの9人で試す</button>
-    <p class="tc-guide"><a href="https://somirai.jp/blog/tactician-howto.html" target="_blank" rel="noopener" onclick="gtag('event','guide_link_click',{from:'tactician_landing'})">詳しい使い方を見る →</a></p>
-    <ul class="tc-trust"><li>登録不要</li><li>完全無料</li><li>スマホ対応</li><li>印刷対応</li></ul>
-    <ol class="tc-steps"><li><b>1</b>選手を登録</li><li><b>2</b>打順を組む</li><li><b>3</b>LINEで共有</li></ol>
-    <h2>できること</h2>
-    <div class="tc-feat"><b>打順 + 守備配置を一括管理</b><span>1〜9番の打順と守備ポジションを同時に設定。DH制にも対応。</span></div><div class="tc-feat"><b>スタメン表をLINEで即共有</b><span>守備配置図つきのスタメン表をワンタップでチームグループに送信。</span></div><div class="tc-feat"><b>投手ローテも管理できる</b><span>先発・中継ぎ・抑えの登板順と担当イニングをガントチャートで確認。</span></div>
-    <p class="tc-foot">© 2026 TACTICIAN · <a href="https://somirai.jp/">Somirai Lab</a> · <a href="/contact.html">お問い合わせ</a></p>
-  </div>
-</div>
 <!-- ── /Landing Overlay ── -->
 
 <header>
   <nav class="header-left" aria-label="メインナビゲーション">
     <a href="/" class="header-back" style="display:inline-flex;align-items:center;gap:5px;"><svg viewBox="0 0 120 120" width="20" height="20" style="border-radius:5px;"><defs><linearGradient id="hbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1220"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><linearGradient id="hco" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/></linearGradient></defs><rect width="120" height="120" rx="26" fill="url(#hbg)"/><circle cx="60" cy="48" r="14" fill="url(#hco)"/><path d="M60 26 L62 42 L60 48 L58 42Z" fill="#fb923c" opacity=".85"/><circle cx="84" cy="30" r="3.5" fill="#fb923c" opacity=".6"/><circle cx="34" cy="68" r="3" fill="#fbbf24" opacity=".5"/><circle cx="88" cy="62" r="2.5" fill="#6ee7b7" opacity=".45"/></svg><span class="header-back-text">Somirai Lab</span></a>
-    <div class="header-title">
+    <h1 class="header-title">
       <span class="header-title-main">TACTICIAN</span>
-      <span class="header-title-sub">野球スタメン作成</span>
-    </div>
+      <span class="header-title-sub">野球オーダー作成・打順メーカー</span>
+    </h1>
   </nav>
   <div class="header-right">
     <div style="position:relative;">
@@ -853,6 +830,20 @@
 
   <!-- ── 選手登録 ── -->
   <section class="section active" id="sec-roster">
+    <div class="first-view" id="first-view" hidden>
+      <p class="fv-lead">選手を登録して、打順を組みましょう</p>
+      <p class="fv-sub">登録不要・無料です。入れたデータは、この端末のブラウザの中だけに保存されます。</p>
+      <div class="fv-paths">
+        <button type="button" class="fv-path is-main" onclick="firstViewChoose('type')"><b>名前を1人ずつ入れる</b><small>すぐ下の欄に名前と守れる位置を入れます</small></button>
+        <button type="button" class="fv-path" onclick="firstViewChoose('bulk')"><b>名簿をまとめて貼り付ける</b><small>LINEやメモの名簿を、1行1人でそのまま貼れます</small></button>
+        <button type="button" class="fv-path" onclick="firstViewChoose('sample')"><b>サンプルの9人で試す</b><small>架空の9人と打順が入ります。あとで消せます</small></button>
+      </div>
+      <a class="fv-guide" href="https://somirai.jp/blog/tactician-howto.html" onclick="if(typeof gtag==='function')gtag('event','guide_link_click',{from:'tactician_first_view'})">画面つきの使い方を見る</a>
+    </div>
+    <div class="resume-bar" id="resume-bar" hidden>
+      <div class="rb-text"><b id="rb-title">前回の打順</b><span id="rb-sub"></span></div>
+      <button type="button" class="btn btn-primary" onclick="resumeOrder()">打順を開く</button>
+    </div>
     <div class="card">
       <div class="card-header">
         <span class="card-title">選手を追加</span>
@@ -1425,22 +1416,10 @@ function renderThemeGrid() {
 function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
 function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 function openTutorial() { openModal('tutorial-modal'); }
-function closeTcLanding(choice) {
-  // 初回画面でどちらのボタンを押したか(登録の手前で離れていないかを見るため)
-  if (choice && typeof gtag === 'function') gtag('event', 'landing_start', { choice: choice });
-  var el = document.getElementById('tc-landing');
-  if (el) {
-    el.style.transition = 'opacity .3s';
-    el.style.opacity = '0';
-    setTimeout(function(){ el.remove(); }, 300);
-  }
-  localStorage.setItem('sm_landing_done','1');
-  localStorage.setItem('sm_tutorial_done','1');
-}
-
 // ── Tab ─────────────────────────────
 function switchTab(tab) {
   if (typeof updateSaveDock === 'function') setTimeout(updateSaveDock, 0);
+  if (tab === 'roster' && typeof renderFirstView === 'function') renderFirstView();
   ['roster','order','pitcher','print'].forEach(t => {
     document.getElementById('sec-'+t)?.classList.toggle('active', t===tab);
     document.getElementById('tab-'+t)?.classList.toggle('active', t===tab);
@@ -1555,6 +1534,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const t = document.getElementById('bulk-text'); if (t) t.addEventListener('input', renderBulkPreview);
 });
 
+// ── 最初の画面 ──
+function renderFirstView() {
+  const fv = document.getElementById('first-view'), rb = document.getElementById('resume-bar');
+  if (!fv || !rb) return;
+  fv.hidden = players.length > 0;
+  const filled = order.filter(s => s && (s.playerId || s.isGuest)).length;
+  rb.hidden = !(players.length > 0 && filled > 0);
+  if (!rb.hidden) {
+    const name = document.getElementById('lineup-name')?.value.trim();
+    document.getElementById('rb-title').textContent = name ? `前回の打順「${name}」` : '前回の打順の続き';
+    document.getElementById('rb-sub').textContent = filled >= 9 ? '9人そろっています。そのまま共有・印刷できます' : `9人中${filled}人まで入っています`;
+  }
+}
+function firstViewChoose(choice) {
+  if (typeof gtag === 'function') gtag('event', 'first_view_choice', { choice });
+  if (choice === 'sample') { loadSample('first_view'); return; }
+  if (choice === 'bulk') {
+    const d = document.getElementById('bulk-add'); if (d) d.open = true;
+    const t = document.getElementById('bulk-text'); if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => t.focus({ preventScroll: true }), 300); }
+    return;
+  }
+  const inp = document.getElementById('inp-name'); if (inp) { inp.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => inp.focus({ preventScroll: true }), 300); }
+}
+function resumeOrder() {
+  if (typeof gtag === 'function') gtag('event', 'resume_click');
+  switchTab('order'); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function removePlayer(id) {
   if (!confirm('この選手を削除しますか？')) return;
   players = players.filter(p => p.id !== id);
@@ -1598,6 +1605,7 @@ function renderRoster() {
       <button type="button" class="sample-try" onclick="loadSample('roster')">サンプルの9人で試す</button>
       <div class="empty-or">または、上の欄から自分のチームの選手を追加</div>
     </div>`;
+    renderFirstView();
     return;
   }
   el.innerHTML = players.map(p => {
@@ -1619,6 +1627,7 @@ function renderRoster() {
     </div>`;
   }).join('');
   renderPosStats();
+  renderFirstView();
 }
 
 // ── Absent ──────────────────────────
@@ -2950,12 +2959,10 @@ renderPitcherSelect();
 renderPitcherList();
 renderGantt();
 renderSavedChips();
-if (!localStorage.getItem('sm_landing_done')) {
-  // 初回：ランディングオーバーレイを表示（チュートリアルモーダルは出さない）
-} else if (!localStorage.getItem('sm_tutorial_done')) {
-  openTutorial();
-  localStorage.setItem('sm_tutorial_done','1');
-}
+// 初回の案内は選手タブの「始め方」で行う(2026-11-21に全画面の紹介とポップアップをやめた)
+localStorage.setItem('sm_landing_done','1');
+localStorage.setItem('sm_tutorial_done','1');
+renderFirstView();
 setFirstTimeState(players.length === 0);
 if (players.length === 0 && window.innerWidth >= 768) {
   setTimeout(() => document.getElementById('inp-name')?.focus(), 500);
