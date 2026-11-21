@@ -9,6 +9,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   const tabBtns   = document.querySelectorAll('.tab-btn');
   const tabPanels = document.querySelectorAll('.tab-panel');
 
+  // 記録タブの上に、通算打率・打数・安打・試合数と最後の記録を出す
+  function renderSeasonBar() {
+    const bar = document.getElementById('season-bar');
+    if (!bar) return;
+    const all = Storage.load();
+    bar.hidden = all.length === 0;
+    if (!all.length) return;
+    const st = Stats.calculate(all);
+    document.getElementById('sb-avg').textContent = Stats.fmtAvg(st.avg);
+    document.getElementById('sb-line').textContent = `${st.ab}打数${st.h}安打・${st.games}試合・OPS ${Stats.fmtOps(st.ops)}`;
+    const last = all.filter(a => a.date).sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : (b.id || 0) - (a.id || 0)))[0];
+    const md = last ? last.date.slice(5).replace('-', '/').replace(/^0/, '').replace('/0', '/') : '';
+    document.getElementById('sb-last').textContent = last ? `最後の記録 ${md}${last.opponent ? ' vs ' + last.opponent : ''}` : '';
+  }
+
   function switchTab(tabId) {
     tabBtns.forEach(btn =>
       btn.classList.toggle('active', btn.dataset.tab === tabId)
@@ -17,6 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       panel.classList.toggle('active', panel.id === 'tab-' + tabId)
     );
     if (tabId === 'stats')   { renderStats(); Track.once('bs_stats_view'); }
+    if (tabId === 'record')  renderSeasonBar();
     if (tabId === 'history') { renderHistory(); Track.once('bs_history_view'); }
   }
 
@@ -443,6 +459,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     resetForm();
+    renderSeasonBar();
   });
 
   // ── Form clear ─────────────────────────────────────────────────
@@ -1209,13 +1226,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ── ウェルカムバナー（初訪問かつデータなし） ──────────────────
   const welcomeBanner = document.getElementById('welcome-banner');
-  if (welcomeBanner && !localStorage.getItem('tutorial-seen-v1') && Storage.load().length === 0) {
+  if (welcomeBanner && !localStorage.getItem('bs-welcome-closed') && Storage.load().length === 0) {
     welcomeBanner.style.display = '';
     document.getElementById('welcome-close')?.addEventListener('click', () => {
       welcomeBanner.style.display = 'none';
-      localStorage.setItem('tutorial-seen-v1', '1');
+      localStorage.setItem('bs-welcome-closed', '1');
+    });
+    document.getElementById('welcome-go')?.addEventListener('click', () => {
+      if (typeof gtag === 'function') gtag('event', 'bs_first_view_click');
+      const grid = document.getElementById('result-buttons');
+      grid?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => grid?.querySelector('.result-btn')?.focus({ preventScroll: true }), 400);
     });
   }
+
+  // ── 通算成績の帯(記録がある人) ─────────────────────────────
+  renderSeasonBar();
+  document.getElementById('sb-open')?.addEventListener('click', () => {
+    if (typeof gtag === 'function') gtag('event', 'bs_season_bar_click');
+    switchTab('stats');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 
   // ── 初回記録完了バナー ───────────────────────────────────────
   const recordCompleteBanner = document.getElementById('record-complete-banner');

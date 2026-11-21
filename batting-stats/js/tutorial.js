@@ -16,10 +16,7 @@ const Tutorial = (() => {
 
   function init() {
     _bindHelpBtn();
-    if (!localStorage.getItem(STORAGE_KEY)) {
-      // 少し遅らせてページ描画後に表示
-      setTimeout(openModal, 600);
-    }
+    // 初回の案内は記録タブの上の案内表示で行う(2026-11-21に自動で開くポップアップをやめた)
   }
 
   function _bindHelpBtn() {

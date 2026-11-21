@@ -161,8 +161,9 @@
         <div class="welcome-banner-inner">
           <span class="welcome-icon"></span>
           <div class="welcome-text">
-            <strong>はじめての方へ</strong>
-            <span>打席結果を選んで「記録する」を押すだけ。打率が自動計算されます。</span>
+            <strong>最初の1打席を記録しましょう</strong>
+            <span>結果を選んで「記録する」を押すだけです。打率・出塁率・OPSは自動で計算されます。日付以外は、あとから入れても大丈夫です。</span>
+            <button type="button" class="welcome-go" id="welcome-go">結果を選ぶ</button>
           </div>
           <button class="welcome-close" id="welcome-close" aria-label="閉じる"></button>
         </div>
@@ -181,6 +182,13 @@
         </div>
       </div>
 
+      <!-- 通算成績の帯(記録がある人) -->
+      <div class="season-bar" id="season-bar" hidden>
+        <div class="sb-avg"><span class="sb-avg-label">通算打率</span><b id="sb-avg">---</b></div>
+        <div class="sb-meta"><span id="sb-line"></span><span id="sb-last"></span></div>
+        <button type="button" class="sb-open" id="sb-open">成績を見る</button>
+      </div>
+
       <form id="atbat-form" autocomplete="off" novalidate>
 
         <!-- 日付 / 相手 -->
@@ -196,6 +204,55 @@
             <label for="input-opponent" data-i18n="form.opponent">相手チーム</label>
             <input type="text" id="input-opponent" data-i18n-ph="form.opponentPh" placeholder="（任意）" maxlength="30" aria-label="相手チーム">
           </div>
+        </div>
+
+        <!-- 結果 -->
+        <div class="field-group">
+          <label data-i18n="form.result">結果</label>
+          <div class="result-grid" id="result-buttons">
+            <button type="button" class="result-btn" data-result="single"  data-cat="hit"     data-i18n="result.single">単打</button>
+            <button type="button" class="result-btn" data-result="double"  data-cat="hit"     data-i18n="result.double">二塁打</button>
+            <button type="button" class="result-btn" data-result="triple"  data-cat="hit"     data-i18n="result.triple">三塁打</button>
+            <button type="button" class="result-btn" data-result="hr"      data-cat="hit"     data-i18n="result.hr">本塁打</button>
+            <button type="button" class="result-btn" data-result="bb"      data-cat="walk"    data-i18n="result.bb">四球</button>
+            <button type="button" class="result-btn" data-result="hbp"     data-cat="walk"    data-i18n="result.hbp">死球</button>
+            <button type="button" class="result-btn" data-result="k"       data-cat="out"     data-i18n="result.k">三振</button>
+            <button type="button" class="result-btn" data-result="go"      data-cat="out"     data-i18n="result.go">ゴロ</button>
+            <button type="button" class="result-btn" data-result="fo"      data-cat="out"     data-i18n="result.fo">フライ</button>
+            <button type="button" class="result-btn" data-result="lo"      data-cat="out"     data-i18n="result.lo">ライナー</button>
+            <button type="button" class="result-btn" data-result="sb"      data-cat="special" data-i18n="result.sb">犠打</button>
+            <button type="button" class="result-btn" data-result="sf"      data-cat="special" data-i18n="result.sf">犠飛</button>
+            <button type="button" class="result-btn" data-result="e"       data-cat="special" data-i18n="result.e">失策</button>
+            <button type="button" class="result-btn" data-result="dp"      data-cat="out"     data-i18n="result.dp">併殺打</button>
+          </div>
+        </div>
+
+        <!-- 三振種別 -->
+        <div class="sub-section" id="k-type-group" style="display:none">
+          <div class="choice-row">
+            <button type="button" class="choice-btn" data-ktype="called" data-i18n="form.ktypeCalled">見逃し</button>
+            <button type="button" class="choice-btn" data-ktype="swing"  data-i18n="form.ktypeSwing">空振り</button>
+          </div>
+        </div>
+
+        <!-- 内野安打トグル -->
+        <div class="sub-section" id="infield-hit-group" style="display:none">
+          <button type="button" class="toggle-btn" id="infield-hit-btn" data-i18n="form.infieldHit">内野安打</button>
+        </div>
+
+        <!-- ポジション選択 -->
+        <div class="sub-section" id="fielder-pos-group" style="display:none">
+          <span class="sub-label" data-i18n="form.fielderQ">どのポジションへ？</span>
+          <div class="pos-grid" id="fielder-pos-buttons"></div>
+        </div>
+
+        <!-- 打球方向 -->
+        <div class="sub-section" id="direction-group" style="display:none">
+          <span class="sub-label" data-i18n="form.result">打球方向</span>
+          <div class="field-wrapper">
+            <div id="field-diagram" role="img" aria-label="打球方向選択フィールド図"></div>
+          </div>
+          <p class="direction-label" id="direction-label"></p>
         </div>
 
         <!-- 天気ウィジェット（デフォルト折りたたみ・タップで展開） -->
@@ -257,55 +314,6 @@
             <button type="button" class="hand-btn" data-order="8">8番</button>
             <button type="button" class="hand-btn" data-order="9">9番</button>
           </div>
-        </div>
-
-        <!-- 結果 -->
-        <div class="field-group">
-          <label data-i18n="form.result">結果</label>
-          <div class="result-grid" id="result-buttons">
-            <button type="button" class="result-btn" data-result="single"  data-cat="hit"     data-i18n="result.single">単打</button>
-            <button type="button" class="result-btn" data-result="double"  data-cat="hit"     data-i18n="result.double">二塁打</button>
-            <button type="button" class="result-btn" data-result="triple"  data-cat="hit"     data-i18n="result.triple">三塁打</button>
-            <button type="button" class="result-btn" data-result="hr"      data-cat="hit"     data-i18n="result.hr">本塁打</button>
-            <button type="button" class="result-btn" data-result="bb"      data-cat="walk"    data-i18n="result.bb">四球</button>
-            <button type="button" class="result-btn" data-result="hbp"     data-cat="walk"    data-i18n="result.hbp">死球</button>
-            <button type="button" class="result-btn" data-result="k"       data-cat="out"     data-i18n="result.k">三振</button>
-            <button type="button" class="result-btn" data-result="go"      data-cat="out"     data-i18n="result.go">ゴロ</button>
-            <button type="button" class="result-btn" data-result="fo"      data-cat="out"     data-i18n="result.fo">フライ</button>
-            <button type="button" class="result-btn" data-result="lo"      data-cat="out"     data-i18n="result.lo">ライナー</button>
-            <button type="button" class="result-btn" data-result="sb"      data-cat="special" data-i18n="result.sb">犠打</button>
-            <button type="button" class="result-btn" data-result="sf"      data-cat="special" data-i18n="result.sf">犠飛</button>
-            <button type="button" class="result-btn" data-result="e"       data-cat="special" data-i18n="result.e">失策</button>
-            <button type="button" class="result-btn" data-result="dp"      data-cat="out"     data-i18n="result.dp">併殺打</button>
-          </div>
-        </div>
-
-        <!-- 三振種別 -->
-        <div class="sub-section" id="k-type-group" style="display:none">
-          <div class="choice-row">
-            <button type="button" class="choice-btn" data-ktype="called" data-i18n="form.ktypeCalled">見逃し</button>
-            <button type="button" class="choice-btn" data-ktype="swing"  data-i18n="form.ktypeSwing">空振り</button>
-          </div>
-        </div>
-
-        <!-- 内野安打トグル -->
-        <div class="sub-section" id="infield-hit-group" style="display:none">
-          <button type="button" class="toggle-btn" id="infield-hit-btn" data-i18n="form.infieldHit">内野安打</button>
-        </div>
-
-        <!-- ポジション選択 -->
-        <div class="sub-section" id="fielder-pos-group" style="display:none">
-          <span class="sub-label" data-i18n="form.fielderQ">どのポジションへ？</span>
-          <div class="pos-grid" id="fielder-pos-buttons"></div>
-        </div>
-
-        <!-- 打球方向 -->
-        <div class="sub-section" id="direction-group" style="display:none">
-          <span class="sub-label" data-i18n="form.result">打球方向</span>
-          <div class="field-wrapper">
-            <div id="field-diagram" role="img" aria-label="打球方向選択フィールド図"></div>
-          </div>
-          <p class="direction-label" id="direction-label"></p>
         </div>
 
         <!-- 打点 -->
