@@ -106,6 +106,9 @@
   .check { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: .9375rem; }
   @media (prefers-reduced-motion: no-preference) { .log li:first-child { animation: login .22s ease-out; } }
   @keyframes login { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+  .challenge { border: 2px solid var(--tint, var(--ink)); border-radius: var(--r, 8px); padding: 12px 14px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 4px; font-size: .9375rem; line-height: 1.6; }
+  .challenge[hidden] { display: none; }
+  .challenge b { font-size: 1rem; }
 </style>
 </head>
 <body>
@@ -124,6 +127,10 @@
   </header>
 
   <section id="setup">
+    <div class="challenge" id="challenge" hidden>
+      <b>届いた試合で勝負</b>
+      <span id="challengeTxt"></span>
+    </div>
     <div class="field">
       <span class="lbl">試合</span>
       <div class="seg" id="modeSeg" role="group" aria-label="試合の種類">
@@ -181,7 +188,8 @@
       <dt>ここで試合が動いた</dt><dd id="resKey">–</dd>
       <dt>通算</dt><dd id="resRecord">–</dd>
     </dl>
-    <button class="btn-main" id="share" type="button">結果を共有する</button>
+    <button class="btn-main" id="share" type="button">この試合を友だちに送る</button>
+    <p class="hint" style="margin-top:6px">送ったURLを開くと、同じ相手・同じ条件の試合で采配できます。結果の比べ合いに使えます(選手名は送りません)。</p>
     <div class="btn-row" style="margin-top:10px">
       <button class="btn-sub" id="retry" type="button">同じ条件でもう一度</button>
       <button class="btn-sub" id="again" type="button">条件を変える</button>
@@ -702,7 +710,11 @@ function finish(kind) {
   $('#resMoves').textContent = [c.hit && `強攻${c.hit}`, c.bunt && `バント${c.bunt}`, c.steal && `盗塁${c.steal}`, c.endrun && `エンドラン${c.endrun}`, c.squeeze && `スクイズ${c.squeeze}`, c.pinch && `代打${c.pinch}`, c.relief && `継投${c.relief}`, c.shift && `前進守備${c.shift}`, c.ibb && `敬遠${c.ibb}`].filter(Boolean).join(' / ') || '–';
   $('#resKey').textContent = G.key || '動きのない試合でした';
   $('#resRecord').textContent = `${store.w}勝${store.l}敗${store.d}分` + (store.streak >= 2 ? `(${store.streak}連勝中)` : '');
-  G.shareText = `SKIPPER 監督采配: 7回裏1点ビハインドから ${us}-${them} で${head}。監督タイプ「${type}」。あなたならどうする？ #少年野球 #草野球\nhttps://somirai.jp/skipper/`;
+  // 同じ相手・同じ抽選の試合を開けるURL(選手名は入れない)
+  const TYPES = ['堅実型', '勝負師型', '守りの采配型', '打撃信頼型', 'バランス型'];
+  const url = `https://somirai.jp/skipper/?g=${cfg.seed}&o=${cfg.opp}&s=${us}-${them}&t=${TYPES.indexOf(type)}&utm_source=skipper_share`;
+  const lead = cfg.challenge ? '届いた試合に挑戦: ' : '';
+  G.shareText = `${lead}SKIPPER 監督采配。7回裏1点ビハインドから ${us}-${them} で${head}、監督タイプは「${type}」でした。\n同じ相手・同じ条件の試合を送ります。あなたなら勝てる？ #少年野球 #草野球\n${url}`;
   $('#done').hidden = false; window.scrollTo({ top: $('#done').offsetTop - 8, behavior: 'smooth' });
   if (typeof gtag === 'function') gtag('event', 'skipper_complete', { result: kind, mode: cfg.mode, opp: cfg.opp });
 }
@@ -718,23 +730,42 @@ function startGame() {
   $('#setup').hidden = true; $('#done').hidden = true; $('#game').hidden = false; $('#log').innerHTML = ''; showPlay('');
   renderBoard();
   addLog('7回裏、1点ビハインドで攻撃開始', 'us');
-  if (typeof gtag === 'function') gtag('event', 'skipper_start', { mode: cfg.mode, opp: cfg.opp, roster: G.fromMaker ? 'maker' : 'default' });
+  if (typeof gtag === 'function') gtag('event', 'skipper_start', { mode: cfg.challenge ? 'challenge' : cfg.mode, opp: cfg.opp, roster: G.fromMaker ? 'maker' : 'default' });
   window.scrollTo({ top: $('#game').offsetTop - 8, behavior: 'smooth' });
   ourPA();
 }
 document.querySelectorAll('#modeSeg button').forEach(b => b.addEventListener('click', () => {
   document.querySelectorAll('#modeSeg button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
   cfg.mode = b.dataset.mode; cfg.seed = cfg.mode === 'daily' ? todaySeed() : Tool.randInt(2147483647);
+  cfg.challenge = false; $('#challenge').hidden = true; $('#start').textContent = '7回裏から指揮を執る';
   $('#modeHint').textContent = cfg.mode === 'daily' ? '今日の試合は、同じ日に遊ぶ人みんな同じ相手・同じ条件で始まります。' : '相手の打線と抽選が毎回変わります。';
 }));
 document.querySelectorAll('#oppSeg button').forEach(b => b.addEventListener('click', () => { document.querySelectorAll('#oppSeg button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false')); cfg.opp = b.dataset.opp; }));
 $('#start').addEventListener('click', startGame);
 $('#next').addEventListener('click', () => { const p = G.pending; G.pending = null; $('#next').hidden = true; if (p === 'changeHalf') changeHalf(); else if (p === 'ourPA') ourPA(); else if (p === 'theirPA') theirPA(); });
-$('#share').addEventListener('click', () => { Tool.share(G.shareText, $('#share')); if (typeof gtag === 'function') gtag('event', 'skipper_share'); });
+$('#share').addEventListener('click', () => { Tool.share(G.shareText, $('#share')); if (typeof gtag === 'function') gtag('event', 'skipper_share', { mode: cfg.challenge ? 'challenge' : cfg.mode }); });
 $('#retry').addEventListener('click', startGame);
 $('#again').addEventListener('click', () => { if (cfg.mode === 'random') cfg.seed = Tool.randInt(2147483647); $('#game').hidden = true; $('#done').hidden = true; $('#setup').hidden = false; updateSetup(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
 document.addEventListener('keydown', e => { if (e.key === 'Enter' && !$('#next').hidden) $('#next').click(); });
 
+// 共有URL(?g=抽選の種&o=相手&s=スコア&t=監督タイプ)で届いた試合を準備する
+(function readChallenge() {
+  const q = new URLSearchParams(location.search);
+  const g = Number(q.get('g'));
+  if (!Number.isInteger(g) || g < 1 || g > 2147483647) return;
+  cfg.seed = g; cfg.opp = q.get('o') === 'strong' ? 'strong' : 'normal'; cfg.mode = 'random'; cfg.challenge = true;
+  document.querySelectorAll('#modeSeg button').forEach(x => x.setAttribute('aria-pressed', 'false'));
+  document.querySelectorAll('#oppSeg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.opp === cfg.opp ? 'true' : 'false'));
+  const TYPES = ['堅実型', '勝負師型', '守りの采配型', '打撃信頼型', 'バランス型'];
+  const sc = (q.get('s') || '').match(/^(\d{1,2})-(\d{1,2})$/), ty = TYPES[Number(q.get('t'))];
+  const res = sc ? (+sc[1] > +sc[2] ? '勝ち' : +sc[1] < +sc[2] ? '負け' : '引き分け') : '';
+  $('#challengeTxt').textContent = (sc ? `送ってくれた人は ${sc[1]}-${sc[2]} で${res}${ty ? '(監督タイプ「' + ty + '」)' : ''}。` : '') + `同じ相手(${cfg.opp === 'strong' ? '格上' : '同格'})・同じ条件の試合を采配できます。`;
+  $('#challenge').hidden = false;
+  $('#modeHint').textContent = '届いた試合です。「今日の試合」「ランダム」を選ぶと、ふだんの試合に戻ります。';
+  $('#start').textContent = 'この試合で指揮を執る';
+  if (typeof gtag === 'function') gtag('event', 'skipper_challenge_open');
+  try { history.replaceState(null, '', location.pathname); } catch (e) {}
+})();
 updateSetup();
 Tool.initTheme(); Tool.initCookie();
 </script>
