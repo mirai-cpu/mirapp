@@ -125,6 +125,10 @@
   }
   </script>
   <title>野球オーダー作成・打順メーカー【無料・スマホ対応】スタメン表・オーダー表を60秒で作成 | TACTICIAN</title>
+  <script>
+    // 共有URL(#o=...)で届いたオーダーを先に読み取り、アドレス欄から消す。選手名を計測や履歴に残さないため
+    (function(){ var m = location.hash.match(/^#o=([A-Za-z0-9_-]+)$/); if (m) { window.__sharedLineup = m[1]; try { history.replaceState(null, '', location.pathname + location.search); } catch(e) {} } })();
+  </script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9485428408605916" crossorigin="anonymous"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-902VNDKEE9"></script>
   <script>
@@ -570,6 +574,18 @@
     }
     .section-label { font-size: 11px; font-weight: 700; color: var(--ink-soft); letter-spacing: .1em; text-transform: uppercase; margin: 14px 0 6px; font-family: var(--mono); }
     .share-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .share-privacy { font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+
+    /* ── 届いたオーダー(共有URLを開いた人) ── */
+    #shared-view { position: fixed; inset: 0; z-index: 9100; background: var(--bg); color: var(--text); overflow-y: auto; padding: 28px 18px 40px; }
+    #shared-view .sv-wrap { max-width: 440px; margin: 0 auto; }
+    #shared-view .sv-from { font-size: 14px; font-weight: 700; margin: 0 0 14px; }
+    #shared-view .sv-from small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; margin-top: 2px; }
+    #shared-view .print-card { margin-bottom: 22px; }
+    #shared-view .sv-pitch { font-size: 13px; color: var(--ink); line-height: 1.8; }
+    #shared-view .sv-import { width: 100%; min-height: 54px; background: var(--accent); color: var(--on-accent, #fff); border: 0; border-radius: 8px; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; }
+    #shared-view .sv-close { width: 100%; min-height: 48px; margin-top: 10px; background: transparent; color: var(--text); border: 2px solid var(--text); border-radius: 8px; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
+    #shared-view .sv-note { font-size: 12px; color: var(--muted); line-height: 1.7; margin: 12px 0 0; }
 
     /* ── Theme Modal ── */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
@@ -649,7 +665,7 @@
 <div id="starfield" aria-hidden="true"></div>
 
 <!-- ── Landing Overlay（初回訪問のみ表示） ── -->
-<script>if(localStorage.getItem('sm_landing_done')){document.addEventListener('DOMContentLoaded',function(){var e=document.getElementById('tc-landing');if(e)e.remove();});}</script>
+<script>if(localStorage.getItem('sm_landing_done')||window.__sharedLineup){document.addEventListener('DOMContentLoaded',function(){var e=document.getElementById('tc-landing');if(e)e.remove();});}</script>
 <div id="tc-landing">
   <style>
     #tc-landing { position:fixed; inset:0; z-index:9000; background:var(--bg); color:var(--text); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px 22px 40px; overflow-y:auto; font-family:'BIZ UDPGothic','Hiragino Sans',system-ui,sans-serif; }
@@ -1144,6 +1160,7 @@
       <button class="btn btn-ghost" onclick="window.print()">印刷</button>
       <button class="btn btn-ghost" onclick="switchTab('order')">← 戻る</button>
     </div>
+    <p class="share-privacy no-print">「シェアする」「テキストコピー」で送る文章には、このオーダーを開けるURLが入ります。URLには打順・選手名・背番号が含まれるので、送る相手に気をつけてください。</p>
 
     <a href="https://somirai.jp/batting-stats/" class="no-print" style="display:flex;align-items:center;gap:12px;margin-top:10px;padding:10px 14px;border-left:5px solid var(--accent);text-decoration:none;color:inherit;">
 
@@ -2105,9 +2122,112 @@ function buildText() {
       txt += `${i+1}番手  ${p?p.name:'—'}  ${pitcherInningLabel(pt)}\n`;
     });
   }
-  txt += '\nスタメンメーカー https://somirai.jp/order-maker/';
+  txt += '\nこのオーダーをスマホで開く\n' + buildShareUrl();
   return txt;
 }
+
+// ── 打順入りの共有URL ─────────────────────────
+// オーダーをURLの#以降に入れる。#以降はサーバーに送られない。
+function b64urlEncode(str) {
+  const bytes = new TextEncoder().encode(str); let bin = '';
+  bytes.forEach(b => { bin += String.fromCharCode(b); });
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function b64urlDecode(str) {
+  let b = str.replace(/-/g, '+').replace(/_/g, '/'); while (b.length % 4) b += '=';
+  const bin = atob(b); return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
+}
+function buildShareUrl() {
+  const slots = order.map(slot => {
+    const p = slot?.playerId ? players.find(x => x.id === slot.playerId) : null;
+    return [p?.num || '', slotDisplayName(slot) || '', slot?.pos || '', slot?.isGuest ? 1 : 0];
+  });
+  while (slots.length > 9 && !slots[slots.length - 1][1]) slots.pop();
+  const data = {
+    v: 1,
+    n: document.getElementById('lineup-name')?.value.trim() || '',
+    d: document.getElementById('match-date')?.value || '',
+    h: isDH ? 1 : 0,
+    o: slots,
+    p: pitchers.map(pt => { const p = players.find(x => x.id === pt.playerId); return [p ? p.name : '', pitcherInningLabel(pt) || '']; }),
+  };
+  return 'https://somirai.jp/order-maker/?utm_source=lineup_share#o=' + b64urlEncode(JSON.stringify(data));
+}
+// 届いたデータは他人が作ったものなので、形と長さを確かめてから使う
+function readSharedLineup(code) {
+  try {
+    const d = JSON.parse(b64urlDecode(code));
+    if (!d || d.v !== 1 || !Array.isArray(d.o) || d.o.length < 1 || d.o.length > 20) return null;
+    const str = (x, n) => String(x ?? '').slice(0, n);
+    const okPos = x => (POSITIONS.includes(x) ? x : '');
+    return {
+      name: str(d.n, 40), date: /^\d{4}-\d{2}-\d{2}$/.test(d.d || '') ? d.d : '', dh: !!d.h,
+      slots: d.o.map(r => Array.isArray(r) ? { num: str(r[0], 3), name: str(r[1], 20), pos: okPos(r[2]), guest: !!r[3] } : { num: '', name: '', pos: '', guest: false }),
+      pitchers: (Array.isArray(d.p) ? d.p : []).slice(0, 12).filter(Array.isArray).map(r => ({ name: str(r[0], 20), label: str(r[1], 30) })),
+    };
+  } catch (e) { return null; }
+}
+function showSharedLineup(L) {
+  const rows = L.slots.map((r, i) => `<tr>
+      <td class="t-order">${i + 1}</td>
+      <td class="t-num">${r.num ? '#' + esc(r.num) : (r.guest ? '助' : '')}</td>
+      <td>${r.name ? esc(r.name) : '<span style="color:var(--ink-soft)">未設定</span>'}</td>
+      <td>${r.pos ? `<span class="pos-chip">${r.pos}</span>${posStamp(r.pos)}` : ''}</td>
+    </tr>`).join('');
+  const pitch = L.pitchers.filter(p => p.name).map((p, i) => `${i + 1}番手 ${esc(p.name)}${p.label ? '　' + esc(p.label) : ''}`).join('<br>');
+  const el = document.createElement('div');
+  el.id = 'shared-view'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', '届いたオーダー');
+  el.innerHTML = `<div class="sv-wrap">
+    <p class="sv-from">オーダーが届きました<small>TACTICIAN(スタメンメーカー)で作られたオーダーです</small></p>
+    <div class="print-card">
+      <div class="print-title">${esc(L.name || 'スタメン')}</div>
+      <div class="print-meta">${L.date ? fmtFull(L.date) : ''}${L.dh ? (L.date ? '　' : '') + 'DHあり' : ''}</div>
+      <div class="section-label">打順・守備</div>
+      <table class="print-table"><thead><tr><th style="text-align:center;width:42px">打順</th><th style="width:44px">番号</th><th>選手名</th><th style="width:60px">守備</th></tr></thead><tbody>${rows}</tbody></table>
+      ${pitch ? `<div class="section-label">投手陣</div><div class="sv-pitch">${pitch}</div>` : ''}
+    </div>
+    <button type="button" class="sv-import" id="sv-import">このオーダーを自分の端末に取り込む</button>
+    <button type="button" class="sv-close" id="sv-close">自分でオーダーを作る</button>
+    <p class="sv-note">取り込むと、選手と打順がこの端末のブラウザに保存され、編集や印刷ができます。今登録している選手は消えません。投手陣は取り込みません。</p>
+  </div>`;
+  document.body.appendChild(el);
+  document.getElementById('sv-import').addEventListener('click', () => importSharedLineup(L, el));
+  document.getElementById('sv-close').addEventListener('click', () => {
+    el.remove(); if (typeof gtag === 'function') gtag('event', 'shared_lineup_close');
+  });
+  if (typeof gtag === 'function') gtag('event', 'shared_lineup_open', { slots: L.slots.length });
+}
+function importSharedLineup(L, el) {
+  if (order.some(s => s && (s.playerId || s.isGuest)) && !confirm('今のオーダー(打順)を、届いたオーダーで置き換えます。登録済みの選手は消えません。よろしいですか？')) return;
+  const key = n => n.replace(/\s/g, '');
+  let added = 0;
+  const newOrder = L.slots.map((r, i) => {
+    const isExtra = i >= 9;
+    if (!r.name) return isExtra ? { playerId: null, pos: r.pos || null, isExtra: true } : null;
+    if (r.guest) return { playerId: null, guestName: r.name, pos: r.pos || null, isGuest: true, isExtra };
+    let p = players.find(x => key(x.name) === key(r.name));
+    if (!p) { p = { id: uid(), num: r.num, name: r.name, pos: r.pos && r.pos !== 'DH' ? [r.pos] : [] }; players.push(p); added++; }
+    return { playerId: p.id, pos: r.pos || null, ...(isExtra ? { isExtra: true } : {}) };
+  });
+  while (newOrder.length < 9) newOrder.push(null);
+  order = newOrder;
+  isDH = L.dh; const dh = document.getElementById('dh-toggle'); if (dh) dh.checked = isDH;
+  const ln = document.getElementById('lineup-name'); if (ln) ln.value = L.name;
+  const md = document.getElementById('match-date'); if (md && L.date) md.value = L.date;
+  localStorage.setItem('sm_landing_done', '1');
+  saveAll(); renderRoster(); renderOrderSlots(); renderPitcherSelect(); renderPosStats();
+  setFirstTimeState(false);
+  el.remove();
+  switchTab('print');
+  showToast(added ? `届いたオーダーを取り込みました(新しい選手${added}人)` : '届いたオーダーを取り込みました');
+  if (typeof gtag === 'function') gtag('event', 'shared_lineup_import', { added });
+}
+document.addEventListener('DOMContentLoaded', () => {
+  if (!window.__sharedLineup) return;
+  const L = readSharedLineup(window.__sharedLineup);
+  if (L) showSharedLineup(L);
+  else showToast('オーダーのURLを読み込めませんでした。送ってくれた人に、もう一度送ってもらってください', true);
+});
 
 // ── スタメン表を画像として書き出し・共有 ─────────────
 function drawLineupCard() {
@@ -2236,7 +2356,7 @@ function shareImage() {
         navigator.share({
           files: [file],
           title: document.getElementById('lineup-name').value.trim() || 'スタメン',
-          text: 'TACTICIANでスタメンを作成しました！ https://somirai.jp/order-maker/',
+          text: 'TACTICIANでスタメンを作成しました！ このオーダーを開く: ' + buildShareUrl(),
         }).catch(function () { /* user cancelled */ });
       } else {
         const url = URL.createObjectURL(blob);
