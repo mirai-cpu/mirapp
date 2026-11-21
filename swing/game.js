@@ -744,12 +744,14 @@ document.getElementById('ghost-set-btn')?.addEventListener('click', () => {
 });
 
 document.getElementById('start-btn').addEventListener('click', () => {
+  if (typeof gtag === 'function') gtag('event', 'game_start', { game: 'swing', difficulty: DIFF_KEY });
   document.getElementById('start-screen').classList.add('hidden');
   resetGame();
   setTimeout(startPitch, 600);
 });
 
 document.getElementById('retry-btn').addEventListener('click', () => {
+  if (typeof gtag === 'function') gtag('event', 'game_start', { game: 'swing', difficulty: DIFF_KEY, retry: true });
   document.getElementById('gameover-screen').classList.add('hidden');
   resetGame();
   setTimeout(startPitch, 400);

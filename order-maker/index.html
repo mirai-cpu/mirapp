@@ -680,8 +680,8 @@
     <h1>TACTICIAN</h1>
     <p class="tc-sub">野球打順・スタメン作成ツール</p>
     <p class="tc-tag">試合前の打順決め、60秒で完了。</p>
-    <button onclick="closeTcLanding()" class="tc-cta">今すぐ作成する</button>
-    <button onclick="closeTcLanding();loadSample('landing')" class="tc-sample" type="button">サンプルの9人で試す</button>
+    <button onclick="closeTcLanding('create')" class="tc-cta">今すぐ作成する</button>
+    <button onclick="closeTcLanding('sample');loadSample('landing')" class="tc-sample" type="button">サンプルの9人で試す</button>
     <p class="tc-guide"><a href="https://somirai.jp/blog/tactician-howto.html" target="_blank" rel="noopener" onclick="gtag('event','guide_link_click',{from:'tactician_landing'})">詳しい使い方を見る →</a></p>
     <ul class="tc-trust"><li>登録不要</li><li>完全無料</li><li>スマホ対応</li><li>印刷対応</li></ul>
     <ol class="tc-steps"><li><b>1</b>選手を登録</li><li><b>2</b>打順を組む</li><li><b>3</b>LINEで共有</li></ol>
@@ -1408,7 +1408,9 @@ function renderThemeGrid() {
 function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
 function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 function openTutorial() { openModal('tutorial-modal'); }
-function closeTcLanding() {
+function closeTcLanding(choice) {
+  // 初回画面でどちらのボタンを押したか(登録の手前で離れていないかを見るため)
+  if (choice && typeof gtag === 'function') gtag('event', 'landing_start', { choice: choice });
   var el = document.getElementById('tc-landing');
   if (el) {
     el.style.transition = 'opacity .3s';
