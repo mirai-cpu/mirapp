@@ -486,6 +486,12 @@
       transition: transform .15s, box-shadow .15s;
     }
     .play-btn:hover { transform: translateY(-2px); }
+    /* 最初の画面: 要点1行 → PLAY BALL → 今の設定 (2026-11-21) */
+    #start-screen .quick-how { max-width: 320px; margin: 0 auto 18px; font-size: 14px; line-height: 1.7; color: var(--text, #F5F7F6); text-align: center; }
+    #start-screen .quick-how b { color: #F5C400; }
+    #start-screen .quick-setting { margin: 12px 0 2px; font-size: 12px; color: var(--muted); text-align: center; }
+    #start-screen .quick-change { background: none; border: 0; padding: 4px 2px; color: #F5C400; font: inherit; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+    #start-screen .quick-season { margin: 0 0 28px; font-size: 11px; color: var(--muted); text-align: center; }
     .play-btn:active { transform: scale(.97); }
 
     /* Gameover screen */
@@ -603,6 +609,10 @@
 <div class="overlay" id="start-screen">
   <h1>SWING!</h1>
   <p class="tagline">打席反応ゲーム — ブラウザで即プレイ</p>
+  <p class="quick-how">ボールが来たら画面をタップ。タイミングバーの <b>■</b> が <b>◆</b> に重なった瞬間が打ちごろです。</p>
+  <button class="play-btn" id="start-btn">PLAY BALL</button>
+  <p class="quick-setting"><span id="quick-setting">難易度 ふつう・投手 ルーキー右腕</span> <button type="button" class="quick-change" id="quick-change">変える</button></p>
+  <p id="season-summary" class="quick-season">シーズン記録なし（このゲームが1試合目です）</p>
 
   <div class="pitch-legend">
     <div class="pitch-chip">
@@ -646,10 +656,9 @@
   <!-- 投手セレクター(Phase4) -->
   <p style="font-family:var(--display);letter-spacing:.08em;font-size:10px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;">対戦する投手</p>
   <div id="pitcher-selector" style="display:flex;flex-direction:column;gap:6px;max-width:320px;margin:0 auto 6px;"></div>
-  <p id="season-summary" style="font-size:11px;color:var(--muted);margin-bottom:4px;text-align:center;">シーズン記録なし（このゲームが1試合目です）</p>
   <button id="season-reset-btn" style="background:none;border:none;color:var(--muted);font-size:10px;text-decoration:underline;cursor:pointer;margin-bottom:20px;">シーズン記録をリセット</button>
 
-  <button class="play-btn" id="start-btn">PLAY BALL</button>
+  <button class="play-btn" id="start-btn-2">この設定で PLAY BALL</button>
 
   <!-- ゴーストバトル(Phase4) -->
   <div style="max-width:320px;margin:20px auto 0;">

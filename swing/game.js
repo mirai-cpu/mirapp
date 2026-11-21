@@ -678,12 +678,22 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
     DIFF_KEY = btn.dataset.diff;
     DIFF = DIFFICULTIES[DIFF_KEY];
     document.getElementById('diff-desc').textContent = DIFF_DESCS[DIFF_KEY];
+    renderQuickSetting();
   });
 });
 // 初期説明をふつうに設定
 document.getElementById('diff-desc').textContent = DIFF_DESCS['normal'];
 
 // ── 投手選択(Phase4) ─────────────────────────────────────────────
+// 最初の画面の「難易度 ふつう・投手 ルーキー右腕」
+const DIFF_NAMES = { easy: 'かんたん', normal: 'ふつう', hard: 'むずかしい', pro: 'プロ' };
+function renderQuickSetting() {
+  const $q = document.getElementById('quick-setting');
+  if (!$q) return;
+  const p = PITCHERS.find(x => x.id === PITCHER_KEY);
+  $q.textContent = `難易度 ${DIFF_NAMES[DIFF_KEY] || DIFF_KEY}・投手 ${p ? p.name : ''}`;
+}
+
 function renderPitcherSelector() {
   const season = loadSeason();
   const $wrap = document.getElementById('pitcher-selector');
@@ -699,12 +709,14 @@ function renderPitcherSelector() {
       btn.addEventListener('click', () => {
         PITCHER_KEY = p.id;
         renderPitcherSelector();
+        renderQuickSetting();
       });
     }
     $wrap.appendChild(btn);
   });
 }
 renderPitcherSelector();
+renderQuickSetting();
 
 // ── シーズン表示(Phase4) ─────────────────────────────────────────
 function renderSeasonSummary() {
@@ -743,11 +755,17 @@ document.getElementById('ghost-set-btn')?.addEventListener('click', () => {
   }
 });
 
-document.getElementById('start-btn').addEventListener('click', () => {
-  if (typeof gtag === 'function') gtag('event', 'game_start', { game: 'swing', difficulty: DIFF_KEY });
+// PLAY BALLは最初の画面の上(すぐ遊ぶ)と、設定の下(設定を変えてから遊ぶ)の2か所
+function startFromMenu(from) {
+  if (typeof gtag === 'function') gtag('event', 'game_start', { game: 'swing', difficulty: DIFF_KEY, pitcher: PITCHER_KEY, from });
   document.getElementById('start-screen').classList.add('hidden');
   resetGame();
   setTimeout(startPitch, 600);
+}
+document.getElementById('start-btn').addEventListener('click', () => startFromMenu('top'));
+document.getElementById('start-btn-2')?.addEventListener('click', () => startFromMenu('settings'));
+document.getElementById('quick-change')?.addEventListener('click', () => {
+  document.getElementById('diff-selector')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
 document.getElementById('retry-btn').addEventListener('click', () => {
